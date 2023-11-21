@@ -2,9 +2,9 @@ import SwiftUI
 
 struct HomeBuilder {
     static func makeHome(
-        productsRepository: ProductsRepositoryApi = ProductsRepository()
+        listsRepository: ListsRepositoryApi = ListsRepository()
     ) -> HomeView {
-        let viewModel = HomeViewModel(productsRepository: productsRepository)
+        let viewModel = HomeViewModel(listsRepository: listsRepository)
         return HomeView(viewModel: viewModel)
     }
 }

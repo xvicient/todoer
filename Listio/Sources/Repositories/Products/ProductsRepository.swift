@@ -1,41 +1,51 @@
 import UIKit
 
-enum ProductsRepositoryError: Error {
-    case missingUuid
-}
-
 protocol ProductsRepositoryApi {
-    func fetchProducts(completion: @escaping (Result<[ProductDTO], Error>) -> Void)
-    func addProduct(with name: String, completion: @escaping (Result<Void, Error>) -> Void)
-    func deleteProduct(_ product: ProductDTO)
+    func fetchProducts(
+        listId: String,
+        completion: @escaping (Result<[ProductDTO], Error>) -> Void
+    )
+    func addProduct(
+        with name: String,
+        listId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    )
+    func deleteProduct(
+        _ product: ProductDTO,
+        listId: String
+    )
 }
 
 final class ProductsRepository: ProductsRepositoryApi {
     private let producstDataSource: ProductsDataSourceApi
-    private let uuid = UIDevice.current.identifierForVendor?.uuidString
     
     init(producstDataSource: ProductsDataSourceApi = ProductsDataSource()) {
         self.producstDataSource = producstDataSource
     }
     
-    func fetchProducts(completion: @escaping (Result<[ProductDTO], Error>) -> Void) {
-        guard let uuid = uuid else {
-            completion(.failure(ProductsRepositoryError.missingUuid))
-            return
-        }
-        producstDataSource.fetchProducts(by: uuid, completion: completion)
+    func fetchProducts(
+        listId: String,
+        completion: @escaping (Result<[ProductDTO], Error>) -> Void
+    ) {
+        producstDataSource.fetchProducts(listId: listId, 
+                                         completion: completion)
     }
     
-    func addProduct(with name: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let uuid = uuid else {
-            completion(.failure(ProductsRepositoryError.missingUuid))
-            return
-        }
-        producstDataSource.addProduct(ProductDTO(name: name, uuid: uuid),
+    func addProduct(
+        with name: String,
+        listId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        producstDataSource.addProduct(with: name,
+                                      listId: listId,
                                       completion: completion)
     }
     
-    func deleteProduct(_ product: ProductDTO) {
-        producstDataSource.deleteProduct(product)
+    func deleteProduct(
+        _ product: ProductDTO,
+        listId: String
+    ) {
+        producstDataSource.deleteProduct(product,
+                                         listId: listId)
     }
 }

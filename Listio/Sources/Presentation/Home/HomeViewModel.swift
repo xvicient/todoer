@@ -3,54 +3,58 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 final class HomeViewModel: ObservableObject {
-    @Published var products: [ProductDTO] = []
+    @Published var lists: [ListDTO] = []
     @Published var isLoading = false
-    @Published var productName: String = "Add product..."
-    private let newProductHint = "Add product..."
-    var hasProductHint: Bool {
-        productName == newProductHint
-    }
-    private let productsRepository: ProductsRepositoryApi
+    @Published var listName: String = ""
+    @Published var listId: String = ""
+    private let listsRepository: ListsRepositoryApi
     
-    init(productsRepository: ProductsRepositoryApi) {
-        self.productsRepository = productsRepository
+    init(listsRepository: ListsRepositoryApi) {
+        self.listsRepository = listsRepository
     }
     
-    func fetchProducts() {
+    func fetchLists() {
         isLoading = true
-        productsRepository.fetchProducts { [weak self] result in
+        listsRepository.fetchLists { [weak self] result in
             self?.isLoading = false
             switch result {
-            case .success(let products):
-                self?.products = products
+            case .success(let lists):
+                self?.lists = lists
             case .failure:
                 break
             }
         }
     }
     
-    func addProduct() {
-        guard !productName.isEmpty, !hasProductHint else { return }
+    func addList() {
+        guard !listName.isEmpty else { return }
         isLoading = true
-        productsRepository.addProduct(with: productName) { [weak self] result in
+        listsRepository.addList(with: listName) { [weak self] result in
             self?.isLoading = false
             switch result {
             case .success:
-                self?.productName = ""
+                self?.listName = ""
             case .failure:
                 break
             }
         }
     }
     
-    func deleteProduct(at indexSet: IndexSet) {
+    func deleteList(at indexSet: IndexSet) {
         guard let index = indexSet.first,
-              let product = products[safe: index] else { return }
-        productsRepository.deleteProduct(product)
+              let list = lists[safe: index] else { return }
+        listsRepository.deleteList(list)
     }
     
-    func cleanProductHint() {
-        guard hasProductHint else { return }
-        productName = ""
+    func productsView(listId: String?,
+                      listName: String) -> ProductsView? {
+        guard let listId = listId else { return nil }
+        return ProductsBuilder.makeProductList(listId: listId,
+                                               listName: listName,
+                                               productsRepository: ProductsRepository())
+    }
+    
+    func importList() {
+        
     }
 }

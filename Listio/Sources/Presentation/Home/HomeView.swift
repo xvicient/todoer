@@ -5,38 +5,37 @@ struct HomeView: View {
     
     var body: some View {
         ZStack {
-            VStack {
-                List {
-                    ForEach(viewModel.products, id: \.self) {
-                        Text($0.name)
-                    }
-                    .onDelete {
-                        viewModel.deleteProduct(at: $0)
-                    }
+            NavigationStack {
+                List(viewModel.lists, id: \.self) {
+                    NavigationLink($0.name, value: $0)
                 }
+                .navigationDestination(for: ListDTO.self) {
+                    viewModel.productsView(listId: $0.id,
+                                           listName: $0.name)
+                }
+                .navigationTitle("Your lists")
                 .task {
-                    viewModel.fetchProducts()
+                    viewModel.fetchLists()
                 }
-                HStack {
-                    TextEditor(text: $viewModel.productName)
-                        .foregroundColor(viewModel.hasProductHint ? .gray : .primary)
-                        .frame(height: 40)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.green, lineWidth: 2)
-                        )
-                        .cornerRadius(3)
-                        .onTapGesture {
-                            viewModel.cleanProductHint()
-                        }
-                    Button(action: {
-                        viewModel.addProduct()
-                        viewModel.cleanProductHint()
-                    }, label: {
-                        Label("Add", systemImage: "")
-                    })
+                Form {
+                    HStack {
+                        TextField("Import list...", text: $viewModel.listName)
+                        Button(action: {
+                            viewModel.importList()
+                        }, label: {
+                            Label("", systemImage: "square.and.arrow.down")
+                        })
+                    }
+                    HStack {
+                        TextField("Add list...", text: $viewModel.listName)
+                        Button(action: {
+                            viewModel.addList()
+                        }, label: {
+                            Label("", systemImage: "plus.square")
+                        })
+                    }
                 }
-                .padding(.horizontal, 12)
+                .frame(maxHeight: 150)
             }
             .disabled(viewModel.isLoading)
             if viewModel.isLoading {
@@ -48,5 +47,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView(viewModel: HomeViewModel(
-        productsRepository: ProductsRepository()))
+        listsRepository: ListsRepository()))
 }
