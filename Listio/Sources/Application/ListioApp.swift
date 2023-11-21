@@ -1,10 +1,3 @@
-//
-//  ListioApp.swift
-//  Listio
-//
-//  Created by Xavier Vicient on 18/11/23.
-//
-
 import SwiftUI
 import Firebase
 
@@ -15,6 +8,17 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     ) -> Bool {
         FirebaseApp.configure()        
         return false
+    }
+    
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        let sessionRole = connectingSceneSession.role
+        let sceneConfig = UISceneConfiguration(name: nil, sessionRole: sessionRole)
+        sceneConfig.delegateClass = SceneDelegate.self
+        return sceneConfig
     }
 }
 

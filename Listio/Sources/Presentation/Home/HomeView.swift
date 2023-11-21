@@ -2,24 +2,24 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel: HomeViewModel
+    @EnvironmentObject var coordinator: Coordinator<AppRouter>
     
     var body: some View {
         ZStack {
-            NavigationStack {
-                List(viewModel.lists, id: \.self) {
-                    NavigationLink($0.name, value: $0)
+            VStack {
+                List(viewModel.lists) { list in
+                    Button(action: {
+                        coordinator.show(.products(list.id ?? "", list.name))
+                    }, label: {
+                        Text(list.name)
+                    })
                 }
-                .navigationDestination(for: ListDTO.self) {
-                    viewModel.productsView(listId: $0.id,
-                                           listName: $0.name)
-                }
-                .navigationTitle("Your lists")
                 .task {
                     viewModel.fetchLists()
                 }
                 Form {
                     HStack {
-                        TextField("Import list...", text: $viewModel.listName)
+                        TextField("Import list...", text: $viewModel.listId)
                         Button(action: {
                             viewModel.importList()
                         }, label: {
@@ -42,6 +42,7 @@ struct HomeView: View {
                 ProgressView()
             }
         }
+        .navigationTitle("Your lists")
     }
 }
 

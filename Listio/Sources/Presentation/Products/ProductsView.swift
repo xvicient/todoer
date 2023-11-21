@@ -4,37 +4,35 @@ struct ProductsView: View {
     @StateObject var viewModel: ProductsViewModel
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    List {
-                        ForEach(viewModel.products, id: \.self) {
-                            Text($0.name)
-                        }
-                        .onDelete {
-                            viewModel.deleteProduct(at: $0)
-                        }
+        ZStack {
+            VStack {
+                List {
+                    ForEach(viewModel.products, id: \.self) {
+                        Text($0.name)
                     }
-                    .task {
-                        viewModel.fetchProducts()
+                    .onDelete {
+                        viewModel.deleteProduct(at: $0)
                     }
-                    Form {
-                        HStack {
-                            TextField("Add product...", text: $viewModel.productName)
-                            Button(action: {
-                                viewModel.addProduct()
-                            }, label: {
-                                Label("", systemImage: "plus.square")
-                            })
-                        }
-                    }
-                    .frame(maxHeight: 75)
                 }
-                .disabled(viewModel.isLoading)
-                if viewModel.isLoading {
-                    ProgressView()
+                .task {
+                    viewModel.fetchProducts()
                 }
-            }.navigationTitle(viewModel.listName)
+                Form {
+                    HStack {
+                        TextField("Add product...", text: $viewModel.productName)
+                        Button(action: {
+                            viewModel.addProduct()
+                        }, label: {
+                            Label("", systemImage: "plus.square")
+                        })
+                    }
+                }
+                .frame(maxHeight: 75)
+            }
+            .disabled(viewModel.isLoading)
+            if viewModel.isLoading {
+                ProgressView()
+            }
         }
     }
 }

@@ -9,6 +9,9 @@ protocol ListsRepositoryApi {
     func deleteList(
         _ list: ListDTO
     )
+    func importList(
+        id: String
+    )
 }
 
 struct ListsRepository: ListsRepositoryApi {
@@ -30,5 +33,11 @@ struct ListsRepository: ListsRepositoryApi {
     
     func deleteList(_ list: ListDTO) {
         listsDataSource.deleteList(list)
+    }
+    
+    func importList(
+        id: String
+    ) {
+        listsDataSource.importList(id: id)
     }
 }

@@ -12,6 +12,9 @@ protocol ListsDataSourceApi {
     func deleteList(
         _ list: ListDTO
     )
+    func importList(
+        id: String
+    )
 }
 
 struct ListsDataSource: ListsDataSourceApi {
@@ -22,18 +25,18 @@ struct ListsDataSource: ListsDataSourceApi {
         completion: @escaping (Result<[ListDTO], Error>) -> Void
     ) {
         listsCollection
-            .whereField("uuid", isEqualTo: uuid)
+            .whereField("uuid", arrayContains: uuid)
             .addSnapshotListener { query, error in
-            if let error = error {
-                completion(.failure(error))
-                return
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                let lists = query?.documents
+                    .compactMap { try? $0.data(as: ListDTO.self) }
+                ?? []
+                completion(.success(lists))
             }
-            
-            let lists = query?.documents
-                .compactMap { try? $0.data(as: ListDTO.self) }
-            ?? []
-            completion(.success(lists))
-        }
     }
     
     func addList(
@@ -43,7 +46,7 @@ struct ListsDataSource: ListsDataSourceApi {
         do {
             let document = listsCollection.document()
             let documentId = document.documentID
-            let dto = ListDTO(id: documentId, name: name, uuid: uuid)
+            let dto = ListDTO(id: documentId, listId: documentId, name: name, uuid: [uuid])
             _ = try listsCollection.addDocument(from: dto)
             completion(.success(Void()))
         } catch {
@@ -56,5 +59,26 @@ struct ListsDataSource: ListsDataSourceApi {
     ) {
         guard let id = list.id else { return }
         listsCollection.document(id).delete()
+    }
+    
+    func importList(
+        id: String
+    ) {
+        listsCollection
+            .whereField("listId", isEqualTo: id)
+            .getDocuments { query, error in
+                guard error == nil else { return }
+                
+                query?.documents
+                    .forEach {
+                        guard var dto = try? $0.data(as: ListDTO.self) else { return }
+                        dto.uuid.append(uuid)
+                        do {
+                            _ = try listsCollection.document(id).setData(from: dto)
+                        } catch {
+                            print(error)
+                        }
+                    }
+            }
     }
 }

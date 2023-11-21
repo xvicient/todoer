@@ -1,4 +1,3 @@
-import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
@@ -46,15 +45,9 @@ final class HomeViewModel: ObservableObject {
         listsRepository.deleteList(list)
     }
     
-    func productsView(listId: String?,
-                      listName: String) -> ProductsView? {
-        guard let listId = listId else { return nil }
-        return ProductsBuilder.makeProductList(listId: listId,
-                                               listName: listName,
-                                               productsRepository: ProductsRepository())
-    }
     
     func importList() {
-        
+        guard !listId.isEmpty else { return }
+        listsRepository.importList(id: listId)
     }
 }
