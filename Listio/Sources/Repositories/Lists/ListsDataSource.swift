@@ -46,7 +46,7 @@ struct ListsDataSource: ListsDataSourceApi {
         do {
             let document = listsCollection.document()
             let documentId = document.documentID
-            let dto = ListDTO(id: documentId, listId: documentId, name: name, uuid: [uuid])
+            let dto = ListDTO(id: documentId, listId: documentId, name: name, done: false, uuid: [uuid])
             _ = try listsCollection.addDocument(from: dto)
             completion(.success(Void()))
         } catch {

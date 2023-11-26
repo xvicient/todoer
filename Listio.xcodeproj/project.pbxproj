@@ -27,6 +27,7 @@
 		C79CB2A02B0D552300C2BD18 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB29F2B0D552300C2BD18 /* AppRouter.swift */; };
 		C79CB2A42B0D560F00C2BD18 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A32B0D560F00C2BD18 /* SceneDelegate.swift */; };
 		C79CB2A62B0D57F700C2BD18 /* ListioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */; };
+		C79CB2AD2B12BBD700C2BD18 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */; };
 		D6A29C082B09706200FA7F84 /* ListioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* ListioTests.swift */; };
 		D6A29C122B09706200FA7F84 /* ListioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C112B09706200FA7F84 /* ListioUITests.swift */; };
 		D6A29C142B09706200FA7F84 /* ListioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C132B09706200FA7F84 /* ListioUITestsLaunchTests.swift */; };
@@ -74,6 +75,7 @@
 		C79CB29F2B0D552300C2BD18 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		C79CB2A32B0D560F00C2BD18 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListioApp.swift; sourceTree = "<group>"; };
+		C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Listio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Listio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C032B09706200FA7F84 /* ListioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ListioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C072B09706200FA7F84 /* ListioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListioTests.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				C79CB2872B0D537A00C2BD18 /* Assets.xcassets */,
 				C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */,
 				C79CB2892B0D537A00C2BD18 /* Preview Content */,
+				C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C79CB29A2B0D537A00C2BD18 /* Assets.xcassets in Resources */,
+				C79CB2AD2B12BBD700C2BD18 /* Colors.xcassets in Resources */,
 				C79CB29C2B0D537A00C2BD18 /* Preview Assets.xcassets in Resources */,
 				C79CB29B2B0D537A00C2BD18 /* GoogleService-Info.plist in Resources */,
 			);
