@@ -29,6 +29,9 @@
 		C79CB2A62B0D57F700C2BD18 /* ListioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */; };
 		C79CB2AD2B12BBD700C2BD18 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */; };
 		C79CB2B32B13AA4400C2BD18 /* ItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2B22B13AA4400C2BD18 /* ItemsView.swift */; };
+		C79CB2B72B13EB4E00C2BD18 /* CreateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2B62B13EB4E00C2BD18 /* CreateListView.swift */; };
+		C79CB2B92B13EB6200C2BD18 /* CreateListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2B82B13EB6200C2BD18 /* CreateListViewModel.swift */; };
+		C79CB2BB2B13EB6D00C2BD18 /* CreateListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2BA2B13EB6D00C2BD18 /* CreateListBuilder.swift */; };
 		D6A29C082B09706200FA7F84 /* ListioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* ListioTests.swift */; };
 		D6A29C122B09706200FA7F84 /* ListioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C112B09706200FA7F84 /* ListioUITests.swift */; };
 		D6A29C142B09706200FA7F84 /* ListioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C132B09706200FA7F84 /* ListioUITestsLaunchTests.swift */; };
@@ -78,6 +81,9 @@
 		C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListioApp.swift; sourceTree = "<group>"; };
 		C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		C79CB2B22B13AA4400C2BD18 /* ItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsView.swift; sourceTree = "<group>"; };
+		C79CB2B62B13EB4E00C2BD18 /* CreateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListView.swift; sourceTree = "<group>"; };
+		C79CB2B82B13EB6200C2BD18 /* CreateListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListViewModel.swift; sourceTree = "<group>"; };
+		C79CB2BA2B13EB6D00C2BD18 /* CreateListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListBuilder.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Listio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Listio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C032B09706200FA7F84 /* ListioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ListioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C072B09706200FA7F84 /* ListioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListioTests.swift; sourceTree = "<group>"; };
@@ -183,6 +189,7 @@
 		C79CB27C2B0D537A00C2BD18 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				C79CB2B52B13EB1C00C2BD18 /* CreateList */,
 				C79CB2B42B13E1BE00C2BD18 /* Common */,
 				C79CB29F2B0D552300C2BD18 /* AppRouter.swift */,
 				C79CB27D2B0D537A00C2BD18 /* Home */,
@@ -237,6 +244,16 @@
 				C79CB2B22B13AA4400C2BD18 /* ItemsView.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		C79CB2B52B13EB1C00C2BD18 /* CreateList */ = {
+			isa = PBXGroup;
+			children = (
+				C79CB2B62B13EB4E00C2BD18 /* CreateListView.swift */,
+				C79CB2B82B13EB6200C2BD18 /* CreateListViewModel.swift */,
+				C79CB2BA2B13EB6D00C2BD18 /* CreateListBuilder.swift */,
+			);
+			path = CreateList;
 			sourceTree = "<group>";
 		};
 		D6A29BEA2B09706100FA7F84 = {
@@ -426,10 +443,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C79CB2B72B13EB4E00C2BD18 /* CreateListView.swift in Sources */,
 				C79CB29E2B0D547900C2BD18 /* Coordinator.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* ListioApp.swift in Sources */,
 				C79CB28D2B0D537A00C2BD18 /* ProductsRepository.swift in Sources */,
 				C79CB2972B0D537A00C2BD18 /* ProductsView.swift in Sources */,
+				C79CB2B92B13EB6200C2BD18 /* CreateListViewModel.swift in Sources */,
 				C79CB2932B0D537A00C2BD18 /* HomeViewModel.swift in Sources */,
 				C79CB2992B0D537A00C2BD18 /* ProductsViewModel.swift in Sources */,
 				C79CB2A02B0D552300C2BD18 /* AppRouter.swift in Sources */,
@@ -442,6 +461,7 @@
 				C79CB2A42B0D560F00C2BD18 /* SceneDelegate.swift in Sources */,
 				C79CB28B2B0D537A00C2BD18 /* ProductDTO.swift in Sources */,
 				C79CB28F2B0D537A00C2BD18 /* ListDTO.swift in Sources */,
+				C79CB2BB2B13EB6D00C2BD18 /* CreateListBuilder.swift in Sources */,
 				C79CB2912B0D537A00C2BD18 /* Collection+Utils.swift in Sources */,
 				C79CB2982B0D537A00C2BD18 /* ProductsBuilder.swift in Sources */,
 			);

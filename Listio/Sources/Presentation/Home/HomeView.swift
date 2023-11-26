@@ -24,7 +24,7 @@ struct HomeView: View {
                 VStack {
                     Spacer()
                     Button(action: {
-                        // Show add list
+                        coordinator.show(.createList)
                     }, label: {
                         Image(systemName: "plus.circle.fill")
                             .resizable()

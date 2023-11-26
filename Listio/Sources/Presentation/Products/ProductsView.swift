@@ -5,6 +5,8 @@ struct ProductsView: View {
     
     var body: some View {
         ZStack {
+            Color.white
+                .ignoresSafeArea()
             VStack {
                 ItemsView(viewModel: viewModel)
                 Form {
@@ -13,7 +15,7 @@ struct ProductsView: View {
                         Button(action: {
                             viewModel.addProduct()
                         }, label: {
-                            Label("", systemImage: "plus.square")
+                            Image(systemName: "plus.square")
                         })
                     }
                 }
