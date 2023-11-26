@@ -48,7 +48,9 @@ final class ProductsDataSource: ProductsDataSourceApi {
         do {
             let collection = productsCollection(listId: listId)
             let documentId = collection.document().documentID
-            _ = try collection.addDocument(from: ProductDTO(id: documentId, name: name))
+            _ = try collection.addDocument(from: ProductDTO(id: documentId, 
+                                                            name: name,
+                                                            done: false))
             completion(.success(Void()))
         } catch {
             completion(.failure(error))

@@ -1,14 +1,16 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-enum ListOptions: String, CaseIterable {
-    case share = "Share"
-    case markAsDone = "Mark as done"
-    case delete = "Delete"
-}
-
-final class HomeViewModel: ObservableObject {
-    @Published var lists: [ListDTO] = []
+final class HomeViewModel: ItemsViewModel {
+    @Published var items: [ItemModel] = []
+    internal var options: [ItemOption] {
+        [ItemOption(type: .share,
+                    action: shareList),
+         ItemOption(type: .done,
+                    action: finishList),
+         ItemOption(type: .delete,
+                    action: deleteList)]
+    }
     @Published var isLoading = false
     private let listsRepository: ListsRepositoryApi
     
@@ -22,37 +24,33 @@ final class HomeViewModel: ObservableObject {
             self?.isLoading = false
             switch result {
             case .success(let lists):
-                self?.lists = lists
+                self?.items = lists
             case .failure:
                 break
             }
         }
     }
     
-    func addList() {
-//        guard !listName.isEmpty else { return }
-//        isLoading = true
-//        listsRepository.addList(with: listName) { [weak self] result in
-//            self?.isLoading = false
-//            switch result {
-//            case .success:
-//                self?.listName = ""
-//            case .failure:
-//                break
-//            }
-//        }
+    var shareList: (String?) -> Void {
+        { id in
+            
+        }
     }
     
-    func addMember(to list: ListDTO) {}
-    
-    func markDone(to list: ListDTO) {}
-    
-    func deleteList(_ list: ListDTO) {
-        listsRepository.deleteList(list)
+    var finishList: (String?) -> Void {
+        { id in
+            
+        }
     }
     
-    func importList() {
-//        guard !listId.isEmpty else { return }
-//        listsRepository.importList(id: listId)
+    var deleteList: (String?) -> Void {
+        { [weak self] id in
+            guard let list = self?.items.first(where: { $0.id == id }) as? ListDTO else {
+                return
+            }
+            self?.listsRepository.deleteList(list)
+        }
     }
 }
+
+extension ListDTO: ItemModel {}

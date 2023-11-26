@@ -6,17 +6,7 @@ struct ProductsView: View {
     var body: some View {
         ZStack {
             VStack {
-                List {
-                    ForEach(viewModel.products, id: \.self) {
-                        Text($0.name)
-                    }
-                    .onDelete {
-                        viewModel.deleteProduct(at: $0)
-                    }
-                }
-                .task {
-                    viewModel.fetchProducts()
-                }
+                ItemsView(viewModel: viewModel)
                 Form {
                     HStack {
                         TextField("Add product...", text: $viewModel.productName)
@@ -28,6 +18,9 @@ struct ProductsView: View {
                     }
                 }
                 .frame(maxHeight: 75)
+            }
+            .task {
+                viewModel.fetchProducts()
             }
             .disabled(viewModel.isLoading)
             if viewModel.isLoading {
