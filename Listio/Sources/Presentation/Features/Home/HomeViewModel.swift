@@ -1,6 +1,7 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+@MainActor
 final class HomeViewModel: ItemsViewModel {
     @Published var items: [ItemModel] = []
     internal var options: [ItemOption] {

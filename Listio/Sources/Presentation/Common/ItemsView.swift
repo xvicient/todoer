@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 protocol ItemsViewModel: ObservableObject {
     var items: [ItemModel] { get }
     var options: [ItemOption] { get }

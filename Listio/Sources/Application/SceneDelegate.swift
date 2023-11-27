@@ -1,8 +1,15 @@
 import SwiftUI
 
 final class SceneDelegate: NSObject, UIWindowSceneDelegate {
-        
-    private let coordinator: Coordinator<AppRouter> = .init(startingRoute: .home)
+    
+    private var coordinator: Coordinator<AppRouter> = {
+        do {
+            _ = try AuthenticationService().getAuthenticatedUser()
+            return .init(startingRoute: .home)
+        } catch {
+            return .init(startingRoute: .authentication)
+        }
+    }()
     
     var window: UIWindow?
 

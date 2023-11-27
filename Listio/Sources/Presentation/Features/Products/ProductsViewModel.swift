@@ -2,6 +2,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+@MainActor
 final class ProductsViewModel: ItemsViewModel {
     private let listId: String
     @Published var items: [ItemModel] = []

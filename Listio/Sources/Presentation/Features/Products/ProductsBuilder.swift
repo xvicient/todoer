@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProductsBuilder {
+    @MainActor
     static func makeProductList(
         listId: String,
         listName: String,

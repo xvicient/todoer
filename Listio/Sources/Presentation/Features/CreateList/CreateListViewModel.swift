@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 final class CreateListViewModel: ObservableObject {
     @Published var listName: String = ""
     private let listsRepository: ListsRepositoryApi
