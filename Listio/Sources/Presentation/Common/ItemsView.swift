@@ -66,7 +66,7 @@ struct ItemsView<ViewModel>: View where ViewModel: ItemsViewModel {
                                         isPresented: $isShowingOptions,
                                         titleVisibility: .hidden) {
                         ForEach(viewModel.options,
-                                id: \.type.rawValue) { option in
+                                id: \.id) { option in
                             Button(option.type.rawValue,
                                    role: option.type.role,
                                    action: {
