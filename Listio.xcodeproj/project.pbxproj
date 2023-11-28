@@ -42,6 +42,11 @@
 		C79CB2D52B13FEA200C2BD18 /* Utils+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D42B13FEA200C2BD18 /* Utils+TopViewController.swift */; };
 		C79CB2D72B154C2600C2BD18 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D62B154C2600C2BD18 /* AuthenticationService.swift */; };
 		C79CB2D92B154D2600C2BD18 /* AuthDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D82B154D2600C2BD18 /* AuthDataDTO.swift */; };
+		C79CB2DE2B162DB100C2BD18 /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2DD2B162DB100C2BD18 /* UserDTO.swift */; };
+		C79CB2E02B162E6000C2BD18 /* UsersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2DF2B162E6000C2BD18 /* UsersDataSource.swift */; };
+		C79CB2E22B16329800C2BD18 /* UsersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E12B16329800C2BD18 /* UsersRepository.swift */; };
+		C79CB2E42B16330800C2BD18 /* AuthenticationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */; };
+		C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E52B163BAA00C2BD18 /* AppSetting.swift */; };
 		D6A29C082B09706200FA7F84 /* ListioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* ListioTests.swift */; };
 		D6A29C122B09706200FA7F84 /* ListioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C112B09706200FA7F84 /* ListioUITests.swift */; };
 		D6A29C142B09706200FA7F84 /* ListioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C132B09706200FA7F84 /* ListioUITestsLaunchTests.swift */; };
@@ -101,6 +106,11 @@
 		C79CB2D42B13FEA200C2BD18 /* Utils+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utils+TopViewController.swift"; sourceTree = "<group>"; };
 		C79CB2D62B154C2600C2BD18 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		C79CB2D82B154D2600C2BD18 /* AuthDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDataDTO.swift; sourceTree = "<group>"; };
+		C79CB2DD2B162DB100C2BD18 /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
+		C79CB2DF2B162E6000C2BD18 /* UsersDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersDataSource.swift; sourceTree = "<group>"; };
+		C79CB2E12B16329800C2BD18 /* UsersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersRepository.swift; sourceTree = "<group>"; };
+		C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationBuilder.swift; sourceTree = "<group>"; };
+		C79CB2E52B163BAA00C2BD18 /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Listio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Listio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C032B09706200FA7F84 /* ListioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ListioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C072B09706200FA7F84 /* ListioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListioTests.swift; sourceTree = "<group>"; };
@@ -158,6 +168,7 @@
 			children = (
 				C79CB2762B0D537A00C2BD18 /* ListsRepository.swift */,
 				C79CB2722B0D537A00C2BD18 /* ProductsRepository.swift */,
+				C79CB2E12B16329800C2BD18 /* UsersRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -262,6 +273,7 @@
 			children = (
 				C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */,
 				C79CB2CA2B13FB8D00C2BD18 /* AuthenticationViewModel.swift */,
+				C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -282,6 +294,7 @@
 			children = (
 				C79CB2742B0D537A00C2BD18 /* ListsDataSource.swift */,
 				C79CB2712B0D537A00C2BD18 /* ProductsDataSource.swift */,
+				C79CB2DF2B162E6000C2BD18 /* UsersDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -301,6 +314,7 @@
 				C79CB2752B0D537A00C2BD18 /* ListDTO.swift */,
 				C79CB2702B0D537A00C2BD18 /* ProductDTO.swift */,
 				C79CB2D82B154D2600C2BD18 /* AuthDataDTO.swift */,
+				C79CB2DD2B162DB100C2BD18 /* UserDTO.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -309,6 +323,7 @@
 			isa = PBXGroup;
 			children = (
 				C79CB2D42B13FEA200C2BD18 /* Utils+TopViewController.swift */,
+				C79CB2E52B163BAA00C2BD18 /* AppSetting.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -523,8 +538,10 @@
 				C79CB28D2B0D537A00C2BD18 /* ProductsRepository.swift in Sources */,
 				C79CB2972B0D537A00C2BD18 /* ProductsView.swift in Sources */,
 				C79CB2B92B13EB6200C2BD18 /* CreateListViewModel.swift in Sources */,
+				C79CB2E02B162E6000C2BD18 /* UsersDataSource.swift in Sources */,
 				C79CB2932B0D537A00C2BD18 /* HomeViewModel.swift in Sources */,
 				C79CB2992B0D537A00C2BD18 /* ProductsViewModel.swift in Sources */,
+				C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */,
 				C79CB2CB2B13FB8D00C2BD18 /* AuthenticationViewModel.swift in Sources */,
 				C79CB2A02B0D552300C2BD18 /* AppRouter.swift in Sources */,
 				C79CB2D72B154C2600C2BD18 /* AuthenticationService.swift in Sources */,
@@ -537,11 +554,14 @@
 				C79CB2902B0D537A00C2BD18 /* ListsRepository.swift in Sources */,
 				C79CB2A42B0D560F00C2BD18 /* SceneDelegate.swift in Sources */,
 				C79CB28B2B0D537A00C2BD18 /* ProductDTO.swift in Sources */,
+				C79CB2E42B16330800C2BD18 /* AuthenticationBuilder.swift in Sources */,
 				C79CB28F2B0D537A00C2BD18 /* ListDTO.swift in Sources */,
 				C79CB2D92B154D2600C2BD18 /* AuthDataDTO.swift in Sources */,
 				C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */,
 				C79CB2BB2B13EB6D00C2BD18 /* CreateListBuilder.swift in Sources */,
 				C79CB2912B0D537A00C2BD18 /* Collection+Utils.swift in Sources */,
+				C79CB2DE2B162DB100C2BD18 /* UserDTO.swift in Sources */,
+				C79CB2E22B16329800C2BD18 /* UsersRepository.swift in Sources */,
 				C79CB2982B0D537A00C2BD18 /* ProductsBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

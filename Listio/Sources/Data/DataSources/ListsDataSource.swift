@@ -3,25 +3,24 @@ import FirebaseFirestoreSwift
 
 protocol ListsDataSourceApi {
     func fetchLists(
+        uuid: String,
         completion: @escaping (Result<[ListDTO], Error>) -> Void
     )
     func addList(
         with name: String,
+        uuid: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
     func deleteList(
         _ list: ListDTO
     )
-    func importList(
-        id: String
-    )
 }
 
-struct ListsDataSource: ListsDataSourceApi {
-    private let uuid = UIDevice.current.identifierForVendor?.uuidString ?? ""
+final class ListsDataSource: ListsDataSourceApi {
     private let listsCollection = Firestore.firestore().collection("lists")
     
     func fetchLists(
+        uuid: String,
         completion: @escaping (Result<[ListDTO], Error>) -> Void
     ) {
         listsCollection
@@ -41,12 +40,13 @@ struct ListsDataSource: ListsDataSourceApi {
     
     func addList(
         with name: String,
+        uuid: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         do {
             let document = listsCollection.document()
             let documentId = document.documentID
-            let dto = ListDTO(id: documentId, listId: documentId, name: name, done: false, uuid: [uuid])
+            let dto = ListDTO(id: documentId, name: name, done: false, uuid: [uuid])
             _ = try listsCollection.addDocument(from: dto)
             completion(.success(Void()))
         } catch {
@@ -62,11 +62,12 @@ struct ListsDataSource: ListsDataSourceApi {
     }
     
     func importList(
-        id: String
+        id: String,
+        uuid: String
     ) {
         listsCollection
             .whereField("listId", isEqualTo: id)
-            .getDocuments { query, error in
+            .getDocuments { [weak self] query, error in
                 guard error == nil else { return }
                 
                 query?.documents
@@ -74,7 +75,7 @@ struct ListsDataSource: ListsDataSourceApi {
                         guard var dto = try? $0.data(as: ListDTO.self) else { return }
                         dto.uuid.append(uuid)
                         do {
-                            _ = try listsCollection.document(id).setData(from: dto)
+                            _ = try self?.listsCollection.document(id).setData(from: dto)
                         } catch {
                             print(error)
                         }

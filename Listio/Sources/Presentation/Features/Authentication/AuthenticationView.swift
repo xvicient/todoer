@@ -4,7 +4,7 @@ import GoogleSignInSwift
 
 struct AuthenticationView: View {
     @EnvironmentObject var coordinator: Coordinator<AppRouter>
-    @StateObject private var viewModel = AuthenticationViewModel()
+    @StateObject var viewModel:AuthenticationViewModel
     
     var body: some View {
         GoogleSignInButton(
@@ -27,5 +27,9 @@ struct AuthenticationView: View {
 }
 
 #Preview {
-    AuthenticationView()
+    AuthenticationView(
+        viewModel: AuthenticationViewModel(
+            usersRepository: UsersRepository()
+        )
+    )
 }

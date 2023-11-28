@@ -3,7 +3,11 @@ import GoogleSignIn
 import GoogleSignInSwift
 import FirebaseAuth
 
-final class GoogleSignInService {
+protocol GoogleSignInServiceApi {
+    func signIn() async throws -> AuthDataDTO
+}
+
+final class GoogleSignInService: GoogleSignInServiceApi {
     
     @MainActor
     func signIn() async throws -> AuthDataDTO {

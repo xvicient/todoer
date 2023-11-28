@@ -9,35 +9,35 @@ protocol ListsRepositoryApi {
     func deleteList(
         _ list: ListDTO
     )
-    func importList(
-        id: String
-    )
 }
 
-struct ListsRepository: ListsRepositoryApi {
-    let listsDataSource: ListsDataSource
+final class ListsRepository: ListsRepositoryApi {
+    let listsDataSource: ListsDataSourceApi
+    let usersDataSource: UsersDataSourceApi
     
-    init(listsDataSource: ListsDataSource = ListsDataSource()) {
+    init(listsDataSource: ListsDataSourceApi = ListsDataSource(),
+         usersDataSource: UsersDataSourceApi = UsersDataSource()) {
         self.listsDataSource = listsDataSource
+        self.usersDataSource = usersDataSource
     }
     
     func fetchLists(completion: @escaping (Result<[ListDTO], Error>) -> Void) {
-        listsDataSource.fetchLists(completion: completion)
+        listsDataSource.fetchLists(
+            uuid: usersDataSource.uuid,
+            completion: completion
+        )
     }
     
     func addList(
         with name: String,
         completion: @escaping (Result<Void, Error>) -> Void) {
-            listsDataSource.addList(with: name, completion: completion)
+            listsDataSource.addList(
+                with: name,
+                uuid: usersDataSource.uuid,
+                completion: completion)
         }
     
     func deleteList(_ list: ListDTO) {
         listsDataSource.deleteList(list)
-    }
-    
-    func importList(
-        id: String
-    ) {
-        listsDataSource.importList(id: id)
     }
 }

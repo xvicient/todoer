@@ -19,7 +19,7 @@ public enum AppRouter: NavigationRouter {
     @ViewBuilder public func view() -> some View {
         switch self {
         case .authentication:
-            AuthenticationView()
+            AuthenticationBuilder.makeAuthentication()
         case .home:
             HomeBuilder.makeHome()
         case .products(let listId, let listName):
