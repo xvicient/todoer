@@ -29,6 +29,7 @@ struct ProductsView: View {
                 ProgressView()
             }
         }
+        .navigationTitle("Items")
     }
 }
 

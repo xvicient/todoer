@@ -2,16 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel: HomeViewModel
-    @EnvironmentObject var coordinator: Coordinator<AppRouter>
-    
-    var action: (String?, String) -> Void {
-        { id, name in
-            guard let id = id else {
-                return
-            }
-            coordinator.show(.products(id, name))
-        }
-    }
+    @EnvironmentObject private var coordinator: Coordinator
     
     var body: some View {
         ZStack {
@@ -19,12 +10,12 @@ struct HomeView: View {
                 .ignoresSafeArea()
             ZStack {
                 ItemsView(viewModel: viewModel) { id, name in
-                    coordinator.show(.products(id ?? "", name))
+                    coordinator.push(.products(id ?? "", name))
                 }
                 VStack {
                     Spacer()
                     Button(action: {
-                        coordinator.show(.createList)
+                        coordinator.present(sheet: .createList)
                     }, label: {
                         Image(systemName: "plus.circle.fill")
                             .resizable()

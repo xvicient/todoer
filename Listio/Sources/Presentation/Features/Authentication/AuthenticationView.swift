@@ -3,7 +3,7 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 struct AuthenticationView: View {
-    @EnvironmentObject var coordinator: Coordinator<AppRouter>
+    @EnvironmentObject private var coordinator: Coordinator
     @StateObject var viewModel:AuthenticationViewModel
     
     var body: some View {
@@ -17,7 +17,7 @@ struct AuthenticationView: View {
             Task {
                 do {
                     try await viewModel.signInGoogle()
-                    coordinator.show(.home)
+                    coordinator.push(.home)
                 } catch {
                     print(error)
                 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CreateListView: View {
-    @EnvironmentObject var coordinator: Coordinator<AppRouter>
+    @EnvironmentObject private var coordinator: Coordinator
     @StateObject var viewModel: CreateListViewModel
     
     var body: some View {
@@ -11,7 +11,7 @@ struct CreateListView: View {
                     TextField("Add List...", text: $viewModel.listName)
                     Button(action: {
                         viewModel.createList()
-                        coordinator.popToRoot()
+                        coordinator.dismissSheet()
                     }, label: {
                         Image(systemName: "plus.square")
                     })
