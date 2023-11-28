@@ -3,7 +3,7 @@ import FirebaseFirestoreSwift
 
 @MainActor
 final class HomeViewModel: ItemsViewModel {
-    @Published var items: [ItemModel] = []
+    @Published var items: [any ItemModel] = []
     internal var options: [ItemOption] {
         [ItemOption(type: .share,
                     action: shareList),
@@ -25,7 +25,9 @@ final class HomeViewModel: ItemsViewModel {
             self?.isLoading = false
             switch result {
             case .success(let lists):
-                self?.items = lists
+                self?.items = lists.sorted {
+                    $0.dateCreated.dateValue() < $1.dateCreated.dateValue()
+                }
             case .failure:
                 break
             }

@@ -1,7 +1,7 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct ProductDTO: Identifiable, Decodable, Encodable, Hashable {
+struct ProductDTO: Identifiable, Codable, Hashable {
     @DocumentID var id: String?
     let name: String
     let done: Bool

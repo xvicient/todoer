@@ -2,17 +2,17 @@ import SwiftUI
 
 @MainActor
 protocol ItemsViewModel: ObservableObject {
-    var items: [ItemModel] { get }
+    var items: [any ItemModel] { get }
     var options: [ItemOption] { get }
 }
 
-protocol ItemModel {
+protocol ItemModel: Identifiable {
     var id: String? { get }
     var name: String { get }
     var done: Bool { get }
 }
 
-struct ItemOption {
+struct ItemOption: Identifiable {
     enum OptionType: String {
         case share = "Share"
         case done = "Done"
@@ -27,6 +27,7 @@ struct ItemOption {
         }
     }
     
+    let id = UUID()
     let type: OptionType
     let action: (String?) -> Void
 }

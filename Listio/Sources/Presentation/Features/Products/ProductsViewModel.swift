@@ -5,7 +5,7 @@ import FirebaseFirestoreSwift
 @MainActor
 final class ProductsViewModel: ItemsViewModel {
     private let listId: String
-    @Published var items: [ItemModel] = []
+    @Published var items: [any ItemModel] = []
     internal var options: [ItemOption] {
         [ItemOption(type: .done,
                     action: finishProduct),

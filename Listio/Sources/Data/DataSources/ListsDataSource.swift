@@ -46,7 +46,11 @@ final class ListsDataSource: ListsDataSourceApi {
         do {
             let document = listsCollection.document()
             let documentId = document.documentID
-            let dto = ListDTO(id: documentId, name: name, done: false, uuid: [uuid])
+            let dto = ListDTO(id: documentId,
+                              name: name,
+                              done: false,
+                              uuid: [uuid],
+                              dateCreated: Timestamp(date: Date()))
             _ = try listsCollection.addDocument(from: dto)
             completion(.success(Void()))
         } catch {
