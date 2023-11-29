@@ -9,17 +9,11 @@ struct ProductsView: View {
                 .ignoresSafeArea()
             VStack {
                 ItemsView(viewModel: viewModel)
-                Form {
-                    HStack {
-                        TextField("Add product...", text: $viewModel.productName)
-                        Button(action: {
-                            viewModel.addProduct()
-                        }, label: {
-                            Image(systemName: "plus.square")
-                        })
-                    }
-                }
-                .frame(maxHeight: 75)
+                TextField("Add product...",
+                          text: $viewModel.productName)
+                .textFieldStyle(BottomLineStyle() {
+                    viewModel.addProduct()
+                })
             }
             .task {
                 viewModel.fetchProducts()

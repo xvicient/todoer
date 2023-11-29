@@ -50,7 +50,8 @@ final class ProductsDataSource: ProductsDataSourceApi {
             let documentId = collection.document().documentID
             _ = try collection.addDocument(from: ProductDTO(id: documentId, 
                                                             name: name,
-                                                            done: false))
+                                                            done: false,
+                                                            dateCreated: Timestamp(date: Date())))
             completion(.success(Void()))
         } catch {
             completion(.failure(error))

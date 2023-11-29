@@ -4,6 +4,11 @@ struct HomeView: View {
     @StateObject var viewModel: HomeViewModel
     @EnvironmentObject private var coordinator: Coordinator
     
+    init(viewModel: HomeViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor(.buttonPrimary)]
+    }
+    
     var body: some View {
         ZStack {
             Color.white

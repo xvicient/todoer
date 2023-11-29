@@ -29,7 +29,9 @@ final class ProductsViewModel: ItemsViewModel {
             self?.isLoading = false
             switch result {
             case .success(let products):
-                self?.items = products
+                self?.items = products.sorted {
+                    $0.dateCreated.dateValue() < $1.dateCreated.dateValue()
+                }
             case .failure:
                 break
             }

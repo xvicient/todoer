@@ -47,6 +47,7 @@
 		C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E52B163BAA00C2BD18 /* AppSetting.swift */; };
 		C79CB2EC2B16A39900C2BD18 /* CoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2EB2B16A39900C2BD18 /* CoordinatorView.swift */; };
 		C79CB2EE2B16A3AD00C2BD18 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */; };
+		C79CB2F22B177FBC00C2BD18 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F12B177FBC00C2BD18 /* TextFieldStyle.swift */; };
 		D6A29C082B09706200FA7F84 /* ListioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* ListioTests.swift */; };
 		D6A29C122B09706200FA7F84 /* ListioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C112B09706200FA7F84 /* ListioUITests.swift */; };
 		D6A29C142B09706200FA7F84 /* ListioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C132B09706200FA7F84 /* ListioUITestsLaunchTests.swift */; };
@@ -111,6 +112,7 @@
 		C79CB2E52B163BAA00C2BD18 /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		C79CB2EB2B16A39900C2BD18 /* CoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorView.swift; sourceTree = "<group>"; };
 		C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		C79CB2F12B177FBC00C2BD18 /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Listio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Listio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C032B09706200FA7F84 /* ListioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ListioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C072B09706200FA7F84 /* ListioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListioTests.swift; sourceTree = "<group>"; };
@@ -253,7 +255,8 @@
 		C79CB2B42B13E1BE00C2BD18 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				C79CB2B22B13AA4400C2BD18 /* ItemsView.swift */,
+				C79CB2F02B177FA200C2BD18 /* Styles */,
+				C79CB2EF2B177F8400C2BD18 /* Views */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -337,6 +340,22 @@
 				C79CB2822B0D537A00C2BD18 /* Products */,
 			);
 			path = Features;
+			sourceTree = "<group>";
+		};
+		C79CB2EF2B177F8400C2BD18 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C79CB2B22B13AA4400C2BD18 /* ItemsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C79CB2F02B177FA200C2BD18 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				C79CB2F12B177FBC00C2BD18 /* TextFieldStyle.swift */,
+			);
+			path = Styles;
 			sourceTree = "<group>";
 		};
 		D6A29BEA2B09706100FA7F84 = {
@@ -541,6 +560,7 @@
 				C79CB2932B0D537A00C2BD18 /* HomeViewModel.swift in Sources */,
 				C79CB2992B0D537A00C2BD18 /* ProductsViewModel.swift in Sources */,
 				C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */,
+				C79CB2F22B177FBC00C2BD18 /* TextFieldStyle.swift in Sources */,
 				C79CB2CB2B13FB8D00C2BD18 /* AuthenticationViewModel.swift in Sources */,
 				C79CB2A02B0D552300C2BD18 /* AppRouter.swift in Sources */,
 				C79CB2D72B154C2600C2BD18 /* AuthenticationService.swift in Sources */,

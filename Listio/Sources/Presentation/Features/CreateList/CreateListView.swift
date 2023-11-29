@@ -6,17 +6,12 @@ struct CreateListView: View {
     
     var body: some View {
         VStack {
-            Form {
-                HStack {
-                    TextField("Add List...", text: $viewModel.listName)
-                    Button(action: {
-                        viewModel.createList()
-                        coordinator.dismissSheet()
-                    }, label: {
-                        Image(systemName: "plus.square")
-                    })
-                }
-            }
+            TextField("Add List...",
+                      text: $viewModel.listName)
+            .textFieldStyle(BottomLineStyle() {
+                viewModel.createList()
+                coordinator.dismissSheet()
+            })
         }
     }
 }
