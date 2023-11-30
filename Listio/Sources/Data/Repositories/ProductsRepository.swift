@@ -3,7 +3,7 @@ import UIKit
 protocol ProductsRepositoryApi {
     func fetchProducts(
         listId: String,
-        completion: @escaping (Result<[ProductDTO], Error>) -> Void
+        completion: @escaping (Result<[ProductModel], Error>) -> Void
     )
     func addProduct(
         with name: String,
@@ -11,8 +11,13 @@ protocol ProductsRepositoryApi {
         completion: @escaping (Result<Void, Error>) -> Void
     )
     func deleteProduct(
-        _ product: ProductDTO,
+        _ documentId: String?,
         listId: String
+    )
+    func finishProduct(
+        _ product: ProductModel,
+        listId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
     )
 }
 
@@ -25,10 +30,21 @@ final class ProductsRepository: ProductsRepositoryApi {
     
     func fetchProducts(
         listId: String,
-        completion: @escaping (Result<[ProductDTO], Error>) -> Void
+        completion: @escaping (Result<[ProductModel], Error>) -> Void
     ) {
-        producstDataSource.fetchProducts(listId: listId, 
-                                         completion: completion)
+        producstDataSource.fetchProducts(listId: listId) { result in
+            switch result {
+            case .success(let dto):
+                completion(.success(
+                    dto.map {
+                        $0.toDomain
+                    }
+                ))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+            
+        }
     }
     
     func addProduct(
@@ -42,10 +58,20 @@ final class ProductsRepository: ProductsRepositoryApi {
     }
     
     func deleteProduct(
-        _ product: ProductDTO,
+        _ documentId: String?,
         listId: String
     ) {
-        producstDataSource.deleteProduct(product,
+        producstDataSource.deleteProduct(documentId,
                                          listId: listId)
+    }
+    
+    func finishProduct(
+        _ product: ProductModel,
+        listId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        producstDataSource.finishProduct(product.toDTO,
+                                         listId: listId,
+                                         completion: completion)
     }
 }

@@ -12,8 +12,13 @@ protocol ProductsDataSourceApi {
         completion: @escaping (Result<Void, Error>) -> Void
     )
     func deleteProduct(
-        _ product: ProductDTO,
+        _ documentId: String?,
         listId: String
+    )
+    func finishProduct(
+        _ product: ProductDTO,
+        listId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
     )
 }
 
@@ -47,11 +52,9 @@ final class ProductsDataSource: ProductsDataSourceApi {
     ) {
         do {
             let collection = productsCollection(listId: listId)
-            let documentId = collection.document().documentID
-            _ = try collection.addDocument(from: ProductDTO(id: documentId, 
-                                                            name: name,
+            _ = try collection.addDocument(from: ProductDTO(name: name,
                                                             done: false,
-                                                            dateCreated: Timestamp(date: Date())))
+                                                            dateCreated: Date().milliseconds))
             completion(.success(Void()))
         } catch {
             completion(.failure(error))
@@ -59,10 +62,27 @@ final class ProductsDataSource: ProductsDataSourceApi {
     }
     
     func deleteProduct(
-        _ product: ProductDTO,
+        _ documentId: String?,
         listId: String
     ) {
-        guard let id = product.id else { return }
+        guard let id = documentId else { return }
         productsCollection(listId: listId).document(id).delete()
+    }
+    
+    func finishProduct(
+        _ product: ProductDTO,
+        listId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard let id = product.id,
+        let encodedData = try? Firestore.Encoder().encode(product) else { return }
+        
+        productsCollection(listId: listId).document(id).updateData(encodedData) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(Void()))
+            }
+        }
     }
 }

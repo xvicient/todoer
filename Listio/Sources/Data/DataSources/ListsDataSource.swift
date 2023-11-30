@@ -12,7 +12,7 @@ protocol ListsDataSourceApi {
         completion: @escaping (Result<Void, Error>) -> Void
     )
     func deleteList(
-        _ list: ListDTO
+        _ documentId: String?
     )
 }
 
@@ -44,13 +44,10 @@ final class ListsDataSource: ListsDataSourceApi {
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         do {
-            let document = listsCollection.document()
-            let documentId = document.documentID
-            let dto = ListDTO(id: documentId,
-                              name: name,
+            let dto = ListDTO(name: name,
                               done: false,
                               uuid: [uuid],
-                              dateCreated: Timestamp(date: Date()))
+                              dateCreated: Date().milliseconds)
             _ = try listsCollection.addDocument(from: dto)
             completion(.success(Void()))
         } catch {
@@ -59,9 +56,9 @@ final class ListsDataSource: ListsDataSourceApi {
     }
     
     func deleteList(
-        _ list: ListDTO
+        _ documentId: String?
     ) {
-        guard let id = list.id else { return }
+        guard let id = documentId else { return }
         listsCollection.document(id).delete()
     }
     

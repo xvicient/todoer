@@ -1,13 +1,13 @@
 protocol ListsRepositoryApi {
     func fetchLists(
-        completion: @escaping (Result<[ListDTO], Error>) -> Void
+        completion: @escaping (Result<[ListModel], Error>) -> Void
     )
     func addList(
         with name: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
     func deleteList(
-        _ list: ListDTO
+        _ documentId: String?
     )
 }
 
@@ -21,11 +21,21 @@ final class ListsRepository: ListsRepositoryApi {
         self.usersDataSource = usersDataSource
     }
     
-    func fetchLists(completion: @escaping (Result<[ListDTO], Error>) -> Void) {
+    func fetchLists(completion: @escaping (Result<[ListModel], Error>) -> Void) {
         listsDataSource.fetchLists(
-            uuid: usersDataSource.uuid,
-            completion: completion
-        )
+            uuid: usersDataSource.uuid) { result in
+                switch result {
+                case .success(let dto):
+                    completion(.success(
+                        dto.map {
+                            $0.toDomain
+                        }
+                    ))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+                
+            }
     }
     
     func addList(
@@ -37,7 +47,9 @@ final class ListsRepository: ListsRepositoryApi {
                 completion: completion)
         }
     
-    func deleteList(_ list: ListDTO) {
-        listsDataSource.deleteList(list)
+    func deleteList(
+        _ documentId: String?
+    ) {
+        listsDataSource.deleteList(documentId)
     }
 }

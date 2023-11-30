@@ -7,7 +7,7 @@ final class HomeViewModel: ItemsViewModel {
     internal var options: [ItemOption] {
         [ItemOption(type: .share,
                     action: shareList),
-         ItemOption(type: .done,
+         ItemOption(type: .doneUndone,
                     action: finishList),
          ItemOption(type: .delete,
                     action: deleteList)]
@@ -26,7 +26,7 @@ final class HomeViewModel: ItemsViewModel {
             switch result {
             case .success(let lists):
                 self?.items = lists.sorted {
-                    $0.dateCreated.dateValue() < $1.dateCreated.dateValue()
+                    $0.dateCreated < $1.dateCreated
                 }
             case .failure:
                 break
@@ -34,26 +34,26 @@ final class HomeViewModel: ItemsViewModel {
         }
     }
     
-    var shareList: (String?) -> Void {
-        { id in
+    var shareList: (any ItemModel) -> Void {
+        { item in
             
         }
     }
     
-    var finishList: (String?) -> Void {
-        { id in
+    var finishList: (any ItemModel) -> Void {
+        { item in
             
         }
     }
     
-    var deleteList: (String?) -> Void {
-        { [weak self] id in
-            guard let list = self?.items.first(where: { $0.id == id }) as? ListDTO else {
+    var deleteList: (any ItemModel) -> Void {
+        { [weak self] item in
+            guard let documentId = item.documentId else {
                 return
             }
-            self?.listsRepository.deleteList(list)
+            self?.listsRepository.deleteList(documentId)
         }
     }
 }
 
-extension ListDTO: ItemModel {}
+extension ListModel: ItemModel {}

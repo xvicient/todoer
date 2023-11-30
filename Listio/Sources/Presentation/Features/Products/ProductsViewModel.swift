@@ -5,9 +5,10 @@ import FirebaseFirestoreSwift
 @MainActor
 final class ProductsViewModel: ItemsViewModel {
     private let listId: String
+    let listName: String
     @Published var items: [any ItemModel] = []
     internal var options: [ItemOption] {
-        [ItemOption(type: .done,
+        [ItemOption(type: .doneUndone,
                     action: finishProduct),
          ItemOption(type: .delete,
                     action: deleteProduct)]
@@ -20,6 +21,7 @@ final class ProductsViewModel: ItemsViewModel {
          listName: String,
          productsRepository: ProductsRepositoryApi) {
         self.listId = listId
+        self.listName = listName
         self.productsRepository = productsRepository
     }
     
@@ -30,7 +32,7 @@ final class ProductsViewModel: ItemsViewModel {
             switch result {
             case .success(let products):
                 self?.items = products.sorted {
-                    $0.dateCreated.dateValue() < $1.dateCreated.dateValue()
+                    $0.dateCreated < $1.dateCreated
                 }
             case .failure:
                 break
@@ -53,26 +55,31 @@ final class ProductsViewModel: ItemsViewModel {
         }
     }
     
-    func deleteProduct(
-        at indexSet: IndexSet
-    ) {
-        guard let index = indexSet.first,
-              let product = items[safe: index] as? ProductDTO else { return }
-        productsRepository.deleteProduct(product,
-                                         listId: listId)
-    }
-    
-    var finishProduct: (String?) -> Void {
-        { id in
-            
+    var finishProduct: (any ItemModel) -> Void {
+        { [weak self] item in
+            guard let self = self,
+                  var product = item as? ProductModel else { return }
+            product.done.toggle()
+            self.productsRepository.finishProduct(product,
+                                                  listId: self.listId) { result in
+                switch result {
+                case .success:
+                    break
+                case .failure:
+                    break
+                }
+            }
         }
     }
     
-    var deleteProduct: (String?) -> Void {
-        { id in
-            
+    var deleteProduct: (any ItemModel) -> Void {
+        { [weak self] item in
+            guard let self = self,
+                  let documentId = item.documentId else { return }
+            self.productsRepository.deleteProduct(documentId,
+                                                  listId: self.listId)
         }
     }
 }
 
-extension ProductDTO: ItemModel {}
+extension ProductModel: ItemModel {}

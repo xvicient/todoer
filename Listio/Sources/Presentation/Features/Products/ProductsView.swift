@@ -23,7 +23,7 @@ struct ProductsView: View {
                 ProgressView()
             }
         }
-        .navigationTitle("Items")
+        .navigationTitle(viewModel.listName)
     }
 }
 
