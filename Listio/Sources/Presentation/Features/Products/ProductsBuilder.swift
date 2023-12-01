@@ -3,12 +3,10 @@ import SwiftUI
 struct ProductsBuilder {
     @MainActor
     static func makeProductList(
-        listId: String,
-        listName: String,
+        list: ListModel,
         productsRepository: ProductsRepositoryApi = ProductsRepository()
     ) -> ProductsView {
-        let viewModel = ProductsViewModel(listId: listId,
-                                          listName: listName,
+        let viewModel = ProductsViewModel(list: list,
                                           productsRepository: productsRepository)
         return ProductsView(viewModel: viewModel)
     }

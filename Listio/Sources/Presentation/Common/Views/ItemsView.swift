@@ -3,12 +3,12 @@ import SwiftUI
 @MainActor
 protocol ItemsViewModel: ObservableObject {
     var items: [any ItemModel] { get }
-    var options: [ItemOption] { get }
+    var options: (any ItemModel) -> [ItemOption] { get }
 }
 
-protocol ItemModel: Identifiable {
+protocol ItemModel: Identifiable, Equatable, Hashable {
     var id: UUID { get }
-    var documentId: String? { get }
+    var documentId: String { get }
     var name: String { get }
     var done: Bool { get }
 }
@@ -16,13 +16,15 @@ protocol ItemModel: Identifiable {
 struct ItemOption: Identifiable {
     enum OptionType: String {
         case share = "Share"
-        case doneUndone = "Done/Undone"
+        case done = "Done"
+        case undone = "Undone"
         case delete = "Delete"
         
         var role: ButtonRole? {
             switch self {
             case .share: return nil
-            case .doneUndone: return nil
+            case .done: return nil
+            case .undone: return nil
             case .delete: return .destructive
             }
         }
@@ -35,7 +37,7 @@ struct ItemOption: Identifiable {
 
 struct ItemsView<ViewModel>: View where ViewModel: ItemsViewModel {
     @StateObject var viewModel: ViewModel
-    var action: ((String?, String) -> Void)? = nil
+    var action: ((any ItemModel) -> Void)? = nil
     @State private var isShowingOptions = false
     
     var body: some View {
@@ -46,7 +48,7 @@ struct ItemsView<ViewModel>: View where ViewModel: ItemsViewModel {
                         Image(systemName: item.done ? "circle.fill" : "circle")
                             .foregroundColor(.backgroundPrimary)
                         Button(action: {
-                            action?(item.documentId, item.name)
+                            action?(item)
                         }) {
                             Text(item.name)
                                 .strikethrough(item.done)
@@ -78,7 +80,7 @@ struct ItemsView<ViewModel>: View where ViewModel: ItemsViewModel {
 struct OptionsView: View {
     @State var isShowingOptions = false
     var item: any ItemModel
-    var options: [ItemOption]
+    var options: (any ItemModel) -> [ItemOption]
     
     var body: some View {
         Button(action: {
@@ -92,7 +94,7 @@ struct OptionsView: View {
         .confirmationDialog("",
                             isPresented: $isShowingOptions,
                             titleVisibility: .hidden) {
-            ForEach(options,
+            ForEach(options(item),
                     id: \.id) { option in
                 Button(option.type.rawValue,
                        role: option.type.role,

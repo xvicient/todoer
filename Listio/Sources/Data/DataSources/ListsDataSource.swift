@@ -14,7 +14,7 @@ protocol ListsDataSourceApi {
     func deleteList(
         _ documentId: String?
     )
-    func finishList(
+    func toggleList(
         _ list: ListDTO,
         completion: @escaping (Result<Void, Error>) -> Void
     )
@@ -88,7 +88,7 @@ final class ListsDataSource: ListsDataSourceApi {
             }
     }
     
-    func finishList(
+    func toggleList(
         _ list: ListDTO,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {

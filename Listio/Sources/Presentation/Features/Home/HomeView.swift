@@ -14,8 +14,9 @@ struct HomeView: View {
             Color.white
                 .ignoresSafeArea()
             ZStack {
-                ItemsView(viewModel: viewModel) { id, name in
-                    coordinator.push(.products(id ?? "", name))
+                ItemsView(viewModel: viewModel) {
+                    guard let list = $0 as? ListModel else { return }
+                    coordinator.push(.products(list))
                 }
                 VStack {
                     Spacer()

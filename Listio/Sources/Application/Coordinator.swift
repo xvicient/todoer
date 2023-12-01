@@ -1,9 +1,9 @@
 import SwiftUI
 
-enum Page: Hashable, Identifiable {
+enum Page: Hashable, Identifiable, Equatable {
     case authentication
     case home
-    case products(String, String)
+    case products(ListModel)
     
     var id: Self { self }
 }
@@ -71,8 +71,8 @@ class Coordinator: ObservableObject {
             AuthenticationBuilder.makeAuthentication()
         case .home:
             HomeBuilder.makeHome()
-        case let .products(id, name):
-            ProductsBuilder.makeProductList(listId: id, listName: name)
+        case let .products(list):
+            ProductsBuilder.makeProductList(list: list)
         }
     }
     

@@ -1,8 +1,8 @@
 import Foundation
 
-struct ProductModel: Identifiable {
+struct ProductModel: Identifiable, Equatable, Hashable {
     let id = UUID()
-    let documentId: String?
+    let documentId: String
     let name: String
     var done: Bool
     let dateCreated: Int
@@ -10,7 +10,7 @@ struct ProductModel: Identifiable {
 
 extension ProductDTO {
     var toDomain: ProductModel {
-        ProductModel(documentId: id,
+        ProductModel(documentId: id ?? "",
                      name: name,
                      done: done,
                      dateCreated: dateCreated)

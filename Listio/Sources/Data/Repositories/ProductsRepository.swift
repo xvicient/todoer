@@ -14,18 +14,21 @@ protocol ProductsRepositoryApi {
         _ documentId: String?,
         listId: String
     )
-    func finishProduct(
+    func toggleProduct(
         _ product: ProductModel,
-        listId: String,
+        list: ListModel,
         completion: @escaping (Result<Void, Error>) -> Void
     )
 }
 
 final class ProductsRepository: ProductsRepositoryApi {
     private let producstDataSource: ProductsDataSourceApi
+    private let listsDataSource: ListsDataSourceApi
     
-    init(producstDataSource: ProductsDataSourceApi = ProductsDataSource()) {
+    init(producstDataSource: ProductsDataSourceApi = ProductsDataSource(),
+         listsDataSource: ListsDataSourceApi = ListsDataSource()) {
         self.producstDataSource = producstDataSource
+        self.listsDataSource = listsDataSource
     }
     
     func fetchProducts(
@@ -43,7 +46,6 @@ final class ProductsRepository: ProductsRepositoryApi {
             case .failure(let error):
                 completion(.failure(error))
             }
-            
         }
     }
     
@@ -65,13 +67,27 @@ final class ProductsRepository: ProductsRepositoryApi {
                                          listId: listId)
     }
     
-    func finishProduct(
+    func toggleProduct(
         _ product: ProductModel,
-        listId: String,
+        list: ListModel,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        producstDataSource.finishProduct(product.toDTO,
-                                         listId: listId,
-                                         completion: completion)
+        producstDataSource.toggleProduct(product.toDTO,
+                                         listId: list.documentId) { [weak self] result in
+            switch result {
+            case .success:
+                if !product.done && list.done {
+                    var mutableList = list
+                    mutableList.done.toggle()
+                    self?.listsDataSource.toggleList(
+                        mutableList.toDTO,
+                        completion: completion
+                    )
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+
     }
 }

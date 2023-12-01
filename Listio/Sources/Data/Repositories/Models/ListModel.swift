@@ -1,8 +1,8 @@
 import Foundation
 
-struct ListModel: Identifiable {
+struct ListModel: Identifiable, Equatable, Hashable {
     let id = UUID()
-    let documentId: String?
+    let documentId: String
     let name: String
     var done: Bool
     var uuid: [String]
@@ -11,7 +11,7 @@ struct ListModel: Identifiable {
 
 extension ListDTO {
     var toDomain: ListModel {
-        ListModel(documentId: id,
+        ListModel(documentId: id ?? "",
                   name: name,
                   done: done,
                   uuid: uuid,

@@ -9,8 +9,9 @@ protocol ListsRepositoryApi {
     func deleteList(
         _ documentId: String?
     )    
-    func finishList(
+    func toggleList(
         _ list: ListModel,
+        done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     )
 }
@@ -60,15 +61,17 @@ final class ListsRepository: ListsRepositoryApi {
         listsDataSource.deleteList(documentId)
     }
     
-    func finishList(
+    func toggleList(
         _ list: ListModel,
+        done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        listsDataSource.finishList(list.toDTO) { [weak self] result in
+        listsDataSource.toggleList(list.toDTO) { [weak self] result in
             switch result {
             case .success():
-                self?.productsDataSource.finishAllProductsBatch(
+                self?.productsDataSource.toogleAllProductsBatch(
                     listId: list.documentId,
+                    done: done,
                     completion: completion
                 )
             case .failure(let error):

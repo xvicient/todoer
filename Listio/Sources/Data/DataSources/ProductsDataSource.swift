@@ -15,13 +15,14 @@ protocol ProductsDataSourceApi {
         _ documentId: String?,
         listId: String
     )
-    func finishProduct(
+    func toggleProduct(
         _ product: ProductDTO,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
-    func finishAllProductsBatch(
+    func toogleAllProductsBatch(
         listId: String?,
+        done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     )
 }
@@ -73,7 +74,7 @@ final class ProductsDataSource: ProductsDataSourceApi {
         productsCollection(listId: listId).document(id).delete()
     }
     
-    func finishProduct(
+    func toggleProduct(
         _ product: ProductDTO,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
@@ -90,8 +91,9 @@ final class ProductsDataSource: ProductsDataSourceApi {
         }
     }
     
-    func finishAllProductsBatch(
+    func toogleAllProductsBatch(
         listId: String?,
+        done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         guard let listId = listId else { return }
@@ -108,7 +110,7 @@ final class ProductsDataSource: ProductsDataSourceApi {
             query?.documents
                 .forEach {
                     guard var dto = try? $0.data(as: ProductDTO.self) else { return }
-                    dto.done.toggle()
+                    dto.done = done
                     
                     if let encodedData = try? Firestore.Encoder().encode(dto) {
                         productsBatch.updateData(
