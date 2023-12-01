@@ -4,7 +4,7 @@ struct ListModel: Identifiable {
     let id = UUID()
     let documentId: String?
     let name: String
-    let done: Bool
+    var done: Bool
     var uuid: [String]
     let dateCreated: Int
 }

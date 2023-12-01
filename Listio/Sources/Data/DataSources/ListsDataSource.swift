@@ -14,6 +14,10 @@ protocol ListsDataSourceApi {
     func deleteList(
         _ documentId: String?
     )
+    func finishList(
+        _ list: ListDTO,
+        completion: @escaping (Result<Void, Error>) -> Void
+    )
 }
 
 final class ListsDataSource: ListsDataSourceApi {
@@ -82,5 +86,21 @@ final class ListsDataSource: ListsDataSourceApi {
                         }
                     }
             }
+    }
+    
+    func finishList(
+        _ list: ListDTO,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard let id = list.id,
+        let encodedData = try? Firestore.Encoder().encode(list) else { return }
+        
+        listsCollection.document(id).updateData(encodedData) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(Void()))
+            }
+        }
     }
 }

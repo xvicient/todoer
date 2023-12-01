@@ -20,6 +20,10 @@ protocol ProductsDataSourceApi {
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    func finishAllProductsBatch(
+        listId: String?,
+        completion: @escaping (Result<Void, Error>) -> Void
+    )
 }
 
 final class ProductsDataSource: ProductsDataSourceApi {
@@ -82,6 +86,44 @@ final class ProductsDataSource: ProductsDataSourceApi {
                 completion(.failure(error))
             } else {
                 completion(.success(Void()))
+            }
+        }
+    }
+    
+    func finishAllProductsBatch(
+        listId: String?,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard let listId = listId else { return }
+        let collection = productsCollection(listId: listId)
+        
+        collection.getDocuments { query, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            let productsBatch = Firestore.firestore().batch()
+            
+            query?.documents
+                .forEach {
+                    guard var dto = try? $0.data(as: ProductDTO.self) else { return }
+                    dto.done.toggle()
+                    
+                    if let encodedData = try? Firestore.Encoder().encode(dto) {
+                        productsBatch.updateData(
+                            encodedData,
+                            forDocument: collection.document($0.documentID)
+                        )
+                    }
+                }
+            
+            productsBatch.commit { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(Void()))
+                }
             }
         }
     }

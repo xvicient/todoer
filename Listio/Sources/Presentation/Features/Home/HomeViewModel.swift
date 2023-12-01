@@ -41,8 +41,18 @@ final class HomeViewModel: ItemsViewModel {
     }
     
     var finishList: (any ItemModel) -> Void {
-        { item in
-            
+        { [weak self] item in
+            guard let self = self,
+                  var list = item as? ListModel else { return }
+            list.done.toggle()
+            self.listsRepository.finishList(list) { result in
+                switch result {
+                case .success:
+                    break
+                case .failure:
+                    break
+                }
+            }
         }
     }
     
