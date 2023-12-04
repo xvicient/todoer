@@ -17,9 +17,12 @@ final class HomeViewModel: ItemsViewModel {
     }
     @Published var isLoading = false
     private let listsRepository: ListsRepositoryApi
+    private let productsRepository: ProductsRepositoryApi
     
-    init(listsRepository: ListsRepositoryApi) {
+    init(listsRepository: ListsRepositoryApi = ListsRepository(),
+         productsRepository: ProductsRepositoryApi = ProductsRepository()) {
         self.listsRepository = listsRepository
+        self.productsRepository = productsRepository
     }
     
     func fetchLists() {
@@ -48,11 +51,12 @@ final class HomeViewModel: ItemsViewModel {
             guard let self = self,
                   var list = item as? ListModel else { return }
             list.done.toggle()
-            self.listsRepository.toggleList(list,
-                                            done: list.done) { result in
+            self.listsRepository.toggleList(list) { result in
                 switch result {
                 case .success:
-                    break
+                    self.productsRepository.toogleAllProductsBatch(
+                        listId: list.documentId,
+                        done: list.done) { _ in }
                 case .failure:
                     break
                 }

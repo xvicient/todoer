@@ -16,19 +16,21 @@ protocol ProductsRepositoryApi {
     )
     func toggleProduct(
         _ product: ProductModel,
-        list: ListModel,
+        listId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    )
+    func toogleAllProductsBatch(
+        listId: String?,
+        done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     )
 }
 
 final class ProductsRepository: ProductsRepositoryApi {
     private let producstDataSource: ProductsDataSourceApi
-    private let listsDataSource: ListsDataSourceApi
     
-    init(producstDataSource: ProductsDataSourceApi = ProductsDataSource(),
-         listsDataSource: ListsDataSourceApi = ListsDataSource()) {
+    init(producstDataSource: ProductsDataSourceApi = ProductsDataSource()) {
         self.producstDataSource = producstDataSource
-        self.listsDataSource = listsDataSource
     }
     
     func fetchProducts(
@@ -69,25 +71,21 @@ final class ProductsRepository: ProductsRepositoryApi {
     
     func toggleProduct(
         _ product: ProductModel,
-        list: ListModel,
+        listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         producstDataSource.toggleProduct(product.toDTO,
-                                         listId: list.documentId) { [weak self] result in
-            switch result {
-            case .success:
-                if !product.done && list.done {
-                    var mutableList = list
-                    mutableList.done.toggle()
-                    self?.listsDataSource.toggleList(
-                        mutableList.toDTO,
-                        completion: completion
-                    )
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-
+                                         listId: listId,
+                                         completion: completion)
+    }
+    
+    func toogleAllProductsBatch(
+        listId: String?,
+        done: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        producstDataSource.toogleAllProductsBatch(listId: listId,
+                                                  done: done,
+                                                  completion: completion)
     }
 }

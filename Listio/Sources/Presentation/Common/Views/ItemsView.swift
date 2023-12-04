@@ -70,8 +70,10 @@ struct ItemsView<ViewModel>: View where ViewModel: ItemsViewModel {
                     Rectangle()
                         .fill(.backgroundSecondary)
                         .cornerRadius(10.0)
-                        .padding([.top, .bottom], 5))
+                        .padding([.top, .bottom], 5)
+                )
             }
+            .padding([.leading, .trailing], -10)
             .scrollContentBackground(.hidden)
         }
     }
@@ -86,11 +88,15 @@ struct OptionsView: View {
         Button(action: {
             isShowingOptions = true
         }) {
-            Image(systemName: "ellipsis")
-                .rotationEffect(.degrees(90))
-                .contentShape(Rectangle())
-                .foregroundColor(.backgroundPrimary)
+            HStack {
+                Spacer()
+                Image(systemName: "ellipsis")
+                    .rotationEffect(.degrees(90))
+                    .foregroundColor(.backgroundPrimary)
+            }
         }
+        .frame(width: 40, height: 40)
+        .contentShape(Rectangle())
         .confirmationDialog("",
                             isPresented: $isShowingOptions,
                             titleVisibility: .hidden) {
@@ -107,8 +113,22 @@ struct OptionsView: View {
 }
 
 #Preview {
-    ItemsView(
-        viewModel: HomeViewModel(
-            listsRepository: ListsRepository()
-        ))
+    class ViewModel: ItemsViewModel {
+        var items: [any ItemModel] = [ListModel(documentId: "",
+                                                name: "Test",
+                                                done: true,
+                                                uuid: [],
+                                                dateCreated: 0),
+                                      ListModel(documentId: "",
+                                                name: "Test2",
+                                                done: false,
+                                                uuid: [],
+                                                dateCreated: 1)]
+        
+        var options: (any ItemModel) -> [ItemOption] = { _ in
+            [ItemOption(type: .share,
+                        action: { _ in })]
+        }
+    }
+    return ItemsView(viewModel: ViewModel())
 }

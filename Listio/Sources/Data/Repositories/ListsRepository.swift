@@ -11,7 +11,6 @@ protocol ListsRepositoryApi {
     )    
     func toggleList(
         _ list: ListModel,
-        done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     )
 }
@@ -63,20 +62,8 @@ final class ListsRepository: ListsRepositoryApi {
     
     func toggleList(
         _ list: ListModel,
-        done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        listsDataSource.toggleList(list.toDTO) { [weak self] result in
-            switch result {
-            case .success():
-                self?.productsDataSource.toogleAllProductsBatch(
-                    listId: list.documentId,
-                    done: done,
-                    completion: completion
-                )
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+        listsDataSource.toggleList(list.toDTO, completion: completion)
     }
 }

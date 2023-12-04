@@ -4,7 +4,7 @@ import FirebaseFirestoreSwift
 
 @MainActor
 final class ProductsViewModel: ItemsViewModel {
-    private let list: ListModel
+    private var list: ListModel
     let listName: String
     @Published var items: [any ItemModel] = []
     internal var options: (any ItemModel) -> [ItemOption] {
@@ -19,12 +19,15 @@ final class ProductsViewModel: ItemsViewModel {
     @Published var isLoading = false
     @Published var productName: String = ""
     private let productsRepository: ProductsRepositoryApi
+    private let listsRepository: ListsRepositoryApi
     
     init(list: ListModel,
-         productsRepository: ProductsRepositoryApi) {
+         productsRepository: ProductsRepositoryApi = ProductsRepository(),
+         listsRepository: ListsRepositoryApi = ListsRepository()) {
         self.list = list
         listName = list.name
         self.productsRepository = productsRepository
+        self.listsRepository = listsRepository
     }
     
     func fetchProducts() {
@@ -63,9 +66,12 @@ final class ProductsViewModel: ItemsViewModel {
                   var product = item as? ProductModel else { return }
             product.done.toggle()
             productsRepository.toggleProduct(product,
-                                             list: list) { result in
+                                             listId: list.documentId) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success:
+                    list.done = self.items.allSatisfy({ $0.done })
+                    listsRepository.toggleList(list) { _ in }
                     break
                 case .failure:
                     break

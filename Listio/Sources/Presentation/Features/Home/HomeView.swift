@@ -39,6 +39,14 @@ struct HomeView: View {
             }
         }
         .navigationTitle("Your todoos")
+        .navigationBarItems(trailing:
+                            Button(action: {
+                                // Agrega la lógica que desees al presionar el botón
+                                print("Botón presionado")
+                            }) {
+                                Image(systemName: "gear") // Utiliza el sistema de nombres de imágenes de SF Symbols
+                            }
+                        )
     }
 }
 
