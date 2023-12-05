@@ -18,6 +18,11 @@ protocol ListsDataSourceApi {
         _ list: ListDTO,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    func importList(
+        id: String,
+        uuid: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    )
 }
 
 final class ListsDataSource: ListsDataSourceApi {
@@ -68,24 +73,26 @@ final class ListsDataSource: ListsDataSourceApi {
     
     func importList(
         id: String,
-        uuid: String
+        uuid: String,
+        completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        listsCollection
-            .whereField("listId", isEqualTo: id)
-            .getDocuments { [weak self] query, error in
-                guard error == nil else { return }
-                
-                query?.documents
-                    .forEach {
-                        guard var dto = try? $0.data(as: ListDTO.self) else { return }
-                        dto.uuid.append(uuid)
-                        do {
-                            _ = try self?.listsCollection.document(id).setData(from: dto)
-                        } catch {
-                            print(error)
-                        }
-                    }
+        listsCollection.document(id).getDocument() { [weak self] query, error in
+            if let error = error {
+                completion(.failure(error))
+                return
             }
+            
+            do {
+                guard var dto = try? query?.data(as: ListDTO.self) else {
+                    return
+                }
+                dto.uuid.append(uuid)
+                _ = try self?.listsCollection.document(id).setData(from: dto)
+                completion(.success(Void()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
     
     func toggleList(

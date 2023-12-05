@@ -8,7 +8,11 @@ struct ProductsView: View {
             Color.white
                 .ignoresSafeArea()
             VStack {
-                ItemsView(viewModel: viewModel)
+                List {
+                    ItemsView(viewModel: viewModel,
+                              optionsAction: viewModel.onDidTapOption)
+                    
+                }
                 TextField("Add product...",
                           text: $viewModel.productName)
                 .textFieldStyle(BottomLineStyle() {

@@ -2,8 +2,13 @@ protocol UsersRepositoryApi {
     func createUser(
         with uuid: String,
         email: String?,
+        displayName: String?,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    func getSelfUser() async throws -> UserDTO
+    func getUser(
+        _ email: String
+    ) async throws -> UserDTO
 }
 
 final class UsersRepository: UsersRepositoryApi {
@@ -17,8 +22,22 @@ final class UsersRepository: UsersRepositoryApi {
     func createUser(
         with uuid: String,
         email: String?,
+        displayName: String?,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        usersDataSource.createUser(with: uuid, email: email, completion: completion)
+        usersDataSource.createUser(with: uuid,
+                                   email: email,
+                                   displayName: displayName,
+                                   completion: completion)
+    }
+    
+    func getSelfUser() async throws -> UserDTO {
+        try await usersDataSource.getSelfUser()
+    }
+    
+    func getUser(
+        _ email: String
+    ) async throws -> UserDTO {
+        try await usersDataSource.getUser(email)
     }
 }

@@ -8,12 +8,9 @@ final class ProductsViewModel: ItemsViewModel {
     let listName: String
     @Published var items: [any ItemModel] = []
     internal var options: (any ItemModel) -> [ItemOption] {
-        { [weak self] item in
-            guard let self = self else { return [] }
-            return [ItemOption(type: item.done ? .undone : .done,
-                               action: toggleProduct),
-                    ItemOption(type: .delete,
-                               action: deleteProduct)]
+        {
+            [$0.done ? .undone : .done,
+             .delete]
         }
     }
     @Published var isLoading = false
@@ -60,32 +57,39 @@ final class ProductsViewModel: ItemsViewModel {
         }
     }
     
-    private var toggleProduct: (any ItemModel) -> Void {
-        { [weak self] item in
-            guard let self = self,
-                  var product = item as? ProductModel else { return }
-            product.done.toggle()
-            productsRepository.toggleProduct(product,
-                                             listId: list.documentId) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success:
-                    list.done = self.items.allSatisfy({ $0.done })
-                    listsRepository.toggleList(list) { _ in }
-                    break
-                case .failure:
-                    break
-                }
+    var onDidTapOption: ((any ItemModel, ItemOption) -> Void) {
+        { [weak self] item, option in
+            guard let self = self else { return }
+            switch option {
+            case .done, .undone:
+                self.toggleProduct(item)
+            case .delete:
+                self.deleteProduct(item)
+            default: break
             }
         }
     }
     
-    private var deleteProduct: (any ItemModel) -> Void {
-        { [weak self] item in
+    private func toggleProduct(_ item: any ItemModel) {
+        guard var product = item as? ProductModel else { return }
+        product.done.toggle()
+        productsRepository.toggleProduct(product,
+                                         listId: list.documentId) { [weak self] result in
             guard let self = self else { return }
-            productsRepository.deleteProduct(item.documentId,
-                                             listId: list.documentId)
+            switch result {
+            case .success:
+                list.done = self.items.allSatisfy({ $0.done })
+                listsRepository.toggleList(list, completion: { _ in })
+                break
+            case .failure:
+                break
+            }
         }
+    }
+    
+    private func deleteProduct(_ item: any ItemModel) {
+        productsRepository.deleteProduct(item.documentId,
+                                         listId: list.documentId)
     }
 }
 

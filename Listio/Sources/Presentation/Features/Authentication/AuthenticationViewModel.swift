@@ -15,7 +15,10 @@ final class AuthenticationViewModel: ObservableObject {
     func signInGoogle() async throws {
         let authData = try await googleService.signIn()
         
-        usersRepository.createUser(with: authData.uid, email: authData.email, completion: { _ in
+        usersRepository.createUser(with: authData.uid,
+                                   email: authData.email,
+                                   displayName: authData.displayName,
+                                   completion: { _ in
             
         })
     }

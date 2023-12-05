@@ -13,6 +13,10 @@ protocol ListsRepositoryApi {
         _ list: ListModel,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    func importList(
+        id: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    )
 }
 
 final class ListsRepository: ListsRepositoryApi {
@@ -65,5 +69,12 @@ final class ListsRepository: ListsRepositoryApi {
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         listsDataSource.toggleList(list.toDTO, completion: completion)
+    }
+    
+    func importList(
+        id: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        listsDataSource.importList(id: id, uuid: usersDataSource.uuid, completion: completion)
     }
 }
