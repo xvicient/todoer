@@ -1,6 +1,21 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+// MARK: - HomeViewModelApi
+
+protocol HomeViewModelApi {
+    func fetchData()
+    var onDidTapOption: ((any ItemModel, ItemOption) -> Void) { get }
+    func shareList() async
+    func cancelShare()
+    func importList(
+        listId: String,
+        invitationId: String
+    )
+}
+
+// MARK: - HomeViewModel
+
 @MainActor
 final class HomeViewModel: ItemsViewModel {
     @Published var invitations: [InvitationModel] = []
@@ -15,6 +30,8 @@ final class HomeViewModel: ItemsViewModel {
     @Published var isLoading = false
     @Published var shareEmail: String = ""
     @Published var isShowingAlert: Bool = false
+    @Published var userSelfPhoto: String = ""
+    
     private var sharingList: ListModel?
     
     private let listsRepository: ListsRepositoryApi
@@ -31,7 +48,11 @@ final class HomeViewModel: ItemsViewModel {
         self.invitationsRepository = invitationsRepository
         self.usersDataRepository = usersDataRepository
     }
-    
+}
+
+// MARK: - HomeViewModelApi implementation
+
+extension HomeViewModel: HomeViewModelApi {
     func fetchData() {
         isLoading = true
         DispatchGroup().execute(
@@ -43,38 +64,16 @@ final class HomeViewModel: ItemsViewModel {
                 self?.fetchInvitations()
                 $0()
             },
+            { [weak self] in
+                self?.fetchUserSelf()
+                $0()
+            },
             onComplete: { [weak self] in
                 DispatchQueue.main.async {
                     self?.isLoading = false
                 }
             }
         )
-    }
-    
-    func fetchLists() {
-        listsRepository.fetchLists { [weak self] result in
-            switch result {
-            case .success(let lists):
-                self?.items = lists.sorted {
-                    $0.dateCreated < $1.dateCreated
-                }
-            case .failure:
-                break
-            }
-        }
-    }
-    
-    func fetchInvitations() {
-        invitationsRepository.fetchInvitations() { [weak self] result in
-            switch result {
-            case .success(let invitations):
-                self?.invitations = invitations.sorted {
-                    $0.dateCreated < $1.dateCreated
-                }
-            case .failure:
-                break
-            }
-        }
     }
     
     var onDidTapOption: ((any ItemModel, ItemOption) -> Void) {
@@ -89,33 +88,6 @@ final class HomeViewModel: ItemsViewModel {
                 self.deleteList(item)
             }
         }
-    }
-    
-    private func showShareDialog(_ item: any ItemModel) {
-        guard let list = item as? ListModel else { return }
-        sharingList = list
-        isShowingAlert = true
-    }
-    
-    private func toggleList(_ item: any ItemModel) {
-        guard var list = item as? ListModel else { return }
-        
-        list.done.toggle()
-        listsRepository.toggleList(list) { [weak self] result in
-            switch result {
-            case .success:
-                self?.productsRepository.toogleAllProductsBatch(
-                    listId: list.documentId,
-                    done: list.done,
-                    completion: { _ in})
-            case .failure:
-                break
-            }
-        }
-    }
-    
-    private func deleteList(_ item: any ItemModel) {
-        listsRepository.deleteList(item.documentId)
     }
     
     func shareList() async {
@@ -159,6 +131,72 @@ final class HomeViewModel: ItemsViewModel {
                 break
             }
         }
+    }
+}
+
+// MARK: - Private
+
+private extension HomeViewModel {
+    func fetchLists() {
+        listsRepository.fetchLists { [weak self] result in
+            switch result {
+            case .success(let lists):
+                self?.items = lists.sorted {
+                    $0.dateCreated < $1.dateCreated
+                }
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    func fetchInvitations() {
+        invitationsRepository.fetchInvitations() { [weak self] result in
+            switch result {
+            case .success(let invitations):
+                self?.invitations = invitations.sorted {
+                    $0.dateCreated < $1.dateCreated
+                }
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    func fetchUserSelf() {
+        Task {
+            guard let photoUrl = try? await usersDataRepository.getSelfUser().photoUrl else {
+                return
+            }
+            userSelfPhoto = photoUrl
+        }
+    }
+    
+    func showShareDialog(_ item: any ItemModel) {
+        guard let list = item as? ListModel else { return }
+        sharingList = list
+        isShowingAlert = true
+    }
+    
+    func toggleList(_ item: any ItemModel) {
+        guard var list = item as? ListModel else { return }
+        
+        list.done.toggle()
+        listsRepository.toggleList(list) { [weak self] result in
+            switch result {
+            case .success:
+                self?.productsRepository.toogleAllProductsBatch(
+                    listId: list.documentId,
+                    done: list.done,
+                    completion: { _ in})
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    func deleteList(_ item: any ItemModel) {
+        listsRepository.deleteList(item.documentId)
     }
 }
 

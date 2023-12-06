@@ -12,6 +12,7 @@
 		C75B4AC92B1DD7A9007CCA48 /* InvitationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC82B1DD7A9007CCA48 /* InvitationModel.swift */; };
 		C75B4ACB2B1DD8D1007CCA48 /* InvitationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4ACA2B1DD8D1007CCA48 /* InvitationsDataSource.swift */; };
 		C75B4ACD2B1E73DA007CCA48 /* DispatchGroup+Execute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4ACC2B1E73DA007CCA48 /* DispatchGroup+Execute.swift */; };
+		C75B4ACF2B1F70E6007CCA48 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4ACE2B1F70E6007CCA48 /* UserModel.swift */; };
 		C79CB28B2B0D537A00C2BD18 /* ProductDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2702B0D537A00C2BD18 /* ProductDTO.swift */; };
 		C79CB28C2B0D537A00C2BD18 /* ProductsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2712B0D537A00C2BD18 /* ProductsDataSource.swift */; };
 		C79CB28D2B0D537A00C2BD18 /* ProductsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2722B0D537A00C2BD18 /* ProductsRepository.swift */; };
@@ -88,6 +89,7 @@
 		C75B4AC82B1DD7A9007CCA48 /* InvitationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationModel.swift; sourceTree = "<group>"; };
 		C75B4ACA2B1DD8D1007CCA48 /* InvitationsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsDataSource.swift; sourceTree = "<group>"; };
 		C75B4ACC2B1E73DA007CCA48 /* DispatchGroup+Execute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchGroup+Execute.swift"; sourceTree = "<group>"; };
+		C75B4ACE2B1F70E6007CCA48 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		C79CB2702B0D537A00C2BD18 /* ProductDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDTO.swift; sourceTree = "<group>"; };
 		C79CB2712B0D537A00C2BD18 /* ProductsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductsDataSource.swift; sourceTree = "<group>"; };
 		C79CB2722B0D537A00C2BD18 /* ProductsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductsRepository.swift; sourceTree = "<group>"; };
@@ -314,7 +316,7 @@
 		C79CB2CD2B13FD8600C2BD18 /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				C79CB2CF2B13FD9A00C2BD18 /* Dtos */,
+				C79CB2CF2B13FD9A00C2BD18 /* Entities */,
 				C79CB2742B0D537A00C2BD18 /* ListsDataSource.swift */,
 				C79CB2712B0D537A00C2BD18 /* ProductsDataSource.swift */,
 				C79CB2DF2B162E6000C2BD18 /* UsersDataSource.swift */,
@@ -332,7 +334,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		C79CB2CF2B13FD9A00C2BD18 /* Dtos */ = {
+		C79CB2CF2B13FD9A00C2BD18 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				C79CB2752B0D537A00C2BD18 /* ListDTO.swift */,
@@ -341,7 +343,7 @@
 				C79CB2DD2B162DB100C2BD18 /* UserDTO.swift */,
 				C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */,
 			);
-			path = Dtos;
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		C79CB2D32B13FE8C00C2BD18 /* Utils */ = {
@@ -386,6 +388,7 @@
 				C79CB2F62B17E3C200C2BD18 /* ListModel.swift */,
 				C79CB2F82B17E56A00C2BD18 /* ProductModel.swift */,
 				C75B4AC82B1DD7A9007CCA48 /* InvitationModel.swift */,
+				C75B4ACE2B1F70E6007CCA48 /* UserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -604,6 +607,7 @@
 				C79CB2EE2B16A3AD00C2BD18 /* Coordinator.swift in Sources */,
 				C79CB2D52B13FEA200C2BD18 /* Utils+TopViewController.swift in Sources */,
 				C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */,
+				C75B4ACF2B1F70E6007CCA48 /* UserModel.swift in Sources */,
 				C79CB2B32B13AA4400C2BD18 /* ItemsView.swift in Sources */,
 				C79CB2942B0D537A00C2BD18 /* HomeView.swift in Sources */,
 				C79CB28E2B0D537A00C2BD18 /* ListsDataSource.swift in Sources */,
