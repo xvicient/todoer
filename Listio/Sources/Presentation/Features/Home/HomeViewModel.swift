@@ -12,6 +12,7 @@ protocol HomeViewModelApi {
         listId: String,
         invitationId: String
     )
+    func createList()
 }
 
 // MARK: - HomeViewModel
@@ -31,6 +32,9 @@ final class HomeViewModel: ItemsViewModel {
     @Published var shareEmail: String = ""
     @Published var isShowingAlert: Bool = false
     @Published var userSelfPhoto: String = ""
+    @Published var listName: String = ""
+    @Published var isShowingAddButton: Bool = true
+    @Published var isShowingAddTextField: Bool = false
     
     private var sharingList: ListModel?
     
@@ -129,6 +133,17 @@ extension HomeViewModel: HomeViewModelApi {
                 self?.invitationsRepository.deleteInvitation(invitationId, completion: { _ in })
             case .failure:
                 break
+            }
+        }
+    }
+    
+    func createList() {
+        guard !listName.isEmpty else { return }
+        listsRepository.addList(with: listName) { [weak self] in
+            switch $0 {
+            case .success,
+                    .failure:
+                self?.isShowingAddButton = false
             }
         }
     }

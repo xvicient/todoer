@@ -9,7 +9,7 @@ enum Page: Hashable, Identifiable, Equatable {
 }
 
 enum Sheet: Hashable, Identifiable {
-    case createList
+    case shareList
     
     var id: Self { self }
 }
@@ -79,9 +79,9 @@ class Coordinator: ObservableObject {
     @MainActor @ViewBuilder
     func build(sheet: Sheet) -> some View {
         switch sheet {
-        case .createList:
+        case .shareList:
             NavigationStack {
-                CreateListBuilder.makeCreateList()
+                EmptyView()
             }
         }
     }

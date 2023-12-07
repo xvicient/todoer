@@ -22,6 +22,7 @@ struct HomeView: View {
                 }
                 VStack {
                     addTodoButton
+                    addListTextField
                 }
             }
             .task() {
@@ -118,15 +119,56 @@ private extension HomeView {
     
     @ViewBuilder
     var addTodoButton: some View {
-        Spacer()
-        Button(action: {
-            coordinator.present(sheet: .createList)
-        }, label: {
-            Image(systemName: Constants.Image.addButton)
-                .resizable()
-                .frame(width: 48.0, height: 48.0)
-        })
-        .foregroundColor(.buttonPrimary)
+        if viewModel.isShowingAddButton {
+            Spacer()
+            Button(action: {
+                viewModel.isShowingAddButton = false
+                withAnimation(.easeOut(duration: 0.75)) {
+                    viewModel.isShowingAddTextField = true
+                }
+            }, label: {
+                Image(systemName: Constants.Image.addButton)
+                    .resizable()
+                    .frame(width: 48.0, height: 48.0)
+            })
+            .foregroundColor(.buttonPrimary)
+        }
+    }
+    
+    @ViewBuilder
+    var addListTextField: some View {
+        if viewModel.isShowingAddTextField {
+            VStack(spacing: 0) {
+                Button(action: {
+                    withAnimation(.easeOut(duration: 0.75)) {
+                        viewModel.isShowingAddTextField = false
+                    } completion: {
+                        viewModel.isShowingAddButton = true
+                    }
+                }, label: {
+                    Image("")
+                        .resizable()
+                        .frame(maxWidth: .infinity,
+                               maxHeight: .infinity)
+                        .ignoresSafeArea()
+                })
+                VStack {
+                    Spacer().frame(height: 10.0)
+                    TextField(Constants.Title.addList,
+                              text: $viewModel.listName)
+                    .textFieldStyle(BottomLineStyle() {
+                        viewModel.createList()
+                    })
+                    .background(.white)
+                }
+                .background(
+                    Color.white
+                        .shadow(color: .buttonPrimary, radius: 6, x: 0, y: 10)
+                        .mask(Rectangle().padding(.top, -25))
+                )
+            }
+            .transition(.move(edge: .bottom))
+        }
     }
 }
 
@@ -145,10 +187,12 @@ private extension HomeView {
             static let email = "Email..."
             static let share = "Share"
             static let cancel = "Cancel"
+            static let addList = "Add list..."
         }
         struct Image {
             static let profilePlaceHolder = "person.crop.circle"
             static let addButton = "plus.circle.fill"
+            static let closeAddListButton = "xmark"
         }
     }
     

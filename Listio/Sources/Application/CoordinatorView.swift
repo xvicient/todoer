@@ -3,6 +3,7 @@ import SwiftUI
 struct CoordinatorView: View {
     
     @StateObject private var coordinator = Coordinator()
+    @State private var shareListDetent = PresentationDetent.medium
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
@@ -11,7 +12,14 @@ struct CoordinatorView: View {
                     coordinator.build(page: page)
                 }
                 .sheet(item: $coordinator.sheet) { sheet in
-                    coordinator.build(sheet: sheet)
+                    switch sheet {
+                    case .shareList:
+                        coordinator.build(sheet: sheet)
+                            .presentationDetents(
+                                [shareListDetent, .large],
+                                selection: $shareListDetent
+                            )
+                    }
                 }
                 .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
                     coordinator.build(fullScreenCover: fullScreenCover)

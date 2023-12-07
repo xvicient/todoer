@@ -33,9 +33,6 @@
 		C79CB2A62B0D57F700C2BD18 /* ListioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */; };
 		C79CB2AD2B12BBD700C2BD18 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */; };
 		C79CB2B32B13AA4400C2BD18 /* ItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2B22B13AA4400C2BD18 /* ItemsView.swift */; };
-		C79CB2B72B13EB4E00C2BD18 /* CreateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2B62B13EB4E00C2BD18 /* CreateListView.swift */; };
-		C79CB2B92B13EB6200C2BD18 /* CreateListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2B82B13EB6200C2BD18 /* CreateListViewModel.swift */; };
-		C79CB2BB2B13EB6D00C2BD18 /* CreateListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2BA2B13EB6D00C2BD18 /* CreateListBuilder.swift */; };
 		C79CB2BE2B13F06C00C2BD18 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2BD2B13F06C00C2BD18 /* GoogleSignIn */; };
 		C79CB2C02B13F06C00C2BD18 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2BF2B13F06C00C2BD18 /* GoogleSignInSwift */; };
 		C79CB2C32B13F3E800C2BD18 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2C22B13F3E800C2BD18 /* FirebaseAuth */; };
@@ -110,9 +107,6 @@
 		C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListioApp.swift; sourceTree = "<group>"; };
 		C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		C79CB2B22B13AA4400C2BD18 /* ItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsView.swift; sourceTree = "<group>"; };
-		C79CB2B62B13EB4E00C2BD18 /* CreateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListView.swift; sourceTree = "<group>"; };
-		C79CB2B82B13EB6200C2BD18 /* CreateListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListViewModel.swift; sourceTree = "<group>"; };
-		C79CB2BA2B13EB6D00C2BD18 /* CreateListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateListBuilder.swift; sourceTree = "<group>"; };
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		C79CB2CA2B13FB8D00C2BD18 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
@@ -283,16 +277,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		C79CB2B52B13EB1C00C2BD18 /* CreateList */ = {
-			isa = PBXGroup;
-			children = (
-				C79CB2B62B13EB4E00C2BD18 /* CreateListView.swift */,
-				C79CB2B82B13EB6200C2BD18 /* CreateListViewModel.swift */,
-				C79CB2BA2B13EB6D00C2BD18 /* CreateListBuilder.swift */,
-			);
-			path = CreateList;
-			sourceTree = "<group>";
-		};
 		C79CB2C72B13F8E700C2BD18 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,7 +343,6 @@
 			isa = PBXGroup;
 			children = (
 				C79CB2C72B13F8E700C2BD18 /* Authentication */,
-				C79CB2B52B13EB1C00C2BD18 /* CreateList */,
 				C79CB27D2B0D537A00C2BD18 /* Home */,
 				C79CB2822B0D537A00C2BD18 /* Products */,
 			);
@@ -585,14 +568,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C79CB2B72B13EB4E00C2BD18 /* CreateListView.swift in Sources */,
 				C79CB2D22B13FDFF00C2BD18 /* GoogleSignInService.swift in Sources */,
 				C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* ListioApp.swift in Sources */,
 				C79CB28D2B0D537A00C2BD18 /* ProductsRepository.swift in Sources */,
 				C79CB2F72B17E3C200C2BD18 /* ListModel.swift in Sources */,
 				C79CB2972B0D537A00C2BD18 /* ProductsView.swift in Sources */,
-				C79CB2B92B13EB6200C2BD18 /* CreateListViewModel.swift in Sources */,
 				C79CB2E02B162E6000C2BD18 /* UsersDataSource.swift in Sources */,
 				C79CB2932B0D537A00C2BD18 /* HomeViewModel.swift in Sources */,
 				C79CB2992B0D537A00C2BD18 /* ProductsViewModel.swift in Sources */,
@@ -619,7 +600,6 @@
 				C79CB28F2B0D537A00C2BD18 /* ListDTO.swift in Sources */,
 				C79CB2D92B154D2600C2BD18 /* AuthDataDTO.swift in Sources */,
 				C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */,
-				C79CB2BB2B13EB6D00C2BD18 /* CreateListBuilder.swift in Sources */,
 				C75B4ACB2B1DD8D1007CCA48 /* InvitationsDataSource.swift in Sources */,
 				C79CB2F92B17E56A00C2BD18 /* ProductModel.swift in Sources */,
 				C79CB2912B0D537A00C2BD18 /* Collection+Utils.swift in Sources */,
