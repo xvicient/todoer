@@ -9,7 +9,7 @@ struct UserDTO: Identifiable, Codable, Hashable {
     var photoUrl: String?
 }
 
-extension UserModel {
+extension User {
     var toDomain: UserDTO {
         UserDTO(uuid: uuid,
                 email: email,

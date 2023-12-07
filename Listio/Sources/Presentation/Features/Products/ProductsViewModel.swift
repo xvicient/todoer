@@ -4,7 +4,7 @@ import FirebaseFirestoreSwift
 
 @MainActor
 final class ProductsViewModel: ItemsViewModel {
-    private var list: ListModel
+    private var list: List
     let listName: String
     @Published var items: [any ItemModel] = []
     internal var options: (any ItemModel) -> [ItemOption] {
@@ -18,7 +18,7 @@ final class ProductsViewModel: ItemsViewModel {
     private let productsRepository: ProductsRepositoryApi
     private let listsRepository: ListsRepositoryApi
     
-    init(list: ListModel,
+    init(list: List,
          productsRepository: ProductsRepositoryApi = ProductsRepository(),
          listsRepository: ListsRepositoryApi = ListsRepository()) {
         self.list = list
@@ -71,7 +71,7 @@ final class ProductsViewModel: ItemsViewModel {
     }
     
     private func toggleProduct(_ item: any ItemModel) {
-        guard var product = item as? ProductModel else { return }
+        guard var product = item as? Product else { return }
         product.done.toggle()
         productsRepository.toggleProduct(product,
                                          listId: list.documentId) { [weak self] result in
@@ -93,4 +93,4 @@ final class ProductsViewModel: ItemsViewModel {
     }
 }
 
-extension ProductModel: ItemModel {}
+extension Product: ItemModel {}

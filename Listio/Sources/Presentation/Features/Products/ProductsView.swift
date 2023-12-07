@@ -33,7 +33,7 @@ struct ProductsView: View {
 
 #Preview {
     ProductsView(viewModel: ProductsViewModel(
-        list: ListModel(documentId: "",
+        list: List(documentId: "",
                         name: "",
                         done: false,
                         uuid: [],

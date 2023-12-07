@@ -1,6 +1,6 @@
 import Foundation
 
-struct ListModel: Identifiable, Equatable, Hashable {
+struct List: Identifiable, Equatable, Hashable {
     let id = UUID()
     let documentId: String
     let name: String
@@ -10,8 +10,8 @@ struct ListModel: Identifiable, Equatable, Hashable {
 }
 
 extension ListDTO {
-    var toDomain: ListModel {
-        ListModel(documentId: id ?? "",
+    var toDomain: List {
+        List(documentId: id ?? "",
                   name: name,
                   done: done,
                   uuid: uuid,

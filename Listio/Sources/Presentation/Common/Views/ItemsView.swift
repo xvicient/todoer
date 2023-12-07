@@ -70,8 +70,15 @@ struct ItemsView<ViewModel>: View where ViewModel: ItemsViewModel {
                     .padding([.top, .bottom], 5)
             )
         }
+        .onDelete(perform: removeRows)
         .padding([.leading, .trailing], -10)
         .scrollContentBackground(.hidden)
+    }
+}
+
+private extension ItemsView {
+    func removeRows(at offsets: IndexSet) {
+        print("")
     }
 }
 

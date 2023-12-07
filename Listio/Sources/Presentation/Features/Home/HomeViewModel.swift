@@ -19,7 +19,7 @@ protocol HomeViewModelApi {
 
 @MainActor
 final class HomeViewModel: ItemsViewModel {
-    @Published var invitations: [InvitationModel] = []
+    @Published var invitations: [Invitation] = []
     @Published var items: [any ItemModel] = []
     internal var options: (any ItemModel) -> [ItemOption] {
         {
@@ -36,7 +36,7 @@ final class HomeViewModel: ItemsViewModel {
     @Published var isShowingAddButton: Bool = true
     @Published var isShowingAddTextField: Bool = false
     
-    private var sharingList: ListModel?
+    private var sharingList: List?
     
     private let listsRepository: ListsRepositoryApi
     private let productsRepository: ProductsRepositoryApi
@@ -188,13 +188,13 @@ private extension HomeViewModel {
     }
     
     func showShareDialog(_ item: any ItemModel) {
-        guard let list = item as? ListModel else { return }
+        guard let list = item as? List else { return }
         sharingList = list
         isShowingAlert = true
     }
     
     func toggleList(_ item: any ItemModel) {
-        guard var list = item as? ListModel else { return }
+        guard var list = item as? List else { return }
         
         list.done.toggle()
         listsRepository.toggleList(list) { [weak self] result in
@@ -215,4 +215,4 @@ private extension HomeViewModel {
     }
 }
 
-extension ListModel: ItemModel {}
+extension List: ItemModel {}

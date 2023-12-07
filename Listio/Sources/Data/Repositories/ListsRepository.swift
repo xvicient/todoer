@@ -1,6 +1,6 @@
 protocol ListsRepositoryApi {
     func fetchLists(
-        completion: @escaping (Result<[ListModel], Error>) -> Void
+        completion: @escaping (Result<[List], Error>) -> Void
     )
     func addList(
         with name: String,
@@ -10,7 +10,7 @@ protocol ListsRepositoryApi {
         _ documentId: String?
     )    
     func toggleList(
-        _ list: ListModel,
+        _ list: List,
         completion: @escaping (Result<Void, Error>) -> Void
     )
     func importList(
@@ -32,7 +32,7 @@ final class ListsRepository: ListsRepositoryApi {
         self.productsDataSource = productsDataSource
     }
     
-    func fetchLists(completion: @escaping (Result<[ListModel], Error>) -> Void) {
+    func fetchLists(completion: @escaping (Result<[List], Error>) -> Void) {
         listsDataSource.fetchLists(
             uuid: usersDataSource.uuid) { result in
                 switch result {
@@ -65,7 +65,7 @@ final class ListsRepository: ListsRepositoryApi {
     }
     
     func toggleList(
-        _ list: ListModel,
+        _ list: List,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         listsDataSource.toggleList(list.toDTO, completion: completion)

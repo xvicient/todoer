@@ -20,6 +20,6 @@ struct BottomLineStyle: TextFieldStyle {
                 .frame(height: 1.0, alignment: .bottom)
                 .foregroundColor(.buttonPrimary)
         }
-        .padding(12)
+        .padding(24)
     }
 }

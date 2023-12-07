@@ -11,7 +11,7 @@ struct InvitationDTO: Identifiable, Codable, Hashable {
     let dateCreated: Int
 }
 
-extension InvitationModel {
+extension Invitation {
     var toDTO: InvitationDTO {
         InvitationDTO(id: documentId,
                       ownerName: ownerName,

@@ -205,7 +205,7 @@ private extension HomeView {
     
     var itemViewMainAction: (any ItemModel) -> Void {
         {
-            guard let list = $0 as? ListModel else { return }
+            guard let list = $0 as? List else { return }
             coordinator.push(.products(list))
         }
     }

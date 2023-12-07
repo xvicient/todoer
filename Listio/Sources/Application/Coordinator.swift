@@ -3,7 +3,7 @@ import SwiftUI
 enum Page: Hashable, Identifiable, Equatable {
     case authentication
     case home
-    case products(ListModel)
+    case products(List)
     
     var id: Self { self }
 }

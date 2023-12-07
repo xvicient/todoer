@@ -1,6 +1,6 @@
 import Foundation
 
-struct InvitationModel: Identifiable, Equatable, Hashable {
+struct Invitation: Identifiable, Equatable, Hashable {
     let id = UUID()
     let documentId: String
     let ownerName: String
@@ -12,8 +12,8 @@ struct InvitationModel: Identifiable, Equatable, Hashable {
 }
 
 extension InvitationDTO {
-    var toDomain: InvitationModel {
-        InvitationModel(documentId: id ?? "",
+    var toDomain: Invitation {
+        Invitation(documentId: id ?? "",
                         ownerName: ownerName,
                         ownerEmail: ownerEmail,
                         listId: listId,

@@ -1,6 +1,6 @@
 import Foundation
 
-struct UserModel: Identifiable, Equatable, Hashable {
+struct User: Identifiable, Equatable, Hashable {
     let id = UUID()
     let documentId: String
     var uuid: String
@@ -10,8 +10,8 @@ struct UserModel: Identifiable, Equatable, Hashable {
 }
 
 extension UserDTO {
-    var toDomain: UserModel {
-        UserModel(documentId: id ?? "",
+    var toDomain: User {
+        User(documentId: id ?? "",
                   uuid: uuid,
                   email: email,
                   displayName: displayName,

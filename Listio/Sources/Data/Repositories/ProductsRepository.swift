@@ -3,7 +3,7 @@ import UIKit
 protocol ProductsRepositoryApi {
     func fetchProducts(
         listId: String,
-        completion: @escaping (Result<[ProductModel], Error>) -> Void
+        completion: @escaping (Result<[Product], Error>) -> Void
     )
     func addProduct(
         with name: String,
@@ -15,7 +15,7 @@ protocol ProductsRepositoryApi {
         listId: String
     )
     func toggleProduct(
-        _ product: ProductModel,
+        _ product: Product,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
@@ -35,7 +35,7 @@ final class ProductsRepository: ProductsRepositoryApi {
     
     func fetchProducts(
         listId: String,
-        completion: @escaping (Result<[ProductModel], Error>) -> Void
+        completion: @escaping (Result<[Product], Error>) -> Void
     ) {
         producstDataSource.fetchProducts(listId: listId) { result in
             switch result {
@@ -70,7 +70,7 @@ final class ProductsRepository: ProductsRepositoryApi {
     }
     
     func toggleProduct(
-        _ product: ProductModel,
+        _ product: Product,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {

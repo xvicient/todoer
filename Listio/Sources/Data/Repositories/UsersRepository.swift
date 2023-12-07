@@ -5,7 +5,7 @@ protocol UsersRepositoryApi {
         displayName: String?,
         completion: @escaping (Result<Void, Error>) -> Void
     )
-    func getSelfUser() async throws -> UserModel
+    func getSelfUser() async throws -> User
     func getUser(
         _ email: String
     ) async throws -> UserDTO
@@ -31,7 +31,7 @@ final class UsersRepository: UsersRepositoryApi {
                                    completion: completion)
     }
     
-    func getSelfUser() async throws -> UserModel {
+    func getSelfUser() async throws -> User {
         try await usersDataSource.getSelfUser().toDomain
     }
     

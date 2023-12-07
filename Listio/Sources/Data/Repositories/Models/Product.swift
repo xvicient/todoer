@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProductModel: Identifiable, Equatable, Hashable {
+struct Product: Identifiable, Equatable, Hashable {
     let id = UUID()
     let documentId: String
     let name: String
@@ -9,8 +9,8 @@ struct ProductModel: Identifiable, Equatable, Hashable {
 }
 
 extension ProductDTO {
-    var toDomain: ProductModel {
-        ProductModel(documentId: id ?? "",
+    var toDomain: Product {
+        Product(documentId: id ?? "",
                      name: name,
                      done: done,
                      dateCreated: dateCreated)

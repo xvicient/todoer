@@ -8,7 +8,7 @@ struct ProductDTO: Identifiable, Codable, Hashable {
     let dateCreated: Int
 }
 
-extension ProductModel {
+extension Product {
     var toDTO: ProductDTO {
         ProductDTO(id: documentId,
                    name: name,

@@ -1,6 +1,6 @@
 protocol InvitationsRepositoryApi {
     func fetchInvitations(
-        completion: @escaping (Result<[InvitationModel], Error>) -> Void
+        completion: @escaping (Result<[Invitation], Error>) -> Void
     )
     func sendInvitation(
         ownerName: String,
@@ -27,7 +27,7 @@ final class InvitationsRepository: InvitationsRepositoryApi {
     }
     
     func fetchInvitations(
-        completion: @escaping (Result<[InvitationModel], Error>) -> Void
+        completion: @escaping (Result<[Invitation], Error>) -> Void
     ) {
         invitationsDataSource.fetchInvitations(uuid: usersDataSource.uuid) { result in
             switch result {
