@@ -11,8 +11,8 @@ struct Product: Identifiable, Equatable, Hashable {
 extension ProductDTO {
     var toDomain: Product {
         Product(documentId: id ?? "",
-                     name: name,
-                     done: done,
-                     dateCreated: dateCreated)
+                name: name,
+                done: done,
+                dateCreated: dateCreated)
     }
 }

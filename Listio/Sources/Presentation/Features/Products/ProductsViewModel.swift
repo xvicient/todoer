@@ -4,7 +4,7 @@ import FirebaseFirestoreSwift
 
 @MainActor
 final class ProductsViewModel: ItemsViewModel {
-    private var list: List
+    private var list: Todo
     let listName: String
     @Published var items: [any ItemModel] = []
     internal var options: (any ItemModel) -> [ItemOption] {
@@ -18,7 +18,7 @@ final class ProductsViewModel: ItemsViewModel {
     private let productsRepository: ProductsRepositoryApi
     private let listsRepository: ListsRepositoryApi
     
-    init(list: List,
+    init(list: Todo,
          productsRepository: ProductsRepositoryApi = ProductsRepository(),
          listsRepository: ListsRepositoryApi = ListsRepository()) {
         self.list = list

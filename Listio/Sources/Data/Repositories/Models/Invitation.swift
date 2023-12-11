@@ -14,11 +14,11 @@ struct Invitation: Identifiable, Equatable, Hashable {
 extension InvitationDTO {
     var toDomain: Invitation {
         Invitation(documentId: id ?? "",
-                        ownerName: ownerName,
-                        ownerEmail: ownerEmail,
-                        listId: listId,
-                        listName: listName,
-                        invitedId: invitedId,
-                        dateCreated: dateCreated)
+                   ownerName: ownerName,
+                   ownerEmail: ownerEmail,
+                   listId: listId,
+                   listName: listName,
+                   invitedId: invitedId,
+                   dateCreated: dateCreated)
     }
 }

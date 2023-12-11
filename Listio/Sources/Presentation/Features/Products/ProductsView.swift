@@ -33,10 +33,10 @@ struct ProductsView: View {
 
 #Preview {
     ProductsView(viewModel: ProductsViewModel(
-        list: List(documentId: "",
-                        name: "",
-                        done: false,
-                        uuid: [],
-                        dateCreated: 0),
+        list: Todo(documentId: "",
+                   name: "",
+                   done: false,
+                   uuid: [],
+                   dateCreated: 0),
         productsRepository: ProductsRepository()))
 }

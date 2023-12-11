@@ -7,7 +7,7 @@ struct AuthDataDTO {
     let photoUrl: String?
     let isAnonymous: Bool
     
-    init(user: User) {
+    init(user: FirebaseAuth.User) {
         self.uid = user.uid
         self.email = user.email
         self.photoUrl = user.photoURL?.absoluteString

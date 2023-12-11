@@ -12,9 +12,9 @@ struct User: Identifiable, Equatable, Hashable {
 extension UserDTO {
     var toDomain: User {
         User(documentId: id ?? "",
-                  uuid: uuid,
-                  email: email,
-                  displayName: displayName,
-                  photoUrl: photoUrl)
+             uuid: uuid,
+             email: email,
+             displayName: displayName,
+             photoUrl: photoUrl)
     }
 }
