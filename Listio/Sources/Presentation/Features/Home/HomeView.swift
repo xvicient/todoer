@@ -21,7 +21,7 @@ struct HomeView: View {
                     todosSection
                 }
                 VStack {
-                    addTodoButton
+                    addListButton
                     addListTextField
                 }
             }
@@ -33,7 +33,7 @@ struct HomeView: View {
                 ProgressView()
             }
         }
-        .navigationTitle("\(Constants.Title.welcome)")
+        .navigationTitle("\(Constants.Title.title)")
         .navigationBarItems(
             trailing: navigationBarItems
         )
@@ -76,17 +76,16 @@ private extension HomeView {
                 ForEach(viewModel.invitations) { invitation in
                     HStack {
                         VStack(alignment: .leading, content: {
-                            Text("\(Constants.Title.from) \(invitation.listName)")
-                            Text("\(Constants.Title.to) \(invitation.ownerName) (\(invitation.ownerEmail))")
+                            Text("\(invitation.ownerName) (\(invitation.ownerEmail)) \n \(Constants.Title.wantsToShare) \(invitation.listName)")
                         })
                         Spacer()
-                        Text("\(Constants.Title.pending)")
+                        Button("\(Constants.Title.accept)") {
+                            viewModel.importList(listId: invitation.listId,
+                                                 invitationId: invitation.documentId)
+                        }
+                        .foregroundColor(.buttonPrimary)
                     }
                     .background()
-                    .onTapGesture {
-                        viewModel.importList(listId: invitation.listId,
-                                             invitationId: invitation.documentId)
-                    }
                 }
             }
         }
@@ -118,7 +117,7 @@ private extension HomeView {
     }
     
     @ViewBuilder
-    var addTodoButton: some View {
+    var addListButton: some View {
         if viewModel.isShowingAddButton {
             Spacer()
             Button(action: {
@@ -177,12 +176,11 @@ private extension HomeView {
 private extension HomeView {
     struct Constants {
         struct Title {
-            static let welcome = "Welcome"
+            static let title = "Todoo"
             static let invitations = "Invitations"
             static let todoos = "Todoos"
-            static let from = "From:"
-            static let to = "To:"
-            static let pending = "Pending"
+            static let wantsToShare = "wants to share"
+            static let accept = "Accept"
             static let shareTo = "Share to"
             static let email = "Email..."
             static let share = "Share"
@@ -218,6 +216,5 @@ private extension HomeView {
 }
 
 #Preview {
-    HomeView(viewModel: HomeViewModel(
-        listsRepository: ListsRepository()))
+    HomeView(viewModel: HomeViewModel())
 }

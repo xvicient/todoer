@@ -116,23 +116,24 @@ struct OptionsView: View {
     }
 }
 
-//#Preview {
-//    class ViewModel: ItemsViewModel {
-//        var items: [any ItemModel] = [ListModel(documentId: "",
-//                                                name: "Test",
-//                                                done: true,
-//                                                uuid: [],
-//                                                dateCreated: 0),
-//                                      ListModel(documentId: "",
-//                                                name: "Test2",
-//                                                done: false,
-//                                                uuid: [],
-//                                                dateCreated: 1)]
-//        
-//        var options: (any ItemModel) -> [ItemOption] = { _ in
-//            [ItemOption(type: .share,
-//                        action: { _, _ in })]
-//        }
-//    }
-//    return ItemsView(viewModel: ViewModel())
-//}
+#Preview {
+    class ViewModel: ItemsRowViewModel {
+        var items: [any ItemRowModel] = [List(documentId: "",
+                                              name: "Test",
+                                              done: true,
+                                              uuid: [],
+                                              dateCreated: 0),
+                                         List(documentId: "",
+                                              name: "Test2",
+                                              done: false,
+                                              uuid: [],
+                                              dateCreated: 1)]
+        
+        var options: (any ItemRowModel) -> [ItemRowOption] = {
+            [.share,
+             $0.done ? .undone : .done,
+             .delete]
+        }
+    }
+    return ItemsRowView(viewModel: ViewModel())
+}
