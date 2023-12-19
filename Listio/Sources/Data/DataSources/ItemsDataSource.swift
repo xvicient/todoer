@@ -1,42 +1,42 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-protocol ProductsDataSourceApi {
-    func fetchProducts(
+protocol ItemsDataSourceApi {
+    func fetchItems(
         listId: String,
-        completion: @escaping (Result<[ProductDTO], Error>) -> Void
+        completion: @escaping (Result<[ItemDTO], Error>) -> Void
     )
-    func addProduct(
+    func addItem(
         with name: String,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
-    func deleteProduct(
+    func deleteItem(
         _ documentId: String?,
         listId: String
     )
-    func toggleProduct(
-        _ product: ProductDTO,
+    func toggleItem(
+        _ item: ItemDTO,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
-    func toogleAllProductsBatch(
+    func toogleAllItemsBatch(
         listId: String?,
         done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     )
 }
 
-final class ProductsDataSource: ProductsDataSourceApi {
-    private func productsCollection(listId: String) -> CollectionReference {
-        Firestore.firestore().collection("lists").document(listId).collection("products")
+final class ItemsDataSource: ItemsDataSourceApi {
+    private func itemsCollection(listId: String) -> CollectionReference {
+        Firestore.firestore().collection("lists").document(listId).collection("items")
     }
     
-    func fetchProducts(
+    func fetchItems(
         listId: String,
-        completion: @escaping (Result<[ProductDTO], Error>) -> Void
+        completion: @escaping (Result<[ItemDTO], Error>) -> Void
     ) {
-        productsCollection(listId: listId)
+        itemsCollection(listId: listId)
             .addSnapshotListener { query, error in
                 if let error = error {
                     completion(.failure(error))
@@ -44,20 +44,20 @@ final class ProductsDataSource: ProductsDataSourceApi {
                 }
                 
                 let products = query?.documents
-                    .compactMap { try? $0.data(as: ProductDTO.self) }
+                    .compactMap { try? $0.data(as: ItemDTO.self) }
                 ?? []
                 completion(.success(products))
             }
     }
     
-    func addProduct(
+    func addItem(
         with name: String,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         do {
-            let collection = productsCollection(listId: listId)
-            _ = try collection.addDocument(from: ProductDTO(name: name,
+            let collection = itemsCollection(listId: listId)
+            _ = try collection.addDocument(from: ItemDTO(name: name,
                                                             done: false,
                                                             dateCreated: Date().milliseconds))
             completion(.success(Void()))
@@ -66,23 +66,23 @@ final class ProductsDataSource: ProductsDataSourceApi {
         }
     }
     
-    func deleteProduct(
+    func deleteItem(
         _ documentId: String?,
         listId: String
     ) {
         guard let id = documentId else { return }
-        productsCollection(listId: listId).document(id).delete()
+        itemsCollection(listId: listId).document(id).delete()
     }
     
-    func toggleProduct(
-        _ product: ProductDTO,
+    func toggleItem(
+        _ item: ItemDTO,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        guard let id = product.id,
-        let encodedData = try? Firestore.Encoder().encode(product) else { return }
+        guard let id = item.id,
+        let encodedData = try? Firestore.Encoder().encode(item) else { return }
         
-        productsCollection(listId: listId).document(id).updateData(encodedData) { error in
+        itemsCollection(listId: listId).document(id).updateData(encodedData) { error in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -91,13 +91,13 @@ final class ProductsDataSource: ProductsDataSourceApi {
         }
     }
     
-    func toogleAllProductsBatch(
+    func toogleAllItemsBatch(
         listId: String?,
         done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         guard let listId = listId else { return }
-        let collection = productsCollection(listId: listId)
+        let collection = itemsCollection(listId: listId)
         
         collection.getDocuments { query, error in
             if let error = error {
@@ -109,7 +109,7 @@ final class ProductsDataSource: ProductsDataSourceApi {
             
             query?.documents
                 .forEach {
-                    guard var dto = try? $0.data(as: ProductDTO.self) else { return }
+                    guard var dto = try? $0.data(as: ItemDTO.self) else { return }
                     dto.done = done
                     
                     if let encodedData = try? Firestore.Encoder().encode(dto) {

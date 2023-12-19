@@ -9,7 +9,7 @@ struct ListDTO: Identifiable, Codable, Hashable {
     let dateCreated: Int
 }
 
-extension Todo {
+extension List {
     var toDTO: ListDTO {
         ListDTO(id: documentId,
                 name: name, 

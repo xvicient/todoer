@@ -1,43 +1,43 @@
 import UIKit
 
-protocol ProductsRepositoryApi {
-    func fetchProducts(
+protocol ItemsRepositoryApi {
+    func fetchItems(
         listId: String,
-        completion: @escaping (Result<[Product], Error>) -> Void
+        completion: @escaping (Result<[Item], Error>) -> Void
     )
-    func addProduct(
+    func addItem(
         with name: String,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
-    func deleteProduct(
+    func deleteItem(
         _ documentId: String?,
         listId: String
     )
-    func toggleProduct(
-        _ product: Product,
+    func toggleItem(
+        _ item: Item,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
-    func toogleAllProductsBatch(
+    func toogleAllItemsBatch(
         listId: String?,
         done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     )
 }
 
-final class ProductsRepository: ProductsRepositoryApi {
-    private let producstDataSource: ProductsDataSourceApi
+final class ItemsRepository: ItemsRepositoryApi {
+    private let producstDataSource: ItemsDataSourceApi
     
-    init(producstDataSource: ProductsDataSourceApi = ProductsDataSource()) {
+    init(producstDataSource: ItemsDataSourceApi = ItemsDataSource()) {
         self.producstDataSource = producstDataSource
     }
     
-    func fetchProducts(
+    func fetchItems(
         listId: String,
-        completion: @escaping (Result<[Product], Error>) -> Void
+        completion: @escaping (Result<[Item], Error>) -> Void
     ) {
-        producstDataSource.fetchProducts(listId: listId) { result in
+        producstDataSource.fetchItems(listId: listId) { result in
             switch result {
             case .success(let dto):
                 completion(.success(
@@ -51,40 +51,40 @@ final class ProductsRepository: ProductsRepositoryApi {
         }
     }
     
-    func addProduct(
+    func addItem(
         with name: String,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        producstDataSource.addProduct(with: name,
+        producstDataSource.addItem(with: name,
                                       listId: listId,
                                       completion: completion)
     }
     
-    func deleteProduct(
+    func deleteItem(
         _ documentId: String?,
         listId: String
     ) {
-        producstDataSource.deleteProduct(documentId,
+        producstDataSource.deleteItem(documentId,
                                          listId: listId)
     }
     
-    func toggleProduct(
-        _ product: Product,
+    func toggleItem(
+        _ item: Item,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        producstDataSource.toggleProduct(product.toDTO,
+        producstDataSource.toggleItem(item.toDTO,
                                          listId: listId,
                                          completion: completion)
     }
     
-    func toogleAllProductsBatch(
+    func toogleAllItemsBatch(
         listId: String?,
         done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        producstDataSource.toogleAllProductsBatch(listId: listId,
+        producstDataSource.toogleAllItemsBatch(listId: listId,
                                                   done: done,
                                                   completion: completion)
     }

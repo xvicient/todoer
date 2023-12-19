@@ -1,19 +1,19 @@
 import SwiftUI
 
 @MainActor
-protocol ItemsViewModel: ObservableObject {
-    var items: [any ItemModel] { get }
-    var options: (any ItemModel) -> [ItemOption] { get }
+protocol ItemsRowViewModel: ObservableObject {
+    var items: [any ItemRowModel] { get }
+    var options: (any ItemRowModel) -> [ItemRowOption] { get }
 }
 
-protocol ItemModel: Identifiable, Equatable, Hashable {
+protocol ItemRowModel: Identifiable, Equatable, Hashable {
     var id: UUID { get }
     var documentId: String { get }
     var name: String { get }
     var done: Bool { get }
 }
 
-enum ItemOption: String, Identifiable {
+enum ItemRowOption: String, Identifiable {
     case share = "Share"
     case done = "Done"
     case undone = "Undone"
@@ -31,10 +31,10 @@ enum ItemOption: String, Identifiable {
     }
 }
 
-struct ItemsView<ViewModel>: View where ViewModel: ItemsViewModel {
+struct ItemsRowView<ViewModel>: View where ViewModel: ItemsRowViewModel {
     @StateObject var viewModel: ViewModel
-    var mainAction: ((any ItemModel) -> Void)? = nil
-    var optionsAction: ((any ItemModel, ItemOption) -> Void)? = nil
+    var mainAction: ((any ItemRowModel) -> Void)? = nil
+    var optionsAction: ((any ItemRowModel, ItemRowOption) -> Void)? = nil
     @State private var isShowingOptions = false
     
     var body: some View {
@@ -76,7 +76,7 @@ struct ItemsView<ViewModel>: View where ViewModel: ItemsViewModel {
     }
 }
 
-private extension ItemsView {
+private extension ItemsRowView {
     func removeRows(at offsets: IndexSet) {
         print("")
     }
@@ -84,9 +84,9 @@ private extension ItemsView {
 
 struct OptionsView: View {
     @State var isShowingOptions = false
-    var item: any ItemModel
-    var options: [ItemOption]
-    var action: ((any ItemModel, ItemOption) -> Void)?
+    var item: any ItemRowModel
+    var options: [ItemRowOption]
+    var action: ((any ItemRowModel, ItemRowOption) -> Void)?
     
     var body: some View {
         Button(action: {

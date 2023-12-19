@@ -1,6 +1,6 @@
 protocol ListsRepositoryApi {
     func fetchLists(
-        completion: @escaping (Result<[Todo], Error>) -> Void
+        completion: @escaping (Result<[List], Error>) -> Void
     )
     func addList(
         with name: String,
@@ -10,7 +10,7 @@ protocol ListsRepositoryApi {
         _ documentId: String?
     )    
     func toggleList(
-        _ list: Todo,
+        _ list: List,
         completion: @escaping (Result<Void, Error>) -> Void
     )
     func importList(
@@ -22,17 +22,17 @@ protocol ListsRepositoryApi {
 final class ListsRepository: ListsRepositoryApi {
     let listsDataSource: ListsDataSourceApi
     let usersDataSource: UsersDataSourceApi
-    let productsDataSource: ProductsDataSourceApi
+    let itemsDataSource: ItemsDataSourceApi
     
     init(listsDataSource: ListsDataSourceApi = ListsDataSource(),
          usersDataSource: UsersDataSourceApi = UsersDataSource(),
-         productsDataSource: ProductsDataSourceApi = ProductsDataSource()) {
+         itemsDataSource: ItemsDataSourceApi = ItemsDataSource()) {
         self.listsDataSource = listsDataSource
         self.usersDataSource = usersDataSource
-        self.productsDataSource = productsDataSource
+        self.itemsDataSource = itemsDataSource
     }
     
-    func fetchLists(completion: @escaping (Result<[Todo], Error>) -> Void) {
+    func fetchLists(completion: @escaping (Result<[List], Error>) -> Void) {
         listsDataSource.fetchLists(
             uuid: usersDataSource.uuid) { result in
                 switch result {
@@ -65,7 +65,7 @@ final class ListsRepository: ListsRepositoryApi {
     }
     
     func toggleList(
-        _ list: Todo,
+        _ list: List,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         listsDataSource.toggleList(list.toDTO, completion: completion)

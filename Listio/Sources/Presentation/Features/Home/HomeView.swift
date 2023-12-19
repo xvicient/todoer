@@ -16,7 +16,7 @@ struct HomeView: View {
             Color.white
                 .ignoresSafeArea()
             ZStack {
-                List {
+                SwiftUI.List {
                     invitationsSection
                     todosSection
                 }
@@ -99,7 +99,7 @@ private extension HomeView {
                 Text(Constants.Title.todoos)
                 .foregroundColor(.buttonPrimary)
         ) {
-            ItemsView(viewModel: viewModel,
+            ItemsRowView(viewModel: viewModel,
                       mainAction: itemViewMainAction,
                       optionsAction: itemViewOptionsAction)
             .alert("\(Constants.Title.shareTo)", isPresented: $viewModel.isShowingAlert) {
@@ -203,14 +203,14 @@ private extension HomeView {
             ]
     }
     
-    var itemViewMainAction: (any ItemModel) -> Void {
+    var itemViewMainAction: (any ItemRowModel) -> Void {
         {
-            guard let list = $0 as? Todo else { return }
+            guard let list = $0 as? List else { return }
             coordinator.push(.products(list))
         }
     }
     
-    var itemViewOptionsAction: (any ItemModel, ItemOption) -> Void {
+    var itemViewOptionsAction: (any ItemRowModel, ItemRowOption) -> Void {
         { item, option in
             viewModel.onDidTapOption(item, option)
         }

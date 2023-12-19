@@ -1,15 +1,15 @@
 import SwiftUI
 
-struct ProductsView: View {
-    @StateObject var viewModel: ProductsViewModel
+struct ListItemsView: View {
+    @StateObject var viewModel: ListItemsViewModel
     
     var body: some View {
         ZStack {
             Color.white
                 .ignoresSafeArea()
             VStack {
-                List {
-                    ItemsView(viewModel: viewModel,
+                SwiftUI.List {
+                    ItemsRowView(viewModel: viewModel,
                               optionsAction: viewModel.onDidTapOption)
                     
                 }
@@ -32,11 +32,11 @@ struct ProductsView: View {
 }
 
 #Preview {
-    ProductsView(viewModel: ProductsViewModel(
-        list: Todo(documentId: "",
+    ListItemsView(viewModel: ListItemsViewModel(
+        list: List(documentId: "",
                    name: "",
                    done: false,
                    uuid: [],
                    dateCreated: 0),
-        productsRepository: ProductsRepository()))
+        productsRepository: ItemsRepository()))
 }

@@ -5,7 +5,7 @@ import FirebaseFirestoreSwift
 
 protocol HomeViewModelApi {
     func fetchData()
-    var onDidTapOption: ((any ItemModel, ItemOption) -> Void) { get }
+    var onDidTapOption: ((any ItemRowModel, ItemRowOption) -> Void) { get }
     func shareList() async
     func cancelShare()
     func importList(
@@ -18,10 +18,10 @@ protocol HomeViewModelApi {
 // MARK: - HomeViewModel
 
 @MainActor
-final class HomeViewModel: ItemsViewModel {
+final class HomeViewModel: ItemsRowViewModel {
     @Published var invitations: [Invitation] = []
-    @Published var items: [any ItemModel] = []
-    internal var options: (any ItemModel) -> [ItemOption] {
+    @Published var items: [any ItemRowModel] = []
+    internal var options: (any ItemRowModel) -> [ItemRowOption] {
         {
             [.share,
              $0.done ? .undone : .done,
@@ -36,15 +36,15 @@ final class HomeViewModel: ItemsViewModel {
     @Published var isShowingAddButton: Bool = true
     @Published var isShowingAddTextField: Bool = false
     
-    private var sharingList: Todo?
+    private var sharingList: List?
     
     private let listsRepository: ListsRepositoryApi
-    private let productsRepository: ProductsRepositoryApi
+    private let productsRepository: ItemsRepositoryApi
     private let invitationsRepository: InvitationsRepositoryApi
     private let usersDataRepository: UsersRepositoryApi
     
     init(listsRepository: ListsRepositoryApi = ListsRepository(),
-         productsRepository: ProductsRepositoryApi = ProductsRepository(),
+         productsRepository: ItemsRepositoryApi = ItemsRepository(),
          invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
          usersDataRepository: UsersRepositoryApi = UsersRepository()) {
         self.listsRepository = listsRepository
@@ -80,7 +80,7 @@ extension HomeViewModel: HomeViewModelApi {
         )
     }
     
-    var onDidTapOption: ((any ItemModel, ItemOption) -> Void) {
+    var onDidTapOption: ((any ItemRowModel, ItemRowOption) -> Void) {
         { [weak self] item, option in
             guard let self = self else { return }
             switch option {
@@ -187,20 +187,20 @@ private extension HomeViewModel {
         }
     }
     
-    func showShareDialog(_ item: any ItemModel) {
-        guard let list = item as? Todo else { return }
+    func showShareDialog(_ item: any ItemRowModel) {
+        guard let list = item as? List else { return }
         sharingList = list
         isShowingAlert = true
     }
     
-    func toggleList(_ item: any ItemModel) {
-        guard var list = item as? Todo else { return }
+    func toggleList(_ item: any ItemRowModel) {
+        guard var list = item as? List else { return }
         
         list.done.toggle()
         listsRepository.toggleList(list) { [weak self] result in
             switch result {
             case .success:
-                self?.productsRepository.toogleAllProductsBatch(
+                self?.productsRepository.toogleAllItemsBatch(
                     listId: list.documentId,
                     done: list.done,
                     completion: { _ in})
@@ -210,9 +210,9 @@ private extension HomeViewModel {
         }
     }
     
-    func deleteList(_ item: any ItemModel) {
+    func deleteList(_ item: any ItemRowModel) {
         listsRepository.deleteList(item.documentId)
     }
 }
 
-extension Todo: ItemModel {}
+extension List: ItemRowModel {}
