@@ -70,7 +70,8 @@ class Coordinator: ObservableObject {
         case .authentication:
             AuthenticationBuilder.makeAuthentication()
         case .home:
-            HomeBuilder.makeHome()
+//            HomeBuilder.makeHome()
+            AuthenticationBuilder.makeAuthentication()
         case let .products(list):
             ListItemsBuilder.makeProductList(list: list)
         }
