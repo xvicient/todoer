@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 extension Authentication {
     typealias Store = Listio.Store<State, Action, Dependencies>
@@ -22,19 +21,23 @@ extension Authentication {
         state: inout State,
         action: Action,
         dependencies: Dependencies
-    ) -> AnyPublisher<Action, Never> {
+    ) -> Task<Action, Never>? {
         switch action {
         case .didTapSignInButton:
             state.isLoading = true
-            return dependencies.useCase.signIn()
-                .map { .signInSucceed }
-                .catch { _ in Just(.signInError) }
-                .eraseToAnyPublisher()
-
+            return Task {
+                do {
+                    try await dependencies.useCase.signIn()
+                    return .signInSucceed
+                } catch {
+                    return .signInError
+                }
+            }
+            
         case .signInSucceed, .signInError:
             state.isLoading = false
         }
         
-        return Empty().eraseToAnyPublisher()
+        return nil
     }
 }

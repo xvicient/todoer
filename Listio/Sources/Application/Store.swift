@@ -1,15 +1,13 @@
 import Foundation
-import Combine
 
 typealias Reducer<State, Action, Dependencies> =
-    (inout State, Action, Dependencies) -> AnyPublisher<Action, Never>?
+    (inout State, Action, Dependencies) -> Task<Action, Never>?
 
 final class Store<State, Action, Dependencies>: ObservableObject {
     @Published private(set) var state: State
 
     private let dependencies: Dependencies
     private let reducer: Reducer<State, Action, Dependencies>
-    private var effectCancellables: Set<AnyCancellable> = []
 
     init(
         initialState: State,
@@ -21,14 +19,11 @@ final class Store<State, Action, Dependencies>: ObservableObject {
         self.dependencies = dependencies
     }
 
-    func send(_ action: Action) {
+    func send(_ action: Action) async {
         guard let effect = reducer(&state, action, dependencies) else {
             return
         }
-
-        effect
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: send)
-            .store(in: &effectCancellables)
+        
+        await send(effect.value)
     }
 }

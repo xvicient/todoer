@@ -1,5 +1,3 @@
-import Combine
-
 extension Authentication {
     struct UseCase {
         private enum Errors: Error {
@@ -14,29 +12,20 @@ extension Authentication {
             self.googleService = googleService
         }
         
-        func signIn() -> AnyPublisher<Void, Error> {
-            Future { promise in
-                Task {
-                    do {
-                        let authData = try await googleService.signIn()
-                        
-                        usersRepository.createUser(with: authData.uid,
-                                                   email: authData.email,
-                                                   displayName: authData.displayName)
-                        { result in
-                            switch result {
-                            case .success:
-                                promise(.success(()))
-                            case .failure:
-                                promise(.failure(Errors.signInError))
-                            }
-                        }
-                    } catch {
-                        promise(.failure(Errors.signInError))
-                    }
+        func signIn() async throws {
+            let authData = try await googleService.signIn()
+            
+            usersRepository.createUser(with: authData.uid,
+                                       email: authData.email,
+                                       displayName: authData.displayName)
+            { result in
+                switch result {
+                case .success:
+                    break
+                case .failure:
+                    break
                 }
             }
-            .eraseToAnyPublisher()
         }
     }
 }
