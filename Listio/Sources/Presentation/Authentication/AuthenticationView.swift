@@ -3,33 +3,28 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 struct AuthenticationView: View {
+    @EnvironmentObject private var store: Authentication.Store
     @EnvironmentObject private var coordinator: Coordinator
-    @StateObject var viewModel:AuthenticationViewModel
     
     var body: some View {
-        GoogleSignInButton(
-            viewModel: GoogleSignInButtonViewModel(
-                scheme: .light,
-                style: .standard,
-                state: .normal
-            )
-        ) {
-            Task {
-                do {
-                    try await viewModel.signInGoogle()
-                    coordinator.push(.home)
-                } catch {
-                    print(error)
-                }
+        ZStack {
+            GoogleSignInButton(
+                viewModel: GoogleSignInButtonViewModel(
+                    scheme: .light,
+                    style: .standard,
+                    state: .normal
+                )
+            ) {
+                store.send(.didTapSignInButton)
+            }
+            
+            if store.state.isLoading {
+                ProgressView()
             }
         }
     }
 }
 
 #Preview {
-    AuthenticationView(
-        viewModel: AuthenticationViewModel(
-            usersRepository: UsersRepository()
-        )
-    )
+    Authentication.Builder.makeAuthentication()
 }

@@ -1,14 +1,19 @@
 import SwiftUI
 
-struct AuthenticationBuilder {
-    @MainActor
-    static func makeAuthentication(
-        usersRepository: UsersRepositoryApi = UsersRepository()
-    ) -> AuthenticationView {
-        AuthenticationView(
-            viewModel: AuthenticationViewModel(
-                usersRepository: usersRepository
-            )
-        )
+struct Authentication {
+    struct Builder {
+        @MainActor
+        static func makeAuthentication(
+            usersRepository: UsersRepositoryApi = UsersRepository()
+        ) -> some View {
+            AuthenticationView()
+                .environmentObject(
+                    Store(
+                        initialState: .init(),
+                        reducer: reducer,
+                        dependencies: Dependencies()
+                    )
+                )
+        }
     }
 }

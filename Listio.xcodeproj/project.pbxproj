@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C7390FB62B32E42700E49A68 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB52B32E42700E49A68 /* Store.swift */; };
+		C7390FB82B32E44800E49A68 /* AuthenticationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB72B32E44800E49A68 /* AuthenticationStore.swift */; };
+		C7390FBC2B32ED4F00E49A68 /* AuthenticationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */; };
 		C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */; };
 		C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */; };
 		C75B4AC92B1DD7A9007CCA48 /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */; };
@@ -37,7 +40,6 @@
 		C79CB2C32B13F3E800C2BD18 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2C22B13F3E800C2BD18 /* FirebaseAuth */; };
 		C79CB2C52B13F3E800C2BD18 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2C42B13F3E800C2BD18 /* FirebaseAuthCombine-Community */; };
 		C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */; };
-		C79CB2CB2B13FB8D00C2BD18 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2CA2B13FB8D00C2BD18 /* AuthenticationViewModel.swift */; };
 		C79CB2D22B13FDFF00C2BD18 /* GoogleSignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D12B13FDFF00C2BD18 /* GoogleSignInService.swift */; };
 		C79CB2D52B13FEA200C2BD18 /* Utils+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D42B13FEA200C2BD18 /* Utils+TopViewController.swift */; };
 		C79CB2D72B154C2600C2BD18 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D62B154C2600C2BD18 /* AuthenticationService.swift */; };
@@ -47,7 +49,6 @@
 		C79CB2E22B16329800C2BD18 /* UsersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E12B16329800C2BD18 /* UsersRepository.swift */; };
 		C79CB2E42B16330800C2BD18 /* AuthenticationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */; };
 		C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E52B163BAA00C2BD18 /* AppSetting.swift */; };
-		C79CB2EC2B16A39900C2BD18 /* CoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2EB2B16A39900C2BD18 /* CoordinatorView.swift */; };
 		C79CB2EE2B16A3AD00C2BD18 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */; };
 		C79CB2F22B177FBC00C2BD18 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F12B177FBC00C2BD18 /* TextFieldStyle.swift */; };
 		C79CB2F42B17DCB000C2BD18 /* Date+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F32B17DCB000C2BD18 /* Date+Utils.swift */; };
@@ -80,6 +81,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C7390FB52B32E42700E49A68 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		C7390FB72B32E44800E49A68 /* AuthenticationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationStore.swift; sourceTree = "<group>"; };
+		C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCase.swift; sourceTree = "<group>"; };
 		C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsRepository.swift; sourceTree = "<group>"; };
 		C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDTO.swift; sourceTree = "<group>"; };
 		C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
@@ -107,7 +111,6 @@
 		C79CB2B22B13AA4400C2BD18 /* ItemsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsRowView.swift; sourceTree = "<group>"; };
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
-		C79CB2CA2B13FB8D00C2BD18 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		C79CB2D12B13FDFF00C2BD18 /* GoogleSignInService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInService.swift; sourceTree = "<group>"; };
 		C79CB2D42B13FEA200C2BD18 /* Utils+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utils+TopViewController.swift"; sourceTree = "<group>"; };
 		C79CB2D62B154C2600C2BD18 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
@@ -117,7 +120,6 @@
 		C79CB2E12B16329800C2BD18 /* UsersRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersRepository.swift; sourceTree = "<group>"; };
 		C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationBuilder.swift; sourceTree = "<group>"; };
 		C79CB2E52B163BAA00C2BD18 /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
-		C79CB2EB2B16A39900C2BD18 /* CoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorView.swift; sourceTree = "<group>"; };
 		C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		C79CB2F12B177FBC00C2BD18 /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
 		C79CB2F32B17DCB000C2BD18 /* Date+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utils.swift"; sourceTree = "<group>"; };
@@ -164,15 +166,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C7390FA82B31F41900E49A68 /* Coordinator */ = {
-			isa = PBXGroup;
-			children = (
-				C79CB2EB2B16A39900C2BD18 /* CoordinatorView.swift */,
-				C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */,
-			);
-			path = Coordinator;
-			sourceTree = "<group>";
-		};
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,8 +213,9 @@
 		C79CB27A2B0D537A00C2BD18 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				C7390FA82B31F41900E49A68 /* Coordinator */,
 				C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */,
+				C7390FB52B32E42700E49A68 /* Store.swift */,
+				C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -280,8 +274,9 @@
 			isa = PBXGroup;
 			children = (
 				C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */,
-				C79CB2CA2B13FB8D00C2BD18 /* AuthenticationViewModel.swift */,
 				C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */,
+				C7390FB72B32E44800E49A68 /* AuthenticationStore.swift */,
+				C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -560,6 +555,7 @@
 				C79CB2D22B13FDFF00C2BD18 /* GoogleSignInService.swift in Sources */,
 				C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* ListioApp.swift in Sources */,
+				C7390FBC2B32ED4F00E49A68 /* AuthenticationUseCase.swift in Sources */,
 				C79CB28D2B0D537A00C2BD18 /* ItemsRepository.swift in Sources */,
 				C79CB2F72B17E3C200C2BD18 /* List.swift in Sources */,
 				C79CB2972B0D537A00C2BD18 /* ListItemsView.swift in Sources */,
@@ -568,10 +564,8 @@
 				C79CB2992B0D537A00C2BD18 /* ListItemsViewModel.swift in Sources */,
 				C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */,
 				C79CB2F22B177FBC00C2BD18 /* TextFieldStyle.swift in Sources */,
-				C79CB2CB2B13FB8D00C2BD18 /* AuthenticationViewModel.swift in Sources */,
 				C79CB2D72B154C2600C2BD18 /* AuthenticationService.swift in Sources */,
 				C79CB28C2B0D537A00C2BD18 /* ItemsDataSource.swift in Sources */,
-				C79CB2EC2B16A39900C2BD18 /* CoordinatorView.swift in Sources */,
 				C79CB2952B0D537A00C2BD18 /* HomeBuilder.swift in Sources */,
 				C79CB2EE2B16A3AD00C2BD18 /* Coordinator.swift in Sources */,
 				C79CB2D52B13FEA200C2BD18 /* Utils+TopViewController.swift in Sources */,
@@ -582,6 +576,7 @@
 				C79CB28E2B0D537A00C2BD18 /* ListsDataSource.swift in Sources */,
 				C79CB2902B0D537A00C2BD18 /* ListsRepository.swift in Sources */,
 				C79CB2F42B17DCB000C2BD18 /* Date+Utils.swift in Sources */,
+				C7390FB82B32E44800E49A68 /* AuthenticationStore.swift in Sources */,
 				C79CB28B2B0D537A00C2BD18 /* ItemDTO.swift in Sources */,
 				C75B4ACD2B1E73DA007CCA48 /* DispatchGroup+Execute.swift in Sources */,
 				C79CB2E42B16330800C2BD18 /* AuthenticationBuilder.swift in Sources */,
@@ -590,6 +585,7 @@
 				C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */,
 				C75B4ACB2B1DD8D1007CCA48 /* InvitationsDataSource.swift in Sources */,
 				C79CB2F92B17E56A00C2BD18 /* Item.swift in Sources */,
+				C7390FB62B32E42700E49A68 /* Store.swift in Sources */,
 				C79CB2912B0D537A00C2BD18 /* Collection+Utils.swift in Sources */,
 				C79CB2DE2B162DB100C2BD18 /* UserDTO.swift in Sources */,
 				C79CB2E22B16329800C2BD18 /* UsersRepository.swift in Sources */,
