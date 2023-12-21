@@ -6,7 +6,7 @@ public final class AuthenticationService {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)
         }
-        
+
         return AuthDataDTO(user: user)
     }
     

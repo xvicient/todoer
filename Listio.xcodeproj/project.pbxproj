@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		C7390FB62B32E42700E49A68 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB52B32E42700E49A68 /* Store.swift */; };
-		C7390FB82B32E44800E49A68 /* AuthenticationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB72B32E44800E49A68 /* AuthenticationStore.swift */; };
+		C7390FB82B32E44800E49A68 /* AuthenticationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */; };
 		C7390FBC2B32ED4F00E49A68 /* AuthenticationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */; };
+		C7390FBE2B34C9F500E49A68 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FBD2B34C9F500E49A68 /* Reducer.swift */; };
 		C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */; };
 		C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */; };
 		C75B4AC92B1DD7A9007CCA48 /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */; };
@@ -82,8 +83,9 @@
 
 /* Begin PBXFileReference section */
 		C7390FB52B32E42700E49A68 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		C7390FB72B32E44800E49A68 /* AuthenticationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationStore.swift; sourceTree = "<group>"; };
+		C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducer.swift; sourceTree = "<group>"; };
 		C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCase.swift; sourceTree = "<group>"; };
+		C7390FBD2B34C9F500E49A68 /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
 		C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsRepository.swift; sourceTree = "<group>"; };
 		C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDTO.swift; sourceTree = "<group>"; };
 		C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */,
 				C7390FB52B32E42700E49A68 /* Store.swift */,
 				C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */,
+				C7390FBD2B34C9F500E49A68 /* Reducer.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -275,7 +278,7 @@
 			children = (
 				C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */,
 				C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */,
-				C7390FB72B32E44800E49A68 /* AuthenticationStore.swift */,
+				C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */,
 				C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */,
 			);
 			path = Authentication;
@@ -570,13 +573,14 @@
 				C79CB2EE2B16A3AD00C2BD18 /* Coordinator.swift in Sources */,
 				C79CB2D52B13FEA200C2BD18 /* Utils+TopViewController.swift in Sources */,
 				C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */,
+				C7390FBE2B34C9F500E49A68 /* Reducer.swift in Sources */,
 				C75B4ACF2B1F70E6007CCA48 /* User.swift in Sources */,
 				C79CB2B32B13AA4400C2BD18 /* ItemsRowView.swift in Sources */,
 				C79CB2942B0D537A00C2BD18 /* HomeView.swift in Sources */,
 				C79CB28E2B0D537A00C2BD18 /* ListsDataSource.swift in Sources */,
 				C79CB2902B0D537A00C2BD18 /* ListsRepository.swift in Sources */,
 				C79CB2F42B17DCB000C2BD18 /* Date+Utils.swift in Sources */,
-				C7390FB82B32E44800E49A68 /* AuthenticationStore.swift in Sources */,
+				C7390FB82B32E44800E49A68 /* AuthenticationReducer.swift in Sources */,
 				C79CB28B2B0D537A00C2BD18 /* ItemDTO.swift in Sources */,
 				C75B4ACD2B1E73DA007CCA48 /* DispatchGroup+Execute.swift in Sources */,
 				C79CB2E42B16330800C2BD18 /* AuthenticationBuilder.swift in Sources */,

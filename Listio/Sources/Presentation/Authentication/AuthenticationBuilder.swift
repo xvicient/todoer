@@ -11,9 +11,10 @@ struct Authentication {
                 .environmentObject(
                     Store(
                         initialState: .init(),
-                        reducer: reducer,
-                        dependencies: Dependencies(),
-                        coordinator: coordinator
+                        reducer: Authentication.Reducer(
+                            coordinator: coordinator,
+                            useCase: Authentication.UseCase()
+                        )
                     )
                 )
         }

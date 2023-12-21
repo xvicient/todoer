@@ -3,7 +3,7 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 struct AuthenticationView: View {
-    @EnvironmentObject private var store: Authentication.Store
+    @EnvironmentObject private var store: Store<Authentication.Reducer>
     @EnvironmentObject private var coordinator: Coordinator
     
     init() {
@@ -46,6 +46,6 @@ struct AuthenticationView: View {
     }
 }
 
-//#Preview {
-//    Authentication.Builder.makeAuthentication()
-//}
+#Preview {
+    Authentication.Builder.makeAuthentication(coordinator: Coordinator())
+}
