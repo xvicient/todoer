@@ -10,9 +10,8 @@ protocol UsersDataSourceApi {
     func createUser(
         with uuid: String,
         email: String?,
-        displayName: String?,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        displayName: String?
+    ) async throws
     func getSelfUser() async throws -> UserDTO
     func getUser(
         _ uuid: String
@@ -26,24 +25,17 @@ final class UsersDataSource: UsersDataSourceApi {
     func createUser(
         with uuid: String,
         email: String?,
-        displayName: String?,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        do {
-            let document = usersCollection.document()
-            let documentId = document.documentID
-            let dto = UserDTO(
-                id: documentId,
-                uuid: uuid,
-                email: email,
-                displayName: displayName
-            )
-            _ = try usersCollection.addDocument(from: dto)
-            completion(.success(Void()))
-            self.uuid = uuid
-        } catch {
-            completion(.failure(error))
-        }
+        displayName: String?
+    ) async throws {
+        let document = usersCollection.document()
+        let documentId = document.documentID
+        let dto = UserDTO(
+            id: documentId,
+            uuid: uuid,
+            email: email,
+            displayName: displayName
+        )
+        _ = try usersCollection.addDocument(from: dto)
     }
     
     func getSelfUser() async throws -> UserDTO {

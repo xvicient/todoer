@@ -68,10 +68,9 @@ class Coordinator: ObservableObject {
     func build(page: Page) -> some View {
         switch page {
         case .authentication:
-            Authentication.Builder.makeAuthentication()
+            Authentication.Builder.makeAuthentication(coordinator: self)
         case .home:
-            Authentication.Builder.makeAuthentication()
-//            HomeBuilder.makeHome()
+            HomeBuilder.makeHome()
         case let .products(list):
             ListItemsBuilder.makeProductList(list: list)
         }
@@ -134,7 +133,7 @@ struct CoordinatorView: View {
                     coordinator.build(fullScreenCover: fullScreenCover)
                 }
         }
-        .environmentObject(coordinator)
+        .environmentObject(coordinator) // TODO: - to remove once all the features are migrated to redux
     }
 }
 

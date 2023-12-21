@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 extension Authentication {
     typealias Store = Listio.Store<State, Action, Dependencies>
@@ -20,7 +20,8 @@ extension Authentication {
     static func reducer(
         state: inout State,
         action: Action,
-        dependencies: Dependencies
+        dependencies: Dependencies,
+        coordinator: Coordinator
     ) -> Task<Action, Never>? {
         switch action {
         case .didTapSignInButton:
@@ -36,6 +37,7 @@ extension Authentication {
             
         case .signInSucceed, .signInError:
             state.isLoading = false
+            coordinator.push(.home)
         }
         
         return nil

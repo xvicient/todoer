@@ -14,18 +14,9 @@ extension Authentication {
         
         func signIn() async throws {
             let authData = try await googleService.signIn()
-            
-            usersRepository.createUser(with: authData.uid,
+            try await usersRepository.createUser(with: authData.uid,
                                        email: authData.email,
                                        displayName: authData.displayName)
-            { result in
-                switch result {
-                case .success:
-                    break
-                case .failure:
-                    break
-                }
-            }
         }
     }
 }
