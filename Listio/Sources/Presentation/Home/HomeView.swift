@@ -50,6 +50,7 @@ private extension HomeView {
             Button(
                 action: {
                     viewModel.signOut()
+                    coordinator.loggOut()
                 }
             ) {
                 AsyncImage(
@@ -99,8 +100,8 @@ private extension HomeView {
                 .foregroundColor(.buttonPrimary)
         ) {
             ItemsRowView(viewModel: viewModel,
-                      mainAction: itemViewMainAction,
-                      optionsAction: itemViewOptionsAction)
+                         mainAction: itemViewMainAction,
+                         optionsAction: itemViewOptionsAction)
             .alert("\(Constants.Title.shareTo)", isPresented: $viewModel.isShowingAlert) {
                 TextField("\(Constants.Title.email)",
                           text: $viewModel.shareEmail)

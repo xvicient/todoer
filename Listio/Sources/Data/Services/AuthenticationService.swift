@@ -2,12 +2,8 @@ import Foundation
 import FirebaseAuth
 
 public final class AuthenticationService {
-    func getAuthenticatedUser() throws -> AuthDataDTO {
-        guard let user = Auth.auth().currentUser else {
-            throw URLError(.badServerResponse)
-        }
-
-        return AuthDataDTO(user: user)
+    var isUserLogged: Bool {
+        Auth.auth().currentUser != nil
     }
     
     func signOut() throws {

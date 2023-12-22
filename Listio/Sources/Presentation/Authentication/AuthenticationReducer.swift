@@ -44,9 +44,10 @@ extension Authentication {
                 
             case .signInSucceed:
                 state.isLoading = false
-                coordinator.push(.home)
+                coordinator.loggIn()
             case .signInError:
                 state.isLoading = false
+                coordinator.loggOut()
             }
             
             return nil
