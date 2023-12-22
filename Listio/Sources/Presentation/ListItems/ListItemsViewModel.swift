@@ -1,6 +1,4 @@
-import Foundation
-import FirebaseFirestore
-import FirebaseFirestoreSwift
+import SwiftUI
 
 @MainActor
 final class ListItemsViewModel: ItemsRowViewModel {
@@ -14,22 +12,22 @@ final class ListItemsViewModel: ItemsRowViewModel {
         }
     }
     @Published var isLoading = false
-    @Published var productName: String = ""
-    private let productsRepository: ItemsRepositoryApi
+    @Published var itemName: String = ""
+    private let itemsRepository: ItemsRepositoryApi
     private let listsRepository: ListsRepositoryApi
     
     init(list: List,
-         productsRepository: ItemsRepositoryApi = ItemsRepository(),
+         itemsRepository: ItemsRepositoryApi = ItemsRepository(),
          listsRepository: ListsRepositoryApi = ListsRepository()) {
         self.list = list
         listName = list.name
-        self.productsRepository = productsRepository
+        self.itemsRepository = itemsRepository
         self.listsRepository = listsRepository
     }
     
-    func fetchProducts() {
+    func fetchItems() {
         isLoading = true
-        productsRepository.fetchItems(listId: list.documentId) { [weak self] result in
+        itemsRepository.fetchItems(listId: list.documentId) { [weak self] result in
             self?.isLoading = false
             switch result {
             case .success(let products):
@@ -42,15 +40,15 @@ final class ListItemsViewModel: ItemsRowViewModel {
         }
     }
     
-    func addProduct() {
-        guard !productName.isEmpty else { return }
+    func addItem() {
+        guard !itemName.isEmpty else { return }
         isLoading = true
-        productsRepository.addItem(with: productName,
-                                      listId: list.documentId) { [weak self] result in
+        itemsRepository.addItem(with: itemName,
+                                listId: list.documentId) { [weak self] result in
             self?.isLoading = false
             switch result {
             case .success:
-                self?.productName = ""
+                self?.itemName = ""
             case .failure:
                 break
             }
@@ -62,7 +60,7 @@ final class ListItemsViewModel: ItemsRowViewModel {
             guard let self = self else { return }
             switch option {
             case .done, .undone:
-                self.toggleProduct(item)
+                self.toggleItem(item)
             case .delete:
                 self.deleteProduct(item)
             default: break
@@ -70,11 +68,11 @@ final class ListItemsViewModel: ItemsRowViewModel {
         }
     }
     
-    private func toggleProduct(_ item: any ItemRowModel) {
-        guard var product = item as? Item else { return }
-        product.done.toggle()
-        productsRepository.toggleItem(product,
-                                         listId: list.documentId) { [weak self] result in
+    private func toggleItem(_ item: any ItemRowModel) {
+        guard var listItem = item as? Item else { return }
+        listItem.done.toggle()
+        itemsRepository.toggleItem(listItem,
+                                   listId: list.documentId) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success:
@@ -88,8 +86,8 @@ final class ListItemsViewModel: ItemsRowViewModel {
     }
     
     private func deleteProduct(_ item: any ItemRowModel) {
-        productsRepository.deleteItem(item.documentId,
-                                         listId: list.documentId)
+        itemsRepository.deleteItem(item.documentId,
+                                   listId: list.documentId)
     }
 }
 

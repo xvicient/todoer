@@ -1,5 +1,3 @@
-import SwiftUI
-
 protocol AuthenticationReducerDependencies {
     var useCase: Authentication.UseCase { get }
 }

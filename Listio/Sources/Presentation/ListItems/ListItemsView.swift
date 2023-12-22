@@ -14,13 +14,13 @@ struct ListItemsView: View {
                     
                 }
                 TextField("Add product...",
-                          text: $viewModel.productName)
+                          text: $viewModel.itemName)
                 .textFieldStyle(BottomLineStyle() {
-                    viewModel.addProduct()
+                    viewModel.addItem()
                 })
             }
             .task {
-                viewModel.fetchProducts()
+                viewModel.fetchItems()
             }
             .disabled(viewModel.isLoading)
             if viewModel.isLoading {
@@ -32,11 +32,13 @@ struct ListItemsView: View {
 }
 
 #Preview {
-    ListItemsView(viewModel: ListItemsViewModel(
-        list: List(documentId: "",
-                   name: "",
-                   done: false,
-                   uuid: [],
-                   dateCreated: 0),
-        productsRepository: ItemsRepository()))
+    ListItemsView(viewModel:
+                    ListItemsViewModel(
+                        list: List(documentId: "",
+                                   name: "",
+                                   done: false,
+                                   uuid: [],
+                                   dateCreated: 0)
+                    )
+    )
 }

@@ -11,6 +11,7 @@
 		C7390FB82B32E44800E49A68 /* AuthenticationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */; };
 		C7390FBC2B32ED4F00E49A68 /* AuthenticationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */; };
 		C7390FBE2B34C9F500E49A68 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FBD2B34C9F500E49A68 /* Reducer.swift */; };
+		C7390FC12B3633C400E49A68 /* CoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FC02B3633C400E49A68 /* CoordinatorView.swift */; };
 		C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */; };
 		C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */; };
 		C75B4AC92B1DD7A9007CCA48 /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */; };
@@ -86,6 +87,7 @@
 		C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducer.swift; sourceTree = "<group>"; };
 		C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCase.swift; sourceTree = "<group>"; };
 		C7390FBD2B34C9F500E49A68 /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
+		C7390FC02B3633C400E49A68 /* CoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorView.swift; sourceTree = "<group>"; };
 		C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsRepository.swift; sourceTree = "<group>"; };
 		C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDTO.swift; sourceTree = "<group>"; };
 		C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
@@ -168,6 +170,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C7390FBF2B3633AE00E49A68 /* Redux */ = {
+			isa = PBXGroup;
+			children = (
+				C7390FB52B32E42700E49A68 /* Store.swift */,
+				C7390FBD2B34C9F500E49A68 /* Reducer.swift */,
+			);
+			path = Redux;
+			sourceTree = "<group>";
+		};
+		C7390FC22B36341000E49A68 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */,
+				C7390FC02B3633C400E49A68 /* CoordinatorView.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,9 +236,8 @@
 			isa = PBXGroup;
 			children = (
 				C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */,
-				C7390FB52B32E42700E49A68 /* Store.swift */,
-				C79CB2ED2B16A3AD00C2BD18 /* Coordinator.swift */,
-				C7390FBD2B34C9F500E49A68 /* Reducer.swift */,
+				C7390FC22B36341000E49A68 /* Coordinator */,
+				C7390FBF2B3633AE00E49A68 /* Redux */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -572,6 +591,7 @@
 				C79CB2952B0D537A00C2BD18 /* HomeBuilder.swift in Sources */,
 				C79CB2EE2B16A3AD00C2BD18 /* Coordinator.swift in Sources */,
 				C79CB2D52B13FEA200C2BD18 /* Utils+TopViewController.swift in Sources */,
+				C7390FC12B3633C400E49A68 /* CoordinatorView.swift in Sources */,
 				C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */,
 				C7390FBE2B34C9F500E49A68 /* Reducer.swift in Sources */,
 				C75B4ACF2B1F70E6007CCA48 /* User.swift in Sources */,

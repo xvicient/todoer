@@ -56,6 +56,6 @@ struct AuthenticationView: View {
     }
 }
 
-//#Preview {
-//    Authentication.Builder.makeAuthentication(coordinator: Coordinator())
-//}
+#Preview {
+    Authentication.Builder.makeAuthentication(coordinator: Coordinator())
+}

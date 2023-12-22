@@ -3,11 +3,9 @@ import SwiftUI
 struct ListItemsBuilder {
     @MainActor
     static func makeProductList(
-        list: List,
-        productsRepository: ItemsRepositoryApi = ItemsRepository()
+        list: List
     ) -> ListItemsView {
-        let viewModel = ListItemsViewModel(list: list,
-                                          productsRepository: productsRepository)
+        let viewModel = ListItemsViewModel(list: list)
         return ListItemsView(viewModel: viewModel)
     }
 }
