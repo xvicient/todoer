@@ -4,19 +4,20 @@ struct Authentication {
     struct Builder {
         @MainActor
         static func makeAuthentication(
-            usersRepository: UsersRepositoryApi = UsersRepository(),
             coordinator: Coordinator
-        ) -> some View {
-            AuthenticationView()
-                .environmentObject(
-                    Store(
-                        initialState: .init(),
-                        reducer: Authentication.Reducer(
-                            coordinator: coordinator,
-                            useCase: Authentication.UseCase()
-                        )
+        ) -> AuthenticationView {
+            struct Dependencies: AuthenticationReducerDependencies {
+                var useCase = Authentication.UseCase()
+            }
+            return AuthenticationView(
+                store: Store(
+                    initialState: .init(),
+                    reducer: Authentication.Reducer(
+                        coordinator: coordinator,
+                        dependencies: Dependencies()
                     )
                 )
+            )
         }
     }
 }

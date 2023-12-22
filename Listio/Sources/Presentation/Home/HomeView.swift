@@ -49,7 +49,7 @@ private extension HomeView {
             Spacer()
             Button(
                 action: {
-                    print("User profile")
+                    viewModel.signOut()
                 }
             ) {
                 AsyncImage(

@@ -13,6 +13,7 @@ protocol HomeViewModelApi {
         invitationId: String
     )
     func createList()
+    func signOut()
 }
 
 // MARK: - HomeViewModel
@@ -42,15 +43,18 @@ final class HomeViewModel: ItemsRowViewModel {
     private let productsRepository: ItemsRepositoryApi
     private let invitationsRepository: InvitationsRepositoryApi
     private let usersDataRepository: UsersRepositoryApi
+    private let authenticationService: AuthenticationService
     
     init(listsRepository: ListsRepositoryApi = ListsRepository(),
          productsRepository: ItemsRepositoryApi = ItemsRepository(),
          invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
-         usersDataRepository: UsersRepositoryApi = UsersRepository()) {
+         usersDataRepository: UsersRepositoryApi = UsersRepository(),
+         authenticationService: AuthenticationService = AuthenticationService()) {
         self.listsRepository = listsRepository
         self.productsRepository = productsRepository
         self.invitationsRepository = invitationsRepository
         self.usersDataRepository = usersDataRepository
+        self.authenticationService = authenticationService
     }
 }
 
@@ -146,6 +150,10 @@ extension HomeViewModel: HomeViewModelApi {
                 self?.isShowingAddButton = false
             }
         }
+    }
+    
+    func signOut() {
+        try? authenticationService.signOut()
     }
 }
 
