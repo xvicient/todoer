@@ -6,5 +6,5 @@ protocol Reducer<State, Action> {
     func reduce(
         _ state: inout State,
         _ action: Action
-    ) -> Task<Action, Never>?
+    ) -> Effect<Action>
 }

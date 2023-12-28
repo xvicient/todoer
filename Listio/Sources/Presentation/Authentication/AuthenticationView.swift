@@ -3,7 +3,7 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 struct AuthenticationView: View {
-    private let store: Store<Authentication.Reducer>
+    @ObservedObject private var store: Store<Authentication.Reducer>
     
     init(store: Store<Authentication.Reducer>) {
         self.store = store
@@ -38,7 +38,7 @@ struct AuthenticationView: View {
                         )
                     ) {
                         Task {
-                            await store.send(.didTapSignInButton)
+                            store.send(.didTapSignInButton)
                         }
                     }
                     .padding([.top, .leading, .trailing], 40)

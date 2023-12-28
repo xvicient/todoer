@@ -25,36 +25,6 @@ final class ListItemsViewModel: ItemsRowViewModel {
         self.listsRepository = listsRepository
     }
     
-    func fetchItems() {
-        isLoading = true
-        itemsRepository.fetchItems(listId: list.documentId) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case .success(let products):
-                self?.items = products.sorted {
-                    $0.dateCreated < $1.dateCreated
-                }
-            case .failure:
-                break
-            }
-        }
-    }
-    
-    func addItem() {
-        guard !itemName.isEmpty else { return }
-        isLoading = true
-        itemsRepository.addItem(with: itemName,
-                                listId: list.documentId) { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case .success:
-                self?.itemName = ""
-            case .failure:
-                break
-            }
-        }
-    }
-    
     var onDidTapOption: ((any ItemRowModel, ItemRowOption) -> Void) {
         { [weak self] item, option in
             guard let self = self else { return }

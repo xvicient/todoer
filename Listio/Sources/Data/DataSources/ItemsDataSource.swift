@@ -1,16 +1,15 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import Combine
 
 protocol ItemsDataSourceApi {
     func fetchItems(
-        listId: String,
-        completion: @escaping (Result<[ItemDTO], Error>) -> Void
-    )
+        listId: String
+    ) -> AnyPublisher<[ItemDTO], Error>
     func addItem(
         with name: String,
-        listId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        listId: String
+    ) async throws -> ItemDTO
     func deleteItem(
         _ documentId: String?,
         listId: String
@@ -28,41 +27,55 @@ protocol ItemsDataSourceApi {
 }
 
 final class ItemsDataSource: ItemsDataSourceApi {
+    private var snapshotListener: ListenerRegistration?
+    private var listenerSubject = PassthroughSubject<[ItemDTO], Error>()
+    
+    deinit {
+        snapshotListener?.remove()
+    }
+    
     private func itemsCollection(listId: String) -> CollectionReference {
         Firestore.firestore().collection("lists").document(listId).collection("items")
     }
     
     func fetchItems(
-        listId: String,
-        completion: @escaping (Result<[ItemDTO], Error>) -> Void
-    ) {
-        itemsCollection(listId: listId)
-            .addSnapshotListener { query, error in
+        listId: String
+    ) -> AnyPublisher<[ItemDTO], Error> {
+        snapshotListener = itemsCollection(listId: listId)
+            .addSnapshotListener { [weak self] query, error in
+                guard let self = self else { return }
+                
                 if let error = error {
-                    completion(.failure(error))
+                    listenerSubject.send(completion: .failure(error))
                     return
                 }
                 
                 let products = query?.documents
                     .compactMap { try? $0.data(as: ItemDTO.self) }
                 ?? []
-                completion(.success(products))
+                
+                listenerSubject.send(products)
             }
+        
+        return listenerSubject.eraseToAnyPublisher()
+        
     }
     
     func addItem(
         with name: String,
-        listId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        do {
-            let collection = itemsCollection(listId: listId)
-            _ = try collection.addDocument(from: ItemDTO(name: name,
-                                                            done: false,
-                                                            dateCreated: Date().milliseconds))
-            completion(.success(Void()))
-        } catch {
-            completion(.failure(error))
+        listId: String
+    ) async throws -> ItemDTO {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let collection = itemsCollection(listId: listId)
+                let dto = ItemDTO(name: name,
+                                  done: false,
+                                  dateCreated: Date().milliseconds)
+                _ = try collection.addDocument(from: dto)
+                continuation.resume(returning: dto)
+            } catch {
+                continuation.resume(throwing: error)
+            }
         }
     }
     
@@ -80,7 +93,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         guard let id = item.id,
-        let encodedData = try? Firestore.Encoder().encode(item) else { return }
+              let encodedData = try? Firestore.Encoder().encode(item) else { return }
         
         itemsCollection(listId: listId).document(id).updateData(encodedData) { error in
             if let error = error {

@@ -1,10 +1,9 @@
-protocol AuthenticationReducerDependencies {
-    var useCase: Authentication.UseCase { get }
+protocol AuthenticationDependencies {
+    var useCase: AuthenticationUseCaseApi { get }
 }
 
 extension Authentication {
     struct Reducer: Listio.Reducer {
-        typealias Dependencies = AuthenticationReducerDependencies
         
         enum Action {
             case didTapSignInButton
@@ -17,9 +16,12 @@ extension Authentication {
         }
         
         private let coordinator: Coordinator
-        private let dependencies: Dependencies
+        private let dependencies: AuthenticationDependencies
         
-        init(coordinator: Coordinator, dependencies: Dependencies) {
+        init(
+            coordinator: Coordinator,
+            dependencies: AuthenticationDependencies
+        ) {
             self.coordinator = coordinator
             self.dependencies = dependencies
         }
@@ -27,18 +29,19 @@ extension Authentication {
         func reduce(
             _ state: inout State,
             _ action: Action
-        ) -> Task<Action, Never>? {
+        ) -> Effect<Action> {
             switch action {
             case .didTapSignInButton:
                 state.isLoading = true
-                return Task {
+                
+                return .task(Task {
                     do {
                         try await dependencies.useCase.signIn()
                         return .signInSucceed
                     } catch {
                         return .signInError
                     }
-                }
+                })
                 
             case .signInSucceed:
                 state.isLoading = false
@@ -48,7 +51,7 @@ extension Authentication {
                 coordinator.loggOut()
             }
             
-            return nil
+            return .none
         }
     }
 }

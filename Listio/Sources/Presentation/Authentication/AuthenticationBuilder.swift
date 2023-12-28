@@ -6,15 +6,17 @@ struct Authentication {
         static func makeAuthentication(
             coordinator: Coordinator
         ) -> AuthenticationView {
-            struct Dependencies: AuthenticationReducerDependencies {
-                var useCase = Authentication.UseCase()
+            struct Dependencies: AuthenticationDependencies {
+                var useCase: AuthenticationUseCaseApi
             }
             return AuthenticationView(
                 store: Store(
                     initialState: .init(),
                     reducer: Authentication.Reducer(
                         coordinator: coordinator,
-                        dependencies: Dependencies()
+                        dependencies: Dependencies(
+                            useCase: Authentication.UseCase()
+                        )
                     )
                 )
             )

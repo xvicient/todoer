@@ -1,7 +1,12 @@
 import SwiftUI
 
 struct ListItemsView: View {
-    @StateObject var viewModel: ListItemsViewModel
+    @ObservedObject private var store: Store<ListItems.Reducer>
+    @State var itemName: String = ""
+    
+    init(store: Store<ListItems.Reducer>) {
+        self.store = store
+    }
     
     var body: some View {
         ZStack {
@@ -9,36 +14,37 @@ struct ListItemsView: View {
                 .ignoresSafeArea()
             VStack {
                 SwiftUI.List {
-                    ItemsRowView(viewModel: viewModel,
-                              optionsAction: viewModel.onDidTapOption)
+                    ItemsRowView(viewModel: store.state.itemsModel,
+                                 optionsAction: { _,_ in
+                        // TODO: - move viewModel.onDidTapOption to redux
+                    })
                     
                 }
                 TextField("Add product...",
-                          text: $viewModel.itemName)
+                          text: $itemName)
                 .textFieldStyle(BottomLineStyle() {
-                    viewModel.addItem()
+                    store.send(.didTapAddItemButton(itemName))
                 })
             }
             .task {
-                viewModel.fetchItems()
+                store.send(.viewWillAppear)
             }
-            .disabled(viewModel.isLoading)
-            if viewModel.isLoading {
+            .disabled(store.state.isLoading)
+            if store.state.isLoading {
                 ProgressView()
             }
         }
-        .navigationTitle(viewModel.listName)
+        .navigationTitle(store.state.listName)
     }
 }
 
 #Preview {
-    ListItemsView(viewModel:
-                    ListItemsViewModel(
-                        list: List(documentId: "",
-                                   name: "",
-                                   done: false,
-                                   uuid: [],
-                                   dateCreated: 0)
-                    )
+    ListItems.Builder.makeProductList(
+        list: List(
+            documentId: "1",
+            name: "Test",
+            done: false,
+            uuid: [""],
+            dateCreated: 1)
     )
 }

@@ -1,15 +1,14 @@
-import UIKit
+import Foundation
+import Combine
 
 protocol ItemsRepositoryApi {
     func fetchItems(
-        listId: String,
-        completion: @escaping (Result<[Item], Error>) -> Void
-    )
+        listId: String
+    ) -> AnyPublisher<[Item], Error>
     func addItem(
         with name: String,
-        listId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        listId: String
+    ) async throws -> Item
     func deleteItem(
         _ documentId: String?,
         listId: String
@@ -27,45 +26,40 @@ protocol ItemsRepositoryApi {
 }
 
 final class ItemsRepository: ItemsRepositoryApi {
-    private let producstDataSource: ItemsDataSourceApi
+    private let itemsDataSource: ItemsDataSourceApi
     
     init(producstDataSource: ItemsDataSourceApi = ItemsDataSource()) {
-        self.producstDataSource = producstDataSource
+        self.itemsDataSource = producstDataSource
     }
     
     func fetchItems(
-        listId: String,
-        completion: @escaping (Result<[Item], Error>) -> Void
-    ) {
-        producstDataSource.fetchItems(listId: listId) { result in
-            switch result {
-            case .success(let dto):
-                completion(.success(
-                    dto.map {
-                        $0.toDomain
-                    }
-                ))
-            case .failure(let error):
-                completion(.failure(error))
+        listId: String
+    ) -> AnyPublisher<[Item], Error> {
+        itemsDataSource.fetchItems(listId: listId)
+            .tryMap { items in
+                items.map {
+                    $0.toDomain
+                }
             }
-        }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
     
     func addItem(
         with name: String,
-        listId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        producstDataSource.addItem(with: name,
-                                      listId: listId,
-                                      completion: completion)
+        listId: String
+    ) async throws -> Item {
+        try await itemsDataSource.addItem(
+            with: name,
+            listId: listId
+        ).toDomain
     }
     
     func deleteItem(
         _ documentId: String?,
         listId: String
     ) {
-        producstDataSource.deleteItem(documentId,
+        itemsDataSource.deleteItem(documentId,
                                          listId: listId)
     }
     
@@ -74,7 +68,7 @@ final class ItemsRepository: ItemsRepositoryApi {
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        producstDataSource.toggleItem(item.toDTO,
+        itemsDataSource.toggleItem(item.toDTO,
                                          listId: listId,
                                          completion: completion)
     }
@@ -84,7 +78,7 @@ final class ItemsRepository: ItemsRepositoryApi {
         done: Bool,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        producstDataSource.toogleAllItemsBatch(listId: listId,
+        itemsDataSource.toogleAllItemsBatch(listId: listId,
                                                   done: done,
                                                   completion: completion)
     }

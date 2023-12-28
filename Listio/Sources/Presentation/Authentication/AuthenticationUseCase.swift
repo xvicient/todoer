@@ -1,5 +1,9 @@
+protocol AuthenticationUseCaseApi {
+    func signIn() async throws
+}
+
 extension Authentication {
-    struct UseCase {
+    struct UseCase: AuthenticationUseCaseApi {
         private enum Errors: Error {
             case signInError
         }
