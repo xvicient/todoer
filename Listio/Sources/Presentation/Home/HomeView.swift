@@ -99,7 +99,7 @@ private extension HomeView {
                 Text(Constants.Title.todoos)
                 .foregroundColor(.buttonPrimary)
         ) {
-            ItemsRowView(viewModel: viewModel,
+            ListRowsView(viewModel: viewModel,
                          mainAction: itemViewMainAction,
                          optionsAction: itemViewOptionsAction)
             .alert("\(Constants.Title.shareTo)", isPresented: $viewModel.isShowingAlert) {
@@ -202,14 +202,14 @@ private extension HomeView {
             ]
     }
     
-    var itemViewMainAction: (any ItemRowModel) -> Void {
+    var itemViewMainAction: (any ListRowsModel) -> Void {
         {
             guard let list = $0 as? List else { return }
             coordinator.push(.products(list))
         }
     }
     
-    var itemViewOptionsAction: (any ItemRowModel, ItemRowOption) -> Void {
+    var itemViewOptionsAction: (any ListRowsModel, ListRowOption) -> Void {
         { item, option in
             viewModel.onDidTapOption(item, option)
         }

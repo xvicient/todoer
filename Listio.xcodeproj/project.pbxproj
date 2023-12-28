@@ -39,7 +39,7 @@
 		C79CB29C2B0D537A00C2BD18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */; };
 		C79CB2A62B0D57F700C2BD18 /* ListioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */; };
 		C79CB2AD2B12BBD700C2BD18 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */; };
-		C79CB2B32B13AA4400C2BD18 /* ItemsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2B22B13AA4400C2BD18 /* ItemsRowView.swift */; };
+		C79CB2B32B13AA4400C2BD18 /* ListRowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2B22B13AA4400C2BD18 /* ListRowsView.swift */; };
 		C79CB2BE2B13F06C00C2BD18 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2BD2B13F06C00C2BD18 /* GoogleSignIn */; };
 		C79CB2C02B13F06C00C2BD18 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2BF2B13F06C00C2BD18 /* GoogleSignInSwift */; };
 		C79CB2C32B13F3E800C2BD18 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2C22B13F3E800C2BD18 /* FirebaseAuth */; };
@@ -118,7 +118,7 @@
 		C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C79CB2A52B0D57F700C2BD18 /* ListioApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListioApp.swift; sourceTree = "<group>"; };
 		C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
-		C79CB2B22B13AA4400C2BD18 /* ItemsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsRowView.swift; sourceTree = "<group>"; };
+		C79CB2B22B13AA4400C2BD18 /* ListRowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowsView.swift; sourceTree = "<group>"; };
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		C79CB2D12B13FDFF00C2BD18 /* GoogleSignInService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInService.swift; sourceTree = "<group>"; };
@@ -367,7 +367,7 @@
 		C79CB2EF2B177F8400C2BD18 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C79CB2B22B13AA4400C2BD18 /* ItemsRowView.swift */,
+				C79CB2B22B13AA4400C2BD18 /* ListRowsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -604,7 +604,7 @@
 				C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */,
 				C7390FBE2B34C9F500E49A68 /* Reducer.swift in Sources */,
 				C75B4ACF2B1F70E6007CCA48 /* User.swift in Sources */,
-				C79CB2B32B13AA4400C2BD18 /* ItemsRowView.swift in Sources */,
+				C79CB2B32B13AA4400C2BD18 /* ListRowsView.swift in Sources */,
 				C79CB2942B0D537A00C2BD18 /* HomeView.swift in Sources */,
 				C79CB28E2B0D537A00C2BD18 /* ListsDataSource.swift in Sources */,
 				C79CB2902B0D537A00C2BD18 /* ListsRepository.swift in Sources */,

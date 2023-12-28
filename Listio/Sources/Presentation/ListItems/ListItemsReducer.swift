@@ -6,11 +6,11 @@ protocol ListItemsDependencies {
     var listName: String { get }
 }
 
-class ItemsModel: ItemsRowViewModel {
-    var items: [any ItemRowModel] = []
-    var options: (any ItemRowModel) -> [ItemRowOption] {
+class ItemsModel: ListRowsViewModel {
+    var rows: [any ListRowsModel] = []
+    var options: (any ListRowsModel) -> [ListRowOption] {
         { _ in
-            [ItemRowOption]()
+            [ListRowOption]()
         }
     }
 }
@@ -57,7 +57,7 @@ extension ListItems {
             case .fetchItemsResult(let result):
                 state.isLoading = false
                 if case .success(let items) = result {
-                    state.itemsModel.items = items
+                    state.itemsModel.rows = items
                 }
                 
             case .didTapAddItemButton(let itemName):
@@ -65,7 +65,7 @@ extension ListItems {
                 
                 state.isLoading = true
                 return .task(Task {
-                    return .addItemResult(
+                    .addItemResult(
                         try await dependencies.useCase.addItem(with: itemName,
                                                                listId: dependencies.listId)
                     )

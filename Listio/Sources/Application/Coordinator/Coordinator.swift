@@ -82,7 +82,7 @@ class Coordinator: ObservableObject {
         case .home:
             HomeBuilder.makeHome()
         case let .products(list):
-            ListItems.Builder.makeProductList(list: list)
+            ListItems.Builder.makeItemsList(list: list)
         }
     }
     

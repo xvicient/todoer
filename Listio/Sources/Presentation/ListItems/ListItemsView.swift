@@ -14,7 +14,7 @@ struct ListItemsView: View {
                 .ignoresSafeArea()
             VStack {
                 SwiftUI.List {
-                    ItemsRowView(viewModel: store.state.itemsModel,
+                    ListRowsView(viewModel: store.state.itemsModel,
                                  optionsAction: { _,_ in
                         // TODO: - move viewModel.onDidTapOption to redux
                     })
@@ -39,7 +39,7 @@ struct ListItemsView: View {
 }
 
 #Preview {
-    ListItems.Builder.makeProductList(
+    ListItems.Builder.makeItemsList(
         list: List(
             documentId: "1",
             name: "Test",

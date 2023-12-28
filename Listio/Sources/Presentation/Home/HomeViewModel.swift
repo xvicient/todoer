@@ -4,7 +4,7 @@ import SwiftUI
 
 protocol HomeViewModelApi {
     func fetchData()
-    var onDidTapOption: ((any ItemRowModel, ItemRowOption) -> Void) { get }
+    var onDidTapOption: ((any ListRowsModel, ListRowOption) -> Void) { get }
     func shareList() async
     func cancelShare()
     func importList(
@@ -18,10 +18,10 @@ protocol HomeViewModelApi {
 // MARK: - HomeViewModel
 
 @MainActor
-final class HomeViewModel: ItemsRowViewModel {
+final class HomeViewModel: ListRowsViewModel {
     @Published var invitations: [Invitation] = []
-    @Published var items: [any ItemRowModel] = []
-    internal var options: (any ItemRowModel) -> [ItemRowOption] {
+    @Published var rows: [any ListRowsModel] = []
+    internal var options: (any ListRowsModel) -> [ListRowOption] {
         {
             [.share,
              $0.done ? .undone : .done,
@@ -83,7 +83,7 @@ extension HomeViewModel: HomeViewModelApi {
         )
     }
     
-    var onDidTapOption: ((any ItemRowModel, ItemRowOption) -> Void) {
+    var onDidTapOption: ((any ListRowsModel, ListRowOption) -> Void) {
         { [weak self] item, option in
             guard let self = self else { return }
             switch option {
@@ -163,7 +163,7 @@ private extension HomeViewModel {
         listsRepository.fetchLists { [weak self] result in
             switch result {
             case .success(let lists):
-                self?.items = lists.sorted {
+                self?.rows = lists.sorted {
                     $0.dateCreated < $1.dateCreated
                 }
             case .failure:
@@ -194,13 +194,13 @@ private extension HomeViewModel {
         }
     }
     
-    func showShareDialog(_ item: any ItemRowModel) {
+    func showShareDialog(_ item: any ListRowsModel) {
         guard let list = item as? List else { return }
         sharingList = list
         isShowingAlert = true
     }
     
-    func toggleList(_ item: any ItemRowModel) {
+    func toggleList(_ item: any ListRowsModel) {
         guard var list = item as? List else { return }
         
         list.done.toggle()
@@ -217,9 +217,9 @@ private extension HomeViewModel {
         }
     }
     
-    func deleteList(_ item: any ItemRowModel) {
+    func deleteList(_ item: any ListRowsModel) {
         listsRepository.deleteList(item.documentId)
     }
 }
 
-extension List: ItemRowModel {}
+extension List: ListRowsModel {}

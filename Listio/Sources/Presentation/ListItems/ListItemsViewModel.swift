@@ -1,11 +1,11 @@
 import SwiftUI
 
 @MainActor
-final class ListItemsViewModel: ItemsRowViewModel {
+final class ListItemsViewModel: ListRowsViewModel {
     private var list: List
     let listName: String
-    @Published var items: [any ItemRowModel] = []
-    internal var options: (any ItemRowModel) -> [ItemRowOption] {
+    @Published var rows: [any ListRowsModel] = []
+    internal var options: (any ListRowsModel) -> [ListRowOption] {
         {
             [$0.done ? .undone : .done,
              .delete]
@@ -25,7 +25,7 @@ final class ListItemsViewModel: ItemsRowViewModel {
         self.listsRepository = listsRepository
     }
     
-    var onDidTapOption: ((any ItemRowModel, ItemRowOption) -> Void) {
+    var onDidTapOption: ((any ListRowsModel, ListRowOption) -> Void) {
         { [weak self] item, option in
             guard let self = self else { return }
             switch option {
@@ -38,7 +38,7 @@ final class ListItemsViewModel: ItemsRowViewModel {
         }
     }
     
-    private func toggleItem(_ item: any ItemRowModel) {
+    private func toggleItem(_ item: any ListRowsModel) {
         guard var listItem = item as? Item else { return }
         listItem.done.toggle()
         itemsRepository.toggleItem(listItem,
@@ -46,7 +46,7 @@ final class ListItemsViewModel: ItemsRowViewModel {
             guard let self = self else { return }
             switch result {
             case .success:
-                list.done = self.items.allSatisfy({ $0.done })
+                list.done = self.rows.allSatisfy({ $0.done })
                 listsRepository.toggleList(list, completion: { _ in })
                 break
             case .failure:
@@ -55,10 +55,10 @@ final class ListItemsViewModel: ItemsRowViewModel {
         }
     }
     
-    private func deleteProduct(_ item: any ItemRowModel) {
+    private func deleteProduct(_ item: any ListRowsModel) {
         itemsRepository.deleteItem(item.documentId,
                                    listId: list.documentId)
     }
 }
 
-extension Item: ItemRowModel {}
+extension Item: ListRowsModel {}

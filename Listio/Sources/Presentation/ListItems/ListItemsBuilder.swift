@@ -9,7 +9,7 @@ struct ListItems {
         }
         
         @MainActor
-        static func makeProductList(
+        static func makeItemsList(
             list: List
         ) -> ListItemsView {
             let dependencies = Dependencies(

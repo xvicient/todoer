@@ -1,19 +1,19 @@
 import SwiftUI
 
 @MainActor
-protocol ItemsRowViewModel: ObservableObject {
-    var items: [any ItemRowModel] { get }
-    var options: (any ItemRowModel) -> [ItemRowOption] { get }
+protocol ListRowsViewModel: ObservableObject {
+    var rows: [any ListRowsModel] { get }
+    var options: (any ListRowsModel) -> [ListRowOption] { get }
 }
 
-protocol ItemRowModel: Identifiable, Equatable, Hashable {
+protocol ListRowsModel: Identifiable, Equatable, Hashable {
     var id: UUID { get }
     var documentId: String { get }
     var name: String { get }
     var done: Bool { get }
 }
 
-enum ItemRowOption: String, Identifiable {
+enum ListRowOption: String, Identifiable {
     case share = "Share"
     case done = "Done"
     case undone = "Undone"
@@ -31,14 +31,14 @@ enum ItemRowOption: String, Identifiable {
     }
 }
 
-struct ItemsRowView<ViewModel>: View where ViewModel: ItemsRowViewModel {
+struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
     @StateObject var viewModel: ViewModel
-    var mainAction: ((any ItemRowModel) -> Void)? = nil
-    var optionsAction: ((any ItemRowModel, ItemRowOption) -> Void)? = nil
+    var mainAction: ((any ListRowsModel) -> Void)? = nil
+    var optionsAction: ((any ListRowsModel, ListRowOption) -> Void)? = nil
     @State private var isShowingOptions = false
     
     var body: some View {
-        ForEach(viewModel.items, id: \.id) { item in
+        ForEach(viewModel.rows, id: \.id) { item in
             Group {
                 HStack {
                     Image(systemName: item.done ? "circle.fill" : "circle")
@@ -76,7 +76,7 @@ struct ItemsRowView<ViewModel>: View where ViewModel: ItemsRowViewModel {
     }
 }
 
-private extension ItemsRowView {
+private extension ListRowsView {
     func removeRows(at offsets: IndexSet) {
         print("")
     }
@@ -84,9 +84,9 @@ private extension ItemsRowView {
 
 struct OptionsView: View {
     @State var isShowingOptions = false
-    var item: any ItemRowModel
-    var options: [ItemRowOption]
-    var action: ((any ItemRowModel, ItemRowOption) -> Void)?
+    var item: any ListRowsModel
+    var options: [ListRowOption]
+    var action: ((any ListRowsModel, ListRowOption) -> Void)?
     
     var body: some View {
         Button(action: {
@@ -117,8 +117,8 @@ struct OptionsView: View {
 }
 
 #Preview {
-    class ViewModel: ItemsRowViewModel {
-        var items: [any ItemRowModel] = [List(documentId: "",
+    class ViewModel: ListRowsViewModel {
+        var rows: [any ListRowsModel] = [List(documentId: "",
                                               name: "Test",
                                               done: true,
                                               uuid: [],
@@ -129,11 +129,11 @@ struct OptionsView: View {
                                               uuid: [],
                                               dateCreated: 1)]
         
-        var options: (any ItemRowModel) -> [ItemRowOption] = {
+        var options: (any ListRowsModel) -> [ListRowOption] = {
             [.share,
              $0.done ? .undone : .done,
              .delete]
         }
     }
-    return ItemsRowView(viewModel: ViewModel())
+    return ListRowsView(viewModel: ViewModel())
 }
