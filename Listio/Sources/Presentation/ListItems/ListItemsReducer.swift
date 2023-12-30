@@ -9,8 +9,9 @@ protocol ListItemsDependencies {
 class ItemsModel: ListRowsViewModel {
     var rows: [any ListRowsModel] = []
     var options: (any ListRowsModel) -> [ListRowOption] {
-        { _ in
-            [ListRowOption]()
+        {
+            [$0.done ? .undone : .done,
+             .delete]
         }
     }
 }
@@ -23,6 +24,9 @@ extension ListItems {
             case fetchItemsResult(Result<[Item], Error>)
             case didTapAddItemButton(String)
             case addItemResult(Result<Item, Error>)
+            case didTapDoneButton(any ListRowsModel)
+            case didTapUndoneButton(any ListRowsModel)
+            case didTapDeleteButton(any ListRowsModel)
         }
         
         @MainActor
@@ -73,6 +77,12 @@ extension ListItems {
                 
             case .addItemResult:
                 state.isLoading = false
+            case .didTapDoneButton:
+                break
+            case .didTapUndoneButton:
+                break
+            case .didTapDeleteButton:
+                break
             }
             
             return .none

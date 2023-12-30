@@ -101,7 +101,7 @@ private extension HomeView {
         ) {
             ListRowsView(viewModel: viewModel,
                          mainAction: itemViewMainAction,
-                         optionsAction: itemViewOptionsAction)
+                         swipeActions: itemViewOptionsAction)
             .alert("\(Constants.Title.shareTo)", isPresented: $viewModel.isShowingAlert) {
                 TextField("\(Constants.Title.email)",
                           text: $viewModel.shareEmail)

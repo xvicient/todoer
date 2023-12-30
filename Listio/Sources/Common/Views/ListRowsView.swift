@@ -34,8 +34,7 @@ enum ListRowOption: String, Identifiable {
 struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
     @StateObject var viewModel: ViewModel
     var mainAction: ((any ListRowsModel) -> Void)? = nil
-    var optionsAction: ((any ListRowsModel, ListRowOption) -> Void)? = nil
-    @State private var isShowingOptions = false
+    var swipeActions: ((any ListRowsModel, ListRowOption) -> Void)? = nil
     
     var body: some View {
         ForEach(viewModel.rows, id: \.id) { item in
@@ -54,11 +53,6 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
                     }
                     .buttonStyle(.borderless)
                     .foregroundColor(.primary)
-                    Spacer()
-                    OptionsView(isShowingOptions: isShowingOptions,
-                                item: item,
-                                options: viewModel.options(item),
-                                action: optionsAction)
                 }
                 .frame(height: 40)
                 .listRowSeparator(.hidden)
@@ -69,50 +63,21 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
                     .cornerRadius(10.0)
                     .padding([.top, .bottom], 5)
             )
+            .swipeActions(allowsFullSwipe: false) {
+                ForEach(viewModel.options(item),
+                        id: \.id) { option in
+                    Button(option.rawValue,
+                           role: option.role,
+                           action: {
+                        withAnimation {
+                            swipeActions?(item, option)
+                        }
+                    })
+                }
+            }
         }
-        .onDelete(perform: removeRows)
         .padding([.leading, .trailing], -10)
         .scrollContentBackground(.hidden)
-    }
-}
-
-private extension ListRowsView {
-    func removeRows(at offsets: IndexSet) {
-        print("")
-    }
-}
-
-struct OptionsView: View {
-    @State var isShowingOptions = false
-    var item: any ListRowsModel
-    var options: [ListRowOption]
-    var action: ((any ListRowsModel, ListRowOption) -> Void)?
-    
-    var body: some View {
-        Button(action: {
-            isShowingOptions = true
-        }) {
-            HStack {
-                Spacer()
-                Image(systemName: "ellipsis")
-                    .rotationEffect(.degrees(90))
-                    .foregroundColor(.backgroundPrimary)
-            }
-        }
-        .frame(width: 40, height: 40)
-        .contentShape(Rectangle())
-        .confirmationDialog("",
-                            isPresented: $isShowingOptions,
-                            titleVisibility: .hidden) {
-            ForEach(options,
-                    id: \.id) { option in
-                Button(option.rawValue,
-                       role: option.role,
-                       action: {
-                    action?(item, option)
-                })
-            }
-        }
     }
 }
 

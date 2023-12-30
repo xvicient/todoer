@@ -15,9 +15,7 @@ struct ListItemsView: View {
             VStack {
                 SwiftUI.List {
                     ListRowsView(viewModel: store.state.itemsModel,
-                                 optionsAction: { _,_ in
-                        // TODO: - move viewModel.onDidTapOption to redux
-                    })
+                                 swipeActions: swipeActions)
                     
                 }
                 TextField("Add product...",
@@ -35,6 +33,23 @@ struct ListItemsView: View {
             }
         }
         .navigationTitle(store.state.listName)
+    }
+}
+
+private extension ListItemsView {
+    var swipeActions: (any ListRowsModel, ListRowOption) -> Void {
+        { item, option in
+            switch option {
+            case .done:
+                store.send(.didTapDoneButton(item))
+            case .undone:
+                store.send(.didTapUndoneButton(item))
+            case .delete:
+                store.send(.didTapDeleteButton(item))
+            case .share:
+                break
+            }
+        }
     }
 }
 
