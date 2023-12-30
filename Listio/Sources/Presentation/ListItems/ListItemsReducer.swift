@@ -20,19 +20,29 @@ extension ListItems {
     struct Reducer: Listio.Reducer {
         
         enum Action {
+            // MARK: - View flow start
             case viewWillAppear
-            case fetchItemsResult(Result<[Item], Error>)
-            case didTapAddItemButton(String)
-            case addItemResult(Result<Item, Error>)
+            
+            // MARK: - User actions
+            case didTapAddItemButton
             case didTapDoneButton(any ListRowsModel)
             case didTapUndoneButton(any ListRowsModel)
             case didTapDeleteButton(any ListRowsModel)
+            
+            // MARK: - Results
+            case fetchItemsResult(Result<[Item], Error>)
+            case addItemResult(Result<Item, Error>)
+            case deleteItemResult(Result<Void, Error>)
+            
+            // MARK: - State setters
+            case setNewItemName(String)
         }
         
         @MainActor
         struct State {
             var isLoading: Bool = false
             var itemsModel: ItemsModel = ItemsModel()
+            var newItemName: String = ""
             var listName: String = ""
         }
         
@@ -46,6 +56,7 @@ extension ListItems {
             _ state: inout State,
             _ action: Action
         ) -> Effect<Action> {
+            
             switch action {
             case .viewWillAppear:
                 state.isLoading = true
@@ -64,25 +75,42 @@ extension ListItems {
                     state.itemsModel.rows = items
                 }
                 
-            case .didTapAddItemButton(let itemName):
-                guard !itemName.isEmpty else { return .none }
-                
+            case .didTapAddItemButton:
                 state.isLoading = true
+                let name = state.newItemName
                 return .task(Task {
                     .addItemResult(
-                        try await dependencies.useCase.addItem(with: itemName,
-                                                               listId: dependencies.listId)
+                        await dependencies.useCase.addItem(with: name,
+                                                           listId: dependencies.listId)
                     )
                 })
                 
-            case .addItemResult:
+            case .addItemResult(let result):
                 state.isLoading = false
+                if case .success = result {
+                    state.newItemName = ""
+                }
+                
             case .didTapDoneButton:
                 break
+                
             case .didTapUndoneButton:
                 break
-            case .didTapDeleteButton:
-                break
+                
+            case .didTapDeleteButton(let item):
+                state.isLoading = true
+                return .task(Task {
+                    .deleteItemResult(
+                        await dependencies.useCase.deleteItem(itemId: item.documentId,
+                                                              listId: dependencies.listId)
+                    )
+                })
+                
+            case .deleteItemResult:
+                state.isLoading = false
+            
+            case .setNewItemName(let itemName):
+                state.newItemName = itemName
             }
             
             return .none

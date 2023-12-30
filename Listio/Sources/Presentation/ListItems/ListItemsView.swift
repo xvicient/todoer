@@ -1,8 +1,9 @@
 import SwiftUI
 
+// MARK: - ListItemsView
+
 struct ListItemsView: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
-    @State var itemName: String = ""
     
     init(store: Store<ListItems.Reducer>) {
         self.store = store
@@ -18,10 +19,13 @@ struct ListItemsView: View {
                                  swipeActions: swipeActions)
                     
                 }
-                TextField("Add product...",
-                          text: $itemName)
+                TextField(Constants.Text.itemName,
+                          text: Binding(
+                            get: { store.state.newItemName },
+                            set: { store.send(.setNewItemName($0)) }
+                        ))
                 .textFieldStyle(BottomLineStyle() {
-                    store.send(.didTapAddItemButton(itemName))
+                    store.send(.didTapAddItemButton)
                 })
             }
             .task {
@@ -36,6 +40,8 @@ struct ListItemsView: View {
     }
 }
 
+// MARK: - Private
+
 private extension ListItemsView {
     var swipeActions: (any ListRowsModel, ListRowOption) -> Void {
         { item, option in
@@ -49,6 +55,16 @@ private extension ListItemsView {
             case .share:
                 break
             }
+        }
+    }
+}
+
+// MARK: - Constants
+
+private extension ListItemsView {
+    struct Constants {
+        struct Text {
+            static let itemName = "Item name..."
         }
     }
 }

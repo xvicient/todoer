@@ -6,19 +6,23 @@ protocol ItemsDataSourceApi {
     func fetchItems(
         listId: String
     ) -> AnyPublisher<[ItemDTO], Error>
+    
     func addItem(
         with name: String,
         listId: String
     ) async throws -> ItemDTO
+    
     func deleteItem(
-        _ documentId: String?,
+        itemId: String,
         listId: String
-    )
+    ) async throws
+    
     func toggleItem(
         _ item: ItemDTO,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
     func toogleAllItemsBatch(
         listId: String?,
         done: Bool,
@@ -80,11 +84,10 @@ final class ItemsDataSource: ItemsDataSourceApi {
     }
     
     func deleteItem(
-        _ documentId: String?,
+        itemId: String,
         listId: String
-    ) {
-        guard let id = documentId else { return }
-        itemsCollection(listId: listId).document(id).delete()
+    ) async throws {
+        try await itemsCollection(listId: listId).document(itemId).delete()
     }
     
     func toggleItem(

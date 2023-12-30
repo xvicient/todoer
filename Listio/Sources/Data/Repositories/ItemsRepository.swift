@@ -5,19 +5,23 @@ protocol ItemsRepositoryApi {
     func fetchItems(
         listId: String
     ) -> AnyPublisher<[Item], Error>
+    
     func addItem(
         with name: String,
         listId: String
     ) async throws -> Item
+    
     func deleteItem(
-        _ documentId: String?,
+        itemId: String,
         listId: String
-    )
+    ) async throws
+    
     func toggleItem(
         _ item: Item,
         listId: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
     func toogleAllItemsBatch(
         listId: String?,
         done: Bool,
@@ -56,11 +60,11 @@ final class ItemsRepository: ItemsRepositoryApi {
     }
     
     func deleteItem(
-        _ documentId: String?,
+        itemId: String,
         listId: String
-    ) {
-        itemsDataSource.deleteItem(documentId,
-                                         listId: listId)
+    ) async throws {
+        try await itemsDataSource.deleteItem(itemId: itemId,
+                                             listId: listId)
     }
     
     func toggleItem(

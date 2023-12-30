@@ -32,7 +32,7 @@ final class ListItemsViewModel {
             case .done, .undone:
                 self.toggleItem(item)
             case .delete:
-                self.deleteProduct(item)
+                break
             default: break
             }
         }
@@ -53,11 +53,6 @@ final class ListItemsViewModel {
                 break
             }
         }
-    }
-    
-    private func deleteProduct(_ item: any ListRowsModel) {
-        itemsRepository.deleteItem(item.documentId,
-                                   listId: list.documentId)
     }
 }
 
