@@ -99,6 +99,7 @@ extension ListItems {
                 
             case .didTapDeleteButton(let item):
                 state.isLoading = true
+                state.itemsModel.rows.removeAll { $0.id == item.id }
                 return .task(Task {
                     .deleteItemResult(
                         await dependencies.useCase.deleteItem(itemId: item.documentId,

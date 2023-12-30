@@ -20,7 +20,7 @@ enum ListRowOption: String, Identifiable {
     case undone = "circle"
     case delete = "trash"
     
-    var id: Self { self }
+    var id: UUID { UUID() }
     
     var tint: Color {
         switch self {
@@ -58,27 +58,39 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
                 .frame(height: 40)
             }
             .swipeActions(edge: .leading) {
-                ForEach(viewModel.leadingActions(item),
-                        id: \.id) { option in
-                    Button {
-                        swipeActions?(item, option)
-                    } label: {
-                        Image(systemName: option.rawValue)
-                    }
-                    .tint(option.tint)
-                }
+                swipeActions(
+                    actions: viewModel.leadingActions(item),
+                    item: item
+                )
             }
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                ForEach(viewModel.trailingActions,
-                        id: \.id) { option in
-                    Button {
-                        swipeActions?(item, option)
-                    } label: {
-                        Image(systemName: option.rawValue)
-                    }
-                    .tint(option.tint)
-                }
+                swipeActions(
+                    actions: viewModel.trailingActions,
+                    item: item
+                )
             }
+        }
+    }
+}
+
+// MARK: - ViewBuilders
+
+private extension ListRowsView {
+    @ViewBuilder
+    func swipeActions(
+        actions: [ListRowOption],
+        item: any ListRowsModel
+    ) -> some View {
+        ForEach(actions,
+                id: \.id) { option in
+            Button {
+                withAnimation {
+                    swipeActions?(item, option)
+                }
+            } label: {
+                Image(systemName: option.rawValue)
+            }
+            .tint(option.tint)
         }
     }
 }
