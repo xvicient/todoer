@@ -21,13 +21,12 @@ protocol HomeViewModelApi {
 final class HomeViewModel: ListRowsViewModel {
     @Published var invitations: [Invitation] = []
     @Published var rows: [any ListRowsModel] = []
-    internal var options: (any ListRowsModel) -> [ListRowOption] {
+    internal var leadingActions: (any ListRowsModel) -> [ListRowOption] {
         {
-            [.share,
-             $0.done ? .undone : .done,
-             .delete]
+            [$0.done ? .undone : .done]
         }
     }
+    internal var trailingActions: [ListRowOption] = [.share, .delete]
     @Published var isLoading = false
     @Published var shareEmail: String = ""
     @Published var isShowingAlert: Bool = false

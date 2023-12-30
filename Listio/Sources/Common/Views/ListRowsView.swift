@@ -3,7 +3,8 @@ import SwiftUI
 @MainActor
 protocol ListRowsViewModel: ObservableObject {
     var rows: [any ListRowsModel] { get }
-    var options: (any ListRowsModel) -> [ListRowOption] { get }
+    var leadingActions: (any ListRowsModel) -> [ListRowOption] { get }
+    var trailingActions: [ListRowOption] { get }
 }
 
 protocol ListRowsModel: Identifiable, Equatable, Hashable {
@@ -14,19 +15,19 @@ protocol ListRowsModel: Identifiable, Equatable, Hashable {
 }
 
 enum ListRowOption: String, Identifiable {
-    case share = "Share"
-    case done = "Done"
-    case undone = "Undone"
-    case delete = "Delete"
+    case share = "square.and.arrow.up"
+    case done = "largecircle.fill.circle"
+    case undone = "circle"
+    case delete = "trash"
     
     var id: Self { self }
     
-    var role: ButtonRole? {
+    var tint: Color {
         switch self {
-        case .share: return nil
-        case .done: return nil
-        case .undone: return nil
-        case .delete: return .destructive
+        case .share: return .buttonPrimary
+        case .done: return .backgroundPrimary
+        case .undone: return .backgroundPrimary
+        case .delete: return .red
         }
     }
 }
@@ -40,7 +41,7 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
         ForEach(viewModel.rows, id: \.id) { item in
             Group {
                 HStack {
-                    Image(systemName: item.done ? "circle.fill" : "circle")
+                    Image(systemName: item.done ? "largecircle.fill.circle" : "circle")
                         .foregroundColor(.backgroundPrimary)
                     Button(action: {
                         mainAction?(item)
@@ -55,29 +56,30 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
                     .foregroundColor(.primary)
                 }
                 .frame(height: 40)
-                .listRowSeparator(.hidden)
             }
-            .listRowBackground(
-                Rectangle()
-                    .fill(.backgroundSecondary)
-                    .cornerRadius(10.0)
-                    .padding([.top, .bottom], 5)
-            )
-            .swipeActions(allowsFullSwipe: false) {
-                ForEach(viewModel.options(item),
+            .swipeActions(edge: .leading) {
+                ForEach(viewModel.leadingActions(item),
                         id: \.id) { option in
-                    Button(option.rawValue,
-                           role: option.role,
-                           action: {
-                        withAnimation {
-                            swipeActions?(item, option)
-                        }
-                    })
+                    Button {
+                        swipeActions?(item, option)
+                    } label: {
+                        Image(systemName: option.rawValue)
+                    }
+                    .tint(option.tint)
+                }
+            }
+            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                ForEach(viewModel.trailingActions,
+                        id: \.id) { option in
+                    Button {
+                        swipeActions?(item, option)
+                    } label: {
+                        Image(systemName: option.rawValue)
+                    }
+                    .tint(option.tint)
                 }
             }
         }
-        .padding([.leading, .trailing], -10)
-        .scrollContentBackground(.hidden)
     }
 }
 
@@ -94,11 +96,11 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
                                               uuid: [],
                                               dateCreated: 1)]
         
-        var options: (any ListRowsModel) -> [ListRowOption] = {
-            [.share,
-             $0.done ? .undone : .done,
-             .delete]
+        var leadingActions: (any ListRowsModel) -> [ListRowOption] = {
+            [$0.done ? .undone : .done]
         }
+        
+        var trailingActions: [ListRowOption] = [.share, .delete]
     }
     return ListRowsView(viewModel: ViewModel())
 }

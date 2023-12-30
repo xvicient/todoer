@@ -8,12 +8,12 @@ protocol ListItemsDependencies {
 
 class ItemsModel: ListRowsViewModel {
     var rows: [any ListRowsModel] = []
-    var options: (any ListRowsModel) -> [ListRowOption] {
+    var leadingActions: (any ListRowsModel) -> [ListRowOption] {
         {
-            [$0.done ? .undone : .done,
-             .delete]
+            [$0.done ? .undone : .done]
         }
     }
+    internal var trailingActions = [ListRowOption.delete]
 }
 
 extension ListItems {

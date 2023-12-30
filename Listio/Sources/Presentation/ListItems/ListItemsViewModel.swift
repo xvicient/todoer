@@ -1,7 +1,7 @@
 import SwiftUI
 
 @MainActor
-final class ListItemsViewModel: ListRowsViewModel {
+final class ListItemsViewModel {
     private var list: List
     let listName: String
     @Published var rows: [any ListRowsModel] = []
