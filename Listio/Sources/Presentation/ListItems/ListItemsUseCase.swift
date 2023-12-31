@@ -106,9 +106,7 @@ extension ListItems {
                 )
                 
                 var mutableList = list
-                mutableList.done = items
-                    .map { $0.id == item.id ? item : $0 }
-                    .allSatisfy({ $0.done })
+                mutableList.done = items.allSatisfy({ $0.done })
                 _ = try await listsRepository.updateList(mutableList)
                 
                 return .success(result)

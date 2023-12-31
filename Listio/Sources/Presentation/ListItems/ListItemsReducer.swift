@@ -1,4 +1,5 @@
 import Combine
+import Foundation
 
 protocol ListItemsDependencies {
     var useCase: ListItemsUseCaseApi { get }
@@ -92,7 +93,7 @@ extension ListItems {
                 }
                 
             case .didTapDoneUndoneButton(let item):
-                state.isLoading = true
+                state.itemsModel.rows.toggleDone { $0.id == item.id }
                 let items = state.itemsModel.rows
                 return .task(Task {
                     .updateItemResult(
@@ -105,7 +106,7 @@ extension ListItems {
                 })
                 
             case .updateItemResult:
-                state.isLoading = false
+                break
                 
             case .didTapDeleteButton(let item):
                 state.isLoading = true
@@ -128,5 +129,16 @@ extension ListItems {
             
             return .none
         }
+    }
+}
+
+private extension Array where Element == any ListRow {
+    mutating func toggleDone(
+        _ matching: (any ListRow
+        ) -> Bool) {
+        guard let index = firstIndex(where: matching) else {
+            return
+        }
+        self[index].done.toggle()
     }
 }

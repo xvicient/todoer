@@ -13,7 +13,7 @@ protocol ListRow: Identifiable, Equatable, Hashable {
     var id: UUID { get }
     var documentId: String { get }
     var name: String { get }
-    var done: Bool { get }
+    var done: Bool { get set }
 }
 
 enum ListRowAction: String, Identifiable {

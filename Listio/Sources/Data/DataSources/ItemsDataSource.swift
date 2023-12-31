@@ -36,10 +36,12 @@ final class ItemsDataSource: ItemsDataSourceApi {
     }
     
     private var snapshotListener: ListenerRegistration?
-    private var listenerSubject = PassthroughSubject<[ItemDTO], Error>()
+    private var listenerSubject: PassthroughSubject<[ItemDTO], Error>?
+    private var ignoreChanges = false
     
     deinit {
         snapshotListener?.remove()
+        listenerSubject = nil
     }
     
     private func itemsCollection(listId: String) -> CollectionReference {
@@ -49,12 +51,20 @@ final class ItemsDataSource: ItemsDataSourceApi {
     func fetchItems(
         listId: String
     ) -> AnyPublisher<[ItemDTO], Error> {
+        let subject = PassthroughSubject<[ItemDTO], Error>()
+        listenerSubject = subject
+        
         snapshotListener = itemsCollection(listId: listId)
             .addSnapshotListener { [weak self] query, error in
                 guard let self = self else { return }
                 
+                guard !ignoreChanges else {
+                    ignoreChanges = false
+                    return
+                }
+                
                 if let error = error {
-                    listenerSubject.send(completion: .failure(error))
+                    subject.send(completion: .failure(error))
                     return
                 }
                 
@@ -62,10 +72,12 @@ final class ItemsDataSource: ItemsDataSourceApi {
                     .compactMap { try? $0.data(as: ItemDTO.self) }
                 ?? []
                 
-                listenerSubject.send(products)
+                subject.send(products)
             }
         
-        return listenerSubject.eraseToAnyPublisher()
+        return subject
+            .removeDuplicates()
+            .eraseToAnyPublisher()
         
     }
     
@@ -73,7 +85,8 @@ final class ItemsDataSource: ItemsDataSourceApi {
         with name: String,
         listId: String
     ) async throws -> ItemDTO {
-        try await withCheckedThrowingContinuation { continuation in
+        ignoreChanges = true
+        return try await withCheckedThrowingContinuation { continuation in
             do {
                 let collection = itemsCollection(listId: listId)
                 let dto = ItemDTO(name: name,
@@ -91,6 +104,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
         itemId: String,
         listId: String
     ) async throws {
+        ignoreChanges = true
         try await itemsCollection(listId: listId).document(itemId).delete()
     }
     
@@ -98,6 +112,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
         item: ItemDTO,
         listId: String
     )  async throws -> ItemDTO {
+        ignoreChanges = true
         guard let id = item.id else {
             throw Errors.invalidDTO
         }
