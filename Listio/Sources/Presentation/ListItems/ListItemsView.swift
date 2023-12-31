@@ -20,10 +20,7 @@ struct ListItemsView: View {
                     
                 }
                 TextField(Constants.Text.itemName,
-                          text: Binding(
-                            get: { store.state.newItemName },
-                            set: { store.send(.setNewItemName($0)) }
-                        ))
+                          text: newItemBinding)
                 .textFieldStyle(BottomLineStyle() {
                     store.send(.didTapAddItemButton)
                 })
@@ -43,19 +40,24 @@ struct ListItemsView: View {
 // MARK: - Private
 
 private extension ListItemsView {
-    var swipeActions: (any ListRowsModel, ListRowOption) -> Void {
+    var swipeActions: (any ListRow, ListRowAction) -> Void {
         { item, option in
             switch option {
-            case .done:
-                store.send(.didTapDoneButton(item))
-            case .undone:
-                store.send(.didTapUndoneButton(item))
+            case .done, .undone:
+                store.send(.didTapDoneUndoneButton(item))
             case .delete:
                 store.send(.didTapDeleteButton(item))
             case .share:
                 break
             }
         }
+    }
+    
+    var newItemBinding: Binding<String> {
+        Binding(
+          get: { store.state.newItemName },
+          set: { store.send(.setNewItemName($0)) }
+      )
     }
 }
 

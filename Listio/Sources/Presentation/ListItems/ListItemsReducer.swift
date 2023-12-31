@@ -2,18 +2,15 @@ import Combine
 
 protocol ListItemsDependencies {
     var useCase: ListItemsUseCaseApi { get }
-    var listId: String { get }
-    var listName: String { get }
+    var list: List { get }
 }
 
-class ItemsModel: ListRowsViewModel {
-    var rows: [any ListRowsModel] = []
-    var leadingActions: (any ListRowsModel) -> [ListRowOption] {
-        {
-            [$0.done ? .undone : .done]
-        }
+final class ItemsModel: ListRowsViewModel {
+    var rows: [any ListRow] = []
+    var leadingActions: (any ListRow) -> [ListRowAction] {
+        { [$0.done ? .undone : .done] }
     }
-    internal var trailingActions = [ListRowOption.delete]
+    internal var trailingActions = [ListRowAction.delete]
 }
 
 extension ListItems {
@@ -25,16 +22,16 @@ extension ListItems {
             
             // MARK: - User actions
             case didTapAddItemButton
-            case didTapDoneButton(any ListRowsModel)
-            case didTapUndoneButton(any ListRowsModel)
-            case didTapDeleteButton(any ListRowsModel)
+            case didTapDoneUndoneButton(any ListRow)
+            case didTapDeleteButton(any ListRow)
             
             // MARK: - Results
             case fetchItemsResult(Result<[Item], Error>)
             case addItemResult(Result<Item, Error>)
             case deleteItemResult(Result<Void, Error>)
+            case updateItemResult(Result<Item, Error>)
             
-            // MARK: - State setters
+            // MARK: - View bindings
             case setNewItemName(String)
         }
         
@@ -52,7 +49,8 @@ extension ListItems {
             self.dependencies = dependencies
         }
         
-        @MainActor func reduce(
+        @MainActor 
+        func reduce(
             _ state: inout State,
             _ action: Action
         ) -> Effect<Action> {
@@ -60,10 +58,10 @@ extension ListItems {
             switch action {
             case .viewWillAppear:
                 state.isLoading = true
-                state.listName = dependencies.listName
+                state.listName = dependencies.list.name
                 return .publish(
                     dependencies.useCase.fetchItems(
-                        listId: dependencies.listId)
+                        listId: dependencies.list.documentId)
                         .map { .fetchItemsResult(.success($0)) }
                         .catch { Just(.fetchItemsResult(.failure($0))) }
                         .eraseToAnyPublisher()
@@ -80,8 +78,10 @@ extension ListItems {
                 let name = state.newItemName
                 return .task(Task {
                     .addItemResult(
-                        await dependencies.useCase.addItem(with: name,
-                                                           listId: dependencies.listId)
+                        await dependencies.useCase.addItem(
+                            with: name,
+                            listId: dependencies.list.documentId
+                        )
                     )
                 })
                 
@@ -91,19 +91,31 @@ extension ListItems {
                     state.newItemName = ""
                 }
                 
-            case .didTapDoneButton:
-                break
+            case .didTapDoneUndoneButton(let item):
+                state.isLoading = true
+                let items = state.itemsModel.rows
+                return .task(Task {
+                    .updateItemResult(
+                        await dependencies.useCase.updateItemDone(
+                            item: item,
+                            items: items,
+                            list: dependencies.list
+                        )
+                    )
+                })
                 
-            case .didTapUndoneButton:
-                break
+            case .updateItemResult:
+                state.isLoading = false
                 
             case .didTapDeleteButton(let item):
                 state.isLoading = true
                 state.itemsModel.rows.removeAll { $0.id == item.id }
                 return .task(Task {
                     .deleteItemResult(
-                        await dependencies.useCase.deleteItem(itemId: item.documentId,
-                                                              listId: dependencies.listId)
+                        await dependencies.useCase.deleteItem(
+                            itemId: item.documentId,
+                            listId: dependencies.list.documentId
+                        )
                     )
                 })
                 

@@ -4,7 +4,7 @@ import SwiftUI
 
 protocol HomeViewModelApi {
     func fetchData()
-    var onDidTapOption: ((any ListRowsModel, ListRowOption) -> Void) { get }
+    var onDidTapOption: ((any ListRow, ListRowAction) -> Void) { get }
     func shareList() async
     func cancelShare()
     func importList(
@@ -20,13 +20,13 @@ protocol HomeViewModelApi {
 @MainActor
 final class HomeViewModel: ListRowsViewModel {
     @Published var invitations: [Invitation] = []
-    @Published var rows: [any ListRowsModel] = []
-    internal var leadingActions: (any ListRowsModel) -> [ListRowOption] {
+    @Published var rows: [any ListRow] = []
+    internal var leadingActions: (any ListRow) -> [ListRowAction] {
         {
             [$0.done ? .undone : .done]
         }
     }
-    internal var trailingActions: [ListRowOption] = [.share, .delete]
+    internal var trailingActions: [ListRowAction] = [.share, .delete]
     @Published var isLoading = false
     @Published var shareEmail: String = ""
     @Published var isShowingAlert: Bool = false
@@ -82,7 +82,7 @@ extension HomeViewModel: HomeViewModelApi {
         )
     }
     
-    var onDidTapOption: ((any ListRowsModel, ListRowOption) -> Void) {
+    var onDidTapOption: ((any ListRow, ListRowAction) -> Void) {
         { [weak self] item, option in
             guard let self = self else { return }
             switch option {
@@ -193,13 +193,13 @@ private extension HomeViewModel {
         }
     }
     
-    func showShareDialog(_ item: any ListRowsModel) {
+    func showShareDialog(_ item: any ListRow) {
         guard let list = item as? List else { return }
         sharingList = list
         isShowingAlert = true
     }
     
-    func toggleList(_ item: any ListRowsModel) {
+    func toggleList(_ item: any ListRow) {
         guard var list = item as? List else { return }
         
         list.done.toggle()
@@ -216,9 +216,9 @@ private extension HomeViewModel {
         }
     }
     
-    func deleteList(_ item: any ListRowsModel) {
+    func deleteList(_ item: any ListRow) {
         listsRepository.deleteList(item.documentId)
     }
 }
 
-extension List: ListRowsModel {}
+extension List: ListRow {}

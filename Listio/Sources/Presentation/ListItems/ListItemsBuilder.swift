@@ -4,8 +4,7 @@ struct ListItems {
     struct Builder {
         struct Dependencies: ListItemsDependencies {
             var useCase: ListItemsUseCaseApi
-            var listId: String
-            var listName: String
+            var list: List
         }
         
         @MainActor
@@ -14,8 +13,7 @@ struct ListItems {
         ) -> ListItemsView {
             let dependencies = Dependencies(
                 useCase: ListItems.UseCase(),
-                listId: list.documentId,
-                listName: list.name
+                list: list
             )
             let reducer = ListItems.Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)

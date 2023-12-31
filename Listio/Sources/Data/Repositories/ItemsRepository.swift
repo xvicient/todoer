@@ -16,11 +16,10 @@ protocol ItemsRepositoryApi {
         listId: String
     ) async throws
     
-    func toggleItem(
-        _ item: Item,
-        listId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+    func updateItem(
+        item: Item,
+        listId: String
+    )  async throws -> Item
     
     func toogleAllItemsBatch(
         listId: String?,
@@ -67,14 +66,12 @@ final class ItemsRepository: ItemsRepositoryApi {
                                              listId: listId)
     }
     
-    func toggleItem(
-        _ item: Item,
-        listId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        itemsDataSource.toggleItem(item.toDTO,
-                                         listId: listId,
-                                         completion: completion)
+    func updateItem(
+        item: Item,
+        listId: String
+    )  async throws -> Item {
+        try await itemsDataSource.updateItem(item: item.toDTO,
+                                             listId: listId).toDomain
     }
     
     func toogleAllItemsBatch(

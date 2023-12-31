@@ -202,14 +202,14 @@ private extension HomeView {
             ]
     }
     
-    var itemViewMainAction: (any ListRowsModel) -> Void {
+    var itemViewMainAction: (any ListRow) -> Void {
         {
             guard let list = $0 as? List else { return }
             coordinator.push(.products(list))
         }
     }
     
-    var itemViewOptionsAction: (any ListRowsModel, ListRowOption) -> Void {
+    var itemViewOptionsAction: (any ListRow, ListRowAction) -> Void {
         { item, option in
             viewModel.onDidTapOption(item, option)
         }

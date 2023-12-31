@@ -6,26 +6,39 @@ protocol ListsDataSourceApi {
         uuid: String,
         completion: @escaping (Result<[ListDTO], Error>) -> Void
     )
+    
     func addList(
         with name: String,
         uuid: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
     func deleteList(
         _ documentId: String?
     )
+    
     func toggleList(
         _ list: ListDTO,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
     func importList(
         id: String,
         uuid: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
+    func updateList(
+        _ list: ListDTO
+    ) async throws -> ListDTO
 }
 
 final class ListsDataSource: ListsDataSourceApi {
+    private enum Errors: Error {
+        case invalidDTO
+        case encodingError
+    }
+    
     private let listsCollection = Firestore.firestore().collection("lists")
     
     func fetchLists(
@@ -109,5 +122,20 @@ final class ListsDataSource: ListsDataSourceApi {
                 completion(.success(Void()))
             }
         }
+    }
+    
+    func updateList(
+        _ list: ListDTO
+    ) async throws -> ListDTO {
+        guard let id = list.id else {
+            throw Errors.invalidDTO
+        }
+        
+        guard let encodedData = try? Firestore.Encoder().encode(list) else {
+            throw Errors.encodingError
+        }
+        
+        try await listsCollection.document(id).updateData(encodedData)
+        return list
     }
 }

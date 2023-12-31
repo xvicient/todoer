@@ -15,6 +15,12 @@ protocol ListItemsUseCaseApi {
         itemId: String?,
         listId: String
     ) async -> Result<Void, Error>
+    
+    func updateItemDone(
+        item: any ListRow,
+        items: [any ListRow],
+        list: List
+    ) async -> Result<Item, Error>
 }
 
 extension ListItems {
@@ -23,10 +29,14 @@ extension ListItems {
             case emptyItemName
             case unexpectedError
         }
-        private let itemsRepository: ItemsRepositoryApi
         
-        init(itemsRepository: ItemsRepositoryApi = ItemsRepository()) {
+        private let itemsRepository: ItemsRepositoryApi
+        private let listsRepository: ListsRepositoryApi
+        
+        init(itemsRepository: ItemsRepositoryApi = ItemsRepository(),
+             listsRepository: ListsRepositoryApi = ListsRepository()) {
             self.itemsRepository = itemsRepository
+            self.listsRepository = listsRepository
         }
         
         func fetchItems(
@@ -73,6 +83,35 @@ extension ListItems {
                     listId: listId
                 )
                 return .success(())
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func updateItemDone(
+            item: any ListRow,
+            items: [any ListRow],
+            list: List
+        ) async -> Result<Item, Error> {
+            guard var item = item as? Item else {
+                return .failure(Errors.unexpectedError)
+            }
+            
+            item.done.toggle()
+            
+            do {
+                let result = try await itemsRepository.updateItem(
+                    item: item,
+                    listId: list.documentId
+                )
+                
+                var mutableList = list
+                mutableList.done = items
+                    .map { $0.id == item.id ? item : $0 }
+                    .allSatisfy({ $0.done })
+                _ = try await listsRepository.updateList(mutableList)
+                
+                return .success(result)
             } catch {
                 return .failure(error)
             }

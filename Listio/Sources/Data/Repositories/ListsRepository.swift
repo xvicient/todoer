@@ -2,21 +2,29 @@ protocol ListsRepositoryApi {
     func fetchLists(
         completion: @escaping (Result<[List], Error>) -> Void
     )
+    
     func addList(
         with name: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
     func deleteList(
         _ documentId: String?
-    )    
+    )  
+    
     func toggleList(
         _ list: List,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
     func importList(
         id: String,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+    
+    func updateList(
+        _ list: List
+    ) async throws -> List
 }
 
 final class ListsRepository: ListsRepositoryApi {
@@ -76,5 +84,11 @@ final class ListsRepository: ListsRepositoryApi {
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         listsDataSource.importList(id: id, uuid: usersDataSource.uuid, completion: completion)
+    }
+    
+    func updateList(
+        _ list: List
+    ) async throws -> List {
+        try await listsDataSource.updateList(list.toDTO).toDomain
     }
 }

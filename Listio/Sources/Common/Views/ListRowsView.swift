@@ -1,20 +1,22 @@
 import SwiftUI
 
+// MARK: - ListRowsView
+
 @MainActor
 protocol ListRowsViewModel: ObservableObject {
-    var rows: [any ListRowsModel] { get }
-    var leadingActions: (any ListRowsModel) -> [ListRowOption] { get }
-    var trailingActions: [ListRowOption] { get }
+    var rows: [any ListRow] { get }
+    var leadingActions: (any ListRow) -> [ListRowAction] { get }
+    var trailingActions: [ListRowAction] { get }
 }
 
-protocol ListRowsModel: Identifiable, Equatable, Hashable {
+protocol ListRow: Identifiable, Equatable, Hashable {
     var id: UUID { get }
     var documentId: String { get }
     var name: String { get }
     var done: Bool { get }
 }
 
-enum ListRowOption: String, Identifiable {
+enum ListRowAction: String, Identifiable {
     case share = "square.and.arrow.up"
     case done = "largecircle.fill.circle"
     case undone = "circle"
@@ -34,8 +36,8 @@ enum ListRowOption: String, Identifiable {
 
 struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
     @StateObject var viewModel: ViewModel
-    var mainAction: ((any ListRowsModel) -> Void)? = nil
-    var swipeActions: ((any ListRowsModel, ListRowOption) -> Void)? = nil
+    var mainAction: ((any ListRow) -> Void)? = nil
+    var swipeActions: ((any ListRow, ListRowAction) -> Void)? = nil
     
     var body: some View {
         ForEach(viewModel.rows, id: \.id) { item in
@@ -78,8 +80,8 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
 private extension ListRowsView {
     @ViewBuilder
     func swipeActions(
-        actions: [ListRowOption],
-        item: any ListRowsModel
+        actions: [ListRowAction],
+        item: any ListRow
     ) -> some View {
         ForEach(actions,
                 id: \.id) { option in
@@ -95,9 +97,13 @@ private extension ListRowsView {
     }
 }
 
+// MARK: - ListRow conforming
+
+extension Item: ListRow {}
+
 #Preview {
     class ViewModel: ListRowsViewModel {
-        var rows: [any ListRowsModel] = [List(documentId: "",
+        var rows: [any ListRow] = [List(documentId: "",
                                               name: "Test",
                                               done: true,
                                               uuid: [],
@@ -108,11 +114,11 @@ private extension ListRowsView {
                                               uuid: [],
                                               dateCreated: 1)]
         
-        var leadingActions: (any ListRowsModel) -> [ListRowOption] = {
+        var leadingActions: (any ListRow) -> [ListRowAction] = {
             [$0.done ? .undone : .done]
         }
         
-        var trailingActions: [ListRowOption] = [.share, .delete]
+        var trailingActions: [ListRowAction] = [.share, .delete]
     }
     return ListRowsView(viewModel: ViewModel())
 }

@@ -17,11 +17,10 @@ protocol ItemsDataSourceApi {
         listId: String
     ) async throws
     
-    func toggleItem(
-        _ item: ItemDTO,
-        listId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+    func updateItem(
+        item: ItemDTO,
+        listId: String
+    )  async throws -> ItemDTO
     
     func toogleAllItemsBatch(
         listId: String?,
@@ -31,6 +30,11 @@ protocol ItemsDataSourceApi {
 }
 
 final class ItemsDataSource: ItemsDataSourceApi {
+    private enum Errors: Error {
+        case invalidDTO
+        case encodingError
+    }
+    
     private var snapshotListener: ListenerRegistration?
     private var listenerSubject = PassthroughSubject<[ItemDTO], Error>()
     
@@ -90,21 +94,20 @@ final class ItemsDataSource: ItemsDataSourceApi {
         try await itemsCollection(listId: listId).document(itemId).delete()
     }
     
-    func toggleItem(
-        _ item: ItemDTO,
-        listId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        guard let id = item.id,
-              let encodedData = try? Firestore.Encoder().encode(item) else { return }
-        
-        itemsCollection(listId: listId).document(id).updateData(encodedData) { error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(Void()))
-            }
+    func updateItem(
+        item: ItemDTO,
+        listId: String
+    )  async throws -> ItemDTO {
+        guard let id = item.id else {
+            throw Errors.invalidDTO
         }
+        
+        guard let encodedData = try? Firestore.Encoder().encode(item) else {
+            throw Errors.encodingError
+        }
+        
+        try await itemsCollection(listId: listId).document(id).updateData(encodedData)
+        return item
     }
     
     func toogleAllItemsBatch(
