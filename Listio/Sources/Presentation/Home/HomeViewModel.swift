@@ -22,9 +22,7 @@ final class HomeViewModel: ListRowsViewModel {
     @Published var invitations: [Invitation] = []
     @Published var rows: [any ListRow] = []
     internal var leadingActions: (any ListRow) -> [ListRowAction] {
-        {
-            [$0.done ? .undone : .done]
-        }
+        { [$0.done ? .undone : .done] }
     }
     internal var trailingActions: [ListRowAction] = [.share, .delete]
     @Published var isLoading = false
@@ -40,18 +38,18 @@ final class HomeViewModel: ListRowsViewModel {
     private let listsRepository: ListsRepositoryApi
     private let productsRepository: ItemsRepositoryApi
     private let invitationsRepository: InvitationsRepositoryApi
-    private let usersDataRepository: UsersRepositoryApi
+    private let usersRepository: UsersRepositoryApi
     private let authenticationService: AuthenticationService
     
     init(listsRepository: ListsRepositoryApi = ListsRepository(),
          productsRepository: ItemsRepositoryApi = ItemsRepository(),
          invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
-         usersDataRepository: UsersRepositoryApi = UsersRepository(),
+         usersRepository: UsersRepositoryApi = UsersRepository(),
          authenticationService: AuthenticationService = AuthenticationService()) {
         self.listsRepository = listsRepository
         self.productsRepository = productsRepository
         self.invitationsRepository = invitationsRepository
-        self.usersDataRepository = usersDataRepository
+        self.usersRepository = usersRepository
         self.authenticationService = authenticationService
     }
 }
@@ -99,10 +97,10 @@ extension HomeViewModel: HomeViewModelApi {
     func shareList() async {
         isShowingAlert = false
         
-        if let selfUser = try? await usersDataRepository.getSelfUser(),
+        if let selfUser = try? await usersRepository.getSelfUser(),
            let ownerName = selfUser.displayName,
            let ownerEmail = selfUser.email,
-           let invitedUser = try? await usersDataRepository.getUser(shareEmail),
+           let invitedUser = try? await usersRepository.getUser(shareEmail),
            let listId = sharingList?.documentId,
            let listName = sharingList?.name  {
             invitationsRepository.sendInvitation(ownerName: ownerName,
@@ -152,6 +150,7 @@ extension HomeViewModel: HomeViewModelApi {
     
     func signOut() {
         try? authenticationService.signOut()
+        usersRepository.setUuid("")
     }
 }
 
@@ -186,7 +185,7 @@ private extension HomeViewModel {
     
     func fetchUserSelf() {
         Task {
-            guard let photoUrl = try? await usersDataRepository.getSelfUser().photoUrl else {
+            guard let photoUrl = try? await usersRepository.getSelfUser().photoUrl else {
                 return
             }
             userSelfPhoto = photoUrl

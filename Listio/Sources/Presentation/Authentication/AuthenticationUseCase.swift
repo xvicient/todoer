@@ -18,9 +18,19 @@ extension Authentication {
         
         func signIn() async throws {
             let authData = try await googleService.signIn()
-            try await usersRepository.createUser(with: authData.uid,
-                                       email: authData.email,
-                                       displayName: authData.displayName)
+            
+            guard let email = authData.email else {
+                throw Errors.signInError
+            }
+            
+            if (try? await usersRepository.getUser(email)) == nil {
+                try await usersRepository.createUser(with: authData.uid,
+                                                     email: authData.email,
+                                                     displayName: authData.displayName,
+                                                     photoUrl: authData.photoUrl)
+            }
+            
+            usersRepository.setUuid(authData.uid)
         }
     }
 }

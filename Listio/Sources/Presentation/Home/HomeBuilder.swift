@@ -2,10 +2,8 @@ import SwiftUI
 
 struct HomeBuilder {
     @MainActor
-    static func makeHome(
-        listsRepository: ListsRepositoryApi = ListsRepository()
-    ) -> HomeView {
-        let viewModel = HomeViewModel(listsRepository: listsRepository)
+    static func makeHome() -> HomeView {
+        let viewModel = HomeViewModel()
         return HomeView(viewModel: viewModel)
     }
 }

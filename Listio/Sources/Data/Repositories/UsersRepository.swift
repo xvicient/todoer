@@ -2,17 +2,22 @@ protocol UsersRepositoryApi {
     func createUser(
         with uuid: String,
         email: String?,
-        displayName: String?
+        displayName: String?,
+        photoUrl: String?
     ) async throws
+    
     func getSelfUser() async throws -> User
+    
     func getUser(
         _ email: String
     ) async throws -> UserDTO
+    
+    func setUuid(_ value: String)
 }
 
 final class UsersRepository: UsersRepositoryApi {
     
-    let usersDataSource: UsersDataSourceApi
+    var usersDataSource: UsersDataSourceApi
     
     init(usersDataSource: UsersDataSourceApi = UsersDataSource()) {
         self.usersDataSource = usersDataSource
@@ -21,11 +26,13 @@ final class UsersRepository: UsersRepositoryApi {
     func createUser(
         with uuid: String,
         email: String?,
-        displayName: String?
+        displayName: String?,
+        photoUrl: String?
     ) async throws {
         try await usersDataSource.createUser(with: uuid,
                                              email: email,
-                                             displayName: displayName)
+                                             displayName: displayName,
+                                             photoUrl: photoUrl)
     }
     
     func getSelfUser() async throws -> User {
@@ -36,5 +43,9 @@ final class UsersRepository: UsersRepositoryApi {
         _ email: String
     ) async throws -> UserDTO {
         try await usersDataSource.getUser(email)
+    }
+    
+    func setUuid(_ value: String) {
+        usersDataSource.setUuid(value)
     }
 }

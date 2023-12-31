@@ -7,25 +7,36 @@ enum UsersDataSourceError: Error {
 
 protocol UsersDataSourceApi {
     var uuid: String { get }
+    
     func createUser(
         with uuid: String,
         email: String?,
-        displayName: String?
+        displayName: String?,
+        photoUrl: String?
     ) async throws
+    
     func getSelfUser() async throws -> UserDTO
+    
     func getUser(
-        _ uuid: String
+        _ email: String
     ) async throws -> UserDTO
+    
+    func setUuid(_ value: String)
 }
 
 final class UsersDataSource: UsersDataSourceApi {
     @AppSetting(key: "uuid", defaultValue: "") var uuid: String
     private let usersCollection = Firestore.firestore().collection("users")
     
+    func setUuid(_ value: String) {
+        uuid = value
+    }
+    
     func createUser(
         with uuid: String,
         email: String?,
-        displayName: String?
+        displayName: String?,
+        photoUrl: String?
     ) async throws {
         let document = usersCollection.document()
         let documentId = document.documentID
@@ -33,8 +44,10 @@ final class UsersDataSource: UsersDataSourceApi {
             id: documentId,
             uuid: uuid,
             email: email,
-            displayName: displayName
+            displayName: displayName,
+            photoUrl: photoUrl
         )
+        
         _ = try usersCollection.addDocument(from: dto)
     }
     
