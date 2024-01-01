@@ -11,8 +11,8 @@ struct Item: Identifiable, Equatable, Hashable {
 extension ItemDTO {
     var toDomain: Item {
         Item(documentId: id ?? "",
-             name: name,
-             done: done,
-             dateCreated: dateCreated)
+                name: name,
+                done: done,
+                dateCreated: dateCreated)
     }
 }

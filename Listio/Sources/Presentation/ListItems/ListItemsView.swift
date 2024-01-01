@@ -40,13 +40,13 @@ struct ListItemsView: View {
 // MARK: - Private
 
 private extension ListItemsView {
-    var swipeActions: (any ListRow, ListRowAction) -> Void {
-        { item, option in
+    var swipeActions: (Int, ListRowAction) -> Void {
+        { index, option in
             switch option {
             case .done, .undone:
-                store.send(.didTapDoneUndoneButton(item))
+                store.send(.didTapToggleItemButton(index))
             case .delete:
-                store.send(.didTapDeleteButton(item))
+                store.send(.didTapDeleteItemButton(index))
             case .share:
                 break
             }

@@ -16,9 +16,8 @@ protocol ListItemsUseCaseApi {
         listId: String
     ) async -> Result<Void, Error>
     
-    func updateItemDone(
+    func updateItem(
         item: any ListRow,
-        items: [any ListRow],
         list: List
     ) async -> Result<Item, Error>
 }
@@ -88,16 +87,13 @@ extension ListItems {
             }
         }
         
-        func updateItemDone(
+        func updateItem(
             item: any ListRow,
-            items: [any ListRow],
             list: List
         ) async -> Result<Item, Error> {
             guard var item = item as? Item else {
                 return .failure(Errors.unexpectedError)
             }
-            
-            item.done.toggle()
             
             do {
                 let result = try await itemsRepository.updateItem(
@@ -105,9 +101,7 @@ extension ListItems {
                     listId: list.documentId
                 )
                 
-                var mutableList = list
-                mutableList.done = items.allSatisfy({ $0.done })
-                _ = try await listsRepository.updateList(mutableList)
+                _ = try await listsRepository.updateList(list)
                 
                 return .success(result)
             } catch {

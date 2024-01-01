@@ -209,9 +209,9 @@ private extension HomeView {
         }
     }
     
-    var itemViewOptionsAction: (any ListRow, ListRowAction) -> Void {
-        { item, option in
-            viewModel.onDidTapOption(item, option)
+    var itemViewOptionsAction: (Int, ListRowAction) -> Void {
+        { index, option in
+            viewModel.onDidTapOption(index, option)
         }
     }
 }

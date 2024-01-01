@@ -4,7 +4,7 @@ import SwiftUI
 
 protocol HomeViewModelApi {
     func fetchData()
-    var onDidTapOption: ((any ListRow, ListRowAction) -> Void) { get }
+    var onDidTapOption: ((Int, ListRowAction) -> Void) { get }
     func shareList() async
     func cancelShare()
     func importList(
@@ -80,9 +80,10 @@ extension HomeViewModel: HomeViewModelApi {
         )
     }
     
-    var onDidTapOption: ((any ListRow, ListRowAction) -> Void) {
-        { [weak self] item, option in
+    var onDidTapOption: ((Int, ListRowAction) -> Void) {
+        { [weak self] index, option in
             guard let self = self else { return }
+            let item = rows[index]
             switch option {
             case .share:
                 self.showShareDialog(item)

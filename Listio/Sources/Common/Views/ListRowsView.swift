@@ -37,10 +37,11 @@ enum ListRowAction: String, Identifiable {
 struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
     @StateObject var viewModel: ViewModel
     var mainAction: ((any ListRow) -> Void)? = nil
-    var swipeActions: ((any ListRow, ListRowAction) -> Void)? = nil
+    var swipeActions: ((Int, ListRowAction) -> Void)? = nil
     
     var body: some View {
-        ForEach(viewModel.rows, id: \.id) { item in
+        ForEach(Array(viewModel.rows.enumerated()),
+                id: \.element.id) { index, item in
             Group {
                 HStack {
                     Image(systemName: item.done ? "largecircle.fill.circle" : "circle")
@@ -62,13 +63,13 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
             .swipeActions(edge: .leading) {
                 swipeActions(
                     actions: viewModel.leadingActions(item),
-                    item: item
+                    index: index
                 )
             }
             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 swipeActions(
                     actions: viewModel.trailingActions,
-                    item: item
+                    index: index
                 )
             }
         }
@@ -81,13 +82,13 @@ private extension ListRowsView {
     @ViewBuilder
     func swipeActions(
         actions: [ListRowAction],
-        item: any ListRow
+        index: Int
     ) -> some View {
         ForEach(actions,
                 id: \.id) { option in
             Button {
                 withAnimation {
-                    swipeActions?(item, option)
+                    swipeActions?(index, option)
                 }
             } label: {
                 Image(systemName: option.rawValue)

@@ -1,6 +1,8 @@
 import Combine
 import Foundation
 
+// MARK: - ListItemsReducer
+
 protocol ListItemsDependencies {
     var useCase: ListItemsUseCaseApi { get }
     var list: List { get }
@@ -23,8 +25,8 @@ extension ListItems {
             
             // MARK: - User actions
             case didTapAddItemButton
-            case didTapDoneUndoneButton(any ListRow)
-            case didTapDeleteButton(any ListRow)
+            case didTapToggleItemButton(Int)
+            case didTapDeleteItemButton(Int)
             
             // MARK: - Results
             case fetchItemsResult(Result<[Item], Error>)
@@ -58,87 +60,141 @@ extension ListItems {
             
             switch action {
             case .viewWillAppear:
-                state.isLoading = true
-                state.listName = dependencies.list.name
-                return .publish(
-                    dependencies.useCase.fetchItems(
-                        listId: dependencies.list.documentId)
-                        .map { .fetchItemsResult(.success($0)) }
-                        .catch { Just(.fetchItemsResult(.failure($0))) }
-                        .eraseToAnyPublisher()
+                return onViewWillAppear(
+                    state: &state
+                )
+                
+            case .didTapAddItemButton:
+                return onDidTapAddItemButton(
+                    state: &state
+                )
+                
+            case .didTapDeleteItemButton(let index):
+                return onDidTapDeleteItemButton(
+                    state: &state,
+                    index: index
+                )
+                
+            case .didTapToggleItemButton(let index):
+                return onDidTapToggleItemButton(
+                    state: &state,
+                    index: index
                 )
                 
             case .fetchItemsResult(let result):
-                state.isLoading = false
-                if case .success(let items) = result {
-                    state.itemsModel.rows = items
-                }
-                
-            case .didTapAddItemButton:
-                state.isLoading = true
-                let name = state.newItemName
-                return .task(Task {
-                    .addItemResult(
-                        await dependencies.useCase.addItem(
-                            with: name,
-                            listId: dependencies.list.documentId
-                        )
-                    )
-                })
+                return onFetchItemsResult(
+                    state: &state,
+                    result: result
+                )
                 
             case .addItemResult(let result):
-                state.isLoading = false
-                if case .success = result {
-                    state.newItemName = ""
-                }
-                
-            case .didTapDoneUndoneButton(let item):
-                state.itemsModel.rows.toggleDone { $0.id == item.id }
-                let items = state.itemsModel.rows
-                return .task(Task {
-                    .updateItemResult(
-                        await dependencies.useCase.updateItemDone(
-                            item: item,
-                            items: items,
-                            list: dependencies.list
-                        )
-                    )
-                })
-                
-            case .updateItemResult:
-                break
-                
-            case .didTapDeleteButton(let item):
-                state.isLoading = true
-                state.itemsModel.rows.removeAll { $0.id == item.id }
-                return .task(Task {
-                    .deleteItemResult(
-                        await dependencies.useCase.deleteItem(
-                            itemId: item.documentId,
-                            listId: dependencies.list.documentId
-                        )
-                    )
-                })
+                return onAddItemResult(
+                    state: &state,
+                    result: result
+                )
                 
             case .deleteItemResult:
                 state.isLoading = false
+                return .none
+                
+            case .updateItemResult:
+                return .none
             
             case .setNewItemName(let itemName):
                 state.newItemName = itemName
+                return .none
             }
-            
-            return .none
         }
     }
 }
 
-private extension Array where Element == any ListRow {
-    mutating func toggleDone(
-        _ matching: (any ListRow
-        ) -> Bool) {
-        guard let index = firstIndex(where: matching) else {
-            return
+// MARK: - Reducer actions
+
+@MainActor
+private extension ListItems.Reducer {
+    func onViewWillAppear(
+        state: inout State
+    ) -> Effect<Action> {
+        state.isLoading = true
+        state.listName = dependencies.list.name
+        return .publish(
+            dependencies.useCase.fetchItems(
+                listId: dependencies.list.documentId)
+                .map { .fetchItemsResult(.success($0)) }
+                .catch { Just(.fetchItemsResult(.failure($0))) }
+                .eraseToAnyPublisher()
+        )
+    }
+    
+    func onDidTapAddItemButton(
+        state: inout State
+    ) -> Effect<Action> {
+        state.isLoading = true
+        let name = state.newItemName
+        return .task(Task {
+            .addItemResult(
+                await dependencies.useCase.addItem(
+                    with: name,
+                    listId: dependencies.list.documentId
+                )
+            )
+        })
+    }
+    
+    func onDidTapToggleItemButton(
+        state: inout State,
+        index: Int
+    ) -> Effect<Action> {
+        state.itemsModel.rows[index].done.toggle()
+        var item = state.itemsModel.rows[index]
+        var list = dependencies.list
+        list.done = state.itemsModel.rows.allSatisfy({ $0.done })
+        return .task(Task {
+            .updateItemResult(
+                await dependencies.useCase.updateItem(
+                    item: item,
+                    list: list
+                )
+            )
+        })
+    }
+    
+    func onDidTapDeleteItemButton(
+        state: inout State,
+        index: Int
+    ) -> Effect<Action> {
+        state.isLoading = true
+        var itemId = state.itemsModel.rows[index].documentId
+        state.itemsModel.rows.remove(at: index)
+        return .task(Task {
+            .deleteItemResult(
+                await dependencies.useCase.deleteItem(
+                    itemId: itemId,
+                    listId: dependencies.list.documentId
+                )
+            )
+        })
+    }
+    
+    func onFetchItemsResult(
+        state: inout State,
+        result: Result<[Item], Error>
+    ) -> Effect<Action> {
+        state.isLoading = false
+        if case .success(let items) = result {
+            state.itemsModel.rows = items
         }
-        self[index].done.toggle()
+        return .none
+    }
+    
+    func onAddItemResult(
+        state: inout State,
+        result: Result<Item, Error>
+    ) -> Effect<Action> {
+        state.isLoading = false
+        if case .success = result {
+            state.newItemName = ""
+        }
+        return .none
     }
 }
