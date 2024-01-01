@@ -17,7 +17,7 @@ protocol ListItemsUseCaseApi {
     ) async -> Result<Void, Error>
     
     func updateItem(
-        item: any ListRow,
+        item: Item,
         list: List
     ) async -> Result<Item, Error>
 }
@@ -88,13 +88,9 @@ extension ListItems {
         }
         
         func updateItem(
-            item: any ListRow,
+            item: Item,
             list: List
         ) async -> Result<Item, Error> {
-            guard var item = item as? Item else {
-                return .failure(Errors.unexpectedError)
-            }
-            
             do {
                 let result = try await itemsRepository.updateItem(
                     item: item,

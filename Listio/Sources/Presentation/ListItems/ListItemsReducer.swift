@@ -13,7 +13,7 @@ final class ItemsModel: ListRowsViewModel {
     var leadingActions: (any ListRow) -> [ListRowAction] {
         { [$0.done ? .undone : .done] }
     }
-    internal var trailingActions = [ListRowAction.delete]
+    var trailingActions = [ListRowAction.delete]
 }
 
 extension ListItems {
@@ -40,10 +40,10 @@ extension ListItems {
         
         @MainActor
         struct State {
-            var isLoading: Bool = false
-            var itemsModel: ItemsModel = ItemsModel()
-            var newItemName: String = ""
-            var listName: String = ""
+            var isLoading = false
+            var itemsModel = ItemsModel()
+            var newItemName = ""
+            var listName = ""
         }
         
         private let dependencies: ListItemsDependencies
@@ -146,17 +146,21 @@ private extension ListItems.Reducer {
         index: Int
     ) -> Effect<Action> {
         state.itemsModel.rows[index].done.toggle()
-        var item = state.itemsModel.rows[index]
-        var list = dependencies.list
-        list.done = state.itemsModel.rows.allSatisfy({ $0.done })
-        return .task(Task {
-            .updateItemResult(
-                await dependencies.useCase.updateItem(
-                    item: item,
-                    list: list
+        if let item = state.itemsModel.rows[index] as? Item {
+            var list = dependencies.list
+            list.done = state.itemsModel.rows.allSatisfy({ $0.done })
+            return .task(Task {
+                .updateItemResult(
+                    await dependencies.useCase.updateItem(
+                        item: item,
+                        list: list
+                    )
                 )
-            )
-        })
+            })
+        } else {
+            state.itemsModel.rows[index].done.toggle()
+            return .none
+        }
     }
     
     func onDidTapDeleteItemButton(
@@ -164,7 +168,7 @@ private extension ListItems.Reducer {
         index: Int
     ) -> Effect<Action> {
         state.isLoading = true
-        var itemId = state.itemsModel.rows[index].documentId
+        let itemId = state.itemsModel.rows[index].documentId
         state.itemsModel.rows.remove(at: index)
         return .task(Task {
             .deleteItemResult(

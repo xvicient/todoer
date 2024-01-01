@@ -153,7 +153,23 @@ private extension HomeView {
                         .ignoresSafeArea()
                 })
                 VStack {
-                    Spacer().frame(height: 10.0)
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            withAnimation(.easeOut(duration: 0.75)) {
+                                viewModel.isShowingAddTextField = false
+                            } completion: {
+                                viewModel.isShowingAddButton = true
+                            }
+                        },
+                               label: {
+                            Image(systemName: Constants.Image.closeAddListButton)
+                                .resizable()
+                                .frame(width: 16.0, height: 16.0)
+                        })
+                        .foregroundColor(.buttonPrimary)
+                        .padding([.top, .trailing], 24.0)
+                    }
                     TextField(Constants.Title.addList,
                               text: $viewModel.listName)
                     .textFieldStyle(BottomLineStyle() {
@@ -186,7 +202,7 @@ private extension HomeView {
             static let email = "Email..."
             static let share = "Share"
             static let cancel = "Cancel"
-            static let addList = "Add list..."
+            static let addList = "List name..."
         }
         struct Image {
             static let profilePlaceHolder = "person.crop.circle"

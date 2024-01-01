@@ -144,7 +144,8 @@ extension HomeViewModel: HomeViewModelApi {
             switch $0 {
             case .success,
                     .failure:
-                self?.isShowingAddButton = false
+                self?.isShowingAddButton = true
+                self?.isShowingAddTextField = false
             }
         }
     }
