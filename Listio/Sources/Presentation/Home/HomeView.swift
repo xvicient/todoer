@@ -80,11 +80,10 @@ private extension HomeView {
                             Text("\(invitation.ownerName) (\(invitation.ownerEmail)) \n \(Constants.Title.wantsToShare) \(invitation.listName)")
                         })
                         Spacer()
-                        Button("\(Constants.Title.accept)") {
+                        TDButton(title: "\(Constants.Title.accept)") {
                             viewModel.importList(listId: invitation.listId,
                                                  invitationId: invitation.documentId)
                         }
-                        .foregroundColor(.buttonPrimary)
                     }
                     .background()
                 }
@@ -227,7 +226,14 @@ private extension HomeView {
     
     var itemViewOptionsAction: (Int, ListRowAction) -> Void {
         { index, option in
-            viewModel.onDidTapOption(index, option)
+            if case .share = option {
+                guard let list = viewModel.rows[index] as? List else {
+                    return
+                }
+                coordinator.present(sheet: .shareList(list.uuid))
+            } else {
+                viewModel.onDidTapOption(index, option)
+            }
         }
     }
 }

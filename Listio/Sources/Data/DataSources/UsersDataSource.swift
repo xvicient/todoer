@@ -22,6 +22,10 @@ protocol UsersDataSourceApi {
     ) async throws -> UserDTO
     
     func setUuid(_ value: String)
+    
+    func fetchUsers(
+        uids: [String]
+    ) async throws -> [UserDTO]
 }
 
 final class UsersDataSource: UsersDataSourceApi {
@@ -69,6 +73,29 @@ final class UsersDataSource: UsersDataSourceApi {
                 .whereField("email", isEqualTo: email)
                 .getDocuments { [weak self] query, error in
                     self?.getUserDocument(continuation)(query, error)
+                }
+        }
+    }
+    
+    func fetchUsers(
+        uids: [String]
+    ) async throws -> [UserDTO] {
+        try await withCheckedThrowingContinuation { continuation in
+            var mutableUids = uids
+            mutableUids.removeAll { $0 == uuid }
+            
+            usersCollection
+                .whereField("uuid", in: mutableUids)
+                .getDocuments { query, error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    
+                    let users = query?.documents
+                        .compactMap { try? $0.data(as: UserDTO.self) }
+                    ?? []
+                    continuation.resume(returning: users)
                 }
         }
     }

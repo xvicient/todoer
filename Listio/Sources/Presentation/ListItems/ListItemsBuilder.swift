@@ -12,10 +12,10 @@ struct ListItems {
             list: List
         ) -> ListItemsView {
             let dependencies = Dependencies(
-                useCase: ListItems.UseCase(),
+                useCase: UseCase(),
                 list: list
             )
-            let reducer = ListItems.Reducer(dependencies: dependencies)
+            let reducer = Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)
             return ListItemsView(store: store)
         }

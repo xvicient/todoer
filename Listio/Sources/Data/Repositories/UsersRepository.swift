@@ -13,6 +13,10 @@ protocol UsersRepositoryApi {
     ) async throws -> UserDTO
     
     func setUuid(_ value: String)
+    
+    func fetchUsers(
+        uids: [String]
+    ) async throws -> [User]
 }
 
 final class UsersRepository: UsersRepositoryApi {
@@ -47,5 +51,13 @@ final class UsersRepository: UsersRepositoryApi {
     
     func setUuid(_ value: String) {
         usersDataSource.setUuid(value)
+    }
+    
+    func fetchUsers(
+        uids: [String]
+    ) async throws -> [User] {
+        try await usersDataSource.fetchUsers(uids: uids)
+            .map { $0.toDomain }
+
     }
 }
