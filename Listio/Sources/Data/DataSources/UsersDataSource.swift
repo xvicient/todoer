@@ -1,10 +1,6 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-enum UsersDataSourceError: Error {
-    case missingUser
-}
-
 protocol UsersDataSourceApi {
     var uuid: String { get }
     
@@ -29,6 +25,12 @@ protocol UsersDataSourceApi {
 }
 
 final class UsersDataSource: UsersDataSourceApi {
+    
+    enum Errors: Error {
+        case missingUser
+        case emptyUidList
+    }
+    
     @AppSetting(key: "uuid", defaultValue: "") var uuid: String
     private let usersCollection = Firestore.firestore().collection("users")
     
@@ -80,23 +82,27 @@ final class UsersDataSource: UsersDataSourceApi {
     func fetchUsers(
         uids: [String]
     ) async throws -> [UserDTO] {
-        try await withCheckedThrowingContinuation { continuation in
-            var mutableUids = uids
-            mutableUids.removeAll { $0 == uuid }
-            
-            usersCollection
-                .whereField("uuid", in: mutableUids)
-                .getDocuments { query, error in
-                    if let error = error {
-                        continuation.resume(throwing: error)
-                        return
+        var mutableUids = uids
+        mutableUids.removeAll { $0 == uuid }
+        
+        if mutableUids.isEmpty {
+            throw Errors.emptyUidList
+        } else {
+            return try await withCheckedThrowingContinuation { continuation in
+                usersCollection
+                    .whereField("uuid", in: mutableUids)
+                    .getDocuments { query, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                            return
+                        }
+                        
+                        let users = query?.documents
+                            .compactMap { try? $0.data(as: UserDTO.self) }
+                        ?? []
+                        continuation.resume(returning: users)
                     }
-                    
-                    let users = query?.documents
-                        .compactMap { try? $0.data(as: UserDTO.self) }
-                    ?? []
-                    continuation.resume(returning: users)
-                }
+            }
         }
     }
     
@@ -113,7 +119,7 @@ final class UsersDataSource: UsersDataSourceApi {
                 .compactMap({ try? $0.data(as: UserDTO.self) }).first {
                 continuation.resume(returning: user)
             } else {
-                continuation.resume(throwing: UsersDataSourceError.missingUser)
+                continuation.resume(throwing: Errors.missingUser)
             }
         }
     }

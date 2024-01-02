@@ -2,14 +2,15 @@ protocol InvitationsRepositoryApi {
     func fetchInvitations(
         completion: @escaping (Result<[Invitation], Error>) -> Void
     )
+    
     func sendInvitation(
         ownerName: String,
         ownerEmail: String,
         listId: String,
         listName: String,
-        invitedId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        invitedId: String
+    ) async throws
+    
     func deleteInvitation(
         _ documentId: String?,
         completion: @escaping (Result<Void, Error>) -> Void
@@ -48,15 +49,13 @@ final class InvitationsRepository: InvitationsRepositoryApi {
         ownerEmail: String,
         listId: String,
         listName: String,
-        invitedId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        invitationsDataSource.sendInvitation(ownerName: ownerName,
-                                             ownerEmail: ownerEmail, 
-                                             listId: listId,
-                                             listName: listName,
-                                             invitedId: invitedId,
-                                             completion: completion)
+        invitedId: String
+    ) async throws {
+        try await invitationsDataSource.sendInvitation(ownerName: ownerName,
+                                                       ownerEmail: ownerEmail,
+                                                       listId: listId,
+                                                       listName: listName,
+                                                       invitedId: invitedId)
     }
     
     func deleteInvitation(

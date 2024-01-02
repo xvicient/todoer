@@ -5,8 +5,6 @@ import SwiftUI
 protocol HomeViewModelApi {
     func fetchData()
     var onDidTapOption: ((Int, ListRowAction) -> Void) { get }
-    func shareList() async
-    func cancelShare()
     func importList(
         listId: String,
         invitationId: String
@@ -26,8 +24,6 @@ final class HomeViewModel: ListRowsViewModel {
     }
     internal var trailingActions: [ListRowAction] = [.share, .delete]
     @Published var isLoading = false
-    @Published var shareEmail: String = ""
-    @Published var isShowingAlert: Bool = false
     @Published var userSelfPhoto: String = ""
     @Published var listName: String = ""
     @Published var isShowingAddButton: Bool = true
@@ -86,42 +82,13 @@ extension HomeViewModel: HomeViewModelApi {
             let item = rows[index]
             switch option {
             case .share:
-                self.showShareDialog(item)
+                break
             case .done, .undone:
                 self.toggleList(item)
             case .delete:
                 self.deleteList(item)
             }
         }
-    }
-    
-    func shareList() async {
-        isShowingAlert = false
-        
-        if let selfUser = try? await usersRepository.getSelfUser(),
-           let ownerName = selfUser.displayName,
-           let ownerEmail = selfUser.email,
-           let invitedUser = try? await usersRepository.getUser(shareEmail),
-           let listId = sharingList?.documentId,
-           let listName = sharingList?.name  {
-            invitationsRepository.sendInvitation(ownerName: ownerName,
-                                                 ownerEmail: ownerEmail,
-                                                 listId: listId,
-                                                 listName: listName,
-                                                 invitedId: invitedUser.uuid) { result in
-                switch result {
-                case .success:
-                    break
-                case .failure:
-                    break
-                }
-            }
-        }
-    }
-    
-    func cancelShare() {
-        sharingList = nil
-        shareEmail = ""
     }
     
     func importList(
@@ -192,12 +159,6 @@ private extension HomeViewModel {
             }
             userSelfPhoto = photoUrl
         }
-    }
-    
-    func showShareDialog(_ item: any ListRow) {
-        guard let list = item as? List else { return }
-        sharingList = list
-        isShowingAlert = true
     }
     
     func toggleList(_ item: any ListRow) {

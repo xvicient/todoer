@@ -6,14 +6,15 @@ protocol InvitationsDataSourceApi {
         uuid: String,
         completion: @escaping (Result<[InvitationDTO], Error>) -> Void
     )
+    
     func sendInvitation(
         ownerName: String,
         ownerEmail: String,
         listId: String,
         listName: String,
-        invitedId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        invitedId: String
+    ) async throws
+    
     func deleteInvitation(
         _ documentId: String?,
         completion: @escaping (Result<Void, Error>) -> Void
@@ -47,21 +48,15 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
         ownerEmail: String,
         listId: String,
         listName: String,
-        invitedId: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        do {
-            let dto = InvitationDTO(ownerName: ownerName,
-                                    ownerEmail: ownerEmail,
-                                    listId: listId,
-                                    listName: listName,
-                                    invitedId: invitedId,
-                                    dateCreated: Date().milliseconds)
-            _ = try invitationsCollection.addDocument(from: dto)
-            completion(.success(Void()))
-        } catch {
-            completion(.failure(error))
-        }
+        invitedId: String
+    ) async throws {
+        let dto = InvitationDTO(ownerName: ownerName,
+                                ownerEmail: ownerEmail,
+                                listId: listId,
+                                listName: listName,
+                                invitedId: invitedId,
+                                dateCreated: Date().milliseconds)
+        _ = try invitationsCollection.addDocument(from: dto)
     }
     
     func deleteInvitation(

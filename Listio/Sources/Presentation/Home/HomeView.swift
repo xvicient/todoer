@@ -101,18 +101,6 @@ private extension HomeView {
             ListRowsView(viewModel: viewModel,
                          mainAction: itemViewMainAction,
                          swipeActions: itemViewOptionsAction)
-            .alert("\(Constants.Title.shareTo)", isPresented: $viewModel.isShowingAlert) {
-                TextField("\(Constants.Title.email)",
-                          text: $viewModel.shareEmail)
-                Button("\(Constants.Title.share)", role: .cancel) {
-                    Task {
-                        await viewModel.shareList()
-                    }
-                }
-                Button("\(Constants.Title.cancel)", role: .destructive) {
-                    viewModel.cancelShare()
-                }
-            }
         }
     }
     
@@ -197,10 +185,6 @@ private extension HomeView {
             static let todoos = "Todoos"
             static let wantsToShare = "wants to share"
             static let accept = "Accept"
-            static let shareTo = "Share to"
-            static let email = "Email..."
-            static let share = "Share"
-            static let cancel = "Cancel"
             static let addList = "List name..."
         }
         struct Image {
@@ -230,7 +214,7 @@ private extension HomeView {
                 guard let list = viewModel.rows[index] as? List else {
                     return
                 }
-                coordinator.present(sheet: .shareList(list.uuid))
+                coordinator.present(sheet: .shareList(list))
             } else {
                 viewModel.onDidTapOption(index, option)
             }

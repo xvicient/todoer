@@ -4,16 +4,16 @@ struct ShareList {
     struct Builder {
         struct Dependencies: ShareListDependencies {
             var useCase: ShareListUseCaseApi
-            var listUids: [String]
+            var list: List
         }
         
         @MainActor
         static func makeShareList(
-            listUids: [String]
+            list: List
         ) -> ShareListView {
             let dependencies = Dependencies(
                 useCase: UseCase(),
-                listUids: listUids
+                list: list
             )
             let reducer = Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)

@@ -1,8 +1,13 @@
 import SwiftUI
 
 struct TDTextField: View {
-    @State private var text = ""
+    @Binding var text: String
     let placeholder: String
+    
+    init(text: Binding<String>, placeholder: String) {
+        _text = text
+        self.placeholder = placeholder
+    }
     
     var body: some View {
         ZStack {
@@ -33,8 +38,8 @@ struct TDTextField: View {
     }
 }
 
-struct ClearTextFieldView_Previews: PreviewProvider {
-    static var previews: some View {
-        TDTextField(placeholder: "Email...")
-    }
-}
+//struct TDTextField_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TDTextField(placeholder: "Email...")
+//    }
+//}

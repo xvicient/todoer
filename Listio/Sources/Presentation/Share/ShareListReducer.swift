@@ -5,7 +5,7 @@ import Foundation
 
 protocol ShareListDependencies {
     var useCase: ShareListUseCaseApi { get }
-    var listUids: [String] { get }
+    var list: List { get }
 }
 
 extension ShareList {
@@ -15,13 +15,21 @@ extension ShareList {
             // MARK: - View flow start
             case viewWillAppear
             
+            // MARK: - User actions
+            case didTapShareListButton
+            
             // MARK: - Results
             case fetchUsersResult(Result<[User], Error>)
+            case shareListResult(Result<Void, Error>)
+            
+            // MARK: - View bindings
+            case setShareEmail(String)
         }
         
         @MainActor
         struct State {
-            var users: [User] = []
+            var users = [User]()
+            var shareEmail = ""
         }
         
         private let dependencies: ShareListDependencies
@@ -42,10 +50,22 @@ extension ShareList {
                     state: &state
                 )
                 
+            case .didTapShareListButton:
+                return onDidTapShareButton(
+                    state: &state
+                )
+                
             case .fetchUsersResult(let result):
                 if case .success(let users) = result {
                     state.users = users
                 }
+                return .none
+                
+            case .shareListResult:
+                return .none
+                
+            case .setShareEmail(let email):
+                state.shareEmail = email
                 return .none
             }
         }
@@ -62,7 +82,20 @@ private extension ShareList.Reducer {
         .task(Task {
             .fetchUsersResult(
                 await dependencies.useCase.fetchUsers(
-                    uids: dependencies.listUids
+                    uids: dependencies.list.uuid
+                )
+            )
+        })
+    }
+    func onDidTapShareButton(
+        state: inout State
+    ) -> Effect<Action> {
+        let shareEmail = state.shareEmail
+        return .task(Task {
+            .shareListResult(
+                await dependencies.useCase.shareList(
+                    shareEmail: shareEmail,
+                    list: dependencies.list
                 )
             )
         })
