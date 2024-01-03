@@ -4,6 +4,7 @@ import Foundation
 // MARK: - ShareListReducer
 
 protocol ShareListDependencies {
+    var coordinator: Coordinator { get }
     var useCase: ShareListUseCaseApi { get }
     var list: List { get }
 }
@@ -61,7 +62,10 @@ extension ShareList {
                 }
                 return .none
                 
-            case .shareListResult:
+            case .shareListResult(let result):
+                if case .success = result {
+                    dependencies.coordinator.dismissSheet()
+                }
                 return .none
                 
             case .setShareEmail(let email):

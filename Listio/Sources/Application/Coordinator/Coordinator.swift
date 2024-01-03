@@ -78,11 +78,15 @@ class Coordinator: ObservableObject {
     func build(page: Page) -> some View {
         switch page {
         case .authentication:
-            Authentication.Builder.makeAuthentication(coordinator: self)
+            Authentication.Builder.makeAuthentication(
+                coordinator: self
+            )
         case .home:
             HomeBuilder.makeHome()
         case let .products(list):
-            ListItems.Builder.makeItemsList(list: list)
+            ListItems.Builder.makeItemsList(
+                list: list
+            )
         }
     }
     
@@ -91,7 +95,10 @@ class Coordinator: ObservableObject {
         switch sheet {
         case .shareList(let list):
             NavigationStack {
-                ShareList.Builder.makeShareList(list: list)
+                ShareList.Builder.makeShareList(
+                    coordinator: self,
+                    list: list
+                )
             }
         }
     }
