@@ -1,4 +1,5 @@
 import Combine
+import SwiftUI
 import Foundation
 
 // MARK: - ListItemsReducer
@@ -16,6 +17,14 @@ final class ItemsModel: ListRowsViewModel {
     var trailingActions = [ListRowAction.delete]
 }
 
+private struct EmptyRow: ListRow {
+    var id = UUID()
+    var documentId = ""
+    var name = ""
+    var done = false
+    var isEditing = true
+}
+
 extension ListItems {
     struct Reducer: Listio.Reducer {
         
@@ -24,26 +33,26 @@ extension ListItems {
             case viewWillAppear
             
             // MARK: - User actions
-            case didTapAddItemButton
+            case didTapAddItemButton(String)
             case didTapToggleItemButton(Int)
             case didTapDeleteItemButton(Int)
+            case didTapAddRowButton
+            case didTapCancelAddRowButton
             
             // MARK: - Results
             case fetchItemsResult(Result<[Item], Error>)
             case addItemResult(Result<Item, Error>)
             case deleteItemResult(Result<Void, Error>)
             case updateItemResult(Result<Item, Error>)
-            
-            // MARK: - View bindings
-            case setNewItemName(String)
         }
         
         @MainActor
         struct State {
             var isLoading = false
             var itemsModel = ItemsModel()
-            var newItemName = ""
             var listName = ""
+            var isAddNewItemButtonVisible = true
+            var cleanNewItemName = true
         }
         
         private let dependencies: ListItemsDependencies
@@ -64,9 +73,16 @@ extension ListItems {
                     state: &state
                 )
                 
-            case .didTapAddItemButton:
+            case .didTapAddItemButton(let newItemName):
                 return onDidTapAddItemButton(
-                    state: &state
+                    state: &state,
+                    newItemName: newItemName
+                )
+                
+            case .didTapToggleItemButton(let index):
+                return onDidTapToggleItemButton(
+                    state: &state,
+                    index: index
                 )
                 
             case .didTapDeleteItemButton(let index):
@@ -74,11 +90,15 @@ extension ListItems {
                     state: &state,
                     index: index
                 )
-                
-            case .didTapToggleItemButton(let index):
-                return onDidTapToggleItemButton(
-                    state: &state,
-                    index: index
+            
+            case .didTapAddRowButton:
+                return onDidTapAddRowButton(
+                    state: &state
+                )
+            
+            case .didTapCancelAddRowButton:
+                return onDidTapCancelAddRowButton(
+                    state: &state
                 )
                 
             case .fetchItemsResult(let result):
@@ -94,14 +114,9 @@ extension ListItems {
                 )
                 
             case .deleteItemResult:
-                state.isLoading = false
                 return .none
                 
             case .updateItemResult:
-                return .none
-            
-            case .setNewItemName(let itemName):
-                state.newItemName = itemName
                 return .none
             }
         }
@@ -127,14 +142,13 @@ private extension ListItems.Reducer {
     }
     
     func onDidTapAddItemButton(
-        state: inout State
+        state: inout State,
+        newItemName: String
     ) -> Effect<Action> {
-        state.isLoading = true
-        let name = state.newItemName
         return .task(Task {
             .addItemResult(
                 await dependencies.useCase.addItem(
-                    with: name,
+                    with: newItemName,
                     listId: dependencies.list.documentId
                 )
             )
@@ -167,7 +181,6 @@ private extension ListItems.Reducer {
         state: inout State,
         index: Int
     ) -> Effect<Action> {
-        state.isLoading = true
         let itemId = state.itemsModel.rows[index].documentId
         state.itemsModel.rows.remove(at: index)
         return .task(Task {
@@ -178,6 +191,27 @@ private extension ListItems.Reducer {
                 )
             )
         })
+    }
+    
+    func onDidTapAddRowButton(
+        state: inout State
+    ) -> Effect<Action> {
+        guard !state.itemsModel.rows.contains(
+            where: { $0 is EmptyRow }
+        ) else {
+            return .none
+        }
+        state.isAddNewItemButtonVisible = false
+        state.itemsModel.rows.append(EmptyRow())
+        return .none
+    }
+    
+    func onDidTapCancelAddRowButton(
+        state: inout State
+    ) -> Effect<Action> {
+        state.isAddNewItemButtonVisible = true
+        state.itemsModel.rows.removeAll { $0 is EmptyRow }
+        return .none
     }
     
     func onFetchItemsResult(
@@ -195,9 +229,11 @@ private extension ListItems.Reducer {
         state: inout State,
         result: Result<Item, Error>
     ) -> Effect<Action> {
-        state.isLoading = false
-        if case .success = result {
-            state.newItemName = ""
+        state.isAddNewItemButtonVisible = true
+        state.cleanNewItemName = true
+        if case .success(let item) = result {
+            state.itemsModel.rows.removeAll { $0 is EmptyRow }
+            state.itemsModel.rows.append(item)
         }
         return .none
     }

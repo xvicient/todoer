@@ -13,17 +13,17 @@ struct ListItemsView: View {
         ZStack {
             Color.white
                 .ignoresSafeArea()
-            VStack {
+            ZStack {
                 SwiftUI.List {
                     ListRowsView(viewModel: store.state.itemsModel,
-                                 swipeActions: swipeActions)
+                                 swipeActions: swipeActions,
+                                 submitAction: submitAction,
+                                 cancelAction: cancelAction,
+                                 newRowPlaceholder: Constants.Text.item,
+                                 cleanNewRowName: store.state.cleanNewItemName)
                     
                 }
-                TextField(Constants.Text.itemName,
-                          text: newItemBinding)
-                .textFieldStyle(BottomLineStyle() {
-                    store.send(.didTapAddItemButton)
-                })
+                addNewRowButton
             }
             .task {
                 store.send(.viewWillAppear)
@@ -34,6 +34,29 @@ struct ListItemsView: View {
             }
         }
         .navigationTitle(store.state.listName)
+    }
+}
+
+// MARK: - Private
+
+private extension ListItemsView {
+    @ViewBuilder
+    var addNewRowButton: some View {
+        if store.state.isAddNewItemButtonVisible {
+            VStack {
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        store.send(.didTapAddRowButton)
+                    }
+                }, label: {
+                    Image(systemName: Constants.Image.addButton)
+                        .resizable()
+                        .frame(width: 48.0, height: 48.0)
+                })
+                .foregroundColor(.buttonPrimary)
+            }
+        }
     }
 }
 
@@ -53,11 +76,12 @@ private extension ListItemsView {
         }
     }
     
-    var newItemBinding: Binding<String> {
-        Binding(
-          get: { store.state.newItemName },
-          set: { store.send(.setNewItemName($0)) }
-      )
+    var submitAction: (String) -> Void {
+        { store.send(.didTapAddItemButton($0)) }
+    }
+    
+    var cancelAction: () -> Void {
+        { store.send(.didTapCancelAddRowButton) }
     }
 }
 
@@ -66,7 +90,10 @@ private extension ListItemsView {
 private extension ListItemsView {
     struct Constants {
         struct Text {
-            static let itemName = "Item name..."
+            static let item = "Item..."
+        }
+        struct Image {
+            static let addButton = "plus.circle.fill"
         }
     }
 }

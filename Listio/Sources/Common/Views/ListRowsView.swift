@@ -14,8 +14,8 @@ protocol ListRow: Identifiable, Equatable, Hashable {
     var documentId: String { get }
     var name: String { get }
     var done: Bool { get set }
+    var isEditing: Bool { get }
 }
-
 enum ListRowAction: String, Identifiable {
     case share = "square.and.arrow.up"
     case done = "largecircle.fill.circle"
@@ -35,40 +35,29 @@ enum ListRowAction: String, Identifiable {
 }
 
 struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
+    @FocusState private var isEmptyRowFocused: Bool
+    @State private var emptyRowText: String = ""
+    
     @StateObject var viewModel: ViewModel
+    
     var mainAction: ((any ListRow) -> Void)? = nil
     var swipeActions: ((Int, ListRowAction) -> Void)? = nil
+    var submitAction: ((String) -> Void)? = nil
+    var cancelAction: (() -> Void)? = nil
+    var newRowPlaceholder: String = ""
+    var cleanNewRowName: Bool = true
     
     var body: some View {
         ForEach(Array(viewModel.rows.enumerated()),
-                id: \.element.id) { index, item in
-            Group {
-                HStack {
-                    Image(systemName: item.done ? "largecircle.fill.circle" : "circle")
-                        .foregroundColor(.backgroundPrimary)
-                    Button(action: {
-                        mainAction?(item)
-                    }) {
-                        Text(item.name)
-                            .strikethrough(item.done)
-                            .frame(maxWidth: .infinity,
-                                   alignment: .leading)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.borderless)
-                    .foregroundColor(.primary)
+                id: \.element.id) { index, row in
+            if row.isEditing {
+                emptyRow
+                .onAppear {
+                    isEmptyRowFocused = true
                 }
-                .frame(height: 40)
-            }
-            .swipeActions(edge: .leading) {
-                swipeActions(
-                    actions: viewModel.leadingActions(item),
-                    index: index
-                )
-            }
-            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                swipeActions(
-                    actions: viewModel.trailingActions,
+            } else {
+                listRow(
+                    row,
                     index: index
                 )
             }
@@ -79,6 +68,71 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
 // MARK: - ViewBuilders
 
 private extension ListRowsView {
+    @ViewBuilder
+    func listRow(
+        _ row: any ListRow,
+        index: Int
+    ) -> some View {
+        Group {
+            HStack {
+                Image(systemName: row.done ? "largecircle.fill.circle" : "circle")
+                    .foregroundColor(.backgroundPrimary)
+                Button(action: {
+                    mainAction?(row)
+                }) {
+                    Text(row.name)
+                        .strikethrough(row.done)
+                        .frame(maxWidth: .infinity,
+                               alignment: .leading)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.borderless)
+                .foregroundColor(.primary)
+            }
+            .frame(height: 40)
+        }
+        .swipeActions(edge: .leading) {
+            swipeActions(
+                actions: viewModel.leadingActions(row),
+                index: index
+            )
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            swipeActions(
+                actions: viewModel.trailingActions,
+                index: index
+            )
+        }
+    }
+    
+    @ViewBuilder
+    var emptyRow: some View {
+        HStack {
+            Image(systemName: "circle")
+                .foregroundColor(.backgroundPrimary)
+            TextField(newRowPlaceholder, text: $emptyRowText)
+                .foregroundColor(.primary)
+                .focused($isEmptyRowFocused)
+                .onAppear {
+                    emptyRowText = cleanNewRowName ? "" : emptyRowText
+                }
+                .onSubmit {
+                    hideKeyboard()
+                    submitAction?($emptyRowText.wrappedValue)
+                }
+                .submitLabel(.done)
+            Button(action: {
+                cancelAction?()
+            }) {
+                Image(systemName: "xmark")
+                    .resizable()
+                    .frame(width: 12, height: 12)
+                    .foregroundColor(.white)
+            }
+        }
+        .frame(height: 40)
+    }
+    
     @ViewBuilder
     func swipeActions(
         actions: [ListRowAction],
@@ -100,7 +154,17 @@ private extension ListRowsView {
 
 // MARK: - ListRow conforming
 
-extension Item: ListRow {}
+extension Item: ListRow {
+    var isEditing: Bool {
+        get { false }
+    }
+}
+
+extension List: ListRow {
+    var isEditing: Bool {
+        get { false }
+    }
+}
 
 #Preview {
     class ViewModel: ListRowsViewModel {

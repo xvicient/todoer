@@ -85,6 +85,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
         with name: String,
         listId: String
     ) async throws -> ItemDTO {
+        ignoreChanges = true
         return try await withCheckedThrowingContinuation { continuation in
             do {
                 let collection = itemsCollection(listId: listId)

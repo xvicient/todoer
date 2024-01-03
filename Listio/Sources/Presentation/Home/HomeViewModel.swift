@@ -182,5 +182,3 @@ private extension HomeViewModel {
         listsRepository.deleteList(item.documentId)
     }
 }
-
-extension List: ListRow {}

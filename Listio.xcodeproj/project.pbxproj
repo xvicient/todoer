@@ -22,6 +22,7 @@
 		C7390FD62B449DC200E49A68 /* ShareListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD52B449DC200E49A68 /* ShareListReducer.swift */; };
 		C7390FD82B44A03900E49A68 /* ShareListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */; };
 		C7390FDA2B44BBDE00E49A68 /* TDTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD92B44BBDE00E49A68 /* TDTitle.swift */; };
+		C7390FDE2B45FEBB00E49A68 /* View+HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */; };
 		C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */; };
 		C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */; };
 		C75B4AC92B1DD7A9007CCA48 /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */; };
@@ -107,6 +108,7 @@
 		C7390FD52B449DC200E49A68 /* ShareListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListReducer.swift; sourceTree = "<group>"; };
 		C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListUseCase.swift; sourceTree = "<group>"; };
 		C7390FD92B44BBDE00E49A68 /* TDTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDTitle.swift; sourceTree = "<group>"; };
+		C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HideKeyboard.swift"; sourceTree = "<group>"; };
 		C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsRepository.swift; sourceTree = "<group>"; };
 		C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDTO.swift; sourceTree = "<group>"; };
 		C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				C79CB2792B0D537A00C2BD18 /* Collection+Utils.swift */,
 				C79CB2F32B17DCB000C2BD18 /* Date+Utils.swift */,
 				C75B4ACC2B1E73DA007CCA48 /* DispatchGroup+Execute.swift */,
+				C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 				C79CB28F2B0D537A00C2BD18 /* ListDTO.swift in Sources */,
 				C7390FC82B3CC68500E49A68 /* Effect.swift in Sources */,
 				C7390FC42B3637F200E49A68 /* ListItemsReducer.swift in Sources */,
+				C7390FDE2B45FEBB00E49A68 /* View+HideKeyboard.swift in Sources */,
 				C79CB2D92B154D2600C2BD18 /* AuthDataDTO.swift in Sources */,
 				C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */,
 				C7390FD12B447C0100E49A68 /* TDButton.swift in Sources */,
