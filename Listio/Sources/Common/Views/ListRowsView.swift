@@ -51,7 +51,7 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
         ForEach(Array(viewModel.rows.enumerated()),
                 id: \.element.id) { index, row in
             if row.isEditing {
-                emptyRow
+                emptyRow(index)
                 .onAppear {
                     isEmptyRowFocused = true
                 }
@@ -103,10 +103,11 @@ private extension ListRowsView {
                 index: index
             )
         }
+        .id(index)
     }
     
     @ViewBuilder
-    var emptyRow: some View {
+    func emptyRow(_ index: Int) -> some View {
         HStack {
             Image(systemName: "circle")
                 .foregroundColor(.backgroundPrimary)
@@ -122,7 +123,9 @@ private extension ListRowsView {
                 }
                 .submitLabel(.done)
             Button(action: {
-                cancelAction?()
+                withAnimation {
+                    cancelAction?()
+                }
             }) {
                 Image(systemName: "xmark")
                     .resizable()
@@ -131,6 +134,7 @@ private extension ListRowsView {
             }
         }
         .frame(height: 40)
+        .id(index)
     }
     
     @ViewBuilder

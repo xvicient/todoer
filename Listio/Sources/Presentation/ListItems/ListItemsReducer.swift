@@ -53,6 +53,7 @@ extension ListItems {
             var listName = ""
             var isAddNewItemButtonVisible = true
             var cleanNewItemName = true
+            var isNewItemFocused = false
         }
         
         private let dependencies: ListItemsDependencies
@@ -203,6 +204,7 @@ private extension ListItems.Reducer {
         }
         state.isAddNewItemButtonVisible = false
         state.itemsModel.rows.append(EmptyRow())
+        state.isNewItemFocused = true
         return .none
     }
     

@@ -14,14 +14,21 @@ struct ListItemsView: View {
             Color.white
                 .ignoresSafeArea()
             ZStack {
-                SwiftUI.List {
-                    ListRowsView(viewModel: store.state.itemsModel,
-                                 swipeActions: swipeActions,
-                                 submitAction: submitAction,
-                                 cancelAction: cancelAction,
-                                 newRowPlaceholder: Constants.Text.item,
-                                 cleanNewRowName: store.state.cleanNewItemName)
-                    
+                ScrollViewReader { scrollView in
+                    SwiftUI.List {
+                        ListRowsView(viewModel: store.state.itemsModel,
+                                     swipeActions: swipeActions,
+                                     submitAction: submitAction,
+                                     cancelAction: cancelAction,
+                                     newRowPlaceholder: Constants.Text.item,
+                                     cleanNewRowName: store.state.cleanNewItemName)
+                        
+                    }.onChange(of: store.state.isNewItemFocused, {
+                        withAnimation {
+                            scrollView.scrollTo(store.state.itemsModel.rows.count - 1,
+                                                anchor: .bottom)
+                        }
+                    })
                 }
                 addNewRowButton
             }
