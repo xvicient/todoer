@@ -44,6 +44,9 @@ extension ListItems {
             case addItemResult(Result<Item, Error>)
             case deleteItemResult(Result<Void, Error>)
             case updateItemResult(Result<Item, Error>)
+            
+            // MARK: - Errors
+            case didTapDismissError
         }
         
         @MainActor
@@ -56,7 +59,7 @@ extension ListItems {
             case idle
             case loading
             case addingItem
-            case error
+            case unexpectedError
         }
         
         private let dependencies: ListItemsDependencies
@@ -122,6 +125,11 @@ extension ListItems {
                 
             case (.idle, .updateItemResult):
                 return .none
+                
+            case (_, .didTapDismissError):
+                return onDidTapDismissError(
+                    state: &state
+                )
             
             default: return .none
             }
@@ -228,7 +236,7 @@ private extension ListItems.Reducer {
             state.viewState = .idle
             state.viewModel.rows = items
         case .failure:
-            state.viewState = .error
+            state.viewState = .unexpectedError
         }
         return .none
     }
@@ -243,8 +251,15 @@ private extension ListItems.Reducer {
             state.viewModel.rows.removeAll { $0 is EmptyRow }
             state.viewModel.rows.append(item)
         case .failure:
-            state.viewState = .error
+            state.viewState = .unexpectedError
         }
+        return .none
+    }
+    
+    func onDidTapDismissError(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
         return .none
     }
 }

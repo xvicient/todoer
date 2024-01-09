@@ -44,6 +44,18 @@ struct ListItemsView: View {
                 ProgressView()
             }
         }
+        .alert(isPresented: Binding(
+            get: { store.state.viewState == .unexpectedError },
+            set: { _ in }
+        )) {
+            Alert(
+                title: Text(Constants.Text.errorTitle),
+                message: Text(Constants.Text.unexpectedError),
+                dismissButton: .default(Text(Constants.Text.errorOkButton)) {
+                    store.send(.didTapDismissError)
+                }
+            )
+        }
         .navigationTitle(listName)
     }
 }
@@ -102,6 +114,10 @@ private extension ListItemsView {
     struct Constants {
         struct Text {
             static let item = "Item..."
+            static let errorTitle = "Error"
+            static let unexpectedError = "Unexpected error"
+            static let errorOkButton = "Ok"
+            
         }
         struct Image {
             static let addButton = "plus.circle.fill"
