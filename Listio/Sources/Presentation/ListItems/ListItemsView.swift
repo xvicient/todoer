@@ -4,9 +4,13 @@ import SwiftUI
 
 struct ListItemsView: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
+    private var listName: String
     
-    init(store: Store<ListItems.Reducer>) {
-        self.store = store
+    init(
+        store: Store<ListItems.Reducer>,
+        listName: String) {
+            self.store = store
+            self.listName = listName
     }
     
     var body: some View {
@@ -16,16 +20,16 @@ struct ListItemsView: View {
             ZStack {
                 ScrollViewReader { scrollView in
                     SwiftUI.List {
-                        ListRowsView(viewModel: store.state.itemsModel,
+                        ListRowsView(viewModel: store.state.viewModel,
                                      swipeActions: swipeActions,
                                      submitAction: submitAction,
                                      cancelAction: cancelAction,
                                      newRowPlaceholder: Constants.Text.item,
-                                     cleanNewRowName: store.state.cleanNewItemName)
+                                     cleanNewRowName: store.state.viewState == .addingItem)
                         
-                    }.onChange(of: store.state.isNewItemFocused, {
+                    }.onChange(of: store.state.viewState == .addingItem, {
                         withAnimation {
-                            scrollView.scrollTo(store.state.itemsModel.rows.count - 1,
+                            scrollView.scrollTo(store.state.viewModel.rows.count - 1,
                                                 anchor: .bottom)
                         }
                     })
@@ -33,14 +37,14 @@ struct ListItemsView: View {
                 addNewRowButton
             }
             .task {
-                store.send(.viewWillAppear)
+                store.send(.onAppear)
             }
-            .disabled(store.state.isLoading)
-            if store.state.isLoading {
+            .disabled(store.state.viewState == .loading)
+            if store.state.viewState == .loading {
                 ProgressView()
             }
         }
-        .navigationTitle(store.state.listName)
+        .navigationTitle(listName)
     }
 }
 
@@ -49,7 +53,7 @@ struct ListItemsView: View {
 private extension ListItemsView {
     @ViewBuilder
     var addNewRowButton: some View {
-        if store.state.isAddNewItemButtonVisible {
+        if store.state.viewState != .addingItem {
             VStack {
                 Spacer()
                 Button(action: {
@@ -84,7 +88,7 @@ private extension ListItemsView {
     }
     
     var submitAction: (String) -> Void {
-        { store.send(.didTapAddItemButton($0)) }
+        { store.send(.didTapSubmitItemButton($0)) }
     }
     
     var cancelAction: () -> Void {

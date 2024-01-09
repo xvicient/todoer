@@ -130,7 +130,7 @@ private extension ListRowsView {
                 Image(systemName: "xmark")
                     .resizable()
                     .frame(width: 12, height: 12)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
             }
         }
         .frame(height: 40)

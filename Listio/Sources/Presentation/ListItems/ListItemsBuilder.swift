@@ -17,7 +17,10 @@ struct ListItems {
             )
             let reducer = Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)
-            return ListItemsView(store: store)
+            return ListItemsView(
+                store: store,
+                listName: list.name
+            )
         }
     }
 }

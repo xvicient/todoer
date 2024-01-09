@@ -9,7 +9,7 @@ protocol ListItemsDependencies {
     var list: List { get }
 }
 
-final class ItemsModel: ListRowsViewModel {
+internal final class ViewModel: ListRowsViewModel {
     var rows: [any ListRow] = []
     var leadingActions: (any ListRow) -> [ListRowAction] {
         { [$0.done ? .undone : .done] }
@@ -29,15 +29,15 @@ extension ListItems {
     struct Reducer: Listio.Reducer {
         
         enum Action {
-            // MARK: - View flow start
-            case viewWillAppear
+            // MARK: - View appear
+            case onAppear
             
             // MARK: - User actions
-            case didTapAddItemButton(String)
             case didTapToggleItemButton(Int)
             case didTapDeleteItemButton(Int)
             case didTapAddRowButton
             case didTapCancelAddRowButton
+            case didTapSubmitItemButton(String)
             
             // MARK: - Results
             case fetchItemsResult(Result<[Item], Error>)
@@ -48,12 +48,15 @@ extension ListItems {
         
         @MainActor
         struct State {
-            var isLoading = false
-            var itemsModel = ItemsModel()
-            var listName = ""
-            var isAddNewItemButtonVisible = true
-            var cleanNewItemName = true
-            var isNewItemFocused = false
+            var viewState = ViewState.idle
+            var viewModel = ViewModel()
+        }
+        
+        enum ViewState {
+            case idle
+            case loading
+            case addingItem
+            case error
         }
         
         private let dependencies: ListItemsDependencies
@@ -68,57 +71,59 @@ extension ListItems {
             _ action: Action
         ) -> Effect<Action> {
             
-            switch action {
-            case .viewWillAppear:
-                return onViewWillAppear(
+            switch (state.viewState, action) {
+            case (.idle, .onAppear):
+                return onAppear(
                     state: &state
                 )
                 
-            case .didTapAddItemButton(let newItemName):
-                return onDidTapAddItemButton(
-                    state: &state,
-                    newItemName: newItemName
-                )
-                
-            case .didTapToggleItemButton(let index):
+            case (.idle, .didTapToggleItemButton(let index)):
                 return onDidTapToggleItemButton(
                     state: &state,
                     index: index
                 )
                 
-            case .didTapDeleteItemButton(let index):
+            case (.idle, .didTapDeleteItemButton(let index)):
                 return onDidTapDeleteItemButton(
                     state: &state,
                     index: index
                 )
             
-            case .didTapAddRowButton:
+            case (.idle, .didTapAddRowButton):
                 return onDidTapAddRowButton(
                     state: &state
                 )
             
-            case .didTapCancelAddRowButton:
+            case (.addingItem, .didTapCancelAddRowButton):
                 return onDidTapCancelAddRowButton(
                     state: &state
                 )
                 
-            case .fetchItemsResult(let result):
+            case (.addingItem, .didTapSubmitItemButton(let newItemName)):
+                return onDidTapSubmitItemButton(
+                    state: &state,
+                    newItemName: newItemName
+                )
+                
+            case (.loading, .fetchItemsResult(let result)):
                 return onFetchItemsResult(
                     state: &state,
                     result: result
                 )
                 
-            case .addItemResult(let result):
+            case (.addingItem, .addItemResult(let result)):
                 return onAddItemResult(
                     state: &state,
                     result: result
                 )
                 
-            case .deleteItemResult:
+            case (.idle, .deleteItemResult):
                 return .none
                 
-            case .updateItemResult:
+            case (.idle, .updateItemResult):
                 return .none
+            
+            default: return .none
             }
         }
     }
@@ -128,11 +133,10 @@ extension ListItems {
 
 @MainActor
 private extension ListItems.Reducer {
-    func onViewWillAppear(
+    func onAppear(
         state: inout State
     ) -> Effect<Action> {
-        state.isLoading = true
-        state.listName = dependencies.list.name
+        state.viewState = .loading
         return .publish(
             dependencies.useCase.fetchItems(
                 listId: dependencies.list.documentId)
@@ -142,28 +146,14 @@ private extension ListItems.Reducer {
         )
     }
     
-    func onDidTapAddItemButton(
-        state: inout State,
-        newItemName: String
-    ) -> Effect<Action> {
-        return .task(Task {
-            .addItemResult(
-                await dependencies.useCase.addItem(
-                    with: newItemName,
-                    listId: dependencies.list.documentId
-                )
-            )
-        })
-    }
-    
     func onDidTapToggleItemButton(
         state: inout State,
         index: Int
     ) -> Effect<Action> {
-        state.itemsModel.rows[index].done.toggle()
-        if let item = state.itemsModel.rows[index] as? Item {
+        state.viewModel.rows[index].done.toggle()
+        if let item = state.viewModel.rows[index] as? Item {
             var list = dependencies.list
-            list.done = state.itemsModel.rows.allSatisfy({ $0.done })
+            list.done = state.viewModel.rows.allSatisfy({ $0.done })
             return .task(Task {
                 .updateItemResult(
                     await dependencies.useCase.updateItem(
@@ -173,7 +163,7 @@ private extension ListItems.Reducer {
                 )
             })
         } else {
-            state.itemsModel.rows[index].done.toggle()
+            state.viewModel.rows[index].done.toggle()
             return .none
         }
     }
@@ -182,8 +172,8 @@ private extension ListItems.Reducer {
         state: inout State,
         index: Int
     ) -> Effect<Action> {
-        let itemId = state.itemsModel.rows[index].documentId
-        state.itemsModel.rows.remove(at: index)
+        let itemId = state.viewModel.rows[index].documentId
+        state.viewModel.rows.remove(at: index)
         return .task(Task {
             .deleteItemResult(
                 await dependencies.useCase.deleteItem(
@@ -197,32 +187,48 @@ private extension ListItems.Reducer {
     func onDidTapAddRowButton(
         state: inout State
     ) -> Effect<Action> {
-        guard !state.itemsModel.rows.contains(
+        guard !state.viewModel.rows.contains(
             where: { $0 is EmptyRow }
         ) else {
             return .none
         }
-        state.isAddNewItemButtonVisible = false
-        state.itemsModel.rows.append(EmptyRow())
-        state.isNewItemFocused = true
+        state.viewState = .addingItem
+        state.viewModel.rows.append(EmptyRow())
         return .none
     }
     
     func onDidTapCancelAddRowButton(
         state: inout State
     ) -> Effect<Action> {
-        state.isAddNewItemButtonVisible = true
-        state.itemsModel.rows.removeAll { $0 is EmptyRow }
+        state.viewState = .idle
+        state.viewModel.rows.removeAll { $0 is EmptyRow }
         return .none
+    }
+    
+    func onDidTapSubmitItemButton(
+        state: inout State,
+        newItemName: String
+    ) -> Effect<Action> {
+        return .task(Task {
+            .addItemResult(
+                await dependencies.useCase.addItem(
+                    with: newItemName,
+                    listId: dependencies.list.documentId
+                )
+            )
+        })
     }
     
     func onFetchItemsResult(
         state: inout State,
         result: Result<[Item], Error>
     ) -> Effect<Action> {
-        state.isLoading = false
-        if case .success(let items) = result {
-            state.itemsModel.rows = items
+        switch result {
+        case .success(let items):
+            state.viewState = .idle
+            state.viewModel.rows = items
+        case .failure:
+            state.viewState = .error
         }
         return .none
     }
@@ -231,11 +237,13 @@ private extension ListItems.Reducer {
         state: inout State,
         result: Result<Item, Error>
     ) -> Effect<Action> {
-        state.isAddNewItemButtonVisible = true
-        state.cleanNewItemName = true
-        if case .success(let item) = result {
-            state.itemsModel.rows.removeAll { $0 is EmptyRow }
-            state.itemsModel.rows.append(item)
+        switch result {
+        case .success(let item):
+            state.viewState = .idle
+            state.viewModel.rows.removeAll { $0 is EmptyRow }
+            state.viewModel.rows.append(item)
+        case .failure:
+            state.viewState = .error
         }
         return .none
     }
