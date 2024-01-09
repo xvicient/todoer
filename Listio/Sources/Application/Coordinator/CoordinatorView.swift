@@ -24,6 +24,7 @@ struct CoordinatorView: View {
                     coordinator.build(fullScreenCover: fullScreenCover)
                 }
         }
+        .preferredColorScheme(.light)
         .environmentObject(coordinator) // TODO: - to remove once all the features are migrated to redux
     }
 }
