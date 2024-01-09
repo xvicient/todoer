@@ -13,24 +13,25 @@ extension ShareList {
     struct Reducer: Listio.Reducer {
         
         enum Action {
-            // MARK: - View flow start
-            case viewWillAppear
+            // MARK: - View appear
+            case onAppear
             
             // MARK: - User actions
-            case didTapShareListButton
+            case didTapShareListButton(String)
             
             // MARK: - Results
             case fetchUsersResult(Result<[User], Error>)
             case shareListResult(Result<Void, Error>)
-            
-            // MARK: - View bindings
-            case setShareEmail(String)
         }
         
         @MainActor
         struct State {
             var users = [User]()
-            var shareEmail = ""
+            var viewState = ViewState.idle
+        }
+        
+        enum ViewState {
+            case idle
         }
         
         private let dependencies: ShareListDependencies
@@ -45,31 +46,28 @@ extension ShareList {
             _ action: Action
         ) -> Effect<Action> {
             
-            switch action {
-            case .viewWillAppear:
-                return onViewWillAppear(
+            switch (state.viewState, action) {
+            case (.idle, .onAppear):
+                return onAppear(
                     state: &state
                 )
                 
-            case .didTapShareListButton:
+            case (.idle, .didTapShareListButton(let email)):
                 return onDidTapShareButton(
-                    state: &state
+                    state: &state,
+                    email: email
                 )
                 
-            case .fetchUsersResult(let result):
+            case (.idle, .fetchUsersResult(let result)):
                 if case .success(let users) = result {
                     state.users = users
                 }
                 return .none
                 
-            case .shareListResult(let result):
+            case (.idle, .shareListResult(let result)):
                 if case .success = result {
                     dependencies.coordinator.dismissSheet()
                 }
-                return .none
-                
-            case .setShareEmail(let email):
-                state.shareEmail = email
                 return .none
             }
         }
@@ -80,7 +78,7 @@ extension ShareList {
 
 @MainActor
 private extension ShareList.Reducer {
-    func onViewWillAppear(
+    func onAppear(
         state: inout State
     ) -> Effect<Action> {
         .task(Task {
@@ -92,13 +90,13 @@ private extension ShareList.Reducer {
         })
     }
     func onDidTapShareButton(
-        state: inout State
+        state: inout State,
+        email: String
     ) -> Effect<Action> {
-        let shareEmail = state.shareEmail
         return .task(Task {
             .shareListResult(
                 await dependencies.useCase.shareList(
-                    shareEmail: shareEmail,
+                    shareEmail: email,
                     list: dependencies.list
                 )
             )

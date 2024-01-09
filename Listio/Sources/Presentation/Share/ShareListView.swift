@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ShareListView: View {
     @ObservedObject private var store: Store<ShareList.Reducer>
+    @State private var shareEmailText: String = ""
     
     init(store: Store<ShareList.Reducer>) {
         self.store = store
@@ -11,10 +12,10 @@ struct ShareListView: View {
         VStack {
             TDTitle(title: Constants.Text.shareTitle,
                     image: Image(systemName: Constants.Image.share))
-            TDTextField(text: shareEmailBinding,
+            TDTextField(text: $shareEmailText,
                         placeholder: Constants.Text.sharePlaceholder)
             TDButton(title: Constants.Text.shareButtonTitle) {
-                store.send(.didTapShareListButton)
+                store.send(.didTapShareListButton($shareEmailText.wrappedValue))
             }
             .padding(.horizontal, 24)
             TDTitle(title: Constants.Text.sharingWithTitle)
@@ -27,19 +28,8 @@ struct ShareListView: View {
         }
         .padding(.top, 24)
         .onAppear {
-            store.send(.viewWillAppear)
+            store.send(.onAppear)
         }
-    }
-}
-
-// MARK: - Private
-
-private extension ShareListView {
-    var shareEmailBinding: Binding<String> {
-        Binding(
-          get: { store.state.shareEmail },
-          set: { store.send(.setShareEmail($0)) }
-      )
     }
 }
 
