@@ -86,17 +86,16 @@ final class ItemsDataSource: ItemsDataSourceApi {
         listId: String
     ) async throws -> ItemDTO {
         ignoreChanges = true
-        return try await withCheckedThrowingContinuation { continuation in
-            do {
-                let collection = itemsCollection(listId: listId)
-                let dto = ItemDTO(name: name,
-                                  done: false,
-                                  dateCreated: Date().milliseconds)
-                _ = try collection.addDocument(from: dto)
-                continuation.resume(returning: dto)
-            } catch {
-                continuation.resume(throwing: error)
-            }
+        do {
+            let dto = ItemDTO(name: name,
+                              done: false,
+                              dateCreated: Date().milliseconds)
+            return try await itemsCollection(listId: listId)
+                .addDocument(from: dto)
+                .getDocument()
+                .data(as: ItemDTO.self)
+        } catch {
+            throw(error)
         }
     }
     
