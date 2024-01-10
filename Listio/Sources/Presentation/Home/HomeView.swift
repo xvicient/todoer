@@ -33,7 +33,7 @@ struct HomeView: View {
                 ProgressView()
             }
         }
-        .navigationTitle("\(Constants.Title.title)")
+        .navigationTitle("\(Constants.Text.title)")
         .navigationBarItems(
             trailing: navigationBarItems
         )
@@ -47,18 +47,19 @@ private extension HomeView {
     var navigationBarItems: some View {
         HStack {
             Spacer()
-            Button(
-                action: {
+            Menu {
+                Button(Constants.Text.logout) {
                     viewModel.signOut()
                     coordinator.loggOut()
                 }
-            ) {
+            } label: {
                 AsyncImage(
                     url: URL(string: viewModel.userSelfPhoto),
                     content: {
                         $0.resizable().aspectRatio(contentMode: .fit)
                     }, placeholder: {
                         Image(systemName: Constants.Image.profilePlaceHolder)
+                            .tint(.buttonPrimary)
                     })
                 .frame(width: 30, height: 30)
                 .cornerRadius(15.0)
@@ -71,16 +72,16 @@ private extension HomeView {
         if !viewModel.invitations.isEmpty {
             Section(
                 header:
-                    Text(Constants.Title.invitations)
+                    Text(Constants.Text.invitations)
                     .foregroundColor(.buttonPrimary)
             ) {
                 ForEach(viewModel.invitations) { invitation in
                     HStack {
                         VStack(alignment: .leading, content: {
-                            Text("\(invitation.ownerName) (\(invitation.ownerEmail)) \n \(Constants.Title.wantsToShare) \(invitation.listName)")
+                            Text("\(invitation.ownerName) (\(invitation.ownerEmail)) \n \(Constants.Text.wantsToShare) \(invitation.listName)")
                         })
                         Spacer()
-                        TDButton(title: "\(Constants.Title.accept)") {
+                        TDButton(title: "\(Constants.Text.accept)") {
                             viewModel.importList(listId: invitation.listId,
                                                  invitationId: invitation.documentId)
                         }
@@ -95,7 +96,7 @@ private extension HomeView {
     var todosSection: some View {
         Section(
             header:
-                Text(Constants.Title.todoos)
+                Text(Constants.Text.todoos)
                 .foregroundColor(.buttonPrimary)
         ) {
             ListRowsView(viewModel: viewModel,
@@ -157,7 +158,7 @@ private extension HomeView {
                         .foregroundColor(.buttonPrimary)
                         .padding([.top, .trailing], 24.0)
                     }
-                    TextField(Constants.Title.addList,
+                    TextField(Constants.Text.addList,
                               text: $viewModel.listName)
                     .textFieldStyle(BottomLineStyle() {
                         viewModel.createList()
@@ -179,13 +180,14 @@ private extension HomeView {
 
 private extension HomeView {
     struct Constants {
-        struct Title {
+        struct Text {
             static let title = "Todoo"
             static let invitations = "Invitations"
             static let todoos = "Todoos"
             static let wantsToShare = "wants to share"
             static let accept = "Accept"
             static let addList = "List name..."
+            static let logout = "Logout"
         }
         struct Image {
             static let profilePlaceHolder = "person.crop.circle"
