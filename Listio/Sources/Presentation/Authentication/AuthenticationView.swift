@@ -13,16 +13,16 @@ struct AuthenticationView: View {
         ZStack {
             VStack(spacing: 0) {
                 VStack {
-                    Text("Welcome")
+                    Text(Constants.Text.welcomeTitle)
                         .foregroundColor(.buttonPrimary)
                         .padding([.top], 20)
                         .font(.system(size: 46, weight: .semibold, design: .rounded))
-                    Image("Logo")
+                    Image(Constants.Image.logo)
                         .resizable()
                         .frame(width: 200, height: 200)
                         .padding([.top], 20)
                         .padding([.bottom], 40)
-                    Text("Get things done with Todoo!")
+                    Text(Constants.Text.welcomeSubtitle)
                         .foregroundColor(.buttonPrimary)
                         .padding([.bottom], 20)
                         .font(.system(size: 26, weight: .semibold, design: .rounded))
@@ -37,21 +37,50 @@ struct AuthenticationView: View {
                             state: .normal
                         )
                     ) {
-                        Task {
-                            store.send(.didTapSignInButton)
-                        }
+                        store.send(.didTapSignInButton)
                     }
                     .padding([.top, .leading, .trailing], 40)
-                    Text("Login using a Google account.")
+                    Text(Constants.Text.loginHint)
                         .foregroundColor(.buttonPrimary)
                         .font(.system(size: 14, design: .rounded))
                     Spacer()
                 }
                 .background(.backgroundSecondary)
             }
-            if store.state.isLoading {
+            if store.state.viewState == .loading {
                 ProgressView()
             }
+        }
+        .alert(isPresented: Binding(
+            get: { store.state.viewState == .unexpectedError },
+            set: { _ in }
+        )) {
+            Alert(
+                title: Text(Constants.Text.errorTitle),
+                message: Text(Constants.Text.unexpectedError),
+                dismissButton: .default(Text(Constants.Text.errorOkButton)) {
+                    store.send(.didTapDismissError)
+                }
+            )
+        }
+    }
+}
+
+// MARK: - Constants
+
+private extension AuthenticationView {
+    struct Constants {
+        struct Text {
+            static let welcomeTitle = "Welcome"
+            static let welcomeSubtitle = "Get things done with Todoo!"
+            static let loginHint = "Login using a Google account."
+            static let errorTitle = "Error"
+            static let unexpectedError = "Unexpected error"
+            static let errorOkButton = "Ok"
+            
+        }
+        struct Image {
+            static let logo = "Logo"
         }
     }
 }
