@@ -2,6 +2,13 @@ import SwiftUI
 
 // MARK: - HomeView
 
+private struct ListActions: ListRowsViewActions {
+    var tapAction: ((any ListRow) -> Void)?
+    var swipeActions: ((Int, ListRowActionType) -> Void)?
+    var submitAction: ((String) -> Void)?
+    var cancelAction: (() -> Void)?
+}
+
 struct HomeView: View {
     @StateObject var viewModel: HomeViewModel
     @EnvironmentObject private var coordinator: Coordinator
@@ -100,8 +107,7 @@ private extension HomeView {
                 .foregroundColor(.buttonPrimary)
         ) {
             ListRowsView(viewModel: viewModel,
-                         mainAction: itemViewMainAction,
-                         swipeActions: itemViewOptionsAction)
+                         actions: listActions)
         }
     }
     
@@ -179,6 +185,42 @@ private extension HomeView {
 // MARK: - Private
 
 private extension HomeView {
+    func setupNavigationBar() {
+        UINavigationBar.appearance()
+            .largeTitleTextAttributes = [
+                .foregroundColor: UIColor(.buttonPrimary)
+            ]
+    }
+    
+    var listActions: ListActions {
+        ListActions(tapAction: tapAction,
+                    swipeActions: swipeActions)
+    }
+    
+    var tapAction: (any ListRow) -> Void {
+        {
+            guard let list = $0 as? List else { return }
+            coordinator.push(.products(list))
+        }
+    }
+    
+    var swipeActions: (Int, ListRowActionType) -> Void {
+        { index, option in
+            if case .share = option {
+                guard let list = viewModel.rows[index] as? List else {
+                    return
+                }
+                coordinator.present(sheet: .shareList(list))
+            } else {
+                viewModel.onDidTapOption(index, option)
+            }
+        }
+    }
+}
+
+// MARK: - Constants
+
+private extension HomeView {
     struct Constants {
         struct Text {
             static let title = "Todoo"
@@ -193,33 +235,6 @@ private extension HomeView {
             static let profilePlaceHolder = "person.crop.circle"
             static let addButton = "plus.circle.fill"
             static let closeAddListButton = "xmark"
-        }
-    }
-    
-    func setupNavigationBar() {
-        UINavigationBar.appearance()
-            .largeTitleTextAttributes = [
-                .foregroundColor: UIColor(.buttonPrimary)
-            ]
-    }
-    
-    var itemViewMainAction: (any ListRow) -> Void {
-        {
-            guard let list = $0 as? List else { return }
-            coordinator.push(.products(list))
-        }
-    }
-    
-    var itemViewOptionsAction: (Int, ListRowAction) -> Void {
-        { index, option in
-            if case .share = option {
-                guard let list = viewModel.rows[index] as? List else {
-                    return
-                }
-                coordinator.present(sheet: .shareList(list))
-            } else {
-                viewModel.onDidTapOption(index, option)
-            }
         }
     }
 }

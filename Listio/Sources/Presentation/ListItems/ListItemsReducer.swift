@@ -11,10 +11,10 @@ protocol ListItemsDependencies {
 
 internal final class ViewModel: ListRowsViewModel {
     var rows: [any ListRow] = []
-    var leadingActions: (any ListRow) -> [ListRowAction] {
+    var leadingActions: (any ListRow) -> [ListRowActionType] {
         { [$0.done ? .undone : .done] }
     }
-    var trailingActions = [ListRowAction.delete]
+    var trailingActions = [ListRowActionType.delete]
 }
 
 private struct EmptyRow: ListRow {

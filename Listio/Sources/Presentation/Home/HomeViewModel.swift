@@ -4,7 +4,7 @@ import SwiftUI
 
 protocol HomeViewModelApi {
     func fetchData()
-    var onDidTapOption: ((Int, ListRowAction) -> Void) { get }
+    var onDidTapOption: ((Int, ListRowActionType) -> Void) { get }
     func importList(
         listId: String,
         invitationId: String
@@ -19,10 +19,10 @@ protocol HomeViewModelApi {
 final class HomeViewModel: ListRowsViewModel {
     @Published var invitations: [Invitation] = []
     @Published var rows: [any ListRow] = []
-    internal var leadingActions: (any ListRow) -> [ListRowAction] {
+    internal var leadingActions: (any ListRow) -> [ListRowActionType] {
         { [$0.done ? .undone : .done] }
     }
-    internal var trailingActions: [ListRowAction] = [.share, .delete]
+    internal var trailingActions: [ListRowActionType] = [.share, .delete]
     @Published var isLoading = false
     @Published var userSelfPhoto: String = ""
     @Published var listName: String = ""
@@ -76,7 +76,7 @@ extension HomeViewModel: HomeViewModelApi {
         )
     }
     
-    var onDidTapOption: ((Int, ListRowAction) -> Void) {
+    var onDidTapOption: ((Int, ListRowActionType) -> Void) {
         { [weak self] index, option in
             guard let self = self else { return }
             let item = rows[index]

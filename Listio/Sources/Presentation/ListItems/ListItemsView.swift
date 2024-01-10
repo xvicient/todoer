@@ -2,6 +2,13 @@ import SwiftUI
 
 // MARK: - ListItemsView
 
+private struct ListActions: ListRowsViewActions {
+    var tapAction: ((any ListRow) -> Void)?
+    var swipeActions: ((Int, ListRowActionType) -> Void)?
+    var submitAction: ((String) -> Void)?
+    var cancelAction: (() -> Void)?
+}
+
 struct ListItemsView: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
     private var listName: String
@@ -21,11 +28,8 @@ struct ListItemsView: View {
                 ScrollViewReader { scrollView in
                     SwiftUI.List {
                         ListRowsView(viewModel: store.state.viewModel,
-                                     swipeActions: swipeActions,
-                                     submitAction: submitAction,
-                                     cancelAction: cancelAction,
-                                     newRowPlaceholder: Constants.Text.item,
-                                     cleanNewRowName: store.state.viewState == .addingItem)
+                                     actions: listActions,
+                                     newRowPlaceholder: Constants.Text.item)
                         
                     }.onChange(of: store.state.viewState == .addingItem, {
                         withAnimation {
@@ -86,7 +90,13 @@ private extension ListItemsView {
 // MARK: - Private
 
 private extension ListItemsView {
-    var swipeActions: (Int, ListRowAction) -> Void {
+    var listActions: ListActions {
+        ListActions(swipeActions: swipeActions,
+                    submitAction: submitAction,
+                    cancelAction: cancelAction)
+    }
+    
+    var swipeActions: (Int, ListRowActionType) -> Void {
         { index, option in
             switch option {
             case .done, .undone:

@@ -5,8 +5,8 @@ import SwiftUI
 @MainActor
 protocol ListRowsViewModel: ObservableObject {
     var rows: [any ListRow] { get }
-    var leadingActions: (any ListRow) -> [ListRowAction] { get }
-    var trailingActions: [ListRowAction] { get }
+    var leadingActions: (any ListRow) -> [ListRowActionType] { get }
+    var trailingActions: [ListRowActionType] { get }
 }
 
 protocol ListRow: Identifiable, Equatable, Hashable {
@@ -16,7 +16,15 @@ protocol ListRow: Identifiable, Equatable, Hashable {
     var done: Bool { get set }
     var isEditing: Bool { get }
 }
-enum ListRowAction: String, Identifiable {
+
+protocol ListRowsViewActions {
+    var tapAction: ((any ListRow) -> Void)? { get }
+    var swipeActions: ((Int, ListRowActionType) -> Void)? { get }
+    var submitAction: ((String) -> Void)? { get }
+    var cancelAction: (() -> Void)? { get }
+}
+
+enum ListRowActionType: String, Identifiable {
     case share = "square.and.arrow.up"
     case done = "largecircle.fill.circle"
     case undone = "circle"
@@ -39,27 +47,16 @@ struct ListRowsView<ViewModel>: View where ViewModel: ListRowsViewModel {
     @State private var emptyRowText: String = ""
     
     @StateObject var viewModel: ViewModel
-    
-    var mainAction: ((any ListRow) -> Void)? = nil
-    var swipeActions: ((Int, ListRowAction) -> Void)? = nil
-    var submitAction: ((String) -> Void)? = nil
-    var cancelAction: (() -> Void)? = nil
+    var actions: ListRowsViewActions?
     var newRowPlaceholder: String = ""
-    var cleanNewRowName: Bool = true
     
     var body: some View {
         ForEach(Array(viewModel.rows.enumerated()),
                 id: \.element.id) { index, row in
             if row.isEditing {
                 emptyRow(index)
-                .onAppear {
-                    isEmptyRowFocused = true
-                }
             } else {
-                listRow(
-                    row,
-                    index: index
-                )
+                listRow(row, index: index )
             }
         }
     }
@@ -78,7 +75,7 @@ private extension ListRowsView {
                 Image(systemName: row.done ? "largecircle.fill.circle" : "circle")
                     .foregroundColor(.backgroundPrimary)
                 Button(action: {
-                    mainAction?(row)
+                    actions?.tapAction?(row)
                 }) {
                     Text(row.name)
                         .strikethrough(row.done)
@@ -93,13 +90,13 @@ private extension ListRowsView {
         }
         .swipeActions(edge: .leading) {
             swipeActions(
-                actions: viewModel.leadingActions(row),
+                of: viewModel.leadingActions(row),
                 index: index
             )
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             swipeActions(
-                actions: viewModel.trailingActions,
+                of: viewModel.trailingActions,
                 index: index
             )
         }
@@ -115,16 +112,16 @@ private extension ListRowsView {
                 .foregroundColor(.primary)
                 .focused($isEmptyRowFocused)
                 .onAppear {
-                    emptyRowText = cleanNewRowName ? "" : emptyRowText
+                    emptyRowText = ""
                 }
                 .onSubmit {
                     hideKeyboard()
-                    submitAction?($emptyRowText.wrappedValue)
+                    actions?.submitAction?($emptyRowText.wrappedValue)
                 }
                 .submitLabel(.done)
             Button(action: {
                 withAnimation {
-                    cancelAction?()
+                    actions?.cancelAction?()
                 }
             }) {
                 Image(systemName: "xmark")
@@ -135,18 +132,21 @@ private extension ListRowsView {
         }
         .frame(height: 40)
         .id(index)
+        .onAppear {
+            isEmptyRowFocused = true
+        }
     }
     
     @ViewBuilder
     func swipeActions(
-        actions: [ListRowAction],
+        of types: [ListRowActionType],
         index: Int
     ) -> some View {
-        ForEach(actions,
+        ForEach(types,
                 id: \.id) { option in
             Button {
                 withAnimation {
-                    swipeActions?(index, option)
+                    actions?.swipeActions?(index, option)
                 }
             } label: {
                 Image(systemName: option.rawValue)
@@ -183,11 +183,11 @@ extension List: ListRow {
                                               uuid: [],
                                               dateCreated: 1)]
         
-        var leadingActions: (any ListRow) -> [ListRowAction] = {
+        var leadingActions: (any ListRow) -> [ListRowActionType] = {
             [$0.done ? .undone : .done]
         }
         
-        var trailingActions: [ListRowAction] = [.share, .delete]
+        var trailingActions: [ListRowActionType] = [.share, .delete]
     }
     return ListRowsView(viewModel: ViewModel())
 }
