@@ -4,7 +4,7 @@ import SwiftUI
 
 protocol HomeViewModelApi {
     func fetchData()
-    var onDidTapOption: ((Int, ListRowActionType) -> Void) { get }
+    var onDidTapOption: ((Int, TDSectionRowActionType) -> Void) { get }
     func importList(
         listId: String,
         invitationId: String
@@ -16,13 +16,13 @@ protocol HomeViewModelApi {
 // MARK: - HomeViewModel
 
 @MainActor
-final class HomeViewModel: ListRowsViewModel {
+final class HomeViewModel: TDListSectionViewModel {
     @Published var invitations: [Invitation] = []
-    @Published var rows: [any ListRow] = []
-    internal var leadingActions: (any ListRow) -> [ListRowActionType] {
+    @Published var rows: [any TDSectionRow] = []
+    internal var leadingActions: (any TDSectionRow) -> [TDSectionRowActionType] {
         { [$0.done ? .undone : .done] }
     }
-    internal var trailingActions: [ListRowActionType] = [.share, .delete]
+    internal var trailingActions: [TDSectionRowActionType] = [.share, .delete]
     @Published var isLoading = false
     @Published var userSelfPhoto: String = ""
     @Published var listName: String = ""
@@ -76,7 +76,7 @@ extension HomeViewModel: HomeViewModelApi {
         )
     }
     
-    var onDidTapOption: ((Int, ListRowActionType) -> Void) {
+    var onDidTapOption: ((Int, TDSectionRowActionType) -> Void) {
         { [weak self] index, option in
             guard let self = self else { return }
             let item = rows[index]
@@ -161,7 +161,7 @@ private extension HomeViewModel {
         }
     }
     
-    func toggleList(_ item: any ListRow) {
+    func toggleList(_ item: any TDSectionRow) {
         guard var list = item as? List else { return }
         
         list.done.toggle()
@@ -178,7 +178,7 @@ private extension HomeViewModel {
         }
     }
     
-    func deleteList(_ item: any ListRow) {
+    func deleteList(_ item: any TDSectionRow) {
         listsRepository.deleteList(item.documentId)
     }
 }

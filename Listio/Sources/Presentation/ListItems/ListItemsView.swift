@@ -2,9 +2,9 @@ import SwiftUI
 
 // MARK: - ListItemsView
 
-private struct ListActions: ListRowsViewActions {
-    var tapAction: ((any ListRow) -> Void)?
-    var swipeActions: ((Int, ListRowActionType) -> Void)?
+private struct ListActions: TDSectionRowActions {
+    var tapAction: ((any TDSectionRow) -> Void)?
+    var swipeActions: ((Int, TDSectionRowActionType) -> Void)?
     var submitAction: ((String) -> Void)?
     var cancelAction: (() -> Void)?
 }
@@ -27,9 +27,9 @@ struct ListItemsView: View {
             ZStack {
                 ScrollViewReader { scrollView in
                     SwiftUI.List {
-                        ListRowsView(viewModel: store.state.viewModel,
-                                     actions: listActions,
-                                     newRowPlaceholder: Constants.Text.item)
+                        TDListSectionView(viewModel: store.state.viewModel,
+                                          actions: listActions,
+                                          newRowPlaceholder: Constants.Text.item)
                         
                     }.onChange(of: store.state.viewState == .addingItem, {
                         withAnimation {
@@ -96,7 +96,7 @@ private extension ListItemsView {
                     cancelAction: cancelAction)
     }
     
-    var swipeActions: (Int, ListRowActionType) -> Void {
+    var swipeActions: (Int, TDSectionRowActionType) -> Void {
         { index, option in
             switch option {
             case .done, .undone:

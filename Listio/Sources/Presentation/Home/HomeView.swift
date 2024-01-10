@@ -2,9 +2,9 @@ import SwiftUI
 
 // MARK: - HomeView
 
-private struct ListActions: ListRowsViewActions {
-    var tapAction: ((any ListRow) -> Void)?
-    var swipeActions: ((Int, ListRowActionType) -> Void)?
+private struct ListActions: TDSectionRowActions {
+    var tapAction: ((any TDSectionRow) -> Void)?
+    var swipeActions: ((Int, TDSectionRowActionType) -> Void)?
     var submitAction: ((String) -> Void)?
     var cancelAction: (() -> Void)?
 }
@@ -101,14 +101,9 @@ private extension HomeView {
     
     @ViewBuilder
     var todosSection: some View {
-        Section(
-            header:
-                Text(Constants.Text.todoos)
-                .foregroundColor(.buttonPrimary)
-        ) {
-            ListRowsView(viewModel: viewModel,
-                         actions: listActions)
-        }
+        TDListSectionView(viewModel: viewModel,
+                          actions: listActions,
+                          sectionTitle: Constants.Text.todoos)
     }
     
     @ViewBuilder
@@ -197,14 +192,14 @@ private extension HomeView {
                     swipeActions: swipeActions)
     }
     
-    var tapAction: (any ListRow) -> Void {
+    var tapAction: (any TDSectionRow) -> Void {
         {
             guard let list = $0 as? List else { return }
             coordinator.push(.products(list))
         }
     }
     
-    var swipeActions: (Int, ListRowActionType) -> Void {
+    var swipeActions: (Int, TDSectionRowActionType) -> Void {
         { index, option in
             if case .share = option {
                 guard let list = viewModel.rows[index] as? List else {

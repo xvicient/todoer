@@ -9,15 +9,15 @@ protocol ListItemsDependencies {
     var list: List { get }
 }
 
-internal final class ViewModel: ListRowsViewModel {
-    var rows: [any ListRow] = []
-    var leadingActions: (any ListRow) -> [ListRowActionType] {
+internal final class ViewModel: TDListSectionViewModel {
+    var rows: [any TDSectionRow] = []
+    var leadingActions: (any TDSectionRow) -> [TDSectionRowActionType] {
         { [$0.done ? .undone : .done] }
     }
-    var trailingActions = [ListRowActionType.delete]
+    var trailingActions = [TDSectionRowActionType.delete]
 }
 
-private struct EmptyRow: ListRow {
+private struct EmptyRow: TDSectionRow {
     var id = UUID()
     var documentId = ""
     var name = ""
