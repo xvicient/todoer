@@ -4,13 +4,21 @@ import SwiftUI
 
 protocol HomeViewModelApi {
     func fetchData()
+    
     var onDidTapOption: ((Int, TDSectionRowActionType) -> Void) { get }
+    
     func importList(
         listId: String,
         invitationId: String
     )
+    
     func createList()
+    
     func signOut()
+    
+    func deleteInvitation(
+        invitationId: String
+    )
 }
 
 // MARK: - HomeViewModel
@@ -103,6 +111,12 @@ extension HomeViewModel: HomeViewModelApi {
                 break
             }
         }
+    }
+    
+    func deleteInvitation(
+        invitationId: String
+    ) {
+        invitationsRepository.deleteInvitation(invitationId, completion: { _ in })
     }
     
     func createList() {

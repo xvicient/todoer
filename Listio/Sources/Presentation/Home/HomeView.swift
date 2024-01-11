@@ -84,13 +84,32 @@ private extension HomeView {
             ) {
                 ForEach(viewModel.invitations) { invitation in
                     HStack {
-                        VStack(alignment: .leading, content: {
-                            Text("\(invitation.ownerName) (\(invitation.ownerEmail)) \n \(Constants.Text.wantsToShare) \(invitation.listName)")
-                        })
+                        VStack(alignment: .leading) {
+                            Text("\(invitation.ownerName)")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.buttonPrimary)
+                            Text("(\(invitation.ownerEmail))")
+                                .font(.system(size: 14, weight: .light))
+                                .padding(.bottom, 8)
+                            Text("\(Constants.Text.wantsToShare)")
+                                .font(.system(size: 14))
+                            Text("\(invitation.listName)")
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(Color(UIColor.darkGray))
+                        }
                         Spacer()
-                        TDButton(title: "\(Constants.Text.accept)") {
-                            viewModel.importList(listId: invitation.listId,
-                                                 invitationId: invitation.documentId)
+                        VStack {
+                            TDButton(title: "\(Constants.Text.accept)",
+                                     style: .primary,
+                                     size: .custom(with: 100, height: 32)) {
+                                viewModel.importList(listId: invitation.listId,
+                                                     invitationId: invitation.documentId)
+                            }
+                            TDButton(title: "\(Constants.Text.decline)",
+                                     style: .destructive,
+                                     size: .custom(with: 100, height: 32)) {
+                                viewModel.deleteInvitation(invitationId: invitation.documentId)
+                            }
                         }
                     }
                     .background()
@@ -221,8 +240,9 @@ private extension HomeView {
             static let title = "Todoo"
             static let invitations = "Invitations"
             static let todoos = "Todoos"
-            static let wantsToShare = "wants to share"
+            static let wantsToShare = "Wants to share: "
             static let accept = "Accept"
+            static let decline = "Decline"
             static let addList = "List name..."
             static let logout = "Logout"
         }

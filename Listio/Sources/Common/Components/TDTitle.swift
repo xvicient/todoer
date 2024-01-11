@@ -24,6 +24,7 @@ struct TDTitle: View {
 
 struct TDTitle_Previews: PreviewProvider {
     static var previews: some View {
-        TDButton(title: "OK", action: {})
+        TDButton(title: "OK",
+                 action: {})
     }
 }
