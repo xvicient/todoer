@@ -27,13 +27,13 @@ struct ListItemsView: View {
             ZStack {
                 ScrollViewReader { scrollView in
                     SwiftUI.List {
-                        TDListSectionView(viewModel: store.state.viewModel,
+                        TDListSectionView(viewModel: store.state.viewModel.itemsSection,
                                           actions: listActions,
                                           newRowPlaceholder: Constants.Text.item)
                         
                     }.onChange(of: store.state.viewState == .addingItem, {
                         withAnimation {
-                            scrollView.scrollTo(store.state.viewModel.rows.count - 1,
+                            scrollView.scrollTo(store.state.viewModel.itemsSection.rows.count - 1,
                                                 anchor: .bottom)
                         }
                     })

@@ -1,4 +1,9 @@
+import Combine
+import Foundation
+
 protocol InvitationsRepositoryApi {
+    func fetchInvitations(
+    ) -> AnyPublisher<[Invitation], Error>
     func fetchInvitations(
         completion: @escaping (Result<[Invitation], Error>) -> Void
     )
@@ -25,6 +30,18 @@ final class InvitationsRepository: InvitationsRepositoryApi {
          usersDataSource: UsersDataSourceApi = UsersDataSource()) {
         self.invitationsDataSource = invitationsDataSource
         self.usersDataSource = usersDataSource
+    }
+    
+    func fetchInvitations(
+    ) -> AnyPublisher<[Invitation], Error> {
+        invitationsDataSource.fetchInvitations(uuid: usersDataSource.uuid)
+            .tryMap { invitations in
+                invitations.map {
+                    $0.toDomain
+                }
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
     
     func fetchInvitations(

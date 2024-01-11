@@ -1,7 +1,11 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import Combine
 
 protocol InvitationsDataSourceApi {
+    func fetchInvitations(
+        uuid: String
+    ) -> AnyPublisher<[InvitationDTO], Error>
     func fetchInvitations(
         uuid: String,
         completion: @escaping (Result<[InvitationDTO], Error>) -> Void
@@ -22,7 +26,50 @@ protocol InvitationsDataSourceApi {
 }
 
 final class InvitationsDataSource: InvitationsDataSourceApi {
+    
+    private var snapshotListener: ListenerRegistration?
+    private var listenerSubject: PassthroughSubject<[InvitationDTO], Error>?
+    private var ignoreChanges = false
+    
     private let invitationsCollection = Firestore.firestore().collection("invitations")
+    
+    deinit {
+        snapshotListener?.remove()
+        listenerSubject = nil
+    }
+    
+    func fetchInvitations(
+        uuid: String
+    ) -> AnyPublisher<[InvitationDTO], Error> {
+        let subject = PassthroughSubject<[InvitationDTO], Error>()
+        listenerSubject = subject
+        
+        invitationsCollection
+            .whereField("invitedId", isEqualTo: uuid)
+            .addSnapshotListener { [weak self] query, error in
+                guard let self = self else { return }
+                
+                guard !ignoreChanges else {
+                    ignoreChanges = false
+                    return
+                }
+                
+                if let error = error {
+                    subject.send(completion: .failure(error))
+                    return
+                }
+                
+                let invitations = query?.documents
+                    .compactMap { try? $0.data(as: InvitationDTO.self) }
+                ?? []
+                
+                subject.send(invitations)
+            }
+        
+        return subject
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
     
     func fetchInvitations(
         uuid: String,

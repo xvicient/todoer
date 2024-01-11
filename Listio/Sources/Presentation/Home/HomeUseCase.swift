@@ -1,0 +1,72 @@
+import Combine
+import Foundation
+
+protocol HomeUseCaseApi {
+    func fetchData(
+    ) -> AnyPublisher<([List], [Invitation]), Error>
+    
+    func getPhotoUrl(
+    ) async -> Result<String, Error>
+}
+
+extension Home {
+    struct UseCase: HomeUseCaseApi {
+        private let listsRepository: ListsRepositoryApi
+        private let productsRepository: ItemsRepositoryApi
+        private let invitationsRepository: InvitationsRepositoryApi
+        private let usersRepository: UsersRepositoryApi
+        private let authenticationService: AuthenticationService
+        
+        init(listsRepository: ListsRepositoryApi = ListsRepository(),
+             productsRepository: ItemsRepositoryApi = ItemsRepository(),
+             invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
+             usersRepository: UsersRepositoryApi = UsersRepository(),
+             authenticationService: AuthenticationService = AuthenticationService()) {
+            self.listsRepository = listsRepository
+            self.productsRepository = productsRepository
+            self.invitationsRepository = invitationsRepository
+            self.usersRepository = usersRepository
+            self.authenticationService = authenticationService
+        }
+        
+        func fetchData(
+        ) -> AnyPublisher<([List], [Invitation]), Error> {
+            Publishers.CombineLatest(fetchLists(),
+                                     fetchInvitations())
+            .map { ($0, $1) }
+            .eraseToAnyPublisher()
+        }
+        
+        func getPhotoUrl(
+        ) async -> Result<String, Error> {
+            do {
+                let photoUrl = try await usersRepository.getSelfUser().photoUrl
+                return .success(photoUrl ?? "")
+            } catch {
+                return .failure(error)
+            }
+        }
+    }
+}
+
+private extension Home.UseCase {
+    func fetchLists(
+    ) -> AnyPublisher<[List], Error> {
+        listsRepository.fetchLists()
+            .tryMap { lists in
+                lists.sorted { $0.dateCreated < $1.dateCreated }
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    func fetchInvitations(
+    ) -> AnyPublisher<[Invitation], Error> {
+        invitationsRepository.fetchInvitations()
+            .tryMap { invitations in
+                invitations.sorted { $0.dateCreated < $1.dateCreated }
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+}

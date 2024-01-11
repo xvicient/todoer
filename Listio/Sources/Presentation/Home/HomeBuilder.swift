@@ -1,9 +1,24 @@
 import SwiftUI
 
-struct HomeBuilder {
-    @MainActor
-    static func makeHome() -> HomeView {
-        let viewModel = HomeViewModel()
-        return HomeView(viewModel: viewModel)
+struct Home {
+    struct Builder {
+        struct Dependencies: HomeDependencies {
+            var useCase: HomeUseCaseApi
+            var coordinator: Coordinator
+        }
+        @MainActor
+        static func makeHome(
+            coordinator: Coordinator
+        ) -> HomeView {
+            let dependencies = Dependencies(
+                useCase: UseCase(),
+                coordinator: coordinator
+            )
+            let reducer = Reducer(dependencies: dependencies)
+            let store = Store(initialState: .init(), reducer: reducer)
+            let viewModel = HomeViewModel()
+            return HomeView(viewModel: viewModel, 
+                            store: store)
+        }
     }
 }

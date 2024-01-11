@@ -82,7 +82,9 @@ class Coordinator: ObservableObject {
                 coordinator: self
             )
         case .home:
-            HomeBuilder.makeHome()
+            Home.Builder.makeHome(
+                coordinator: self
+            )
         case let .products(list):
             ListItems.Builder.makeItemsList(
                 list: list
@@ -108,7 +110,7 @@ class Coordinator: ObservableObject {
         switch fullScreenCover {
         case .home:
             NavigationStack {
-                HomeBuilder.makeHome()
+                EmptyView()
             }
         }
     }

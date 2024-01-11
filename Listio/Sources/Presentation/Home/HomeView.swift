@@ -12,9 +12,12 @@ private struct ListActions: TDSectionRowActions {
 struct HomeView: View {
     @StateObject var viewModel: HomeViewModel
     @EnvironmentObject private var coordinator: Coordinator
+    @ObservedObject private var store: Store<Home.Reducer>
     
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel,
+         store: Store<Home.Reducer>) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.store = store
         setupNavigationBar()
     }
     
@@ -32,11 +35,11 @@ struct HomeView: View {
                     addListTextField
                 }
             }
-            .task() {
-                viewModel.fetchData()
+            .onAppear {
+                store.send(.onViewAppear)
             }
-            .disabled(viewModel.isLoading)
-            if viewModel.isLoading {
+            .disabled(store.state.viewState == .loading)
+            if store.state.viewState == .loading {
                 ProgressView()
             }
         }
@@ -72,17 +75,20 @@ private extension HomeView {
                 .cornerRadius(15.0)
             }
         }
+        .onAppear {
+            store.send(.onProfilePhotoAppear)
+        }
     }
     
     @ViewBuilder
     var invitationsSection: some View {
-        if !viewModel.invitations.isEmpty {
+        if !store.state.viewModel.invitations.isEmpty {
             Section(
                 header:
                     Text(Constants.Text.invitations)
                     .foregroundColor(.buttonPrimary)
             ) {
-                ForEach(viewModel.invitations) { invitation in
+                ForEach(store.state.viewModel.invitations) { invitation in
                     HStack {
                         VStack(alignment: .leading) {
                             Text("\(invitation.ownerName)")
@@ -120,7 +126,7 @@ private extension HomeView {
     
     @ViewBuilder
     var todosSection: some View {
-        TDListSectionView(viewModel: viewModel,
+        TDListSectionView(viewModel: store.state.viewModel.listsSection,
                           actions: listActions,
                           sectionTitle: Constants.Text.todoos)
     }
@@ -255,5 +261,5 @@ private extension HomeView {
 }
 
 #Preview {
-    HomeView(viewModel: HomeViewModel())
+    Home.Builder.makeHome(coordinator: Coordinator())
 }

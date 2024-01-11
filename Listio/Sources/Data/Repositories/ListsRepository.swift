@@ -1,4 +1,9 @@
+import Combine
+import Foundation
+
 protocol ListsRepositoryApi {
+    func fetchLists(
+    ) -> AnyPublisher<[List], Error>
     func fetchLists(
         completion: @escaping (Result<[List], Error>) -> Void
     )
@@ -38,6 +43,18 @@ final class ListsRepository: ListsRepositoryApi {
         self.listsDataSource = listsDataSource
         self.usersDataSource = usersDataSource
         self.itemsDataSource = itemsDataSource
+    }
+    
+    func fetchLists(
+    ) -> AnyPublisher<[List], Error> {
+        listsDataSource.fetchLists(uuid: usersDataSource.uuid)
+            .tryMap { lists in
+                lists.map {
+                    $0.toDomain
+                }
+            }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
     
     func fetchLists(completion: @escaping (Result<[List], Error>) -> Void) {

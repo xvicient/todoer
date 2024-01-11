@@ -1,7 +1,11 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import Combine
 
 protocol ListsDataSourceApi {
+    func fetchLists(
+        uuid: String
+    ) -> AnyPublisher<[ListDTO], Error>
     func fetchLists(
         uuid: String,
         completion: @escaping (Result<[ListDTO], Error>) -> Void
@@ -39,7 +43,50 @@ final class ListsDataSource: ListsDataSourceApi {
         case encodingError
     }
     
+    private var snapshotListener: ListenerRegistration?
+    private var listenerSubject: PassthroughSubject<[ListDTO], Error>?
+    private var ignoreChanges = false
+    
+    deinit {
+        snapshotListener?.remove()
+        listenerSubject = nil
+    }
+    
     private let listsCollection = Firestore.firestore().collection("lists")
+    
+    
+    func fetchLists(
+        uuid: String
+    ) -> AnyPublisher<[ListDTO], Error> {
+        let subject = PassthroughSubject<[ListDTO], Error>()
+        listenerSubject = subject
+        
+        snapshotListener = listsCollection
+            .whereField("uuid", arrayContains: uuid)
+            .addSnapshotListener { [weak self] query, error in
+                guard let self = self else { return }
+                
+                guard !ignoreChanges else {
+                    ignoreChanges = false
+                    return
+                }
+                
+                if let error = error {
+                    subject.send(completion: .failure(error))
+                    return
+                }
+                
+                let lists = query?.documents
+                    .compactMap { try? $0.data(as: ListDTO.self) }
+                ?? []
+                
+                subject.send(lists)
+            }
+        
+        return subject
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
     
     func fetchLists(
         uuid: String,

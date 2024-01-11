@@ -29,6 +29,10 @@
 		C75B4ACB2B1DD8D1007CCA48 /* InvitationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4ACA2B1DD8D1007CCA48 /* InvitationsDataSource.swift */; };
 		C75B4ACD2B1E73DA007CCA48 /* DispatchGroup+Execute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4ACC2B1E73DA007CCA48 /* DispatchGroup+Execute.swift */; };
 		C75B4ACF2B1F70E6007CCA48 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4ACE2B1F70E6007CCA48 /* User.swift */; };
+		C77E10752B4FE29A009612F8 /* HomeReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77E10742B4FE29A009612F8 /* HomeReducer.swift */; };
+		C77E10772B4FE339009612F8 /* HomeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77E10762B4FE339009612F8 /* HomeUseCase.swift */; };
+		C77E10792B5036F1009612F8 /* ListItemsReducer+Reduce.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77E10782B5036F1009612F8 /* ListItemsReducer+Reduce.swift */; };
+		C77E107B2B504154009612F8 /* HomeReducer+Reduce.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77E107A2B504154009612F8 /* HomeReducer+Reduce.swift */; };
 		C79CB28B2B0D537A00C2BD18 /* ItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2702B0D537A00C2BD18 /* ItemDTO.swift */; };
 		C79CB28C2B0D537A00C2BD18 /* ItemsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2712B0D537A00C2BD18 /* ItemsDataSource.swift */; };
 		C79CB28D2B0D537A00C2BD18 /* ItemsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2722B0D537A00C2BD18 /* ItemsRepository.swift */; };
@@ -115,6 +119,10 @@
 		C75B4ACA2B1DD8D1007CCA48 /* InvitationsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsDataSource.swift; sourceTree = "<group>"; };
 		C75B4ACC2B1E73DA007CCA48 /* DispatchGroup+Execute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchGroup+Execute.swift"; sourceTree = "<group>"; };
 		C75B4ACE2B1F70E6007CCA48 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C77E10742B4FE29A009612F8 /* HomeReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReducer.swift; sourceTree = "<group>"; };
+		C77E10762B4FE339009612F8 /* HomeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUseCase.swift; sourceTree = "<group>"; };
+		C77E10782B5036F1009612F8 /* ListItemsReducer+Reduce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListItemsReducer+Reduce.swift"; sourceTree = "<group>"; };
+		C77E107A2B504154009612F8 /* HomeReducer+Reduce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeReducer+Reduce.swift"; sourceTree = "<group>"; };
 		C79CB2702B0D537A00C2BD18 /* ItemDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDTO.swift; sourceTree = "<group>"; };
 		C79CB2712B0D537A00C2BD18 /* ItemsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsDataSource.swift; sourceTree = "<group>"; };
 		C79CB2722B0D537A00C2BD18 /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -303,6 +311,9 @@
 				C79CB27E2B0D537A00C2BD18 /* HomeViewModel.swift */,
 				C79CB27F2B0D537A00C2BD18 /* HomeView.swift */,
 				C79CB2802B0D537A00C2BD18 /* HomeBuilder.swift */,
+				C77E10742B4FE29A009612F8 /* HomeReducer.swift */,
+				C77E10762B4FE339009612F8 /* HomeUseCase.swift */,
+				C77E107A2B504154009612F8 /* HomeReducer+Reduce.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -314,6 +325,7 @@
 				C79CB2842B0D537A00C2BD18 /* ListItemsBuilder.swift */,
 				C7390FC32B3637F200E49A68 /* ListItemsReducer.swift */,
 				C7390FC52B363A8200E49A68 /* ListItemsUseCase.swift */,
+				C77E10782B5036F1009612F8 /* ListItemsReducer+Reduce.swift */,
 			);
 			path = ListItems;
 			sourceTree = "<group>";
@@ -623,10 +635,12 @@
 				C79CB2932B0D537A00C2BD18 /* HomeViewModel.swift in Sources */,
 				C7390FDA2B44BBDE00E49A68 /* TDTitle.swift in Sources */,
 				C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */,
+				C77E10792B5036F1009612F8 /* ListItemsReducer+Reduce.swift in Sources */,
 				C79CB2F22B177FBC00C2BD18 /* TextFieldStyle.swift in Sources */,
 				C79CB2D72B154C2600C2BD18 /* AuthenticationService.swift in Sources */,
 				C79CB28C2B0D537A00C2BD18 /* ItemsDataSource.swift in Sources */,
 				C79CB2952B0D537A00C2BD18 /* HomeBuilder.swift in Sources */,
+				C77E107B2B504154009612F8 /* HomeReducer+Reduce.swift in Sources */,
 				C79CB2EE2B16A3AD00C2BD18 /* Coordinator.swift in Sources */,
 				C79CB2D52B13FEA200C2BD18 /* Utils+TopViewController.swift in Sources */,
 				C7390FD82B44A03900E49A68 /* ShareListUseCase.swift in Sources */,
@@ -635,11 +649,13 @@
 				C7390FBE2B34C9F500E49A68 /* Reducer.swift in Sources */,
 				C75B4ACF2B1F70E6007CCA48 /* User.swift in Sources */,
 				C79CB2B32B13AA4400C2BD18 /* TDListSectionView.swift in Sources */,
+				C77E10752B4FE29A009612F8 /* HomeReducer.swift in Sources */,
 				C79CB2942B0D537A00C2BD18 /* HomeView.swift in Sources */,
 				C79CB28E2B0D537A00C2BD18 /* ListsDataSource.swift in Sources */,
 				C79CB2902B0D537A00C2BD18 /* ListsRepository.swift in Sources */,
 				C7390FD42B449D6600E49A68 /* ShareListBuilder.swift in Sources */,
 				C7390FCD2B436FB100E49A68 /* ShareListView.swift in Sources */,
+				C77E10772B4FE339009612F8 /* HomeUseCase.swift in Sources */,
 				C7390FD62B449DC200E49A68 /* ShareListReducer.swift in Sources */,
 				C7390FC62B363A8200E49A68 /* ListItemsUseCase.swift in Sources */,
 				C79CB2F42B17DCB000C2BD18 /* Date+Utils.swift in Sources */,
