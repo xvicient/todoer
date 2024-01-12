@@ -16,9 +16,7 @@ struct Home {
             )
             let reducer = Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)
-            let viewModel = HomeViewModel()
-            return HomeView(viewModel: viewModel, 
-                            store: store)
+            return HomeView(store: store)
         }
     }
 }

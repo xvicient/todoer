@@ -15,6 +15,19 @@ extension Home {
             case onViewAppear
             case onProfilePhotoAppear
             
+            // MARK: - User actions
+            case didTapAcceptInvitation(String, String)
+            case didTapDeclinedInvitation(String)
+            case didTapList(Int)
+            case didTapToggleListButton(Int)
+            case didTapDeleteListButton(Int)
+            case didTapShareListButton(Int)
+            case didTapAddRowButton
+            case didTapCancelAddRowButton
+            case didTapSubmitListButton(String)
+            case didTapSignoutButton
+
+            
             // MARK: - Results
             case fetchDataResult(Result<([List], [Invitation]), Error>)
             case getPhotoUrlResult(Result<String, Error>)
@@ -62,10 +75,6 @@ internal extension Home.Reducer {
             { [$0.done ? .undone : .done] }
         }
         var trailingActions: [TDSectionRowActionType] = [.share, .delete]
-        
-        init(rows: [any TDSectionRow] = []) {
-            self.rows = rows
-        }
     }
     
     // MARK: - EmptyRow

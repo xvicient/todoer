@@ -3,7 +3,7 @@ import SwiftUI
 // MARK: - ListItemsView
 
 private struct ListActions: TDSectionRowActions {
-    var tapAction: ((any TDSectionRow) -> Void)?
+    var tapAction: ((Int) -> Void)?
     var swipeActions: ((Int, TDSectionRowActionType) -> Void)?
     var submitAction: ((String) -> Void)?
     var cancelAction: (() -> Void)?
@@ -31,7 +31,8 @@ struct ListItemsView: View {
                                           actions: listActions,
                                           newRowPlaceholder: Constants.Text.item)
                         
-                    }.onChange(of: store.state.viewState == .addingItem, {
+                    }
+                    .onChange(of: store.state.viewState == .addingItem, {
                         withAnimation {
                             scrollView.scrollTo(store.state.viewModel.itemsSection.rows.count - 1,
                                                 anchor: .bottom)

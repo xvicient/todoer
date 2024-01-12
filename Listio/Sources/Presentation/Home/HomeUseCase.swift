@@ -7,6 +7,9 @@ protocol HomeUseCaseApi {
     
     func getPhotoUrl(
     ) async -> Result<String, Error>
+    
+    func signOut(
+    ) -> Result<Void, Error>
 }
 
 extension Home {
@@ -42,6 +45,17 @@ extension Home {
             do {
                 let photoUrl = try await usersRepository.getSelfUser().photoUrl
                 return .success(photoUrl ?? "")
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func signOut(
+        ) -> Result<Void, Error> {
+            do {
+                try authenticationService.signOut()
+                usersRepository.setUuid("")
+                return .success(())
             } catch {
                 return .failure(error)
             }

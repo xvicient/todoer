@@ -20,14 +20,52 @@ internal extension Home.Reducer {
                 state: &state
             )
             
+        case (.idle, .didTapAcceptInvitation(let listId, let invitationId)):
+            return .none
+            
+        case (.idle, .didTapDeclinedInvitation(let listId)):
+            return .none
+            
+        case (.idle, .didTapList(let index)):
+            return .none
+        
+        case (.idle, .didTapToggleListButton(let index)):
+            return .none
+            
+        case (.idle, .didTapDeleteListButton(let index)):
+            return .none
+            
+        case (.idle, .didTapShareListButton(let index)):
+            return onDidTapShareListButton(
+                state: &state,
+                index: index
+            )
+            
+        case (.idle, .didTapAddRowButton):
+            return .none
+            
+        case (.idle, .didTapCancelAddRowButton):
+            return .none
+            
+        case (.idle, .didTapSubmitListButton(let name)):
+            return .none
+            
+        case (.idle, .didTapSignoutButton):
+            return onDidTapSignoutButton(
+                state: &state
+            )
+            
         case (.loading, .fetchDataResult(let result)):
             return onFetchDataResult(
                 state: &state,
                 result: result
             )
             
-        case (_, .getPhotoUrlResult):
-            return .none
+        case (_, .getPhotoUrlResult(let result)):
+            return onPhotoUrlResult(
+                state: &state,
+                result: result
+            )
         
         default: return .none
         }
@@ -58,6 +96,31 @@ private extension Home.Reducer {
                 await dependencies.useCase.getPhotoUrl()
             )
         })
+    }
+    
+    func onDidTapShareListButton(
+        state: inout State,
+        index: Int
+    ) -> Effect<Action> {
+        guard let list = state.viewModel.listsSection.rows[index] as? List else {
+            state.viewState = .unexpectedError
+            return .none
+        }
+        dependencies.coordinator.present(sheet: .shareList(list))
+
+        return .none
+    }
+    
+    func onDidTapSignoutButton(
+        state: inout State
+    ) -> Effect<Action> {
+        switch dependencies.useCase.signOut() {
+        case .success:
+            dependencies.coordinator.loggOut()
+        case .failure:
+            state.viewState = .unexpectedError
+        }
+        return .none
     }
     
     func onFetchDataResult(

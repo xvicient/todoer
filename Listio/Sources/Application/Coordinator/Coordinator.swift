@@ -3,7 +3,7 @@ import SwiftUI
 enum Page: Hashable, Identifiable, Equatable {
     case authentication
     case home
-    case products(List)
+    case listItems(List)
     
     var id: Self { self }
 }
@@ -85,7 +85,7 @@ class Coordinator: ObservableObject {
             Home.Builder.makeHome(
                 coordinator: self
             )
-        case let .products(list):
+        case let .listItems(list):
             ListItems.Builder.makeItemsList(
                 list: list
             )

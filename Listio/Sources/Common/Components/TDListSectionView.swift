@@ -18,7 +18,7 @@ protocol TDSectionRow: Identifiable, Equatable, Hashable {
 }
 
 protocol TDSectionRowActions {
-    var tapAction: ((any TDSectionRow) -> Void)? { get }
+    var tapAction: ((Int) -> Void)? { get }
     var swipeActions: ((Int, TDSectionRowActionType) -> Void)? { get }
     var submitAction: ((String) -> Void)? { get }
     var cancelAction: (() -> Void)? { get }
@@ -92,7 +92,7 @@ private extension TDListSectionView {
                         Constants.Image.undoneCircle)
                 .foregroundColor(.backgroundPrimary)
                 Button(action: {
-                    actions.tapAction?(row)
+                    actions.tapAction?(index)
                 }) {
                     Text(row.name)
                         .strikethrough(row.done)
@@ -226,7 +226,7 @@ extension List: TDSectionRow {
     }
     
     struct ListActions: TDSectionRowActions {
-        var tapAction: ((any TDSectionRow) -> Void)?
+        var tapAction: ((Int) -> Void)?
         var swipeActions: ((Int, TDSectionRowActionType) -> Void)?
         var submitAction: ((String) -> Void)?
         var cancelAction: (() -> Void)?
