@@ -6,7 +6,7 @@ struct CoordinatorView: View {
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
-            coordinator.buildLandingPage()
+            coordinator.landingView
                 .navigationDestination(for: Page.self) { page in
                     coordinator.build(page: page)
                 }
@@ -23,6 +23,9 @@ struct CoordinatorView: View {
                 .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
                     coordinator.build(fullScreenCover: fullScreenCover)
                 }
+        }
+        .onAppear {
+            coordinator.start()
         }
         .preferredColorScheme(.light)
     }

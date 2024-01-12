@@ -20,23 +20,31 @@ enum FullScreenCover: Hashable, Identifiable {
     var id: Self { self }
 }
 
-class Coordinator: ObservableObject {
+final class Coordinator: ObservableObject {
     
-    @Published private var landingPage: Page?
     @Published var path = NavigationPath()
     @Published var sheet: Sheet?
     @Published var fullScreenCover: FullScreenCover?
+    @Published var landingView: AnyView?
+    private var landingPage: Page
     
     init(authenticationService: AuthenticationService = AuthenticationService()) {
         landingPage = authenticationService.isUserLogged ? .home : .authentication
     }
     
-    func loggOut() {
-        landingPage = .authentication
+    @MainActor
+    func start() {
+        landingView = build(page: landingPage)
     }
     
+    @MainActor
+    func loggOut() {
+        landingView = build(page: .authentication)
+    }
+    
+    @MainActor
     func loggIn() {
-        landingPage = .home
+        landingView = build(page: .home)
     }
     
     func push(_ page: Page) {
@@ -68,28 +76,8 @@ class Coordinator: ObservableObject {
     }
     
     @MainActor @ViewBuilder
-    func buildLandingPage() -> some View {
-        if let page = landingPage {
-            build(page: page)
-        }
-    }
-    
-    @MainActor @ViewBuilder
-    func build(page: Page) -> some View {
-        switch page {
-        case .authentication:
-            Authentication.Builder.makeAuthentication(
-                coordinator: self
-            )
-        case .home:
-            Home.Builder.makeHome(
-                coordinator: self
-            )
-        case let .listItems(list):
-            ListItems.Builder.makeItemsList(
-                list: list
-            )
-        }
+    func build(page: Page) -> AnyView {
+        AnyView(get(page: page))
     }
     
     @MainActor @ViewBuilder
@@ -112,6 +100,26 @@ class Coordinator: ObservableObject {
             NavigationStack {
                 EmptyView()
             }
+        }
+    }
+}
+
+private extension Coordinator {
+    @MainActor @ViewBuilder
+    func get(page: Page) -> some View {
+        switch page {
+        case .authentication:
+            Authentication.Builder.makeAuthentication(
+                coordinator: self
+            )
+        case .home:
+            Home.Builder.makeHome(
+                coordinator: self
+            )
+        case let .listItems(list):
+            ListItems.Builder.makeItemsList(
+                list: list
+            )
         }
     }
 }
