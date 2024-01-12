@@ -38,7 +38,9 @@ struct HomeView: View {
             .onAppear {
                 store.send(.onViewAppear)
             }
-            .disabled(store.state.viewState == .loading)
+            .disabled(
+                store.state.viewState == .loading
+            )
             if store.state.viewState == .loading {
                 ProgressView()
             }
@@ -113,7 +115,7 @@ private extension HomeView {
                             TDButton(title: "\(Constants.Text.decline)",
                                      style: .destructive,
                                      size: .custom(with: 100, height: 32)) {
-                                store.send(.didTapDeclinedInvitation(invitation.documentId))
+                                store.send(.didTapDeclineInvitation(invitation.documentId))
                             }
                         }
                     }

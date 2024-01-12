@@ -20,9 +20,8 @@ protocol InvitationsDataSourceApi {
     ) async throws
     
     func deleteInvitation(
-        _ documentId: String?,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        _ documentId: String
+    ) async throws
 }
 
 final class InvitationsDataSource: InvitationsDataSourceApi {
@@ -107,16 +106,8 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
     }
     
     func deleteInvitation(
-        _ documentId: String?,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        guard let id = documentId else { return }
-        invitationsCollection.document(id).delete() { error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            completion(.success(Void()))
-        }
+        _ documentId: String
+    ) async throws {
+        try await invitationsCollection.document(documentId).delete()
     }
 }

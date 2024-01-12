@@ -21,13 +21,23 @@ internal extension Home.Reducer {
             )
             
         case (.idle, .didTapAcceptInvitation(let listId, let invitationId)):
-            return .none
+            return onDidTapAcceptInvitation(
+                state: &state,
+                listId: listId,
+                invitationId: invitationId
+            )
             
-        case (.idle, .didTapDeclinedInvitation(let listId)):
-            return .none
+        case (.idle, .didTapDeclineInvitation(let invitationId)):
+            return onDidTapDeclineInvitation(
+                state: &state,
+                invitationId: invitationId
+            )
             
         case (.idle, .didTapList(let index)):
-            return .none
+            return onDidTapList(
+                state: &state,
+                index: index
+            )
         
         case (.idle, .didTapToggleListButton(let index)):
             return .none
@@ -66,6 +76,18 @@ internal extension Home.Reducer {
                 state: &state,
                 result: result
             )
+            
+        case (_, .acceptInvitationResult(let result)):
+            return onAcceptInvitationResult(
+                state: &state,
+                result: result
+            )
+            
+        case (_, .declineInvitationResult(let result)):
+            return onDeclineInvitationResult(
+                state: &state,
+                result: result
+            )
         
         default: return .none
         }
@@ -96,6 +118,44 @@ private extension Home.Reducer {
                 await dependencies.useCase.getPhotoUrl()
             )
         })
+    }
+    
+    func onDidTapAcceptInvitation(
+        state: inout State,
+        listId: String,
+        invitationId: String
+    ) -> Effect<Action> {
+        return .task(Task {
+            .acceptInvitationResult(
+                await dependencies.useCase.acceptInvitation(
+                        listId: listId,
+                        invitationId: invitationId)
+            )
+        })
+    }
+    
+    func onDidTapDeclineInvitation(
+        state: inout State,
+        invitationId: String
+    ) -> Effect<Action> {
+        return .task(Task {
+            .declineInvitationResult(
+                await dependencies.useCase.declineInvitation(
+                        invitationId: invitationId)
+            )
+        })
+    }
+    
+    func onDidTapList(
+        state: inout State,
+        index: Int
+    ) -> Effect<Action> {
+        guard let list = state.viewModel.listsSection.rows[index] as? List else {
+            state.viewState = .unexpectedError
+            return .none
+        }
+        dependencies.coordinator.push(.listItems(list))
+        return .none
     }
     
     func onDidTapShareListButton(
@@ -145,6 +205,32 @@ private extension Home.Reducer {
         switch result {
         case .success(let photoUrl):
             state.viewModel.photoUrl = photoUrl
+        case .failure:
+            state.viewState = .unexpectedError
+        }
+        return .none
+    }
+    
+    func onAcceptInvitationResult(
+        state: inout State,
+        result: Result<Void, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
+        case .failure:
+            state.viewState = .unexpectedError
+        }
+        return .none
+    }
+    
+    func onDeclineInvitationResult(
+        state: inout State,
+        result: Result<Void, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
         case .failure:
             state.viewState = .unexpectedError
         }

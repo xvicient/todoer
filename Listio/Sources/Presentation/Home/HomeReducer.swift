@@ -17,7 +17,7 @@ extension Home {
             
             // MARK: - User actions
             case didTapAcceptInvitation(String, String)
-            case didTapDeclinedInvitation(String)
+            case didTapDeclineInvitation(String)
             case didTapList(Int)
             case didTapToggleListButton(Int)
             case didTapDeleteListButton(Int)
@@ -31,6 +31,8 @@ extension Home {
             // MARK: - Results
             case fetchDataResult(Result<([List], [Invitation]), Error>)
             case getPhotoUrlResult(Result<String, Error>)
+            case acceptInvitationResult(Result<Void, Error>)
+            case declineInvitationResult(Result<Void, Error>)
         }
         
         @MainActor

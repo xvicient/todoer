@@ -7,18 +7,9 @@ protocol HomeViewModelApi {
     
     var onDidTapOption: ((Int, TDSectionRowActionType) -> Void) { get }
     
-    func importList(
-        listId: String,
-        invitationId: String
-    )
-    
     func createList()
     
     func signOut()
-    
-    func deleteInvitation(
-        invitationId: String
-    )
 }
 
 // MARK: - HomeViewModel
@@ -62,26 +53,6 @@ final class HomeViewModel: TDListSectionViewModel {
 
 extension HomeViewModel: HomeViewModelApi {
     func fetchData() {
-        isLoading = true
-        DispatchGroup().execute(
-            { [weak self] in
-                self?.fetchLists()
-                $0()
-            },
-            { [weak self] in
-                self?.fetchInvitations()
-                $0()
-            },
-            { [weak self] in
-                self?.fetchUserSelf()
-                $0()
-            },
-            onComplete: { [weak self] in
-                DispatchQueue.main.async {
-                    self?.isLoading = false
-                }
-            }
-        )
     }
     
     var onDidTapOption: ((Int, TDSectionRowActionType) -> Void) {
@@ -97,26 +68,6 @@ extension HomeViewModel: HomeViewModelApi {
                 self.deleteList(item)
             }
         }
-    }
-    
-    func importList(
-        listId: String,
-        invitationId: String
-    ) {
-        listsRepository.importList(id: listId) { [weak self] result in
-            switch result {
-            case .success:
-                self?.invitationsRepository.deleteInvitation(invitationId, completion: { _ in })
-            case .failure:
-                break
-            }
-        }
-    }
-    
-    func deleteInvitation(
-        invitationId: String
-    ) {
-        invitationsRepository.deleteInvitation(invitationId, completion: { _ in })
     }
     
     func createList() {
@@ -140,40 +91,6 @@ extension HomeViewModel: HomeViewModelApi {
 // MARK: - Private
 
 private extension HomeViewModel {
-    func fetchLists() {
-        listsRepository.fetchLists { [weak self] result in
-            switch result {
-            case .success(let lists):
-                self?.rows = lists.sorted {
-                    $0.dateCreated < $1.dateCreated
-                }
-            case .failure:
-                break
-            }
-        }
-    }
-    
-    func fetchInvitations() {
-        invitationsRepository.fetchInvitations() { [weak self] result in
-            switch result {
-            case .success(let invitations):
-                self?.invitations = invitations.sorted {
-                    $0.dateCreated < $1.dateCreated
-                }
-            case .failure:
-                break
-            }
-        }
-    }
-    
-    func fetchUserSelf() {
-        Task {
-            guard let photoUrl = try? await usersRepository.getSelfUser().photoUrl else {
-                return
-            }
-            userSelfPhoto = photoUrl
-        }
-    }
     
     func toggleList(_ item: any TDSectionRow) {
         guard var list = item as? List else { return }

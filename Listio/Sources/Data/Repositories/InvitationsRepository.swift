@@ -4,9 +4,6 @@ import Foundation
 protocol InvitationsRepositoryApi {
     func fetchInvitations(
     ) -> AnyPublisher<[Invitation], Error>
-    func fetchInvitations(
-        completion: @escaping (Result<[Invitation], Error>) -> Void
-    )
     
     func sendInvitation(
         ownerName: String,
@@ -17,9 +14,8 @@ protocol InvitationsRepositoryApi {
     ) async throws
     
     func deleteInvitation(
-        _ documentId: String?,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        _ documentId: String
+    ) async throws
 }
 
 final class InvitationsRepository: InvitationsRepositoryApi {
@@ -44,23 +40,6 @@ final class InvitationsRepository: InvitationsRepositoryApi {
             .eraseToAnyPublisher()
     }
     
-    func fetchInvitations(
-        completion: @escaping (Result<[Invitation], Error>) -> Void
-    ) {
-        invitationsDataSource.fetchInvitations(uuid: usersDataSource.uuid) { result in
-            switch result {
-            case .success(let dto):
-                completion(.success(
-                    dto.map {
-                        $0.toDomain
-                    }
-                ))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
     func sendInvitation(
         ownerName: String,
         ownerEmail: String,
@@ -76,9 +55,8 @@ final class InvitationsRepository: InvitationsRepositoryApi {
     }
     
     func deleteInvitation(
-        _ documentId: String?,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        invitationsDataSource.deleteInvitation(documentId, completion: completion)
+        _ documentId: String
+    ) async throws {
+        try await invitationsDataSource.deleteInvitation(documentId)
     }
 }

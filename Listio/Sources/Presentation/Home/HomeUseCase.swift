@@ -10,6 +10,15 @@ protocol HomeUseCaseApi {
     
     func signOut(
     ) -> Result<Void, Error>
+    
+    func acceptInvitation(
+        listId: String,
+        invitationId: String
+    ) async -> Result<Void, Error>
+    
+    func declineInvitation(
+        invitationId: String
+    ) async -> Result<Void, Error>
 }
 
 extension Home {
@@ -55,6 +64,30 @@ extension Home {
             do {
                 try authenticationService.signOut()
                 usersRepository.setUuid("")
+                return .success(())
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func acceptInvitation(
+            listId: String,
+            invitationId: String
+        ) async -> Result<Void, Error> {
+            do {
+                try await listsRepository.importList(id: listId)
+                try await invitationsRepository.deleteInvitation(invitationId)
+                return .success(())
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func declineInvitation(
+            invitationId: String
+        ) async -> Result<Void, Error> {
+            do {
+                try await invitationsRepository.deleteInvitation(invitationId)
                 return .success(())
             } catch {
                 return .failure(error)

@@ -4,9 +4,6 @@ import Foundation
 protocol ListsRepositoryApi {
     func fetchLists(
     ) -> AnyPublisher<[List], Error>
-    func fetchLists(
-        completion: @escaping (Result<[List], Error>) -> Void
-    )
     
     func addList(
         with name: String,
@@ -23,9 +20,8 @@ protocol ListsRepositoryApi {
     )
     
     func importList(
-        id: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        id: String
+    ) async throws
     
     func updateList(
         _ list: List
@@ -57,23 +53,6 @@ final class ListsRepository: ListsRepositoryApi {
             .eraseToAnyPublisher()
     }
     
-    func fetchLists(completion: @escaping (Result<[List], Error>) -> Void) {
-        listsDataSource.fetchLists(
-            uuid: usersDataSource.uuid) { result in
-                switch result {
-                case .success(let dto):
-                    completion(.success(
-                        dto.map {
-                            $0.toDomain
-                        }
-                    ))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-                
-            }
-    }
-    
     func addList(
         with name: String,
         completion: @escaping (Result<Void, Error>) -> Void) {
@@ -97,10 +76,9 @@ final class ListsRepository: ListsRepositoryApi {
     }
     
     func importList(
-        id: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        listsDataSource.importList(id: id, uuid: usersDataSource.uuid, completion: completion)
+        id: String
+    ) async throws {
+        try await listsDataSource.importList(id: id, uuid: usersDataSource.uuid)
     }
     
     func updateList(

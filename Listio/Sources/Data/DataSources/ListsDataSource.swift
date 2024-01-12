@@ -6,10 +6,6 @@ protocol ListsDataSourceApi {
     func fetchLists(
         uuid: String
     ) -> AnyPublisher<[ListDTO], Error>
-    func fetchLists(
-        uuid: String,
-        completion: @escaping (Result<[ListDTO], Error>) -> Void
-    )
     
     func addList(
         with name: String,
@@ -28,9 +24,8 @@ protocol ListsDataSourceApi {
     
     func importList(
         id: String,
-        uuid: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        uuid: String
+    ) async throws
     
     func updateList(
         _ list: ListDTO
@@ -88,25 +83,6 @@ final class ListsDataSource: ListsDataSourceApi {
             .eraseToAnyPublisher()
     }
     
-    func fetchLists(
-        uuid: String,
-        completion: @escaping (Result<[ListDTO], Error>) -> Void
-    ) {
-        listsCollection
-            .whereField("uuid", arrayContains: uuid)
-            .addSnapshotListener { query, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                let lists = query?.documents
-                    .compactMap { try? $0.data(as: ListDTO.self) }
-                ?? []
-                completion(.success(lists))
-            }
-    }
-    
     func addList(
         with name: String,
         uuid: String,
@@ -133,25 +109,14 @@ final class ListsDataSource: ListsDataSourceApi {
     
     func importList(
         id: String,
-        uuid: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        listsCollection.document(id).getDocument() { [weak self] query, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            do {
-                guard var dto = try? query?.data(as: ListDTO.self) else {
-                    return
-                }
-                dto.uuid.append(uuid)
-                _ = try self?.listsCollection.document(id).setData(from: dto)
-                completion(.success(Void()))
-            } catch {
-                completion(.failure(error))
-            }
+        uuid: String
+    ) async throws {
+        let collection = listsCollection.document(id)
+        if var dto = try? await collection.getDocument().data(as: ListDTO.self) {
+            dto.uuid.append(uuid)
+            _ = try? collection.setData(from: dto)
+        } else {
+            throw Errors.encodingError
         }
     }
     
