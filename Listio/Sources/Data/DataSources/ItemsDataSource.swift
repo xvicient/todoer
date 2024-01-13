@@ -36,7 +36,6 @@ final class ItemsDataSource: ItemsDataSourceApi {
     
     private var snapshotListener: ListenerRegistration?
     private var listenerSubject: PassthroughSubject<[ItemDTO], Error>?
-    private var ignoreChanges = false
     
     deinit {
         snapshotListener?.remove()
@@ -54,14 +53,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
         listenerSubject = subject
         
         snapshotListener = itemsCollection(listId: listId)
-            .addSnapshotListener { [weak self] query, error in
-                guard let self = self else { return }
-                
-                guard !ignoreChanges else {
-                    ignoreChanges = false
-                    return
-                }
-                
+            .addSnapshotListener { query, error in
                 if let error = error {
                     subject.send(completion: .failure(error))
                     return
@@ -84,7 +76,6 @@ final class ItemsDataSource: ItemsDataSourceApi {
         with name: String,
         listId: String
     ) async throws -> ItemDTO {
-        ignoreChanges = true
         do {
             let dto = ItemDTO(name: name,
                               done: false,
@@ -102,7 +93,6 @@ final class ItemsDataSource: ItemsDataSourceApi {
         itemId: String,
         listId: String
     ) async throws {
-        ignoreChanges = true
         try await itemsCollection(listId: listId).document(itemId).delete()
     }
     
@@ -110,7 +100,6 @@ final class ItemsDataSource: ItemsDataSourceApi {
         item: ItemDTO,
         listId: String
     )  async throws -> ItemDTO {
-        ignoreChanges = true
         guard let id = item.id else {
             throw Errors.invalidDTO
         }

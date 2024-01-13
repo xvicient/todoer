@@ -38,8 +38,6 @@ final class ListsDataSource: ListsDataSourceApi {
     
     private var snapshotListener: ListenerRegistration?
     private var listenerSubject: PassthroughSubject<[ListDTO], Error>?
-    private var ignoreChanges = false
-    
     deinit {
         snapshotListener?.remove()
         listenerSubject = nil
@@ -56,14 +54,7 @@ final class ListsDataSource: ListsDataSourceApi {
         
         snapshotListener = listsCollection
             .whereField("uuid", arrayContains: uuid)
-            .addSnapshotListener { [weak self] query, error in
-                guard let self = self else { return }
-                
-                guard !ignoreChanges else {
-                    ignoreChanges = false
-                    return
-                }
-                
+            .addSnapshotListener { query, error in
                 if let error = error {
                     subject.send(completion: .failure(error))
                     return

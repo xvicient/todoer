@@ -28,7 +28,6 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
     
     private var snapshotListener: ListenerRegistration?
     private var listenerSubject: PassthroughSubject<[InvitationDTO], Error>?
-    private var ignoreChanges = false
     
     private let invitationsCollection = Firestore.firestore().collection("invitations")
     
@@ -45,14 +44,7 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
         
         invitationsCollection
             .whereField("invitedId", isEqualTo: uuid)
-            .addSnapshotListener { [weak self] query, error in
-                guard let self = self else { return }
-                
-                guard !ignoreChanges else {
-                    ignoreChanges = false
-                    return
-                }
-                
+            .addSnapshotListener { query, error in
                 if let error = error {
                     subject.send(completion: .failure(error))
                     return
