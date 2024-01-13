@@ -52,7 +52,9 @@ internal extension Home.Reducer {
             )
             
         case (.idle, .didTapAddRowButton):
-            return .none
+            return onDidTapAddRowButton(
+                state: &state
+            )
             
         case (.idle, .didTapCancelAddRowButton):
             return .none
@@ -65,7 +67,8 @@ internal extension Home.Reducer {
                 state: &state
             )
             
-        case (.loading, .fetchDataResult(let result)):
+        case (.idle, .fetchDataResult(let result)),
+            (.loading, .fetchDataResult(let result)):
             return onFetchDataResult(
                 state: &state,
                 result: result
@@ -168,6 +171,19 @@ private extension Home.Reducer {
         }
         dependencies.coordinator.present(sheet: .shareList(list))
 
+        return .none
+    }
+    
+    func onDidTapAddRowButton(
+        state: inout State
+    ) -> Effect<Action> {
+        guard !state.viewModel.listsSection.rows.contains(
+            where: { $0 is EmptyRow }
+        ) else {
+            return .none
+        }
+        state.viewState = .addingList
+        state.viewModel.listsSection.rows.append(EmptyRow())
         return .none
     }
     

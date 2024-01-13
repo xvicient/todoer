@@ -43,7 +43,8 @@ internal extension ListItems.Reducer {
                 newItemName: newItemName
             )
             
-        case (.loading, .fetchItemsResult(let result)):
+        case (.loading, .fetchItemsResult(let result)),
+            (.idle, .fetchItemsResult(let result)):
             return onFetchItemsResult(
                 state: &state,
                 result: result

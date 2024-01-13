@@ -21,7 +21,7 @@ struct HomeView: View {
         ZStack {
             Color.white
                 .ignoresSafeArea()
-            VStack {
+            ZStack {
                 ScrollViewReader { scrollView in
                     SwiftUI.List {
                         invitationsSection
@@ -34,6 +34,7 @@ struct HomeView: View {
                         }
                     })
                 }
+                addNewRowButton
             }
             .onAppear {
                 store.send(.onViewAppear)
@@ -131,6 +132,25 @@ private extension HomeView {
                           actions: listActions,
                           sectionTitle: Constants.Text.todoos,
                           newRowPlaceholder: Constants.Text.list)
+    }
+    
+    @ViewBuilder
+    var addNewRowButton: some View {
+        if store.state.viewState != .addingList {
+            VStack {
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        store.send(.didTapAddRowButton)
+                    }
+                }, label: {
+                    Image(systemName: Constants.Image.addButton)
+                        .resizable()
+                        .frame(width: 48.0, height: 48.0)
+                })
+                .foregroundColor(.buttonPrimary)
+            }
+        }
     }
 }
 
