@@ -63,7 +63,7 @@ extension HomeViewModel: HomeViewModelApi {
             case .share:
                 break
             case .done, .undone:
-                self.toggleList(item)
+                break
             case .delete:
                 self.deleteList(item)
             }
@@ -91,23 +91,6 @@ extension HomeViewModel: HomeViewModelApi {
 // MARK: - Private
 
 private extension HomeViewModel {
-    
-    func toggleList(_ item: any TDSectionRow) {
-        guard var list = item as? List else { return }
-        
-        list.done.toggle()
-        listsRepository.toggleList(list) { [weak self] result in
-            switch result {
-            case .success:
-                self?.productsRepository.toogleAllItemsBatch(
-                    listId: list.documentId,
-                    done: list.done,
-                    completion: { _ in})
-            case .failure:
-                break
-            }
-        }
-    }
     
     func deleteList(_ item: any TDSectionRow) {
         listsRepository.deleteList(item.documentId)

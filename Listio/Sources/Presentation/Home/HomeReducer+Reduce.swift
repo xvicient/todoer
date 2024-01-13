@@ -40,7 +40,10 @@ internal extension Home.Reducer {
             )
         
         case (.idle, .didTapToggleListButton(let index)):
-            return .none
+            return onDidTapToggleListButton(
+                state: &state,
+                index: index
+            )
             
         case (.idle, .didTapDeleteListButton(let index)):
             return .none
@@ -80,6 +83,12 @@ internal extension Home.Reducer {
                 result: result
             )
             
+        case (_, .toggleListResult(let result)):
+            return onToggleListResult(
+                state: &state,
+                result: result
+            )
+            
         case (_, .acceptInvitationResult(let result)):
             return onAcceptInvitationResult(
                 state: &state,
@@ -92,7 +101,9 @@ internal extension Home.Reducer {
                 result: result
             )
         
-        default: return .none
+        default:
+            Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
+            return .none
         }
     }
 }
@@ -161,6 +172,21 @@ private extension Home.Reducer {
         return .none
     }
     
+    func onDidTapToggleListButton(
+        state: inout State,
+        index: Int
+    ) -> Effect<Action> {
+        guard let list = state.viewModel.listsSection.rows[index] as? List else {
+            state.viewState = .unexpectedError
+            return .none
+        }
+        return .task(Task {
+            .toggleListResult(
+                await dependencies.useCase.toggleList(list: list)
+            )
+        })
+    }
+    
     func onDidTapShareListButton(
         state: inout State,
         index: Int
@@ -221,6 +247,19 @@ private extension Home.Reducer {
         switch result {
         case .success(let photoUrl):
             state.viewModel.photoUrl = photoUrl
+        case .failure:
+            state.viewState = .unexpectedError
+        }
+        return .none
+    }
+    
+    func onToggleListResult(
+        state: inout State,
+        result: Result<Void, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
         case .failure:
             state.viewState = .unexpectedError
         }

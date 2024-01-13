@@ -18,9 +18,8 @@ protocol ListsDataSourceApi {
     )
     
     func toggleList(
-        _ list: ListDTO,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        _ list: ListDTO
+    ) async throws
     
     func importList(
         id: String,
@@ -121,19 +120,17 @@ final class ListsDataSource: ListsDataSourceApi {
     }
     
     func toggleList(
-        _ list: ListDTO,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        guard let id = list.id,
-        let encodedData = try? Firestore.Encoder().encode(list) else { return }
-        
-        listsCollection.document(id).updateData(encodedData) { error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(Void()))
-            }
+        _ list: ListDTO
+    ) async throws {
+        guard let id = list.id else {
+            throw Errors.invalidDTO
         }
+        
+        guard let encodedData = try? Firestore.Encoder().encode(list) else {
+            throw Errors.encodingError
+        }
+        
+        try await listsCollection.document(id).updateData(encodedData)
     }
     
     func updateList(

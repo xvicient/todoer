@@ -31,6 +31,7 @@ extension Home {
             // MARK: - Results
             case fetchDataResult(Result<([List], [Invitation]), Error>)
             case getPhotoUrlResult(Result<String, Error>)
+            case toggleListResult(Result<Void, Error>)
             case acceptInvitationResult(Result<Void, Error>)
             case declineInvitationResult(Result<Void, Error>)
         }

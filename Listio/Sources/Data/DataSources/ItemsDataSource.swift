@@ -22,11 +22,10 @@ protocol ItemsDataSourceApi {
         listId: String
     )  async throws -> ItemDTO
     
-    func toogleAllItemsBatch(
+    func toogleAllItems(
         listId: String?,
-        done: Bool,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        done: Bool
+    ) async throws
 }
 
 final class ItemsDataSource: ItemsDataSourceApi {
@@ -124,42 +123,31 @@ final class ItemsDataSource: ItemsDataSourceApi {
         return item
     }
     
-    func toogleAllItemsBatch(
+    func toogleAllItems(
         listId: String?,
-        done: Bool,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        guard let listId = listId else { return }
-        let collection = itemsCollection(listId: listId)
+        done: Bool
+    ) async throws {
+        guard let id = listId else {
+            throw Errors.invalidDTO
+        }
         
-        collection.getDocuments { query, error in
-            if let error = error {
-                completion(.failure(error))
+        let collection = itemsCollection(listId: id)
+        let productsBatch = Firestore.firestore().batch()
+        
+        try await collection.getDocuments().documents.forEach {
+            guard var dto = try? $0.data(as: ItemDTO.self) else {
                 return
             }
             
-            let productsBatch = Firestore.firestore().batch()
+            dto.done = done
             
-            query?.documents
-                .forEach {
-                    guard var dto = try? $0.data(as: ItemDTO.self) else { return }
-                    dto.done = done
-                    
-                    if let encodedData = try? Firestore.Encoder().encode(dto) {
-                        productsBatch.updateData(
-                            encodedData,
-                            forDocument: collection.document($0.documentID)
-                        )
-                    }
-                }
-            
-            productsBatch.commit { error in
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    completion(.success(Void()))
-                }
-            }
+            let encodedData = try Firestore.Encoder().encode(dto)
+            productsBatch.updateData(
+                encodedData,
+                forDocument: collection.document($0.documentID)
+            )
         }
+        
+        try await productsBatch.commit()
     }
 }

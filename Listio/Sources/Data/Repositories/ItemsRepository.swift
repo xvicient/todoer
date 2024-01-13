@@ -21,11 +21,10 @@ protocol ItemsRepositoryApi {
         listId: String
     )  async throws -> Item
     
-    func toogleAllItemsBatch(
+    func toogleAllItems(
         listId: String?,
-        done: Bool,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        done: Bool
+    ) async throws
 }
 
 final class ItemsRepository: ItemsRepositoryApi {
@@ -74,13 +73,10 @@ final class ItemsRepository: ItemsRepositoryApi {
                                              listId: listId).toDomain
     }
     
-    func toogleAllItemsBatch(
+    func toogleAllItems(
         listId: String?,
-        done: Bool,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        itemsDataSource.toogleAllItemsBatch(listId: listId,
-                                                  done: done,
-                                                  completion: completion)
+        done: Bool
+    ) async throws {
+        try await itemsDataSource.toogleAllItems(listId: listId, done: done)
     }
 }

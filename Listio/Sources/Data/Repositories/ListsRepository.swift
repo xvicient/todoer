@@ -12,12 +12,11 @@ protocol ListsRepositoryApi {
     
     func deleteList(
         _ documentId: String?
-    )  
+    )
     
     func toggleList(
-        _ list: List,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        _ list: List
+    ) async throws
     
     func importList(
         id: String
@@ -69,10 +68,9 @@ final class ListsRepository: ListsRepositoryApi {
     }
     
     func toggleList(
-        _ list: List,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        listsDataSource.toggleList(list.toDTO, completion: completion)
+        _ list: List
+    ) async throws {
+        try await listsDataSource.toggleList(list.toDTO)
     }
     
     func importList(

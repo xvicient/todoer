@@ -19,6 +19,10 @@ protocol HomeUseCaseApi {
     func declineInvitation(
         invitationId: String
     ) async -> Result<Void, Error>
+    
+    func toggleList(
+        list: List
+    ) async -> Result<Void, Error>
 }
 
 extension Home {
@@ -88,6 +92,23 @@ extension Home {
         ) async -> Result<Void, Error> {
             do {
                 try await invitationsRepository.deleteInvitation(invitationId)
+                return .success(())
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func toggleList(
+            list: List
+        ) async -> Result<Void, Error> {
+            do {
+                var mutableList = list
+                mutableList.done.toggle()
+                try await listsRepository.toggleList(mutableList)
+                try await productsRepository.toogleAllItems(
+                    listId: mutableList.documentId,
+                    done: mutableList.done
+                )
                 return .success(())
             } catch {
                 return .failure(error)
