@@ -6,13 +6,12 @@ protocol ListsRepositoryApi {
     ) -> AnyPublisher<[List], Error>
     
     func addList(
-        with name: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        with name: String
+    ) async throws -> List
     
     func deleteList(
-        _ documentId: String?
-    )
+        _ documentId: String
+    ) async throws
     
     func toggleList(
         _ list: List
@@ -53,18 +52,17 @@ final class ListsRepository: ListsRepositoryApi {
     }
     
     func addList(
-        with name: String,
-        completion: @escaping (Result<Void, Error>) -> Void) {
-            listsDataSource.addList(
-                with: name,
-                uuid: usersDataSource.uuid,
-                completion: completion)
-        }
+        with name: String
+    ) async throws -> List {
+        try await listsDataSource.addList(
+            with: name,
+            uuid: usersDataSource.uuid).toDomain
+    }
     
     func deleteList(
-        _ documentId: String?
-    ) {
-        listsDataSource.deleteList(documentId)
+        _ documentId: String
+    ) async throws {
+        try await listsDataSource.deleteList(documentId)
     }
     
     func toggleList(

@@ -46,7 +46,10 @@ internal extension Home.Reducer {
             )
             
         case (.idle, .didTapDeleteListButton(let index)):
-            return .none
+            return onDidTapDeleteListButton(
+                state: &state,
+                index: index
+            )
             
         case (.idle, .didTapShareListButton(let index)):
             return onDidTapShareListButton(
@@ -60,10 +63,15 @@ internal extension Home.Reducer {
             )
             
         case (.idle, .didTapCancelAddRowButton):
-            return .none
+            return onDidTapCancelAddRowButton(
+                state: &state
+            )
             
-        case (.idle, .didTapSubmitListButton(let name)):
-            return .none
+        case (.addingList, .didTapSubmitListButton(let name)):
+            return onDidTapSubmitListButton(
+                state: &state,
+                newListName: name
+            )
             
         case (.idle, .didTapSignoutButton):
             return onDidTapSignoutButton(
@@ -89,6 +97,12 @@ internal extension Home.Reducer {
                 result: result
             )
             
+        case (_, .deleteListResult(let result)):
+            return onDeleteListResult(
+                state: &state,
+                result: result
+            )
+            
         case (_, .acceptInvitationResult(let result)):
             return onAcceptInvitationResult(
                 state: &state,
@@ -97,6 +111,12 @@ internal extension Home.Reducer {
             
         case (_, .declineInvitationResult(let result)):
             return onDeclineInvitationResult(
+                state: &state,
+                result: result
+            )
+            
+        case (_, .addListResult(let result)):
+            return onAddListResult(
                 state: &state,
                 result: result
             )
@@ -187,6 +207,21 @@ private extension Home.Reducer {
         })
     }
     
+    func onDidTapDeleteListButton(
+        state: inout State,
+        index: Int
+    ) -> Effect<Action> {
+        guard let list = state.viewModel.listsSection.rows[index] as? List else {
+            state.viewState = .unexpectedError
+            return .none
+        }
+        return .task(Task {
+            .deleteListResult(
+                await dependencies.useCase.deleteList(list.documentId)
+            )
+        })
+    }
+    
     func onDidTapShareListButton(
         state: inout State,
         index: Int
@@ -211,6 +246,27 @@ private extension Home.Reducer {
         state.viewState = .addingList
         state.viewModel.listsSection.rows.append(EmptyRow())
         return .none
+    }
+    
+    func onDidTapCancelAddRowButton(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
+        state.viewModel.listsSection.rows.removeAll { $0 is EmptyRow }
+        return .none
+    }
+    
+    func onDidTapSubmitListButton(
+        state: inout State,
+        newListName: String
+    ) -> Effect<Action> {
+        return .task(Task {
+            .addListResult(
+                await dependencies.useCase.addList(
+                    name: newListName
+                )
+            )
+        })
     }
     
     func onDidTapSignoutButton(
@@ -266,6 +322,19 @@ private extension Home.Reducer {
         return .none
     }
     
+    func onDeleteListResult(
+        state: inout State,
+        result: Result<Void, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
+        case .failure:
+            state.viewState = .unexpectedError
+        }
+        return .none
+    }
+    
     func onAcceptInvitationResult(
         state: inout State,
         result: Result<Void, Error>
@@ -286,6 +355,21 @@ private extension Home.Reducer {
         switch result {
         case .success:
             state.viewState = .idle
+        case .failure:
+            state.viewState = .unexpectedError
+        }
+        return .none
+    }
+    
+    func onAddListResult(
+        state: inout State,
+        result: Result<List, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success(let list):
+            state.viewState = .idle
+            state.viewModel.listsSection.rows.removeAll { $0 is EmptyRow }
+            state.viewModel.listsSection.rows.append(list)
         case .failure:
             state.viewState = .unexpectedError
         }

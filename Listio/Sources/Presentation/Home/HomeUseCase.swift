@@ -23,6 +23,14 @@ protocol HomeUseCaseApi {
     func toggleList(
         list: List
     ) async -> Result<Void, Error>
+    
+    func deleteList(
+        _ documentId: String
+    ) async -> Result<Void, Error>
+    
+    func addList(
+        name: String
+    )  async -> Result<List, Error>
 }
 
 extension Home {
@@ -110,6 +118,28 @@ extension Home {
                     done: mutableList.done
                 )
                 return .success(())
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func deleteList(
+            _ documentId: String
+        ) async -> Result<Void, Error> {
+            do {
+                try await listsRepository.deleteList(documentId)
+                return .success(())
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func addList(
+            name: String
+        )  async -> Result<List, Error> {
+            do {
+                let list = try await listsRepository.addList(with: name)
+                return .success(list)
             } catch {
                 return .failure(error)
             }

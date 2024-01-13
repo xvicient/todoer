@@ -41,7 +41,6 @@
 		C79CB28F2B0D537A00C2BD18 /* ListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2752B0D537A00C2BD18 /* ListDTO.swift */; };
 		C79CB2902B0D537A00C2BD18 /* ListsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2762B0D537A00C2BD18 /* ListsRepository.swift */; };
 		C79CB2912B0D537A00C2BD18 /* Collection+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2792B0D537A00C2BD18 /* Collection+Utils.swift */; };
-		C79CB2932B0D537A00C2BD18 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB27E2B0D537A00C2BD18 /* HomeViewModel.swift */; };
 		C79CB2942B0D537A00C2BD18 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB27F2B0D537A00C2BD18 /* HomeView.swift */; };
 		C79CB2952B0D537A00C2BD18 /* HomeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2802B0D537A00C2BD18 /* HomeBuilder.swift */; };
 		C79CB2972B0D537A00C2BD18 /* ListItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2832B0D537A00C2BD18 /* ListItemsView.swift */; };
@@ -132,7 +131,6 @@
 		C79CB2752B0D537A00C2BD18 /* ListDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDTO.swift; sourceTree = "<group>"; };
 		C79CB2762B0D537A00C2BD18 /* ListsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsRepository.swift; sourceTree = "<group>"; };
 		C79CB2792B0D537A00C2BD18 /* Collection+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Utils.swift"; sourceTree = "<group>"; };
-		C79CB27E2B0D537A00C2BD18 /* HomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		C79CB27F2B0D537A00C2BD18 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C79CB2802B0D537A00C2BD18 /* HomeBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeBuilder.swift; sourceTree = "<group>"; };
 		C79CB2832B0D537A00C2BD18 /* ListItemsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListItemsView.swift; sourceTree = "<group>"; };
@@ -310,7 +308,6 @@
 		C79CB27D2B0D537A00C2BD18 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				C79CB27E2B0D537A00C2BD18 /* HomeViewModel.swift */,
 				C79CB27F2B0D537A00C2BD18 /* HomeView.swift */,
 				C79CB2802B0D537A00C2BD18 /* HomeBuilder.swift */,
 				C77E10742B4FE29A009612F8 /* HomeReducer.swift */,
@@ -635,7 +632,6 @@
 				C79CB2F72B17E3C200C2BD18 /* List.swift in Sources */,
 				C79CB2972B0D537A00C2BD18 /* ListItemsView.swift in Sources */,
 				C79CB2E02B162E6000C2BD18 /* UsersDataSource.swift in Sources */,
-				C79CB2932B0D537A00C2BD18 /* HomeViewModel.swift in Sources */,
 				C7390FDA2B44BBDE00E49A68 /* TDTitle.swift in Sources */,
 				C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */,
 				C77E10792B5036F1009612F8 /* ListItemsReducer+Reduce.swift in Sources */,

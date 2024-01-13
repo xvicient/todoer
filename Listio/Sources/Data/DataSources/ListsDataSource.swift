@@ -9,13 +9,12 @@ protocol ListsDataSourceApi {
     
     func addList(
         with name: String,
-        uuid: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    )
+        uuid: String
+    ) async throws -> ListDTO
     
     func deleteList(
-        _ documentId: String?
-    )
+        _ documentId: String
+    ) async throws
     
     func toggleList(
         _ list: ListDTO
@@ -84,26 +83,22 @@ final class ListsDataSource: ListsDataSourceApi {
     
     func addList(
         with name: String,
-        uuid: String,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
-        do {
-            let dto = ListDTO(name: name,
-                              done: false,
-                              uuid: [uuid],
-                              dateCreated: Date().milliseconds)
-            _ = try listsCollection.addDocument(from: dto)
-            completion(.success(Void()))
-        } catch {
-            completion(.failure(error))
-        }
+        uuid: String
+    ) async throws -> ListDTO {
+        let dto = ListDTO(name: name,
+                          done: false,
+                          uuid: [uuid],
+                          dateCreated: Date().milliseconds)
+        return try await listsCollection
+            .addDocument(from: dto)
+            .getDocument()
+            .data(as: ListDTO.self)
     }
     
     func deleteList(
-        _ documentId: String?
-    ) {
-        guard let id = documentId else { return }
-        listsCollection.document(id).delete()
+        _ documentId: String
+    ) async throws {
+        try await listsCollection.document(documentId).delete()
     }
     
     func importList(
