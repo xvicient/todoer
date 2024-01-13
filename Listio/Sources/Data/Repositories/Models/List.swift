@@ -8,13 +8,3 @@ struct List: Identifiable, Equatable, Hashable {
     var uuid: [String]
     let dateCreated: Int
 }
-
-extension ListDTO {
-    var toDomain: List {
-        List(documentId: id ?? "",
-             name: name,
-             done: done,
-             uuid: uuid,
-             dateCreated: dateCreated)
-    }
-}

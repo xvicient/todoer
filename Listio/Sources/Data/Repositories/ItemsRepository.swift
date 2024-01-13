@@ -80,3 +80,21 @@ final class ItemsRepository: ItemsRepositoryApi {
         try await itemsDataSource.toogleAllItems(listId: listId, done: done)
     }
 }
+
+private extension ItemDTO {
+    var toDomain: Item {
+        Item(documentId: id ?? "",
+             name: name,
+             done: done,
+             dateCreated: dateCreated)
+    }
+}
+
+private extension Item {
+    var toDTO: ItemDTO {
+        ItemDTO(id: documentId,
+                name: name,
+                done: done,
+                dateCreated: dateCreated)
+    }
+}

@@ -8,13 +8,3 @@ struct ListDTO: Identifiable, Codable, Hashable {
     var uuid: [String]
     let dateCreated: Int
 }
-
-extension List {
-    var toDTO: ListDTO {
-        ListDTO(id: documentId,
-                name: name, 
-                done: done,
-                uuid: uuid,
-                dateCreated: dateCreated)
-    }
-}

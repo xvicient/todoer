@@ -7,12 +7,3 @@ struct Item: Identifiable, Equatable, Hashable {
     var done: Bool
     let dateCreated: Int
 }
-
-extension ItemDTO {
-    var toDomain: Item {
-        Item(documentId: id ?? "",
-             name: name,
-             done: done,
-             dateCreated: dateCreated)
-    }
-}

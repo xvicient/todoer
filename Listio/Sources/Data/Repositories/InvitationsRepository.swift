@@ -60,3 +60,15 @@ final class InvitationsRepository: InvitationsRepositoryApi {
         try await invitationsDataSource.deleteInvitation(documentId)
     }
 }
+
+private extension InvitationDTO {
+    var toDomain: Invitation {
+        Invitation(documentId: id ?? "",
+                   ownerName: ownerName,
+                   ownerEmail: ownerEmail,
+                   listId: listId,
+                   listName: listName,
+                   invitedId: invitedId,
+                   dateCreated: dateCreated)
+    }
+}

@@ -10,15 +10,3 @@ struct InvitationDTO: Identifiable, Codable, Hashable {
     let invitedId: String
     let dateCreated: Int
 }
-
-extension Invitation {
-    var toDTO: InvitationDTO {
-        InvitationDTO(id: documentId,
-                      ownerName: ownerName,
-                      ownerEmail: ownerEmail,
-                      listId: listId,
-                      listName: listName,
-                      invitedId: invitedId,
-                      dateCreated: dateCreated)
-    }
-}

@@ -7,12 +7,3 @@ struct ItemDTO: Identifiable, Codable, Hashable {
     var done: Bool
     let dateCreated: Int
 }
-
-extension Item {
-    var toDTO: ItemDTO {
-        ItemDTO(id: documentId,
-                name: name,
-                done: done,
-                dateCreated: dateCreated)
-    }
-}

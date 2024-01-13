@@ -83,3 +83,23 @@ final class ListsRepository: ListsRepositoryApi {
         try await listsDataSource.updateList(list.toDTO).toDomain
     }
 }
+
+private extension ListDTO {
+    var toDomain: List {
+        List(documentId: id ?? "",
+             name: name,
+             done: done,
+             uuid: uuid,
+             dateCreated: dateCreated)
+    }
+}
+
+private extension List {
+    var toDTO: ListDTO {
+        ListDTO(id: documentId,
+                name: name,
+                done: done,
+                uuid: uuid,
+                dateCreated: dateCreated)
+    }
+}
