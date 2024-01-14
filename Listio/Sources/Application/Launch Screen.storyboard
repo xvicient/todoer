@@ -17,17 +17,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="X9F-96-LrL">
-                                <rect key="frame" x="76.666666666666686" y="374.66666666666669" width="240" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="DJS-lc-tln"/>
-                                    <constraint firstAttribute="height" constant="128" id="d9h-mL-TxC"/>
-                                </constraints>
+                                <rect key="frame" x="50" y="277" width="293" height="323"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" name="main"/>
                         <constraints>
-                            <constraint firstItem="X9F-96-LrL" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="941-Zg-Rlx"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="leading" secondItem="X9F-96-LrL" secondAttribute="leading" constant="-50" id="heS-gn-RPz"/>
+                            <constraint firstItem="X9F-96-LrL" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" constant="-50" id="maA-HZ-JR0"/>
                             <constraint firstItem="X9F-96-LrL" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="vMt-PW-pCj"/>
                         </constraints>
                     </view>

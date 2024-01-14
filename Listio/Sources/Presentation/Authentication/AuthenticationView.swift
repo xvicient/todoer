@@ -1,9 +1,17 @@
 import SwiftUI
+import _AuthenticationServices_SwiftUI
 import GoogleSignIn
 import GoogleSignInSwift
 
 struct AuthenticationView: View {
     @ObservedObject private var store: Store<Authentication.Reducer>
+    @State private var isTopSpacerVisible = true
+    @State private var logoTopPadding = 100.0
+    @State private var isLoginButtonVisible = false
+    @State private var sloganScale = 0.0
+    @State private var sloganOpacity = 0.0
+    @State private var isModalVisible = false
+    @State private var loginDetent = PresentationDetent.height(200)
     
     init(store: Store<Authentication.Reducer>) {
         self.store = store
@@ -11,46 +19,81 @@ struct AuthenticationView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 0) {
-                VStack {
-                    Text(Constants.Text.welcomeTitle)
-                        .foregroundColor(.buttonPrimary)
-                        .padding([.top], 20)
-                        .font(.system(size: 46, weight: .semibold, design: .rounded))
-                    Image(Constants.Image.logo)
-                        .resizable()
-                        .frame(width: 200, height: 200)
-                        .padding([.top], 20)
-                        .padding([.bottom], 40)
-                    Text(Constants.Text.welcomeSubtitle)
-                        .foregroundColor(.buttonPrimary)
-                        .padding([.bottom], 20)
-                        .font(.system(size: 26, weight: .semibold, design: .rounded))
-                }
-                .frame(maxWidth: .infinity)
-                .background(.backgroundPrimary)
-                VStack {
-                    GoogleSignInButton(
-                        viewModel: GoogleSignInButtonViewModel(
-                            scheme: .light,
-                            style: .standard,
-                            state: .normal
-                        )
-                    ) {
-                        store.send(.didTapSignInButton)
-                    }
-                    .padding([.top, .leading, .trailing], 40)
-                    Text(Constants.Text.loginHint)
-                        .foregroundColor(.buttonPrimary)
-                        .font(.system(size: 14, design: .rounded))
+            VStack {
+                if isTopSpacerVisible {
                     Spacer()
                 }
-                .background(.backgroundSecondary)
+                Image(Constants.Image.launchScreen)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(.horizontal, 50)
+                    .padding(.top, logoTopPadding)
+                    .onAppear {
+                        withAnimation(Animation.easeInOut(duration: 0.5).delay(1.0)) {
+                            isTopSpacerVisible = false
+                        } completion: {
+                            withAnimation(Animation.easeInOut(duration: 0.25).delay(0.25)) {
+                                sloganOpacity = 1.0
+                                sloganScale = 1.3
+                            } completion: {
+                                withAnimation(Animation.easeInOut(duration: 0.25)) {
+                                    sloganScale = 1.0
+                                    isLoginButtonVisible = true
+                                }
+                            }
+                        }
+                    }
+                Spacer()
             }
-            if store.state.viewState == .loading {
-                ProgressView()
+            .frame(maxWidth: .infinity)
+            VStack {
+                Image(Constants.Image.slogan)
+                    .resizable()
+                    .scaledToFit()
+                    .scaleEffect(sloganScale)
+                    .opacity(sloganOpacity)
+                    .padding(.horizontal, 50)
+                    .padding(.top, 250)
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            if isLoginButtonVisible {
+                VStack {
+                    Spacer()
+                    Button(action: {
+                        isModalVisible = true
+                    }) {
+                        Text(Constants.Text.login)
+                            .frame(maxWidth: .infinity)
+                            .font(.system(size: 18))
+                            .padding()
+                            .foregroundColor(.white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .stroke(.white, lineWidth: 1)
+                            )
+                    }
+                    .cornerRadius(25)
+                    .padding(.horizontal, 50)
+                    Spacer()
+                }
+                .padding(.top, 400)
+                .frame(maxWidth: .infinity)
             }
         }
+        .background(.main)
+        .sheet(isPresented: $isModalVisible, content: {
+            LoginButtonsView(onClose: {
+                store.send(.didTapSignInButton)
+                withAnimation {
+                    isModalVisible = false
+                }
+            })
+            .presentationDetents(
+                [loginDetent],
+                selection: $loginDetent
+            )
+        })
         .alert(isPresented: Binding(
             get: { store.state.viewState == .unexpectedError },
             set: { _ in }
@@ -63,6 +106,46 @@ struct AuthenticationView: View {
                 }
             )
         }
+        .disabled(
+            store.state.viewState == .loading
+        )
+        if store.state.viewState == .loading {
+            ProgressView()
+        }
+    }
+}
+
+// MARK: - LoginButtonsView
+
+private extension AuthenticationView {
+    struct LoginButtonsView: View {
+        var onClose: () -> Void
+        
+        var body: some View {
+            VStack {
+                GoogleSignInButton(
+                    viewModel: GoogleSignInButtonViewModel(
+                        scheme: .light,
+                        style: .standard,
+                        state: .normal
+                    )
+                ) {
+                    onClose()
+                }
+                .padding(.horizontal, 50)
+                .padding(.top, 25)
+                
+                SignInWithAppleButton(
+                    onRequest: { _ in
+                        
+                    },
+                    onCompletion: { _ in
+                        
+                    })
+                .padding(.horizontal, 50)
+                .padding(.vertical, 25)
+            }
+        }
     }
 }
 
@@ -71,16 +154,15 @@ struct AuthenticationView: View {
 private extension AuthenticationView {
     struct Constants {
         struct Text {
-            static let welcomeTitle = "Welcome"
-            static let welcomeSubtitle = "Get things done with Todoo!"
-            static let loginHint = "Login using a Google account."
+            static let login = "Login"
             static let errorTitle = "Error"
             static let unexpectedError = "Unexpected error"
             static let errorOkButton = "Ok"
             
         }
         struct Image {
-            static let logo = "Logo"
+            static let launchScreen = "LaunchScreen"
+            static let slogan = "Slogan"
         }
     }
 }
