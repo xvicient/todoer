@@ -19,20 +19,20 @@
 	<string>394597354811-9erhkkcmmqps55jvqlfnbrr3grpm7sn0.apps.googleusercontent.com</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
-	    <key>UIApplicationSupportsMultipleScenes</key>
-	    <false/>
-	    <key>UISceneConfigurations</key>
-	    <dict>
-	        <key>UIWindowSceneSessionRoleApplication</key>
-	        <array>
-	            <dict>
-	                <key>UISceneConfigurationName</key>
-	                <string>Default Configuration</string>
-	                <key>UISceneDelegateClassName</key>
-	                <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-	            </dict>
-	        </array>
-	    </dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
 	</dict>
 </dict>
 </plist>
