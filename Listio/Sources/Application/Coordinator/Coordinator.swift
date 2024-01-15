@@ -20,30 +20,29 @@ enum FullScreenCover: Hashable, Identifiable {
     var id: Self { self }
 }
 
+@MainActor
 final class Coordinator: ObservableObject {
     
     @Published var path = NavigationPath()
     @Published var sheet: Sheet?
     @Published var fullScreenCover: FullScreenCover?
     @Published var landingView: AnyView?
-    private var landingPage: Page
+    @Published var landingPage: Page
     
     init(authenticationService: AuthenticationService = AuthenticationService()) {
         landingPage = authenticationService.isUserLogged ? .home : .authentication
-    }
-    
-    @MainActor
-    func start() {
         landingView = build(page: landingPage)
     }
     
     @MainActor
     func loggOut() {
+        landingPage = .authentication
         landingView = build(page: .authentication)
     }
     
     @MainActor
     func loggIn() {
+        landingPage = .home
         landingView = build(page: .home)
     }
     
@@ -77,7 +76,7 @@ final class Coordinator: ObservableObject {
     
     @MainActor @ViewBuilder
     func build(page: Page) -> AnyView {
-        AnyView(get(page: page))
+        AnyView(_build(page: page))
     }
     
     @MainActor @ViewBuilder
@@ -106,7 +105,7 @@ final class Coordinator: ObservableObject {
 
 private extension Coordinator {
     @MainActor @ViewBuilder
-    func get(page: Page) -> some View {
+    func _build(page: Page) -> some View {
         switch page {
         case .authentication:
             Authentication.Builder.makeAuthentication(

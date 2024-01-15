@@ -7,9 +7,10 @@ struct CoordinatorView: View {
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             coordinator.landingView
+                .setupNavigationBar(page: coordinator.landingPage)
                 .navigationDestination(for: Page.self) { page in
                     coordinator.build(page: page)
-                        .setupNavigationBar()
+                        .setupNavigationBar(page: page)
                 }
                 .sheet(item: $coordinator.sheet) { sheet in
                     switch sheet {
@@ -24,10 +25,6 @@ struct CoordinatorView: View {
                 .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
                     coordinator.build(fullScreenCover: fullScreenCover)
                 }
-                .setupNavigationBar()
-        }
-        .onAppear {
-            coordinator.start()
         }
         .colorScheme(.light)
         .preferredColorScheme(.dark)
@@ -37,24 +34,30 @@ struct CoordinatorView: View {
 // MARK: - NavigationBarModifier
 
 struct NavigationBarModifier: ViewModifier {
+    var page: Page
+    
     func body(content: Content) -> some View {
-        content
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.backgroundPrimary)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Image.launchScreen
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+        if page == .authentication {
+            content
+        } else {
+            content
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(.backgroundPrimary)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Image.launchScreen
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                    }
                 }
-            }
+        }
     }
 }
 
 private extension View {
-    func setupNavigationBar() -> some View {
-        modifier(NavigationBarModifier())
+    func setupNavigationBar(page: Page) -> some View {
+        modifier(NavigationBarModifier(page: page))
     }
 }
 
