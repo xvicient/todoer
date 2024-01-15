@@ -11,7 +11,7 @@ struct ShareListView: View {
     var body: some View {
         VStack(spacing: 12) {
             TDTitle(title: Constants.Text.shareTitle,
-                    image: Image(systemName: Constants.Image.share))
+                    image: .squareAndArrowUp)
             TDTextField(text: $shareEmailText,
                         placeholder: Constants.Text.sharePlaceholder)
             TDButton(title: Constants.Text.shareButtonTitle) {
@@ -42,9 +42,6 @@ private extension ShareListView {
             static let sharingWithTitle = "Sharing with"
             static let shareButtonTitle = "Share"
             static let sharePlaceholder = "Email..."
-        }
-        struct Image {
-            static let share = "square.and.arrow.up"
         }
     }
 }

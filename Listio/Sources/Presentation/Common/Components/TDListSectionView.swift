@@ -24,11 +24,11 @@ protocol TDSectionRowActions {
     var cancelAction: (() -> Void)? { get }
 }
 
-enum TDSectionRowActionType: String, Identifiable {
-    case share = "square.and.arrow.up"
-    case done = "largecircle.fill.circle"
-    case undone = "circle"
-    case delete = "trash"
+enum TDSectionRowActionType: Identifiable {
+    case share
+    case done
+    case undone
+    case delete
     
     var id: UUID { UUID() }
     
@@ -38,6 +38,15 @@ enum TDSectionRowActionType: String, Identifiable {
         case .done: return .backgroundSecondary
         case .undone: return .backgroundSecondary
         case .delete: return .buttonDestructive
+        }
+    }
+    
+    var icon: Image {
+        switch self {
+        case .share: return .squareAndArrowUp
+        case .done: return .largecircleFillCircle
+        case .undone: return .circle
+        case .delete: return .trash
         }
     }
 }
@@ -87,9 +96,7 @@ private extension TDListSectionView {
     ) -> some View {
         Group {
             HStack {
-                Image(systemName: row.done ?
-                      Constants.Image.doneCircle :
-                        Constants.Image.undoneCircle)
+                (row.done ? Image.largecircleFillCircle : Image.circle)
                 .foregroundColor(.buttonSecondary)
                 Button(action: {
                     actions.tapAction?(index)
@@ -123,7 +130,7 @@ private extension TDListSectionView {
     @ViewBuilder
     func newRow(_ index: Int) -> some View {
         HStack {
-            Image(systemName: Constants.Image.undoneCircle)
+            Image.largecircleFillCircle
                 .foregroundColor(.buttonSecondary)
             TextField(newRowPlaceholder, text: $newRowText)
                 .foregroundColor(.textPrimary)
@@ -141,7 +148,7 @@ private extension TDListSectionView {
                     actions.cancelAction?()
                 }
             }) {
-                Image(systemName: Constants.Image.cancelNewRow)
+                Image.xmark
                     .resizable()
                     .frame(width: 12, height: 12)
                     .foregroundColor(.buttonPrimary)
@@ -166,27 +173,9 @@ private extension TDListSectionView {
                     actions.swipeActions?(index, option)
                 }
             } label: {
-                Image(systemName: option.rawValue)
+                option.icon
             }
             .tint(option.tint)
-        }
-    }
-}
-
-// MARK: - Constants
-
-private extension TDListSectionView<TDListSectionViewModel> {
-    struct Constants {
-        struct Image {
-            static var doneCircle: String {
-                "largecircle.fill.circle"
-            }
-            static var undoneCircle: String {
-                "circle"
-            }
-            static var cancelNewRow: String {
-                "xmark"
-            }
         }
     }
 }

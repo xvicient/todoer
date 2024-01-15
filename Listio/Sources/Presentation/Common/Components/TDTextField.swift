@@ -28,7 +28,7 @@ struct TDTextField: View {
                     Button(action: {
                         text = ""
                     }) {
-                        Image(systemName: "multiply.circle.fill")
+                        Image.multiplyCircleFill
                             .resizable()
                             .frame(width: 14, height: 14)
                             .foregroundColor(.textSecondary)

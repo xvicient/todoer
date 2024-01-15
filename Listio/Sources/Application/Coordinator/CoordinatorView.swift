@@ -39,6 +39,7 @@ struct NavigationBarModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.backgroundPrimary)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Image(Constants.Image.launchScreen)
@@ -47,7 +48,6 @@ struct NavigationBarModifier: ViewModifier {
                         .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
                 }
             }
-            .toolbarBackground(.hidden, for: .navigationBar)
     }
     
     private struct Constants {

@@ -71,7 +71,7 @@ private extension HomeView {
                     content: {
                         $0.resizable().aspectRatio(contentMode: .fit)
                     }, placeholder: {
-                        Image(systemName: Constants.Image.profilePlaceHolder)
+                        Image.personCropCircle
                             .tint(.buttonPrimary)
                     })
                 .frame(width: 30, height: 30)
@@ -145,7 +145,7 @@ private extension HomeView {
                         store.send(.didTapAddRowButton)
                     }
                 }, label: {
-                    Image(systemName: Constants.Image.addButton)
+                    Image.plusCircleFill
                         .resizable()
                         .frame(width: 48.0, height: 48.0)
                 })
@@ -214,9 +214,6 @@ private extension HomeView {
         }
         struct Image {
             static let launchScreen = "LaunchScreen"
-            static let profilePlaceHolder = "person.crop.circle"
-            static let addButton = "plus.circle.fill"
-            static let closeAddListButton = "xmark"
         }
     }
 }

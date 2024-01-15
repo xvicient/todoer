@@ -82,7 +82,7 @@ private extension ListItemsView {
                         store.send(.didTapAddRowButton)
                     }
                 }, label: {
-                    Image(systemName: Constants.Image.addButton)
+                    Image.plusCircleFill
                         .resizable()
                         .frame(width: 48.0, height: 48.0)
                 })
@@ -140,9 +140,6 @@ private extension ListItemsView {
             static let unexpectedError = "Unexpected error"
             static let errorOkButton = "Ok"
             
-        }
-        struct Image {
-            static let addButton = "plus.circle.fill"
         }
     }
 }
