@@ -15,9 +15,10 @@ struct ListItemsView: View {
     
     init(
         store: Store<ListItems.Reducer>,
-        listName: String) {
-            self.store = store
-            self.listName = listName
+        listName: String
+    ) {
+        self.store = store
+        self.listName = listName
     }
     
     var body: some View {
@@ -29,21 +30,7 @@ struct ListItemsView: View {
         .edgesIgnoringSafeArea(.all)
         .overlay(
             ZStack {
-                ScrollViewReader { scrollView in
-                    SwiftUI.List {
-                        TDListSectionView(viewModel: store.state.viewModel.itemsSection,
-                                          actions: listActions,
-                                          newRowPlaceholder: Constants.Text.item)
-                        
-                    }
-                    .scrollContentBackground(.hidden)
-                    .onChange(of: store.state.viewState == .addingItem, {
-                        withAnimation {
-                            scrollView.scrollTo(store.state.viewModel.itemsSection.rows.count - 1,
-                                                anchor: .bottom)
-                        }
-                    })
-                }
+                itemsList
                 newRowButton
                 loadingView
             }
@@ -72,6 +59,26 @@ struct ListItemsView: View {
 // MARK: - Private
 
 private extension ListItemsView {
+    @ViewBuilder
+    var itemsList: some View {
+        ScrollViewReader { scrollView in
+            SwiftUI.List {
+                TDListSectionView(viewModel: store.state.viewModel.itemsSection,
+                                  actions: listActions,
+                                  newRowPlaceholder: Constants.Text.item)
+                
+            }
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollContentBackground(.hidden)
+            .onChange(of: store.state.viewState == .addingItem, {
+                withAnimation {
+                    scrollView.scrollTo(store.state.viewModel.itemsSection.rows.count - 1,
+                                        anchor: .bottom)
+                }
+            })
+        }
+    }
     @ViewBuilder
     var newRowButton: some View {
         if store.state.viewState != .addingItem {

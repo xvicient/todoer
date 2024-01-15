@@ -25,19 +25,7 @@ struct HomeView: View {
         .edgesIgnoringSafeArea(.all)
         .overlay(
             ZStack {
-                ScrollViewReader { scrollView in
-                    SwiftUI.List {
-                        invitationsSection
-                        listsSection
-                    }
-                    .scrollContentBackground(.hidden)
-                    .onChange(of: store.state.viewState == .addingList, {
-                        withAnimation {
-                            scrollView.scrollTo(store.state.viewModel.listsSection.rows.count - 1,
-                                                anchor: .bottom)
-                        }
-                    })
-                }
+                lists
                 newRowButton
                 loadingView
             }
@@ -57,6 +45,24 @@ struct HomeView: View {
 // MARK: - ViewBuilders
 
 private extension HomeView {
+    @ViewBuilder
+    var lists: some View {
+        ScrollViewReader { scrollView in
+            SwiftUI.List {
+                invitationsSection
+                listsSection
+            }
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollContentBackground(.hidden)
+            .onChange(of: store.state.viewState == .addingList, {
+                withAnimation {
+                    scrollView.scrollTo(store.state.viewModel.listsSection.rows.count - 1,
+                                        anchor: .bottom)
+                }
+            })
+        }
+    }
     @ViewBuilder
     var navigationBarItems: some View {
         HStack {

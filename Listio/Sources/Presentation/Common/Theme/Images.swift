@@ -1,6 +1,13 @@
 import SwiftUI
 
 extension Image {
+    // MARK: - Images
+    
+    static let launchScreen = Image("LaunchScreen")
+    static let slogan = Image("Slogan")
+    
+    // MARK: - Icons
+    
     static let multiplyCircleFill = Image(systemName: "multiply.circle.fill")
     static let circle = Image(systemName: "circle")
     static let largecircleFillCircle = Image(systemName: "largecircle.fill.circle")

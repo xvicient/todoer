@@ -29,7 +29,8 @@ struct CoordinatorView: View {
         .onAppear {
             coordinator.start()
         }
-        .preferredColorScheme(.light)
+        .colorScheme(.light)
+        .preferredColorScheme(.dark)
     }
 }
 
@@ -42,18 +43,12 @@ struct NavigationBarModifier: ViewModifier {
             .toolbarBackground(.backgroundPrimary)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Image(Constants.Image.launchScreen)
+                    Image.launchScreen
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
                 }
             }
-    }
-    
-    private struct Constants {
-        struct Image {
-            static let launchScreen = "LaunchScreen"
-        }
     }
 }
 

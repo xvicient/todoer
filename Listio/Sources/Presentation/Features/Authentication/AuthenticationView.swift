@@ -1,5 +1,5 @@
 import SwiftUI
-import _AuthenticationServices_SwiftUI
+import AuthenticationServices
 import GoogleSignIn
 import GoogleSignInSwift
 
@@ -23,7 +23,7 @@ struct AuthenticationView: View {
                 if isTopSpacerVisible {
                     Spacer()
                 }
-                Image(Constants.Image.launchScreen)
+                Image.launchScreen
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding(.horizontal, 50)
@@ -47,7 +47,7 @@ struct AuthenticationView: View {
             }
             .frame(maxWidth: .infinity)
             VStack {
-                Image(Constants.Image.slogan)
+                Image.slogan
                     .resizable()
                     .scaledToFit()
                     .scaleEffect(sloganScale)
@@ -164,10 +164,6 @@ private extension AuthenticationView {
             static let unexpectedError = "Unexpected error"
             static let errorOkButton = "Ok"
             
-        }
-        struct Image {
-            static let launchScreen = "LaunchScreen"
-            static let slogan = "Slogan"
         }
     }
 }
