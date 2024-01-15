@@ -79,7 +79,7 @@ internal extension Home.Reducer {
         var leadingActions: (any TDSectionRow) -> [TDSectionRowActionType] {
             { [$0.done ? .undone : .done] }
         }
-        var trailingActions: [TDSectionRowActionType] = [.share, .delete]
+        var trailingActions: [TDSectionRowActionType] = [.delete, .share]
     }
     
     // MARK: - EmptyRow

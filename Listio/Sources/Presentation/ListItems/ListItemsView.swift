@@ -21,9 +21,13 @@ struct ListItemsView: View {
     }
     
     var body: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
+        LinearGradient(
+            gradient: Gradient(colors: [.backgroundPrimary, .backgroundSecondary]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .edgesIgnoringSafeArea(.all)
+        .overlay(
             ZStack {
                 ScrollViewReader { scrollView in
                     SwiftUI.List {
@@ -32,6 +36,7 @@ struct ListItemsView: View {
                                           newRowPlaceholder: Constants.Text.item)
                         
                     }
+                    .scrollContentBackground(.hidden)
                     .onChange(of: store.state.viewState == .addingItem, {
                         withAnimation {
                             scrollView.scrollTo(store.state.viewModel.itemsSection.rows.count - 1,
@@ -39,29 +44,28 @@ struct ListItemsView: View {
                         }
                     })
                 }
-                addNewRowButton
+                newRowButton
+                loadingView
             }
-            .task {
+            .onAppear {
                 store.send(.onAppear)
             }
-            .disabled(store.state.viewState == .loading)
-            if store.state.viewState == .loading {
-                ProgressView()
-            }
-        }
-        .alert(isPresented: Binding(
-            get: { store.state.viewState == .unexpectedError },
-            set: { _ in }
-        )) {
-            Alert(
-                title: Text(Constants.Text.errorTitle),
-                message: Text(Constants.Text.unexpectedError),
-                dismissButton: .default(Text(Constants.Text.errorOkButton)) {
-                    store.send(.didTapDismissError)
-                }
+            .disabled(
+                store.state.viewState == .loading
             )
-        }
-        .navigationTitle(listName)
+            .alert(isPresented: Binding(
+                get: { store.state.viewState == .unexpectedError },
+                set: { _ in }
+            )) {
+                Alert(
+                    title: Text(Constants.Text.errorTitle),
+                    message: Text(Constants.Text.unexpectedError),
+                    dismissButton: .default(Text(Constants.Text.errorOkButton)) {
+                        store.send(.didTapDismissError)
+                    }
+                )
+            }
+        )
     }
 }
 
@@ -69,7 +73,7 @@ struct ListItemsView: View {
 
 private extension ListItemsView {
     @ViewBuilder
-    var addNewRowButton: some View {
+    var newRowButton: some View {
         if store.state.viewState != .addingItem {
             VStack {
                 Spacer()
@@ -82,8 +86,15 @@ private extension ListItemsView {
                         .resizable()
                         .frame(width: 48.0, height: 48.0)
                 })
-                .foregroundColor(.buttonPrimary)
+                .foregroundColor(.buttonAccent)
             }
+        }
+    }
+    
+    @ViewBuilder
+    var loadingView: some View {
+        if store.state.viewState == .loading {
+            ProgressView()
         }
     }
 }

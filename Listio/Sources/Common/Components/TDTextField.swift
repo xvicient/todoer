@@ -13,12 +13,15 @@ struct TDTextField: View {
         ZStack {
             HStack {
                 TextField(placeholder, text: $text)
-                    .padding(12)
-                    .background(Color(.systemGray5))
-                    .cornerRadius(8)
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 24)
+                    .background(.backgroundWhite)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.borderSecondary, lineWidth: 1)
+                    )
             }
+            .padding(.horizontal, 24)
             if !text.isEmpty {
                 HStack {
                     Spacer()
@@ -28,7 +31,7 @@ struct TDTextField: View {
                         Image(systemName: "multiply.circle.fill")
                             .resizable()
                             .frame(width: 14, height: 14)
-                            .foregroundColor(Color(UIColor.darkGray))
+                            .foregroundColor(.textSecondary)
                             .padding(8)
                             .padding(.trailing, 24)
                     }
@@ -37,9 +40,3 @@ struct TDTextField: View {
         }
     }
 }
-
-//struct TDTextField_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TDTextField(placeholder: "Email...")
-//    }
-//}

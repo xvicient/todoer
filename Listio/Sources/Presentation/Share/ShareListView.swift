@@ -9,7 +9,7 @@ struct ShareListView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 12) {
             TDTitle(title: Constants.Text.shareTitle,
                     image: Image(systemName: Constants.Image.share))
             TDTextField(text: $shareEmailText,

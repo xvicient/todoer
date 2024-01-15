@@ -35,9 +35,9 @@ enum TDSectionRowActionType: String, Identifiable {
     var tint: Color {
         switch self {
         case .share: return .buttonPrimary
-        case .done: return .backgroundPrimary
-        case .undone: return .backgroundPrimary
-        case .delete: return .red
+        case .done: return .backgroundSecondary
+        case .undone: return .backgroundSecondary
+        case .delete: return .buttonDestructive
         }
     }
 }
@@ -76,7 +76,7 @@ private extension TDListSectionView {
     ) -> some View {
         if !sectionTitle.isEmpty {
             Text(sectionTitle)
-                .foregroundColor(.white)
+                .foregroundColor(.textWhite)
         }
     }
     
@@ -90,7 +90,7 @@ private extension TDListSectionView {
                 Image(systemName: row.done ?
                       Constants.Image.doneCircle :
                         Constants.Image.undoneCircle)
-                .foregroundColor(.backgroundPrimary)
+                .foregroundColor(.buttonSecondary)
                 Button(action: {
                     actions.tapAction?(index)
                 }) {
@@ -101,7 +101,7 @@ private extension TDListSectionView {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.borderless)
-                .foregroundColor(.primary)
+                .foregroundColor(.textPrimary)
             }
             .frame(height: 40)
         }
@@ -124,9 +124,9 @@ private extension TDListSectionView {
     func newRow(_ index: Int) -> some View {
         HStack {
             Image(systemName: Constants.Image.undoneCircle)
-                .foregroundColor(.backgroundPrimary)
+                .foregroundColor(.buttonSecondary)
             TextField(newRowPlaceholder, text: $newRowText)
-                .foregroundColor(.primary)
+                .foregroundColor(.textPrimary)
                 .focused($isNewRowFocused)
                 .onAppear {
                     newRowText = ""
@@ -144,7 +144,7 @@ private extension TDListSectionView {
                 Image(systemName: Constants.Image.cancelNewRow)
                     .resizable()
                     .frame(width: 12, height: 12)
-                    .foregroundColor(.black)
+                    .foregroundColor(.buttonPrimary)
             }
         }
         .frame(height: 40)

@@ -23,6 +23,7 @@
 		C7390FD82B44A03900E49A68 /* ShareListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */; };
 		C7390FDA2B44BBDE00E49A68 /* TDTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD92B44BBDE00E49A68 /* TDTitle.swift */; };
 		C7390FDE2B45FEBB00E49A68 /* View+HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */; };
+		C74C0F442B55822B00926E87 /* UINavigationController+backBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C0F432B55822B00926E87 /* UINavigationController+backBarButton.swift */; };
 		C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */; };
 		C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */; };
 		C75B4AC92B1DD7A9007CCA48 /* Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */; };
@@ -114,6 +115,7 @@
 		C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListUseCase.swift; sourceTree = "<group>"; };
 		C7390FD92B44BBDE00E49A68 /* TDTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDTitle.swift; sourceTree = "<group>"; };
 		C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HideKeyboard.swift"; sourceTree = "<group>"; };
+		C74C0F432B55822B00926E87 /* UINavigationController+backBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+backBarButton.swift"; sourceTree = "<group>"; };
 		C75B4AC42B1DD70C007CCA48 /* InvitationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsRepository.swift; sourceTree = "<group>"; };
 		C75B4AC62B1DD750007CCA48 /* InvitationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDTO.swift; sourceTree = "<group>"; };
 		C75B4AC82B1DD7A9007CCA48 /* Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitation.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				C79CB2F32B17DCB000C2BD18 /* Date+Utils.swift */,
 				C75B4ACC2B1E73DA007CCA48 /* DispatchGroup+Execute.swift */,
 				C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */,
+				C74C0F432B55822B00926E87 /* UINavigationController+backBarButton.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -680,6 +683,7 @@
 				C79CB2912B0D537A00C2BD18 /* Collection+Utils.swift in Sources */,
 				C79CB2DE2B162DB100C2BD18 /* UserDTO.swift in Sources */,
 				C79CB2E22B16329800C2BD18 /* UsersRepository.swift in Sources */,
+				C74C0F442B55822B00926E87 /* UINavigationController+backBarButton.swift in Sources */,
 				C7390FCF2B447AF400E49A68 /* TDTextField.swift in Sources */,
 				C75B4AC92B1DD7A9007CCA48 /* Invitation.swift in Sources */,
 				C79CB2982B0D537A00C2BD18 /* ListItemsBuilder.swift in Sources */,

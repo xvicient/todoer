@@ -18,7 +18,7 @@ struct HomeView: View {
     
     var body: some View {
         LinearGradient(
-            gradient: Gradient(colors: [.main, .mainsecondary]),
+            gradient: Gradient(colors: [.backgroundPrimary, .backgroundSecondary]),
             startPoint: .top,
             endPoint: .bottom
         )
@@ -38,8 +38,8 @@ struct HomeView: View {
                         }
                     })
                 }
-                addNewRowButton
-                loading
+                newRowButton
+                loadingView
             }
             .onAppear {
                 store.send(.onViewAppear)
@@ -89,14 +89,14 @@ private extension HomeView {
             Section(
                 header:
                     Text(Constants.Text.invitations)
-                    .foregroundColor(.white)
+                    .foregroundColor(.textWhite)
             ) {
                 ForEach(store.state.viewModel.invitations) { invitation in
                     HStack {
                         VStack(alignment: .leading) {
                             Text("\(invitation.ownerName)")
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.buttonPrimary)
+                                .foregroundColor(.textPrimary)
                             Text("(\(invitation.ownerEmail))")
                                 .font(.system(size: 14, weight: .light))
                                 .padding(.bottom, 8)
@@ -104,7 +104,7 @@ private extension HomeView {
                                 .font(.system(size: 14))
                             Text("\(invitation.listName)")
                                 .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(Color(UIColor.darkGray))
+                                .foregroundColor(.textSecondary)
                         }
                         Spacer()
                         VStack {
@@ -136,7 +136,7 @@ private extension HomeView {
     }
     
     @ViewBuilder
-    var addNewRowButton: some View {
+    var newRowButton: some View {
         if store.state.viewState != .addingList {
             VStack {
                 Spacer()
@@ -149,13 +149,13 @@ private extension HomeView {
                         .resizable()
                         .frame(width: 48.0, height: 48.0)
                 })
-                .foregroundColor(.white)
+                .foregroundColor(.buttonAccent)
             }
         }
     }
     
     @ViewBuilder
-    var loading: some View {
+    var loadingView: some View {
         if store.state.viewState == .loading {
             ProgressView()
         }

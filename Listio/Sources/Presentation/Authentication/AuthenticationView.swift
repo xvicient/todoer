@@ -67,10 +67,10 @@ struct AuthenticationView: View {
                             .frame(maxWidth: .infinity)
                             .frame(height: 48)
                             .font(.system(size: 18))
-                            .foregroundColor(.white)
+                            .foregroundColor(.textWhite)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25)
-                                    .stroke(.white, lineWidth: 1)
+                                    .stroke(.borderPrimary, lineWidth: 1)
                             )
                     }
                     .padding(.horizontal, 50)
@@ -83,7 +83,7 @@ struct AuthenticationView: View {
                 ProgressView()
             }
         }
-        .background(.main)
+        .background(.backgroundPrimary)
         .sheet(isPresented: $isModalVisible, content: {
             LoginButtonsView(onClose: {
                 withAnimation {
@@ -146,7 +146,7 @@ private extension AuthenticationView {
                 .signInWithAppleButtonStyle(.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 25)
-                        .stroke(.black, lineWidth: 1)
+                        .stroke(.borderBlack, lineWidth: 1)
                 )
                 .padding(.horizontal, 50)
             }
