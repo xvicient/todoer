@@ -9,6 +9,7 @@ struct CoordinatorView: View {
             coordinator.landingView
                 .navigationDestination(for: Page.self) { page in
                     coordinator.build(page: page)
+                        .setupNavigationBar()
                 }
                 .sheet(item: $coordinator.sheet) { sheet in
                     switch sheet {
@@ -23,6 +24,7 @@ struct CoordinatorView: View {
                 .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
                     coordinator.build(fullScreenCover: fullScreenCover)
                 }
+                .setupNavigationBar()
         }
         .onAppear {
             coordinator.start()
@@ -30,6 +32,38 @@ struct CoordinatorView: View {
         .preferredColorScheme(.light)
     }
 }
+
+// MARK: - NavigationBarModifier
+
+struct NavigationBarModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Image(Constants.Image.launchScreen)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                }
+            }
+            .toolbarBackground(.hidden, for: .navigationBar)
+    }
+    
+    private struct Constants {
+        struct Image {
+            static let launchScreen = "LaunchScreen"
+        }
+    }
+}
+
+private extension View {
+    func setupNavigationBar() -> some View {
+        modifier(NavigationBarModifier())
+    }
+}
+
+// MARK: - CoordinatorView_Previews
 
 struct CoordinatorView_Previews: PreviewProvider {
     static var previews: some View {

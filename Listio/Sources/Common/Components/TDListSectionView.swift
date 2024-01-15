@@ -76,7 +76,7 @@ private extension TDListSectionView {
     ) -> some View {
         if !sectionTitle.isEmpty {
             Text(sectionTitle)
-                .foregroundColor(.buttonPrimary)
+                .foregroundColor(.white)
         }
     }
     

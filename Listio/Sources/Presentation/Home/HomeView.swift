@@ -14,19 +14,23 @@ struct HomeView: View {
     
     init(store: Store<Home.Reducer>) {
         self.store = store
-        setupNavigationBar()
     }
     
     var body: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
+        LinearGradient(
+            gradient: Gradient(colors: [.main, .mainsecondary]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .edgesIgnoringSafeArea(.all)
+        .overlay(
             ZStack {
                 ScrollViewReader { scrollView in
                     SwiftUI.List {
                         invitationsSection
                         listsSection
                     }
+                    .scrollContentBackground(.hidden)
                     .onChange(of: store.state.viewState == .addingList, {
                         withAnimation {
                             scrollView.scrollTo(store.state.viewModel.listsSection.rows.count - 1,
@@ -35,6 +39,7 @@ struct HomeView: View {
                     })
                 }
                 addNewRowButton
+                loading
             }
             .onAppear {
                 store.send(.onViewAppear)
@@ -42,13 +47,9 @@ struct HomeView: View {
             .disabled(
                 store.state.viewState == .loading
             )
-            if store.state.viewState == .loading {
-                ProgressView()
-            }
-        }
-        .navigationTitle("\(Constants.Text.title)")
-        .navigationBarItems(
-            trailing: navigationBarItems
+            .navigationBarItems(
+                trailing: navigationBarItems
+            )
         )
     }
 }
@@ -88,7 +89,7 @@ private extension HomeView {
             Section(
                 header:
                     Text(Constants.Text.invitations)
-                    .foregroundColor(.buttonPrimary)
+                    .foregroundColor(.white)
             ) {
                 ForEach(store.state.viewModel.invitations) { invitation in
                     HStack {
@@ -148,8 +149,15 @@ private extension HomeView {
                         .resizable()
                         .frame(width: 48.0, height: 48.0)
                 })
-                .foregroundColor(.buttonPrimary)
+                .foregroundColor(.white)
             }
+        }
+    }
+    
+    @ViewBuilder
+    var loading: some View {
+        if store.state.viewState == .loading {
+            ProgressView()
         }
     }
 }
@@ -157,13 +165,6 @@ private extension HomeView {
 // MARK: - Private
 
 private extension HomeView {
-    func setupNavigationBar() {
-        UINavigationBar.appearance()
-            .largeTitleTextAttributes = [
-                .foregroundColor: UIColor(.buttonPrimary)
-            ]
-    }
-    
     var listActions: ListActions {
         ListActions(tapAction: tapAction,
                     swipeActions: swipeActions,
@@ -212,6 +213,7 @@ private extension HomeView {
             static let logout = "Logout"
         }
         struct Image {
+            static let launchScreen = "LaunchScreen"
             static let profilePlaceHolder = "person.crop.circle"
             static let addButton = "plus.circle.fill"
             static let closeAddListButton = "xmark"
