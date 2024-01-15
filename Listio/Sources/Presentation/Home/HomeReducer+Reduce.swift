@@ -62,7 +62,7 @@ internal extension Home.Reducer {
                 state: &state
             )
             
-        case (.idle, .didTapCancelAddRowButton):
+        case (.addingList, .didTapCancelAddRowButton):
             return onDidTapCancelAddRowButton(
                 state: &state
             )

@@ -11,7 +11,7 @@ struct AuthenticationView: View {
     @State private var sloganScale = 0.0
     @State private var sloganOpacity = 0.0
     @State private var isModalVisible = false
-    @State private var loginDetent = PresentationDetent.height(200)
+    @State private var loginDetent = PresentationDetent.height(171)
     
     init(store: Store<Authentication.Reducer>) {
         self.store = store
@@ -65,28 +65,31 @@ struct AuthenticationView: View {
                     }) {
                         Text(Constants.Text.login)
                             .frame(maxWidth: .infinity)
+                            .frame(height: 48)
                             .font(.system(size: 18))
-                            .padding()
                             .foregroundColor(.white)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25)
                                     .stroke(.white, lineWidth: 1)
                             )
                     }
-                    .cornerRadius(25)
                     .padding(.horizontal, 50)
                     Spacer()
                 }
                 .padding(.top, 400)
                 .frame(maxWidth: .infinity)
             }
+            if store.state.viewState == .loading {
+                ProgressView()
+            }
         }
         .background(.main)
         .sheet(isPresented: $isModalVisible, content: {
             LoginButtonsView(onClose: {
-                store.send(.didTapSignInButton)
                 withAnimation {
                     isModalVisible = false
+                } completion: {
+                    store.send(.didTapSignInButton)
                 }
             })
             .presentationDetents(
@@ -109,9 +112,6 @@ struct AuthenticationView: View {
         .disabled(
             store.state.viewState == .loading
         )
-        if store.state.viewState == .loading {
-            ProgressView()
-        }
     }
 }
 
@@ -122,7 +122,7 @@ private extension AuthenticationView {
         var onClose: () -> Void
         
         var body: some View {
-            VStack {
+            VStack(alignment: .center, spacing: 25) {
                 GoogleSignInButton(
                     viewModel: GoogleSignInButtonViewModel(
                         scheme: .light,
@@ -132,8 +132,8 @@ private extension AuthenticationView {
                 ) {
                     onClose()
                 }
+                .frame(height: 48)
                 .padding(.horizontal, 50)
-                .padding(.top, 25)
                 
                 SignInWithAppleButton(
                     onRequest: { _ in
@@ -142,8 +142,13 @@ private extension AuthenticationView {
                     onCompletion: { _ in
                         
                     })
+                .frame(height: 44)
+                .signInWithAppleButtonStyle(.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 25)
+                        .stroke(.black, lineWidth: 1)
+                )
                 .padding(.horizontal, 50)
-                .padding(.vertical, 25)
             }
         }
     }
