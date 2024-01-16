@@ -2,7 +2,7 @@ import Combine
 
 // MARK: - Home Reducer
 
-internal extension Home.Reducer {    
+internal extension Home.Reducer {
     @MainActor
     func reduce(
         _ state: inout State,

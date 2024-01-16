@@ -25,19 +25,23 @@ struct AuthenticationView: View {
             loadingView
         }
         .background(.backgroundPrimary)
-        .sheet(isPresented: $isModalVisible, content: {
-            LoginButtonsView(onClose: {
-                withAnimation {
-                    isModalVisible = false
-                } completion: {
-                    store.send(.didTapSignInButton)
-                }
-            })
+        .sheet(isPresented: $isModalVisible) {
+            LoginButtonsView(
+                googleSignInHandler: {
+                    withAnimation {
+                        isModalVisible = false
+                    } completion: {
+                        store.send(.didTapGoogleSignInButton)
+                    }
+                },
+                appleSignInHandler: {
+                    store.send(.didTapAppleSignInButton)
+                })
             .presentationDetents(
                 [loginDetent],
                 selection: $loginDetent
             )
-        })
+        }
         .alert(isPresented: Binding(
             get: { store.state.viewState == .unexpectedError },
             set: { _ in }
@@ -144,7 +148,8 @@ private extension AuthenticationView {
 
 private extension AuthenticationView {
     struct LoginButtonsView: View {
-        var onClose: () -> Void
+        var googleSignInHandler: () -> Void
+        var appleSignInHandler: () -> Void
         
         var body: some View {
             VStack(alignment: .center, spacing: 25) {
@@ -155,24 +160,24 @@ private extension AuthenticationView {
                         state: .normal
                     )
                 ) {
-                    onClose()
+                    googleSignInHandler()
                 }
                 .frame(height: 48)
                 .padding(.horizontal, 50)
                 
-                SignInWithAppleButton(
-                    onRequest: { _ in
+                SignInWithAppleButton(.signIn) { request in
+                    request.requestedScopes = [.fullName, .email]
+                } onCompletion: { result in
+                    switch result {
+                    case .success(let authResult):
+                        print("Usuario autenticado con Apple: \(authResult)")
+                        appleSignInHandler()
                         
-                    },
-                    onCompletion: { _ in
-                        
-                    })
-                .frame(height: 44)
-                .signInWithAppleButtonStyle(.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 25)
-                        .stroke(.borderBlack, lineWidth: 1)
-                )
+                    case .failure(let error):
+                        print("Error al autenticar con Apple: \(error.localizedDescription)")
+                    }
+                }
+                .frame(height: 44).signInWithAppleButtonStyle(.whiteOutline)
                 .padding(.horizontal, 50)
             }
             .frame(maxHeight: .infinity)
