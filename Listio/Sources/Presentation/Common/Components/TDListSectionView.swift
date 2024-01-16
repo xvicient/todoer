@@ -130,7 +130,7 @@ private extension TDListSectionView {
     @ViewBuilder
     func newRow(_ index: Int) -> some View {
         HStack {
-            Image.largecircleFillCircle
+            Image.circle
                 .foregroundColor(.buttonSecondary)
             TextField(newRowPlaceholder, text: $newRowText)
                 .foregroundColor(.textPrimary)

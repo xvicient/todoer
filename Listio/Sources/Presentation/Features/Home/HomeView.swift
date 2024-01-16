@@ -152,11 +152,17 @@ private extension HomeView {
                         store.send(.didTapAddRowButton)
                     }
                 }, label: {
-                    Image.plusCircleFill
-                        .resizable()
-                        .frame(width: 48.0, height: 48.0)
+                    ZStack {
+                        Circle()
+                            .frame(width: 48.0, height: 48.0)
+                            .scaleEffect(0.9)
+                            .foregroundColor(.backgroundSecondary)
+                        Image.plusCircleFill
+                            .resizable()
+                            .frame(width: 48.0, height: 48.0)
+                            .foregroundColor(.buttonAccent)
+                    }
                 })
-                .foregroundColor(.buttonAccent)
             }
         }
     }

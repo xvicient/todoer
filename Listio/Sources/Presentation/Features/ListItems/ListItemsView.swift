@@ -92,6 +92,11 @@ private extension ListItemsView {
                     Image.plusCircleFill
                         .resizable()
                         .frame(width: 48.0, height: 48.0)
+                        .foregroundColor(.buttonAccent)
+                        .background(
+                            RoundedRectangle(cornerRadius: 24)
+                                .fill(.backgroundSecondary)
+                        )
                 })
                 .foregroundColor(.buttonAccent)
             }
