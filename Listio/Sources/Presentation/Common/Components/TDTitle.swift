@@ -11,10 +11,12 @@ struct TDTitle: View {
     
     var body: some View {
         HStack {
-            if let image = image{
+            if let image = image {
                 image
+                    .foregroundColor(.backgroundPrimary)
             }
             Text(title)
+                .foregroundColor(.textPrimary)
             Spacer()
         }
         .padding(.horizontal, 24)
@@ -24,7 +26,6 @@ struct TDTitle: View {
 
 struct TDTitle_Previews: PreviewProvider {
     static var previews: some View {
-        TDButton(title: "OK",
-                 action: {})
+        TDTitle(title: "Test", image: .squareAndArrowUp)
     }
 }

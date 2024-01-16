@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum Page: Hashable, Identifiable, Equatable {
+enum Page: Hashable, Identifiable {
     case authentication
     case home
     case listItems(List)

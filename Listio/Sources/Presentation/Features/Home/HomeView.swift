@@ -46,24 +46,6 @@ struct HomeView: View {
 
 private extension HomeView {
     @ViewBuilder
-    var lists: some View {
-        ScrollViewReader { scrollView in
-            SwiftUI.List {
-                invitationsSection
-                listsSection
-            }
-            .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
-            .scrollContentBackground(.hidden)
-            .onChange(of: store.state.viewState == .addingList, {
-                withAnimation {
-                    scrollView.scrollTo(store.state.viewModel.listsSection.rows.count - 1,
-                                        anchor: .bottom)
-                }
-            })
-        }
-    }
-    @ViewBuilder
     var navigationBarItems: some View {
         HStack {
             Spacer()
@@ -86,6 +68,25 @@ private extension HomeView {
         }
         .onAppear {
             store.send(.onProfilePhotoAppear)
+        }
+    }
+    
+    @ViewBuilder
+    var lists: some View {
+        ScrollViewReader { scrollView in
+            SwiftUI.List {
+                invitationsSection
+                listsSection
+            }
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollContentBackground(.hidden)
+            .onChange(of: store.state.viewState == .addingList, {
+                withAnimation {
+                    scrollView.scrollTo(store.state.viewModel.listsSection.rows.count - 1,
+                                        anchor: .bottom)
+                }
+            })
         }
     }
     

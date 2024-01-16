@@ -20,6 +20,8 @@ struct CoordinatorView: View {
                                 [shareListDetent, .large],
                                 selection: $shareListDetent
                             )
+                            .colorScheme(.light)
+                            .preferredColorScheme(.dark)
                     }
                 }
                 .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in

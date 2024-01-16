@@ -19,69 +19,10 @@ struct AuthenticationView: View {
     
     var body: some View {
         ZStack {
-            VStack {
-                if isTopSpacerVisible {
-                    Spacer()
-                }
-                Image.launchScreen
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.horizontal, 50)
-                    .padding(.top, logoTopPadding)
-                    .onAppear {
-                        withAnimation(Animation.easeInOut(duration: 0.5).delay(1.0)) {
-                            isTopSpacerVisible = false
-                        } completion: {
-                            withAnimation(Animation.easeInOut(duration: 0.25).delay(0.25)) {
-                                sloganOpacity = 1.0
-                                sloganScale = 1.3
-                            } completion: {
-                                withAnimation(Animation.easeInOut(duration: 0.25)) {
-                                    sloganScale = 1.0
-                                    isLoginButtonVisible = true
-                                }
-                            }
-                        }
-                    }
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
-            VStack {
-                Image.slogan
-                    .resizable()
-                    .scaledToFit()
-                    .scaleEffect(sloganScale)
-                    .opacity(sloganOpacity)
-                    .padding(.horizontal, 50)
-                    .padding(.top, 250)
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
-            if isLoginButtonVisible {
-                VStack {
-                    Spacer()
-                    Button(action: {
-                        isModalVisible = true
-                    }) {
-                        Text(Constants.Text.login)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 48)
-                            .font(.system(size: 18))
-                            .foregroundColor(.textWhite)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 25)
-                                    .stroke(.borderPrimary, lineWidth: 1)
-                            )
-                    }
-                    .padding(.horizontal, 50)
-                    Spacer()
-                }
-                .padding(.top, 400)
-                .frame(maxWidth: .infinity)
-            }
-            if store.state.viewState == .loading {
-                ProgressView()
-            }
+            logoView
+            sloganView
+            loginButton
+            loadingView
         }
         .background(.backgroundPrimary)
         .sheet(isPresented: $isModalVisible, content: {
@@ -112,6 +53,90 @@ struct AuthenticationView: View {
         .disabled(
             store.state.viewState == .loading
         )
+    }
+}
+
+// MARK: - ViewBuilders
+
+private extension AuthenticationView {
+    @ViewBuilder
+    var logoView: some View {
+        VStack {
+            if isTopSpacerVisible {
+                Spacer()
+            }
+            Image.launchScreen
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(.horizontal, 50)
+                .padding(.top, logoTopPadding)
+                .onAppear {
+                    withAnimation(Animation.easeInOut(duration: 0.5).delay(1.0)) {
+                        isTopSpacerVisible = false
+                    } completion: {
+                        withAnimation(Animation.easeInOut(duration: 0.25).delay(0.25)) {
+                            sloganOpacity = 1.0
+                            sloganScale = 1.3
+                        } completion: {
+                            withAnimation(Animation.easeInOut(duration: 0.25)) {
+                                sloganScale = 1.0
+                                isLoginButtonVisible = true
+                            }
+                        }
+                    }
+                }
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+
+    }
+    
+    @ViewBuilder
+    var sloganView: some View {
+        VStack {
+            Image.slogan
+                .resizable()
+                .scaledToFit()
+                .scaleEffect(sloganScale)
+                .opacity(sloganOpacity)
+                .padding(.horizontal, 50)
+                .padding(.top, 250)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+    }
+    
+    @ViewBuilder
+    var loginButton: some View {
+        if isLoginButtonVisible {
+            VStack {
+                Spacer()
+                Button(action: {
+                    isModalVisible = true
+                }) {
+                    Text(Constants.Text.login)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 48)
+                        .font(.system(size: 18))
+                        .foregroundColor(.textWhite)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 25)
+                                .stroke(.borderPrimary, lineWidth: 1)
+                        )
+                }
+                .padding(.horizontal, 50)
+                Spacer()
+            }
+            .padding(.top, 400)
+            .frame(maxWidth: .infinity)
+        }
+    }
+    
+    @ViewBuilder
+    var loadingView: some View {
+        if store.state.viewState == .loading {
+            ProgressView()
+        }
     }
 }
 
@@ -150,6 +175,8 @@ private extension AuthenticationView {
                 )
                 .padding(.horizontal, 50)
             }
+            .frame(maxHeight: .infinity)
+            .background(.backgroundWhite)
         }
     }
 }

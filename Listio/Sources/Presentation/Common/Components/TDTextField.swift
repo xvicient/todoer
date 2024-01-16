@@ -16,6 +16,7 @@ struct TDTextField: View {
                     .background(.backgroundWhite)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 12)
+                    .foregroundColor(.textSecondary)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(.borderSecondary, lineWidth: 1)
@@ -38,5 +39,16 @@ struct TDTextField: View {
                 }
             }
         }
+    }
+}
+
+struct TDTextField_Previews: PreviewProvider {
+    static var previews: some View {
+        TDTextField(
+            text: Binding(
+                get: { "Test" },
+                set: { _ in }
+            ),
+            placeholder: "Placeholder")
     }
 }

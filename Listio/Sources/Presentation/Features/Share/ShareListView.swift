@@ -18,15 +18,23 @@ struct ShareListView: View {
                 store.send(.didTapShareListButton($shareEmailText.wrappedValue))
             }
             .padding(.horizontal, 24)
-            TDTitle(title: Constants.Text.sharingWithTitle)
-            SwiftUI.List {
-                ForEach(store.state.users,
-                        id: \.uuid) { user in
+            SwiftUI.List(store.state.users) { user in
+                Section(
+                    header:
+                        Text(Constants.Text.sharingWithTitle)
+                        .foregroundColor(.textPrimary)
+                ) {
                     Text(user.displayName ?? "")
+                        .foregroundColor(.textPrimary)
                 }
             }
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollContentBackground(.hidden)
         }
         .padding(.top, 24)
+        .frame(maxHeight: .infinity)
+        .background(.backgroundWhite)
         .onAppear {
             store.send(.onAppear)
         }
