@@ -2,7 +2,6 @@ import SwiftUI
 
 struct CoordinatorView: View {
     @StateObject private var coordinator = Coordinator()
-    @State private var shareListDetent = PresentationDetent.medium
     
     var body: some View {
         NavigationStack(path: $coordinator.path) {
@@ -17,8 +16,7 @@ struct CoordinatorView: View {
                     case .shareList:
                         coordinator.build(sheet: sheet)
                             .presentationDetents(
-                                [shareListDetent, .large],
-                                selection: $shareListDetent
+                                [.height(300)]
                             )
                             .colorScheme(.light)
                             .preferredColorScheme(.dark)
