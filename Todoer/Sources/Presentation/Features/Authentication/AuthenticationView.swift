@@ -7,10 +7,9 @@ struct AuthenticationView: View {
     @ObservedObject private var store: Store<Authentication.Reducer>
     @State private var isTopSpacerVisible = true
     @State private var logoTopPadding = 100.0
-    @State private var isLoginButtonVisible = false
+    @State private var areLoginButtonsVisibles = false
     @State private var sloganScale = 0.0
     @State private var sloganOpacity = 0.0
-    @State private var isModalVisible = false
     @State private var loginDetent = PresentationDetent.height(171)
     
     init(store: Store<Authentication.Reducer>) {
@@ -21,27 +20,10 @@ struct AuthenticationView: View {
         ZStack {
             logoView
             sloganView
-            loginButton
+            loginButtons
             loadingView
         }
         .background(.backgroundPrimary)
-        .sheet(isPresented: $isModalVisible) {
-            LoginButtonsView(
-                googleSignInHandler: {
-                    withAnimation {
-                        isModalVisible = false
-                    } completion: {
-                        store.send(.didTapGoogleSignInButton)
-                    }
-                },
-                appleSignInHandler: {
-                    store.send(.didAppleSignIn($0))
-                })
-            .presentationDetents(
-                [loginDetent],
-                selection: $loginDetent
-            )
-        }
         .alert(isPresented: Binding(
             get: { store.state.viewState == .unexpectedError },
             set: { _ in }
@@ -84,7 +66,7 @@ private extension AuthenticationView {
                         } completion: {
                             withAnimation(Animation.easeInOut(duration: 0.25)) {
                                 sloganScale = 1.0
-                                isLoginButtonVisible = true
+                                areLoginButtonsVisibles = true
                             }
                         }
                     }
@@ -111,27 +93,42 @@ private extension AuthenticationView {
     }
     
     @ViewBuilder
-    var loginButton: some View {
-        if isLoginButtonVisible {
-            VStack {
+    var loginButtons: some View {
+        if areLoginButtonsVisibles {
+            VStack(spacing: 16) {
                 Spacer()
-                Button(action: {
-                    isModalVisible = true
-                }) {
-                    Text(Constants.Text.login)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48)
-                        .font(.system(size: 18))
-                        .foregroundColor(.textWhite)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 25)
-                                .stroke(.borderPrimary, lineWidth: 1)
-                        )
+                SignInWithAppleButton(.signIn) { request in
+                    request.requestedScopes = [.fullName, .email]
+                } onCompletion: {
+                    store.send(.didAppleSignIn($0))
                 }
-                .padding(.horizontal, 50)
+                .frame(height: 44)
+                .signInWithAppleButtonStyle(.white)
+                
+                Button(action: {
+                    store.send(.didTapGoogleSignInButton)
+                }) {
+                    HStack {
+                        HStack {
+                            Image.googleLogo
+                                .resizable()
+                                .frame(width: 36, height: 36)
+                            Text(Constants.Text.signInWithGoogle)
+                                .foregroundColor(.textBlack)
+                                .frame(height: 44)
+                                .font(.system(size: 16, weight: .semibold))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .contentShape(Rectangle())
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(.backgroundWhite)
+                    .cornerRadius(8)
+                }
                 Spacer()
             }
             .padding(.top, 400)
+            .padding(.horizontal, 50)
             .frame(maxWidth: .infinity)
         }
     }
@@ -144,47 +141,13 @@ private extension AuthenticationView {
     }
 }
 
-// MARK: - LoginButtonsView
-
-private extension AuthenticationView {
-    struct LoginButtonsView: View {
-        var googleSignInHandler: () -> Void
-        var appleSignInHandler: (Result<ASAuthorization, Error>) -> Void
-        
-        var body: some View {
-            VStack(alignment: .center, spacing: 25) {
-                GoogleSignInButton(
-                    viewModel: GoogleSignInButtonViewModel(
-                        scheme: .light,
-                        style: .standard,
-                        state: .normal
-                    )
-                ) {
-                    googleSignInHandler()
-                }
-                .frame(height: 48)
-                .padding(.horizontal, 50)
-                
-                SignInWithAppleButton(.signIn) { request in
-                    request.requestedScopes = [.fullName, .email]
-                } onCompletion: {
-                    appleSignInHandler($0)
-                }
-                .frame(height: 44).signInWithAppleButtonStyle(.whiteOutline)
-                .padding(.horizontal, 50)
-            }
-            .frame(maxHeight: .infinity)
-            .background(.backgroundWhite)
-        }
-    }
-}
-
 // MARK: - Constants
 
 private extension AuthenticationView {
     struct Constants {
         struct Text {
             static let login = "Login"
+            static let signInWithGoogle = "Sign in with Google"
             static let errorTitle = "Error"
             static let unexpectedError = "Unexpected error"
             static let errorOkButton = "Ok"

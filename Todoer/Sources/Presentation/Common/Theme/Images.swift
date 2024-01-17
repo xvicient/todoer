@@ -5,6 +5,7 @@ extension Image {
     
     static let launchScreen = Image("LaunchScreen")
     static let slogan = Image("Slogan")
+    static let googleLogo = Image("GoogleLogo")
     
     // MARK: - Icons
     

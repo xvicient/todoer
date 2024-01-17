@@ -65,8 +65,12 @@ private extension Authentication.Reducer {
                     )
                 )
             })
-        case .failure:
-            state.viewState = .unexpectedError
+        case .failure(let error):
+            if error.code == 1001 {
+                state.viewState = .idle
+            } else {
+                state.viewState = .unexpectedError
+            }
         }
         return .none
     }
@@ -79,9 +83,12 @@ private extension Authentication.Reducer {
         case .success:
             state.viewState = .idle
             coordinator.loggIn()
-        case .failure:
-            state.viewState = .unexpectedError
-            coordinator.loggOut()
+        case .failure(let error):
+            if error.code == -5 {
+                state.viewState = .idle
+            } else {
+                state.viewState = .unexpectedError
+            }
         }
         return .none
     }
