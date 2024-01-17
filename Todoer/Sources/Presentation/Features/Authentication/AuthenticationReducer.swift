@@ -1,3 +1,5 @@
+import AuthenticationServices
+
 protocol AuthenticationDependencies {
     var useCase: AuthenticationUseCaseApi { get }
 }
@@ -8,7 +10,7 @@ extension Authentication {
         enum Action {
             // MARK: - User actions
             case didTapGoogleSignInButton
-            case didTapAppleSignInButton
+            case didAppleSignIn(Result<ASAuthorization, Error>)
             
             // MARK: - Results
             case signInResult(Result<Void, Error>)

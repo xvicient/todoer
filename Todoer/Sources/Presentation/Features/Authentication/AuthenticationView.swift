@@ -35,7 +35,7 @@ struct AuthenticationView: View {
                     }
                 },
                 appleSignInHandler: {
-                    store.send(.didTapAppleSignInButton)
+                    store.send(.didAppleSignIn($0))
                 })
             .presentationDetents(
                 [loginDetent],
@@ -149,7 +149,7 @@ private extension AuthenticationView {
 private extension AuthenticationView {
     struct LoginButtonsView: View {
         var googleSignInHandler: () -> Void
-        var appleSignInHandler: () -> Void
+        var appleSignInHandler: (Result<ASAuthorization, Error>) -> Void
         
         var body: some View {
             VStack(alignment: .center, spacing: 25) {
@@ -167,15 +167,8 @@ private extension AuthenticationView {
                 
                 SignInWithAppleButton(.signIn) { request in
                     request.requestedScopes = [.fullName, .email]
-                } onCompletion: { result in
-                    switch result {
-                    case .success(let authResult):
-                        print("Usuario autenticado con Apple: \(authResult)")
-                        appleSignInHandler()
-                        
-                    case .failure(let error):
-                        print("Error al autenticar con Apple: \(error.localizedDescription)")
-                    }
+                } onCompletion: {
+                    appleSignInHandler($0)
                 }
                 .frame(height: 44).signInWithAppleButtonStyle(.whiteOutline)
                 .padding(.horizontal, 50)

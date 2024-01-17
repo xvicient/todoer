@@ -1,4 +1,5 @@
 import Combine
+import AuthenticationServices
 
 // MARK: - Authentication Reducer
 
@@ -14,9 +15,10 @@ internal extension Authentication.Reducer {
                 state: &state
             )
             
-        case (.idle, .didTapAppleSignInButton):
-            return onDidTapAppleSignInButton(
-                state: &state
+        case (.idle, .didAppleSignIn(let result)):
+            return onAppleSignIn(
+                state: &state,
+                result: result
             )
             
         case (.loading, .signInResult(let result)):
@@ -44,16 +46,29 @@ private extension Authentication.Reducer {
     ) -> Effect<Action> {
         state.viewState = .loading
         return .task(Task {
-            await .signInResult(dependencies.useCase.googleSignIn())
+            await .signInResult(
+                dependencies.useCase.googleSignIn()
+            )
         })
     }
-    func onDidTapAppleSignInButton(
-        state: inout State
+    func onAppleSignIn(
+        state: inout State,
+        result: Result<ASAuthorization, Error>
     ) -> Effect<Action> {
-        state.viewState = .loading
-        return .task(Task {
-            await .signInResult(dependencies.useCase.appleSignIn())
-        })
+        switch result {
+        case .success(let authorization):
+            state.viewState = .loading
+            return .task(Task {
+                await .signInResult(
+                    dependencies.useCase.appleSignIn(
+                        authorization: authorization
+                    )
+                )
+            })
+        case .failure:
+            state.viewState = .unexpectedError
+        }
+        return .none
     }
     
     func onSignInResult(

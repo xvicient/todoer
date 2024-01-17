@@ -1,6 +1,12 @@
+import AuthenticationServices
+
 protocol AuthenticationUseCaseApi {
-    func googleSignIn() async -> (Result<Void, Error>)
-    func appleSignIn() async -> (Result<Void, Error>)
+    func googleSignIn(
+    ) async -> (Result<Void, Error>)
+    
+    func appleSignIn(
+        authorization: ASAuthorization
+    ) async -> (Result<Void, Error>)
 }
 
 extension Authentication {
@@ -9,30 +15,18 @@ extension Authentication {
             case signInError
         }
         private let usersRepository: UsersRepositoryApi
-        private let googleService: GoogleSignInServiceApi
+        private let singInService: SignInServiceApi
         
         init(usersRepository: UsersRepositoryApi = UsersRepository(),
-             googleService: GoogleSignInServiceApi = GoogleSignInService()) {
+             singInService: SignInServiceApi = SignInService()) {
             self.usersRepository = usersRepository
-            self.googleService = googleService
+            self.singInService = singInService
         }
         
         func googleSignIn() async -> (Result<Void, Error>) {
             do {
-                let authData = try await googleService.signIn()
-                
-                guard let email = authData.email else {
-                    throw Errors.signInError
-                }
-                
-                if (try? await usersRepository.getUser(email)) == nil {
-                    try await usersRepository.createUser(with: authData.uid,
-                                                         email: authData.email,
-                                                         displayName: authData.displayName,
-                                                         photoUrl: authData.photoUrl)
-                }
-                
-                usersRepository.setUuid(authData.uid)
+                let authData = try await singInService.googleSignIn()
+                try await setUser(authData: authData)
                 
                 return .success(())
             } catch {
@@ -40,27 +34,34 @@ extension Authentication {
             }
         }
         
-        func appleSignIn() async -> (Result<Void, Error>) {
+        func appleSignIn(
+            authorization: ASAuthorization
+        ) async -> (Result<Void, Error>) {
             do {
-                let authData = try await googleService.signIn()
-                
-                guard let email = authData.email else {
-                    throw Errors.signInError
-                }
-                
-                if (try? await usersRepository.getUser(email)) == nil {
-                    try await usersRepository.createUser(with: authData.uid,
-                                                         email: authData.email,
-                                                         displayName: authData.displayName,
-                                                         photoUrl: authData.photoUrl)
-                }
-                
-                usersRepository.setUuid(authData.uid)
+                let authData = try await singInService.appleSignIn(authorization: authorization)
+                try await setUser(authData: authData)
                 
                 return .success(())
             } catch {
                 return .failure(error)
             }
+        }
+        
+        private func setUser(
+            authData: AuthDataDTO
+        ) async throws {
+            guard let email = authData.email else {
+                throw Errors.signInError
+            }
+            
+            if (try? await usersRepository.getUser(email)) == nil {
+                try await usersRepository.createUser(with: authData.uid,
+                                                     email: authData.email,
+                                                     displayName: authData.displayName,
+                                                     photoUrl: authData.photoUrl)
+            }
+            
+            usersRepository.setUuid(authData.uid)
         }
     }
 }

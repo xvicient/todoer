@@ -300,11 +300,12 @@ private extension Home.Reducer {
         state: inout State,
         result: Result<String, Error>
     ) -> Effect<Action> {
+        state.viewState = .idle
         switch result {
         case .success(let photoUrl):
             state.viewModel.photoUrl = photoUrl
         case .failure:
-            state.viewState = .unexpectedError
+            break
         }
         return .none
     }

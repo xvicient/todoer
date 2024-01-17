@@ -60,7 +60,7 @@ private extension HomeView {
                         $0.resizable().aspectRatio(contentMode: .fit)
                     }, placeholder: {
                         Image.personCropCircle
-                            .tint(.buttonPrimary)
+                            .tint(.buttonWhite)
                     })
                 .frame(width: 30, height: 30)
                 .cornerRadius(15.0)
@@ -138,7 +138,7 @@ private extension HomeView {
     var listsSection: some View {
         TDListSectionView(viewModel: store.state.viewModel.listsSection,
                           actions: listActions,
-                          sectionTitle: Constants.Text.todoos,
+                          sectionTitle: Constants.Text.todos,
                           newRowPlaceholder: Constants.Text.list)
     }
     
@@ -216,9 +216,8 @@ private extension HomeView {
 private extension HomeView {
     struct Constants {
         struct Text {
-            static let title = "Todoo"
             static let invitations = "Invitations"
-            static let todoos = "Todoos"
+            static let todos = "Todo's"
             static let wantsToShare = "Wants to share: "
             static let accept = "Accept"
             static let decline = "Decline"

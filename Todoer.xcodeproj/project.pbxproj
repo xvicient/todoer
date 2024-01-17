@@ -56,7 +56,7 @@
 		C79CB2C32B13F3E800C2BD18 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2C22B13F3E800C2BD18 /* FirebaseAuth */; };
 		C79CB2C52B13F3E800C2BD18 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C79CB2C42B13F3E800C2BD18 /* FirebaseAuthCombine-Community */; };
 		C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */; };
-		C79CB2D22B13FDFF00C2BD18 /* GoogleSignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D12B13FDFF00C2BD18 /* GoogleSignInService.swift */; };
+		C79CB2D22B13FDFF00C2BD18 /* SignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D12B13FDFF00C2BD18 /* SignInService.swift */; };
 		C79CB2D52B13FEA200C2BD18 /* UIViewController+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D42B13FEA200C2BD18 /* UIViewController+TopViewController.swift */; };
 		C79CB2D72B154C2600C2BD18 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D62B154C2600C2BD18 /* AuthenticationService.swift */; };
 		C79CB2D92B154D2600C2BD18 /* AuthDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D82B154D2600C2BD18 /* AuthDataDTO.swift */; };
@@ -72,9 +72,9 @@
 		C79CB2F92B17E56A00C2BD18 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F82B17E56A00C2BD18 /* Item.swift */; };
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
 		C7D9D7242B572B5200272A9B /* AuthenticationReducer+Reduce.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9D7232B572B5200272A9B /* AuthenticationReducer+Reduce.swift */; };
-		D6A29C082B09706200FA7F84 /* TodooTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* TodooTests.swift */; };
-		D6A29C122B09706200FA7F84 /* TodooUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C112B09706200FA7F84 /* TodooUITests.swift */; };
-		D6A29C142B09706200FA7F84 /* TodooUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C132B09706200FA7F84 /* TodooUITestsLaunchTests.swift */; };
+		D6A29C082B09706200FA7F84 /* TodoerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* TodoerTests.swift */; };
+		D6A29C122B09706200FA7F84 /* TodoerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C112B09706200FA7F84 /* TodoerUITests.swift */; };
+		D6A29C142B09706200FA7F84 /* TodoerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */; };
 		D6A29C242B09708400FA7F84 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D6A29C232B09708400FA7F84 /* FirebaseAnalytics */; };
 		D6A29C262B09708400FA7F84 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D6A29C252B09708400FA7F84 /* FirebaseAnalyticsSwift */; };
 		D6A29C2A2B09780800FA7F84 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D6A29C292B09780800FA7F84 /* FirebaseFirestore */; };
@@ -145,7 +145,7 @@
 		C79CB2B22B13AA4400C2BD18 /* TDListSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDListSectionView.swift; sourceTree = "<group>"; };
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
-		C79CB2D12B13FDFF00C2BD18 /* GoogleSignInService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInService.swift; sourceTree = "<group>"; };
+		C79CB2D12B13FDFF00C2BD18 /* SignInService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInService.swift; sourceTree = "<group>"; };
 		C79CB2D42B13FEA200C2BD18 /* UIViewController+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopViewController.swift"; sourceTree = "<group>"; };
 		C79CB2D62B154C2600C2BD18 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		C79CB2D82B154D2600C2BD18 /* AuthDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDataDTO.swift; sourceTree = "<group>"; };
@@ -161,12 +161,13 @@
 		C79CB2F82B17E56A00C2BD18 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7D9D7232B572B5200272A9B /* AuthenticationReducer+Reduce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+Reduce.swift"; sourceTree = "<group>"; };
+		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C032B09706200FA7F84 /* TodoerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6A29C072B09706200FA7F84 /* TodooTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodooTests.swift; sourceTree = "<group>"; };
+		D6A29C072B09706200FA7F84 /* TodoerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerTests.swift; sourceTree = "<group>"; };
 		D6A29C0D2B09706200FA7F84 /* TodoerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6A29C112B09706200FA7F84 /* TodooUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodooUITests.swift; sourceTree = "<group>"; };
-		D6A29C132B09706200FA7F84 /* TodooUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodooUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
+		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -424,7 +425,7 @@
 		C79CB2CE2B13FD8F00C2BD18 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				C79CB2D12B13FDFF00C2BD18 /* GoogleSignInService.swift */,
+				C79CB2D12B13FDFF00C2BD18 /* SignInService.swift */,
 				C79CB2D62B154C2600C2BD18 /* AuthenticationService.swift */,
 			);
 			path = Services;
@@ -493,6 +494,7 @@
 		D6A29BF52B09706100FA7F84 /* Todoer */ = {
 			isa = PBXGroup;
 			children = (
+				C7F428632B58425E00DEE7E9 /* Todoer.entitlements */,
 				C79CB2862B0D537A00C2BD18 /* Resources */,
 				C79CB26D2B0D537A00C2BD18 /* Sources */,
 			);
@@ -502,7 +504,7 @@
 		D6A29C062B09706200FA7F84 /* TodoerTests */ = {
 			isa = PBXGroup;
 			children = (
-				D6A29C072B09706200FA7F84 /* TodooTests.swift */,
+				D6A29C072B09706200FA7F84 /* TodoerTests.swift */,
 			);
 			path = TodoerTests;
 			sourceTree = "<group>";
@@ -510,8 +512,8 @@
 		D6A29C102B09706200FA7F84 /* TodoerUITests */ = {
 			isa = PBXGroup;
 			children = (
-				D6A29C112B09706200FA7F84 /* TodooUITests.swift */,
-				D6A29C132B09706200FA7F84 /* TodooUITestsLaunchTests.swift */,
+				D6A29C112B09706200FA7F84 /* TodoerUITests.swift */,
+				D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */,
 			);
 			path = TodoerUITests;
 			sourceTree = "<group>";
@@ -663,7 +665,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C79CB2D22B13FDFF00C2BD18 /* GoogleSignInService.swift in Sources */,
+				C79CB2D22B13FDFF00C2BD18 /* SignInService.swift in Sources */,
 				C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */,
 				C7D9D7242B572B5200272A9B /* AuthenticationReducer+Reduce.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */,
@@ -726,7 +728,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6A29C082B09706200FA7F84 /* TodooTests.swift in Sources */,
+				D6A29C082B09706200FA7F84 /* TodoerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -734,8 +736,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6A29C142B09706200FA7F84 /* TodooUITestsLaunchTests.swift in Sources */,
-				D6A29C122B09706200FA7F84 /* TodooUITests.swift in Sources */,
+				D6A29C142B09706200FA7F84 /* TodoerUITestsLaunchTests.swift in Sources */,
+				D6A29C122B09706200FA7F84 /* TodoerUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -879,6 +881,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Todoer/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Todoer/Resources/Preview Content\"";
@@ -914,6 +917,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Todoer/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Todoer/Resources/Preview Content\"";
