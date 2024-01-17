@@ -73,6 +73,7 @@
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
 		C7D9D7242B572B5200272A9B /* AuthenticationReducer+Reduce.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9D7232B572B5200272A9B /* AuthenticationReducer+Reduce.swift */; };
 		C7F428652B588B8E00DEE7E9 /* Error+Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F428642B588B8E00DEE7E9 /* Error+Code.swift */; };
+		C7F428672B588CB300DEE7E9 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F428662B588CB300DEE7E9 /* AppInfo.swift */; };
 		D6A29C082B09706200FA7F84 /* TodoerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* TodoerTests.swift */; };
 		D6A29C122B09706200FA7F84 /* TodoerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C112B09706200FA7F84 /* TodoerUITests.swift */; };
 		D6A29C142B09706200FA7F84 /* TodoerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */; };
@@ -164,6 +165,7 @@
 		C7D9D7232B572B5200272A9B /* AuthenticationReducer+Reduce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+Reduce.swift"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
 		C7F428642B588B8E00DEE7E9 /* Error+Code.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Code.swift"; sourceTree = "<group>"; };
+		C7F428662B588CB300DEE7E9 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C032B09706200FA7F84 /* TodoerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C072B09706200FA7F84 /* TodoerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerTests.swift; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 			children = (
 				C79CB2E52B163BAA00C2BD18 /* AppSetting.swift */,
 				C77E107C2B52E204009612F8 /* Logger.swift */,
+				C7F428662B588CB300DEE7E9 /* AppInfo.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -711,6 +714,7 @@
 				C79CB28F2B0D537A00C2BD18 /* ListDTO.swift in Sources */,
 				C7390FC82B3CC68500E49A68 /* Effect.swift in Sources */,
 				C7390FC42B3637F200E49A68 /* ListItemsReducer.swift in Sources */,
+				C7F428672B588CB300DEE7E9 /* AppInfo.swift in Sources */,
 				C7390FDE2B45FEBB00E49A68 /* View+HideKeyboard.swift in Sources */,
 				C79CB2D92B154D2600C2BD18 /* AuthDataDTO.swift in Sources */,
 				C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */,

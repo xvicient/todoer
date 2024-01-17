@@ -7,7 +7,7 @@ struct AuthenticationView: View {
     @ObservedObject private var store: Store<Authentication.Reducer>
     @State private var isTopSpacerVisible = true
     @State private var logoTopPadding = 100.0
-    @State private var areLoginButtonsVisibles = false
+    @State private var didFinishAnimation = false
     @State private var sloganScale = 0.0
     @State private var sloganOpacity = 0.0
     @State private var loginDetent = PresentationDetent.height(171)
@@ -22,6 +22,7 @@ struct AuthenticationView: View {
             sloganView
             loginButtons
             loadingView
+            appInfoView
         }
         .background(.backgroundPrimary)
         .alert(isPresented: Binding(
@@ -66,7 +67,7 @@ private extension AuthenticationView {
                         } completion: {
                             withAnimation(Animation.easeInOut(duration: 0.25)) {
                                 sloganScale = 1.0
-                                areLoginButtonsVisibles = true
+                                didFinishAnimation = true
                             }
                         }
                     }
@@ -94,7 +95,7 @@ private extension AuthenticationView {
     
     @ViewBuilder
     var loginButtons: some View {
-        if areLoginButtonsVisibles {
+        if didFinishAnimation {
             VStack(spacing: 16) {
                 Spacer()
                 SignInWithAppleButton(.signIn) { request in
@@ -137,6 +138,19 @@ private extension AuthenticationView {
     var loadingView: some View {
         if store.state.viewState == .loading {
             ProgressView()
+        }
+    }
+    
+    @ViewBuilder
+    var appInfoView: some View {
+        if didFinishAnimation {
+            VStack {
+                Spacer()
+                Text("\(AppInfo.appName) \(AppInfo.appVersion) (\(AppInfo.buildNumber)) - \(AppInfo.environment)")
+                    .font(.footnote)
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
         }
     }
 }
