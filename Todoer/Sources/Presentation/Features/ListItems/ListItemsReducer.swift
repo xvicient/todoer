@@ -9,7 +9,7 @@ protocol ListItemsDependencies {
 }
 
 extension ListItems {
-    struct Reducer: Todoo.Reducer {
+    struct Reducer: Todoer.Reducer {
         
         enum Action {
             // MARK: - View appear

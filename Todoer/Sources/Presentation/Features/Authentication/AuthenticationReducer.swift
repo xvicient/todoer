@@ -3,7 +3,7 @@ protocol AuthenticationDependencies {
 }
 
 extension Authentication {
-    struct Reducer: Todoo.Reducer {
+    struct Reducer: Todoer.Reducer {
         
         enum Action {
             // MARK: - User actions

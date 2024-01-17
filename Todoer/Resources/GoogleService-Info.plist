@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>394597354811-97lej3lil6hm9akds7bn7dlq2qvaespe.apps.googleusercontent.com</string>
+	<string>394597354811-mqk4stasj6jparfh05jeklq8ajfg6720.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.394597354811-97lej3lil6hm9akds7bn7dlq2qvaespe</string>
+	<string>com.googleusercontent.apps.394597354811-mqk4stasj6jparfh05jeklq8ajfg6720</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDrwTORyn6GR2Qfil4HB9qBJPN2X0lX1nw</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.xvicient.todoo</string>
+	<string>com.xvicient.todoer</string>
 	<key>PROJECT_ID</key>
 	<string>listio-ff890</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:394597354811:ios:84e3b3639b358e71c57b1e</string>
+	<string>1:394597354811:ios:6530cc30423d1bafc57b1e</string>
 </dict>
 </plist>

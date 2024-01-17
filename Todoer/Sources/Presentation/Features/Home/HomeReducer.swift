@@ -9,7 +9,7 @@ protocol HomeDependencies {
 }
 
 extension Home {
-    struct Reducer: Todoo.Reducer {
+    struct Reducer: Todoer.Reducer {
         enum Action {
             // MARK: - View appear
             case onViewAppear
