@@ -376,6 +376,7 @@
 		C79CB2862B0D537A00C2BD18 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C7F428632B58425E00DEE7E9 /* Todoer.entitlements */,
 				C79CB2C62B13F48C00C2BD18 /* Info.plist */,
 				C79CB2872B0D537A00C2BD18 /* Assets.xcassets */,
 				C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */,
@@ -500,7 +501,6 @@
 		D6A29BF52B09706100FA7F84 /* Todoer */ = {
 			isa = PBXGroup;
 			children = (
-				C7F428632B58425E00DEE7E9 /* Todoer.entitlements */,
 				C79CB2862B0D537A00C2BD18 /* Resources */,
 				C79CB26D2B0D537A00C2BD18 /* Sources */,
 			);
@@ -889,7 +889,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Todoer/Todoer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Todoer/Resources/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Todoer/Resources/Preview Content\"";
@@ -925,7 +925,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Todoer/Todoer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Todoer/Resources/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Todoer/Resources/Preview Content\"";
