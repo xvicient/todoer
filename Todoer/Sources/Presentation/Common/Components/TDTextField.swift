@@ -19,7 +19,7 @@ struct TDTextField: View {
                     .foregroundColor(.textSecondary)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(.borderSecondary, lineWidth: 1)
+                            .stroke(.borderBlack, lineWidth: 1)
                     )
             }
             .padding(.horizontal, 24)

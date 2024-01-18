@@ -12,12 +12,12 @@ struct BottomLineStyle: TextFieldStyle {
                 }
                 Rectangle()
                     .frame(height: 1.0, alignment: .bottom)
-                    .foregroundColor(.buttonPrimary)
+                    .foregroundColor(.buttonBlack)
             }
             .padding(24)
             Button("Add",
                    action: action)
-            .foregroundColor(.buttonPrimary)
+            .foregroundColor(.buttonBlack)
         }
     }
 }

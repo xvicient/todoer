@@ -8,6 +8,6 @@ extension UINavigationController {
             target: nil,
             action: nil
         )
-        navigationBar.topItem?.backBarButtonItem?.tintColor = .buttonWhite
+        navigationBar.topItem?.backBarButtonItem?.tintColor = .textBlack
     }
 }

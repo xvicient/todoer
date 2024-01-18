@@ -11,6 +11,8 @@ struct AuthenticationView: View {
     @State private var sloganScale = 0.0
     @State private var sloganOpacity = 0.0
     @State private var loginDetent = PresentationDetent.height(171)
+    @State var caption: String = "Get things done!"
+    let captionText: String = "Get things done!"
     
     init(store: Store<Authentication.Reducer>) {
         self.store = store
@@ -24,7 +26,7 @@ struct AuthenticationView: View {
             loadingView
             appInfoView
         }
-        .background(.backgroundPrimary)
+        .background(.backgroundWhite)
         .alert(isPresented: Binding(
             get: { store.state.viewState == .unexpectedError },
             set: { _ in }
@@ -41,6 +43,20 @@ struct AuthenticationView: View {
             store.state.viewState == .loading
         )
     }
+    
+    func typeWriter(at position: String.Index) {
+        if position == captionText.startIndex {
+            caption = ""
+        }
+        
+        if position < captionText.endIndex {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.04) {
+                let char = captionText[position]
+                caption.append(char)
+                typeWriter(at: captionText.index(after: position))
+            }
+        }
+    }
 }
 
 // MARK: - ViewBuilders
@@ -55,7 +71,7 @@ private extension AuthenticationView {
             Image.launchScreen
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .padding(.horizontal, 50)
+                .padding(.horizontal, 35)
                 .padding(.top, logoTopPadding)
                 .onAppear {
                     withAnimation(Animation.easeInOut(duration: 0.5).delay(1.0)) {
@@ -80,17 +96,23 @@ private extension AuthenticationView {
     
     @ViewBuilder
     var sloganView: some View {
-        VStack {
-            Image.slogan
-                .resizable()
-                .scaledToFit()
-                .scaleEffect(sloganScale)
-                .opacity(sloganOpacity)
-                .padding(.horizontal, 50)
-                .padding(.top, 250)
-            Spacer()
+        if didFinishAnimation {
+            ZStack {
+                VStack(alignment: .leading) {
+                    Text(caption)
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.black)
+                }
+                .offset(x:0, y: -90)
+                Spacer()
+            }
+            .padding(30)
+            .ignoresSafeArea()
+            .onAppear{
+                typeWriter(at: captionText.startIndex)
+            }
         }
-        .frame(maxWidth: .infinity)
     }
     
     @ViewBuilder
@@ -104,7 +126,7 @@ private extension AuthenticationView {
                     store.send(.didAppleSignIn($0))
                 }
                 .frame(height: 44)
-                .signInWithAppleButtonStyle(.white)
+                .signInWithAppleButtonStyle(.black)
                 
                 Button(action: {
                     store.send(.didTapGoogleSignInButton)
@@ -115,15 +137,15 @@ private extension AuthenticationView {
                                 .resizable()
                                 .frame(width: 36, height: 36)
                             Text(Constants.Text.signInWithGoogle)
-                                .foregroundColor(.textBlack)
+                                .foregroundColor(.textWhite)
                                 .frame(height: 44)
-                                .font(.system(size: 16, weight: .semibold))
+                                .font(.system(size: 17, weight: .semibold))
                         }
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
                     }
                     .frame(maxWidth: .infinity)
-                    .background(.backgroundWhite)
+                    .background(.backgroundBlack)
                     .cornerRadius(8)
                 }
                 Spacer()

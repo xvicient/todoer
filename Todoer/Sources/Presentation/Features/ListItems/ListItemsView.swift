@@ -22,37 +22,30 @@ struct ListItemsView: View {
     }
     
     var body: some View {
-        LinearGradient(
-            gradient: Gradient(colors: [.backgroundPrimary, .backgroundSecondary]),
-            startPoint: .top,
-            endPoint: .bottom
+        ZStack {
+            itemsList
+            newRowButton
+            loadingView
+        }
+        .background(.backgroundWhite)
+        .onAppear {
+            store.send(.onAppear)
+        }
+        .disabled(
+            store.state.viewState == .loading
         )
-        .edgesIgnoringSafeArea(.all)
-        .overlay(
-            ZStack {
-                itemsList
-                newRowButton
-                loadingView
-            }
-            .onAppear {
-                store.send(.onAppear)
-            }
-            .disabled(
-                store.state.viewState == .loading
+        .alert(isPresented: Binding(
+            get: { store.state.viewState == .unexpectedError },
+            set: { _ in }
+        )) {
+            Alert(
+                title: Text(Constants.Text.errorTitle),
+                message: Text(Constants.Text.unexpectedError),
+                dismissButton: .default(Text(Constants.Text.errorOkButton)) {
+                    store.send(.didTapDismissError)
+                }
             )
-            .alert(isPresented: Binding(
-                get: { store.state.viewState == .unexpectedError },
-                set: { _ in }
-            )) {
-                Alert(
-                    title: Text(Constants.Text.errorTitle),
-                    message: Text(Constants.Text.unexpectedError),
-                    dismissButton: .default(Text(Constants.Text.errorOkButton)) {
-                        store.send(.didTapDismissError)
-                    }
-                )
-            }
-        )
+        }
     }
 }
 
@@ -92,13 +85,13 @@ private extension ListItemsView {
                     Image.plusCircleFill
                         .resizable()
                         .frame(width: 48.0, height: 48.0)
-                        .foregroundColor(.buttonAccent)
+                        .foregroundColor(.textBlack)
                         .background(
                             RoundedRectangle(cornerRadius: 24)
-                                .fill(.backgroundSecondary)
+                                .fill(.backgroundWhite)
                         )
                 })
-                .foregroundColor(.buttonAccent)
+                .foregroundColor(.textWhite)
             }
         }
     }

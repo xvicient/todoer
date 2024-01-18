@@ -22,10 +22,10 @@ struct ShareListView: View {
                 Section(
                     header:
                         Text(Constants.Text.sharingWithTitle)
-                        .foregroundColor(.textPrimary)
+                        .foregroundColor(.textBlack)
                 ) {
                     Text(user.displayName ?? "")
-                        .foregroundColor(.textPrimary)
+                        .foregroundColor(.textBlack)
                 }
             }
             .scrollIndicators(.hidden)

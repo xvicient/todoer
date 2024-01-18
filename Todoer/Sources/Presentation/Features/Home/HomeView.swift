@@ -17,27 +17,20 @@ struct HomeView: View {
     }
     
     var body: some View {
-        LinearGradient(
-            gradient: Gradient(colors: [.backgroundPrimary, .backgroundSecondary]),
-            startPoint: .top,
-            endPoint: .bottom
+        ZStack {
+            lists
+            newRowButton
+            loadingView
+        }
+        .background(.backgroundWhite)
+        .onAppear {
+            store.send(.onViewAppear)
+        }
+        .disabled(
+            store.state.viewState == .loading
         )
-        .edgesIgnoringSafeArea(.all)
-        .overlay(
-            ZStack {
-                lists
-                newRowButton
-                loadingView
-            }
-            .onAppear {
-                store.send(.onViewAppear)
-            }
-            .disabled(
-                store.state.viewState == .loading
-            )
-            .navigationBarItems(
-                trailing: navigationBarItems
-            )
+        .navigationBarItems(
+            trailing: navigationBarItems
         )
     }
 }
@@ -103,7 +96,7 @@ private extension HomeView {
                         VStack(alignment: .leading) {
                             Text("\(invitation.ownerName)")
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.textPrimary)
+                                .foregroundColor(.textBlack)
                             Text("(\(invitation.ownerEmail))")
                                 .font(.system(size: 14, weight: .light))
                                 .padding(.bottom, 8)
@@ -152,16 +145,14 @@ private extension HomeView {
                         store.send(.didTapAddRowButton)
                     }
                 }, label: {
-                    ZStack {
-                        Circle()
-                            .frame(width: 48.0, height: 48.0)
-                            .scaleEffect(0.9)
-                            .foregroundColor(.backgroundSecondary)
-                        Image.plusCircleFill
-                            .resizable()
-                            .frame(width: 48.0, height: 48.0)
-                            .foregroundColor(.buttonAccent)
-                    }
+                    Image.plusCircleFill
+                        .resizable()
+                        .frame(width: 48.0, height: 48.0)
+                        .foregroundColor(.textBlack)
+                        .background(
+                            RoundedRectangle(cornerRadius: 24)
+                                .fill(.backgroundWhite)
+                        )
                 })
             }
         }

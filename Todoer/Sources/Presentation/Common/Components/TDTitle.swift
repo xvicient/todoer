@@ -13,10 +13,10 @@ struct TDTitle: View {
         HStack {
             if let image = image {
                 image
-                    .foregroundColor(.backgroundPrimary)
+                    .foregroundColor(.backgroundBlack)
             }
             Text(title)
-                .foregroundColor(.textPrimary)
+                .foregroundColor(.textBlack)
             Spacer()
         }
         .padding(.horizontal, 24)

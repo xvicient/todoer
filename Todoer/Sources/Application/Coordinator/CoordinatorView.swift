@@ -42,7 +42,7 @@ struct NavigationBarModifier: ViewModifier {
         } else {
             content
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(.backgroundPrimary)
+                .toolbarBackground(.backgroundWhite)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
                         Image.launchScreen

@@ -7,7 +7,7 @@ enum TDButtonStyle {
     var backgroundColor: Color {
         switch self {
         case .primary:
-            return .buttonPrimary
+            return .buttonBlack
         case .destructive:
             return .buttonDestructive
         }
@@ -16,7 +16,7 @@ enum TDButtonStyle {
     var foregroundColor: Color {
         switch self {
         case .primary:
-            return .textAccent
+            return .textWhite
         case .destructive:
             return .textWhite
         }

@@ -34,9 +34,9 @@ enum TDSectionRowActionType: Identifiable {
     
     var tint: Color {
         switch self {
-        case .share: return .buttonPrimary
-        case .done: return .backgroundSecondary
-        case .undone: return .backgroundSecondary
+        case .share: return .buttonBlack
+        case .done: return .buttonBlack
+        case .undone: return .buttonBlack
         case .delete: return .buttonDestructive
         }
     }
@@ -97,7 +97,7 @@ private extension TDListSectionView {
         Group {
             HStack {
                 (row.done ? Image.largecircleFillCircle : Image.circle)
-                .foregroundColor(.buttonSecondary)
+                .foregroundColor(.buttonBlack)
                 Button(action: {
                     actions.tapAction?(index)
                 }) {
@@ -108,7 +108,7 @@ private extension TDListSectionView {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.borderless)
-                .foregroundColor(.textPrimary)
+                .foregroundColor(.textBlack)
             }
             .frame(height: 40)
         }
@@ -131,9 +131,9 @@ private extension TDListSectionView {
     func newRow(_ index: Int) -> some View {
         HStack {
             Image.circle
-                .foregroundColor(.buttonSecondary)
+                .foregroundColor(.buttonBlack)
             TextField(newRowPlaceholder, text: $newRowText)
-                .foregroundColor(.textPrimary)
+                .foregroundColor(.textBlack)
                 .focused($isNewRowFocused)
                 .onAppear {
                     newRowText = ""
@@ -151,7 +151,7 @@ private extension TDListSectionView {
                 Image.xmark
                     .resizable()
                     .frame(width: 12, height: 12)
-                    .foregroundColor(.buttonPrimary)
+                    .foregroundColor(.buttonBlack)
             }
         }
         .frame(height: 40)

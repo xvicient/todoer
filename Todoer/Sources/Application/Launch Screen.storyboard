@@ -17,14 +17,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="X9F-96-LrL">
-                                <rect key="frame" x="50" y="277" width="293" height="323"/>
+                                <rect key="frame" x="35" y="273" width="323" height="331"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" name="main"/>
+                        <color key="backgroundColor" name="backgroundWhite"/>
                         <constraints>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="leading" secondItem="X9F-96-LrL" secondAttribute="leading" constant="-50" id="heS-gn-RPz"/>
-                            <constraint firstItem="X9F-96-LrL" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" constant="-50" id="maA-HZ-JR0"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="leading" secondItem="X9F-96-LrL" secondAttribute="leading" constant="-35" id="heS-gn-RPz"/>
+                            <constraint firstItem="X9F-96-LrL" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" constant="-35" id="maA-HZ-JR0"/>
                             <constraint firstItem="X9F-96-LrL" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="vMt-PW-pCj"/>
                         </constraints>
                     </view>
@@ -35,9 +35,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="771" height="323"/>
-        <namedColor name="main">
-            <color red="0.039215686274509803" green="0.18823529411764706" blue="0.25882352941176473" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="LaunchScreen" width="753" height="331"/>
+        <namedColor name="backgroundWhite">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>
