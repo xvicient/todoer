@@ -6,15 +6,19 @@ protocol UsersRepositoryApi {
         photoUrl: String?
     ) async throws
     
-    func getSelfUser() async throws -> User
+    func getSelfUser() async throws -> User?
     
     func getUser(
         uid: String
-    ) async throws -> UserDTO
+    ) async throws -> User?
     
     func getUser(
         email: String
-    ) async throws -> UserDTO
+    ) async throws -> User?
+    
+    func getNoSelfUser(
+        email: String
+    ) async throws -> User?
     
     func setUuid(_ value: String)
     
@@ -24,6 +28,8 @@ protocol UsersRepositoryApi {
 }
 
 final class UsersRepository: UsersRepositoryApi {
+    
+    typealias SearchField = UsersDataSource.SearchField
     
     var usersDataSource: UsersDataSourceApi
     
@@ -43,20 +49,36 @@ final class UsersRepository: UsersRepositoryApi {
                                              photoUrl: photoUrl)
     }
     
-    func getSelfUser() async throws -> User {
-        try await usersDataSource.getSelfUser().toDomain
+    func getSelfUser(
+    ) async throws -> User? {
+        try await usersDataSource.getUsers(
+            with: [SearchField(.uid, .equal, usersDataSource.uuid)]
+        )?.toDomain
     }
     
     func getUser(
         uid: String
-    ) async throws -> UserDTO {
-        try await usersDataSource.getUser(uid: uid)
+    ) async throws -> User? {
+        try await usersDataSource.getUsers(
+            with: [SearchField(.uid, .equal, uid)]
+        )?.toDomain
     }
     
     func getUser(
         email: String
-    ) async throws -> UserDTO {
-        try await usersDataSource.getUser(email: email)
+    ) async throws -> User? {
+        try await usersDataSource.getUsers(
+            with: [SearchField(.email, .equal, email)]
+        )?.toDomain
+    }
+    
+    func getNoSelfUser(
+        email: String
+    ) async throws -> User? {
+        try await usersDataSource.getUsers(
+            with: [SearchField(.email, .equal, email),
+                   SearchField(.uid, .notEqual, usersDataSource.uuid)]
+        )?.toDomain
     }
     
     func setUuid(_ value: String) {

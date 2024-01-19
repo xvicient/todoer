@@ -64,7 +64,7 @@ extension Home {
         func getPhotoUrl(
         ) async -> Result<String, Error> {
             do {
-                let photoUrl = try await usersRepository.getSelfUser().photoUrl
+                let photoUrl = try await usersRepository.getSelfUser()?.photoUrl
                 return .success(photoUrl ?? "")
             } catch {
                 return .failure(error)

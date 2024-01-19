@@ -11,17 +11,13 @@ protocol UsersDataSourceApi {
         photoUrl: String?
     ) async throws
     
-    func getSelfUser() async throws -> UserDTO
-    
-    func getUser(
-        uid: String
-    ) async throws -> UserDTO
-    
-    func getUser(
-        email: String
-    ) async throws -> UserDTO
+    func getUsers(
+        with fields: [UsersDataSource.SearchField]
+    ) async throws -> UserDTO?
 
-    func setUuid(_ value: String)
+    func setUuid(
+        _ value: String
+    )
     
     func fetchUsers(
         uids: [String]
@@ -29,6 +25,26 @@ protocol UsersDataSourceApi {
 }
 
 final class UsersDataSource: UsersDataSourceApi {
+    
+    struct SearchField {
+        enum Key: String {
+            case uid
+            case email
+        }
+        enum Filter {
+            case equal
+            case notEqual
+        }
+        let key: Key
+        let filter: Filter
+        let value: String
+        
+        init(_ key: Key, _ filter: Filter, _ value: String) {
+            self.key = key
+            self.filter = filter
+            self.value = value
+        }
+    }
     
     enum Errors: Error {
         case missingUser
@@ -61,32 +77,24 @@ final class UsersDataSource: UsersDataSourceApi {
         _ = try usersCollection.addDocument(from: dto)
     }
     
-    func getSelfUser() async throws -> UserDTO {
-        try await getUser(uid: uuid)
-    }
-    
-    func getUser(
-        uid: String
-    ) async throws -> UserDTO {
-        try await withCheckedThrowingContinuation { continuation in
-            usersCollection
-                .whereField("uuid", isEqualTo: uid)
-                .getDocuments { [weak self] query, error in
-                    self?.getUserDocument(continuation)(query, error)
-                }
+    func getUsers(
+        with fields: [SearchField]
+    ) async throws -> UserDTO? {
+        var query: Query = usersCollection
+        
+        fields.forEach {
+            switch $0.filter {
+            case .equal:
+                query = query.whereField($0.key.rawValue, isEqualTo: $0.value)
+            case .notEqual:
+                query = query.whereField($0.key.rawValue, isNotEqualTo: $0.value)
+            }
         }
-    }
-    
-    func getUser(
-        email: String
-    ) async throws -> UserDTO {
-        try await withCheckedThrowingContinuation { continuation in
-            usersCollection
-                .whereField("email", isEqualTo: email)
-                .getDocuments { [weak self] query, error in
-                    self?.getUserDocument(continuation)(query, error)
-                }
-        }
+        
+        return try await query.getDocuments()
+            .documents
+            .map { try $0.data(as: UserDTO.self) }
+            .first
     }
     
     func fetchUsers(
@@ -112,24 +120,6 @@ final class UsersDataSource: UsersDataSourceApi {
                         ?? []
                         continuation.resume(returning: users)
                     }
-            }
-        }
-    }
-    
-    private func getUserDocument(
-        _ continuation: CheckedContinuation<UserDTO, Error>
-    ) -> ((QuerySnapshot?, Error?) -> Void) {
-        { query, error in
-            if let error = error {
-                continuation.resume(throwing: error)
-                return
-            }
-            
-            if let user = query?.documents
-                .compactMap({ try? $0.data(as: UserDTO.self) }).first {
-                continuation.resume(returning: user)
-            } else {
-                continuation.resume(throwing: Errors.missingUser)
             }
         }
     }

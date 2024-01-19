@@ -47,7 +47,9 @@ private extension Authentication.Reducer {
         state.viewState = .loading
         return .task(Task {
             await .signInResult(
-                dependencies.useCase.googleSignIn()
+                dependencies.useCase.singIn(
+                    authType: .google
+                )
             )
         })
     }
@@ -60,8 +62,8 @@ private extension Authentication.Reducer {
             state.viewState = .loading
             return .task(Task {
                 await .signInResult(
-                    dependencies.useCase.appleSignIn(
-                        authorization: authorization
+                    dependencies.useCase.singIn(
+                        authType: .apple(authorization)
                     )
                 )
             })

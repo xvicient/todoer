@@ -1,7 +1,15 @@
 import Foundation
 import FirebaseAuth
 
-public final class AuthenticationService {
+protocol AuthenticationServiceApi {
+    var isUserLogged: Bool { get }
+    
+    func signOut() throws
+    
+    func delete() async throws
+}
+
+public final class AuthenticationService: AuthenticationServiceApi {
     var isUserLogged: Bool {
         Auth.auth().currentUser != nil
     }
