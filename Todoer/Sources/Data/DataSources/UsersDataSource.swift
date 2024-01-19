@@ -14,9 +14,13 @@ protocol UsersDataSourceApi {
     func getSelfUser() async throws -> UserDTO
     
     func getUser(
-        _ email: String
+        uid: String
     ) async throws -> UserDTO
     
+    func getUser(
+        email: String
+    ) async throws -> UserDTO
+
     func setUuid(_ value: String)
     
     func fetchUsers(
@@ -58,9 +62,15 @@ final class UsersDataSource: UsersDataSourceApi {
     }
     
     func getSelfUser() async throws -> UserDTO {
+        try await getUser(uid: uuid)
+    }
+    
+    func getUser(
+        uid: String
+    ) async throws -> UserDTO {
         try await withCheckedThrowingContinuation { continuation in
             usersCollection
-                .whereField("uuid", isEqualTo: uuid)
+                .whereField("uuid", isEqualTo: uid)
                 .getDocuments { [weak self] query, error in
                     self?.getUserDocument(continuation)(query, error)
                 }
@@ -68,7 +78,7 @@ final class UsersDataSource: UsersDataSourceApi {
     }
     
     func getUser(
-        _ email: String
+        email: String
     ) async throws -> UserDTO {
         try await withCheckedThrowingContinuation { continuation in
             usersCollection

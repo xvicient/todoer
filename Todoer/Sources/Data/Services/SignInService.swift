@@ -53,9 +53,20 @@ final class SignInService: SignInServiceApi {
         let credential = OAuthProvider.credential(
             withProviderID: "apple.com",
             idToken: token,
-            rawNonce: nil)
+            rawNonce: nil
+        )
         
-        return try await signIn(credential: credential)
+        var authData = try await signIn(credential: credential)
+        if let email = appleIDCredential.email {
+            authData.email = email
+        }
+        
+        if let givenName = appleIDCredential.fullName?.givenName,
+           let familyName = appleIDCredential.fullName?.familyName{
+            authData.displayName = "\(givenName) \(familyName)"
+        }
+        
+        return authData
     }
     
     private func signIn(credential: AuthCredential) async throws -> AuthDataDTO {

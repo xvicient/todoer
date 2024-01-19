@@ -46,7 +46,7 @@ extension ShareList {
                 if let selfUser = try? await usersRepository.getSelfUser(),
                    let ownerName = selfUser.displayName,
                    let ownerEmail = selfUser.email,
-                   let invitedUser = try? await usersRepository.getUser(shareEmail) {
+                   let invitedUser = try? await usersRepository.getUser(email: shareEmail) {
                     try await invitationsRepository.sendInvitation(ownerName: ownerName,
                                                                    ownerEmail: ownerEmail,
                                                                    listId: list.documentId,

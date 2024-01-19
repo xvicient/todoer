@@ -53,7 +53,7 @@ private extension HomeView {
                         $0.resizable().aspectRatio(contentMode: .fit)
                     }, placeholder: {
                         Image.personCropCircle
-                            .tint(.buttonWhite)
+                            .tint(.buttonBlack)
                     })
                 .frame(width: 30, height: 30)
                 .cornerRadius(15.0)

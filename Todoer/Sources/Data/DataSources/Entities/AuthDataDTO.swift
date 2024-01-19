@@ -2,8 +2,8 @@ import FirebaseAuth
 
 struct AuthDataDTO {
     let uid: String
-    let email: String?
-    let displayName: String?
+    var email: String?
+    var displayName: String?
     let photoUrl: String?
     let isAnonymous: Bool
     

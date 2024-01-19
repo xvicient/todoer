@@ -54,7 +54,7 @@ extension Authentication {
                 throw Errors.signInError
             }
             
-            if (try? await usersRepository.getUser(email)) == nil {
+            if (try? await usersRepository.getUser(uid: authData.uid)) == nil {
                 try await usersRepository.createUser(with: authData.uid,
                                                      email: authData.email,
                                                      displayName: authData.displayName,

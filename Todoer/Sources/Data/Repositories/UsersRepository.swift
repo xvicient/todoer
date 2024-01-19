@@ -9,7 +9,11 @@ protocol UsersRepositoryApi {
     func getSelfUser() async throws -> User
     
     func getUser(
-        _ email: String
+        uid: String
+    ) async throws -> UserDTO
+    
+    func getUser(
+        email: String
     ) async throws -> UserDTO
     
     func setUuid(_ value: String)
@@ -44,9 +48,15 @@ final class UsersRepository: UsersRepositoryApi {
     }
     
     func getUser(
-        _ email: String
+        uid: String
     ) async throws -> UserDTO {
-        try await usersDataSource.getUser(email)
+        try await usersDataSource.getUser(uid: uid)
+    }
+    
+    func getUser(
+        email: String
+    ) async throws -> UserDTO {
+        try await usersDataSource.getUser(email: email)
     }
     
     func setUuid(_ value: String) {
