@@ -48,7 +48,7 @@ private extension Authentication.Reducer {
         return .task(Task {
             await .signInResult(
                 dependencies.useCase.singIn(
-                    authType: .google
+                    provider: .google
                 )
             )
         })
@@ -63,7 +63,7 @@ private extension Authentication.Reducer {
             return .task(Task {
                 await .signInResult(
                     dependencies.useCase.singIn(
-                        authType: .apple(authorization)
+                        provider: .apple(authorization)
                     )
                 )
             })
@@ -86,10 +86,15 @@ private extension Authentication.Reducer {
             state.viewState = .idle
             coordinator.loggIn()
         case .failure(let error):
-            if error.code == -5 {
-                state.viewState = .idle
-            } else {
-                state.viewState = .unexpectedError
+            switch error {
+            case Authentication.UseCase.Errors.emailInUse:
+                state.viewState = .emailInUseError
+            default:
+                if error.code == -5 {
+                    state.viewState = .idle
+                } else {
+                    state.viewState = .unexpectedError
+                }
             }
         }
         return .none

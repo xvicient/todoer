@@ -2,7 +2,7 @@ import AuthenticationServices
 
 protocol AuthenticationUseCaseApi {
     func singIn(
-        authType: Authentication.Provider
+        provider: Authentication.Provider
     ) async -> (Result<Void, Error>)
 }
 
@@ -12,7 +12,7 @@ extension Authentication {
         case google
     }
     struct UseCase: AuthenticationUseCaseApi {
-        private enum Errors: Error {
+        enum Errors: Error {
             case emailInUse
             case emptyAuthEmail
         }
@@ -29,23 +29,19 @@ extension Authentication {
         }
         
         func singIn(
-            authType: Authentication.Provider
+            provider: Authentication.Provider
         ) async -> (Result<Void, Error>) {
             do {
-                var authData: AuthDataDTO
-                
-                switch authType {
-                case .apple(let authorization):
-                    authData = try await singInService.appleSignIn(authorization: authorization)
-                case .google:
-                    authData = try await singInService.googleSignIn()
-                }
+                let authData = try await getAuthData(for: provider)
                 
                 guard let email = authData.email else {
                     throw Errors.emptyAuthEmail
                 }
                 
-                guard try await usersRepository.getNotSelfUser(email: email) == nil else {
+                guard try await usersRepository.getNotSelfUser(
+                    email: email,
+                    uid: authData.uid
+                ) == nil else {
                     throw Errors.emailInUse
                 }
                 
@@ -62,6 +58,17 @@ extension Authentication {
             } catch {
                 try? authenticationService.signOut()
                 return .failure(error)
+            }
+        }
+        
+        private func getAuthData(
+            for provider: Provider
+        ) async throws -> AuthDataDTO {
+            switch provider {
+            case .apple(let authorization):
+                return try await singInService.appleSignIn(authorization: authorization)
+            case .google:
+                return try await singInService.googleSignIn()
             }
         }
     }

@@ -28,12 +28,13 @@ struct AuthenticationView: View {
         }
         .background(.backgroundWhite)
         .alert(isPresented: Binding(
-            get: { store.state.viewState == .unexpectedError },
+            get: { store.state.viewState == .unexpectedError ||
+                store.state.viewState == .emailInUseError},
             set: { _ in }
         )) {
             Alert(
                 title: Text(Constants.Text.errorTitle),
-                message: Text(Constants.Text.unexpectedError),
+                message: store.state.viewState.errorText,
                 dismissButton: .default(Text(Constants.Text.errorOkButton)) {
                     store.send(.didTapDismissError)
                 }
@@ -44,7 +45,7 @@ struct AuthenticationView: View {
         )
     }
     
-    func typeWriter(at position: String.Index) {
+    private func typeWriter(at position: String.Index) {
         if position == captionText.startIndex {
             caption = ""
         }
@@ -55,6 +56,21 @@ struct AuthenticationView: View {
                 caption.append(char)
                 typeWriter(at: captionText.index(after: position))
             }
+        }
+    }
+}
+
+// MARK: - ViewState errors
+
+private extension Authentication.Reducer.ViewState {
+    var errorText: Text? {
+        switch self {
+        case .unexpectedError:
+            return Text(AuthenticationView.Constants.Text.unexpectedError)
+        case .emailInUseError:
+            return Text(AuthenticationView.Constants.Text.emailInUseError)
+        default:
+            return nil
         }
     }
 }
@@ -179,13 +195,14 @@ private extension AuthenticationView {
 
 // MARK: - Constants
 
-private extension AuthenticationView {
+internal extension AuthenticationView {
     struct Constants {
         struct Text {
             static let login = "Login"
             static let signInWithGoogle = "Sign in with Google"
             static let errorTitle = "Error"
             static let unexpectedError = "Unexpected error"
+            static let emailInUseError = "Email already registered"
             static let errorOkButton = "Ok"
             
         }

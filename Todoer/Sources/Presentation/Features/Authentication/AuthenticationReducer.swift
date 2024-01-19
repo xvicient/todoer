@@ -27,6 +27,7 @@ extension Authentication {
             case idle
             case loading
             case unexpectedError
+            case emailInUseError
         }
         
         internal let coordinator: Coordinator

@@ -20,7 +20,8 @@ protocol UsersRepositoryApi {
     ) async throws -> User?
     
     func getNotSelfUser(
-        email: String
+        email: String,
+        uid: String
     ) async throws -> User?
     
     func getNotSelfUsers(
@@ -84,11 +85,12 @@ final class UsersRepository: UsersRepositoryApi {
     }
     
     func getNotSelfUser(
-        email: String
+        email: String,
+        uid: String
     ) async throws -> User? {
         try await usersDataSource.getUsers(
             with: [SearchField(.email, .equal(email)),
-                   SearchField(.uuid, .notEqual(usersDataSource.uuid))]
+                   SearchField(.uuid, .notEqual(uid))]
         )
         .first?
         .toDomain
@@ -98,9 +100,14 @@ final class UsersRepository: UsersRepositoryApi {
         uids: [String]
     ) async throws -> [User] {
         let notSelfUids = uids.filter { $0 != usersDataSource.uuid }
-        return try await usersDataSource.getUsers(
-            with: [SearchField(.uuid, .in(notSelfUids))]
-        )
-        .map { $0.toDomain }
+        
+        if notSelfUids.isEmpty {
+            return []
+        } else {
+            return try await usersDataSource.getUsers(
+                with: [SearchField(.uuid, .in(notSelfUids))]
+            )
+            .map { $0.toDomain }
+        }
     }
 }
