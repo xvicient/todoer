@@ -18,16 +18,13 @@ struct CoordinatorView: View {
                             .presentationDetents(
                                 [.height(300)]
                             )
-                            .colorScheme(.light)
-                            .preferredColorScheme(.dark)
                     }
                 }
                 .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
                     coordinator.build(fullScreenCover: fullScreenCover)
                 }
         }
-        .colorScheme(.light)
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
     }
 }
 
