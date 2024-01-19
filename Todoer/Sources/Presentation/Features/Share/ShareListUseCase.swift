@@ -31,7 +31,7 @@ extension ShareList {
             uids: [String]
         ) async -> Result<[User], Error> {
             do {
-                let result = try await usersRepository.fetchUsers(uids: uids)
+                let result = try await usersRepository.getNotSelfUsers(uids: uids)
                 return .success(result)
             } catch {
                 return .failure(error)

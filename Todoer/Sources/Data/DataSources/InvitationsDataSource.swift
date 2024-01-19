@@ -6,10 +6,6 @@ protocol InvitationsDataSourceApi {
     func fetchInvitations(
         uuid: String
     ) -> AnyPublisher<[InvitationDTO], Error>
-    func fetchInvitations(
-        uuid: String,
-        completion: @escaping (Result<[InvitationDTO], Error>) -> Void
-    )
     
     func sendInvitation(
         ownerName: String,
@@ -60,25 +56,6 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
         return subject
             .removeDuplicates()
             .eraseToAnyPublisher()
-    }
-    
-    func fetchInvitations(
-        uuid: String,
-        completion: @escaping (Result<[InvitationDTO], Error>) -> Void
-    ) {
-        invitationsCollection
-            .whereField("invitedId", isEqualTo: uuid)
-            .addSnapshotListener { query, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                let invitations = query?.documents
-                    .compactMap { try? $0.data(as: InvitationDTO.self) }
-                ?? []
-                completion(.success(invitations))
-            }
     }
     
     func sendInvitation(

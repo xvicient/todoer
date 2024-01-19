@@ -13,36 +13,31 @@ protocol UsersDataSourceApi {
     
     func getUsers(
         with fields: [UsersDataSource.SearchField]
-    ) async throws -> UserDTO?
+    ) async throws -> [UserDTO]
 
     func setUuid(
         _ value: String
     )
-    
-    func fetchUsers(
-        uids: [String]
-    ) async throws -> [UserDTO]
 }
 
 final class UsersDataSource: UsersDataSourceApi {
     
     struct SearchField {
         enum Key: String {
-            case uid
+            case uuid
             case email
         }
         enum Filter {
-            case equal
-            case notEqual
+            case equal(String)
+            case notEqual(String)
+            case `in`([String])
         }
         let key: Key
         let filter: Filter
-        let value: String
         
-        init(_ key: Key, _ filter: Filter, _ value: String) {
+        init(_ key: Key, _ filter: Filter) {
             self.key = key
             self.filter = filter
-            self.value = value
         }
     }
     
@@ -79,48 +74,22 @@ final class UsersDataSource: UsersDataSourceApi {
     
     func getUsers(
         with fields: [SearchField]
-    ) async throws -> UserDTO? {
+    ) async throws -> [UserDTO] {
         var query: Query = usersCollection
         
         fields.forEach {
             switch $0.filter {
-            case .equal:
-                query = query.whereField($0.key.rawValue, isEqualTo: $0.value)
-            case .notEqual:
-                query = query.whereField($0.key.rawValue, isNotEqualTo: $0.value)
+            case .equal(let value):
+                query = query.whereField($0.key.rawValue, isEqualTo: value)
+            case .notEqual(let value):
+                query = query.whereField($0.key.rawValue, isNotEqualTo: value)
+            case .in(let value):
+                query = query.whereField($0.key.rawValue, in: value)
             }
         }
         
         return try await query.getDocuments()
             .documents
             .map { try $0.data(as: UserDTO.self) }
-            .first
-    }
-    
-    func fetchUsers(
-        uids: [String]
-    ) async throws -> [UserDTO] {
-        var mutableUids = uids
-        mutableUids.removeAll { $0 == uuid }
-        
-        if mutableUids.isEmpty {
-            throw Errors.emptyUidList
-        } else {
-            return try await withCheckedThrowingContinuation { continuation in
-                usersCollection
-                    .whereField("uuid", in: mutableUids)
-                    .getDocuments { query, error in
-                        if let error = error {
-                            continuation.resume(throwing: error)
-                            return
-                        }
-                        
-                        let users = query?.documents
-                            .compactMap { try? $0.data(as: UserDTO.self) }
-                        ?? []
-                        continuation.resume(returning: users)
-                    }
-            }
-        }
     }
 }

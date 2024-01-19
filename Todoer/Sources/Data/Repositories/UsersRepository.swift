@@ -1,4 +1,7 @@
 protocol UsersRepositoryApi {
+    
+    func setUuid(_ value: String)
+    
     func createUser(
         with uuid: String,
         email: String?,
@@ -16,13 +19,11 @@ protocol UsersRepositoryApi {
         email: String
     ) async throws -> User?
     
-    func getNoSelfUser(
+    func getNotSelfUser(
         email: String
     ) async throws -> User?
     
-    func setUuid(_ value: String)
-    
-    func fetchUsers(
+    func getNotSelfUsers(
         uids: [String]
     ) async throws -> [User]
 }
@@ -35,6 +36,10 @@ final class UsersRepository: UsersRepositoryApi {
     
     init(usersDataSource: UsersDataSourceApi = UsersDataSource()) {
         self.usersDataSource = usersDataSource
+    }
+    
+    func setUuid(_ value: String) {
+        usersDataSource.setUuid(value)
     }
     
     func createUser(
@@ -52,44 +57,50 @@ final class UsersRepository: UsersRepositoryApi {
     func getSelfUser(
     ) async throws -> User? {
         try await usersDataSource.getUsers(
-            with: [SearchField(.uid, .equal, usersDataSource.uuid)]
-        )?.toDomain
+            with: [SearchField(.uuid, .equal(usersDataSource.uuid))]
+        )
+        .first?
+        .toDomain
     }
     
     func getUser(
         uid: String
     ) async throws -> User? {
         try await usersDataSource.getUsers(
-            with: [SearchField(.uid, .equal, uid)]
-        )?.toDomain
+            with: [SearchField(.uuid, .equal(uid))]
+        )
+        .first?
+        .toDomain
     }
     
     func getUser(
         email: String
     ) async throws -> User? {
         try await usersDataSource.getUsers(
-            with: [SearchField(.email, .equal, email)]
-        )?.toDomain
+            with: [SearchField(.email, .equal(email))]
+        )
+        .first?
+        .toDomain
     }
     
-    func getNoSelfUser(
+    func getNotSelfUser(
         email: String
     ) async throws -> User? {
         try await usersDataSource.getUsers(
-            with: [SearchField(.email, .equal, email),
-                   SearchField(.uid, .notEqual, usersDataSource.uuid)]
-        )?.toDomain
+            with: [SearchField(.email, .equal(email)),
+                   SearchField(.uuid, .notEqual(usersDataSource.uuid))]
+        )
+        .first?
+        .toDomain
     }
     
-    func setUuid(_ value: String) {
-        usersDataSource.setUuid(value)
-    }
-    
-    func fetchUsers(
+    func getNotSelfUsers(
         uids: [String]
     ) async throws -> [User] {
-        try await usersDataSource.fetchUsers(uids: uids)
-            .map { $0.toDomain }
-
+        let notSelfUids = uids.filter { $0 != usersDataSource.uuid }
+        return try await usersDataSource.getUsers(
+            with: [SearchField(.uuid, .in(notSelfUids))]
+        )
+        .map { $0.toDomain }
     }
 }

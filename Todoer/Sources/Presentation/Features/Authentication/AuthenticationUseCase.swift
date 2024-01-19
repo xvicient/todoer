@@ -45,7 +45,7 @@ extension Authentication {
                     throw Errors.emptyAuthEmail
                 }
                 
-                guard try await usersRepository.getNoSelfUser(email: email) == nil else {
+                guard try await usersRepository.getNotSelfUser(email: email) == nil else {
                     throw Errors.emailInUse
                 }
                 
