@@ -31,6 +31,10 @@ protocol HomeUseCaseApi {
     func addList(
         name: String
     )  async -> Result<List, Error>
+    
+    func sortLists(
+        lists: [List]
+    ) async -> Result<Void, Error>
 }
 
 extension Home {
@@ -136,10 +140,21 @@ extension Home {
         
         func addList(
             name: String
-        )  async -> Result<List, Error> {
+        ) async -> Result<List, Error> {
             do {
                 let list = try await listsRepository.addList(with: name)
                 return .success(list)
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func sortLists(
+            lists: [List]
+        ) async -> Result<Void, Error> {
+            do {
+                try await listsRepository.sortLists(lists: lists)
+                return .success(())
             } catch {
                 return .failure(error)
             }

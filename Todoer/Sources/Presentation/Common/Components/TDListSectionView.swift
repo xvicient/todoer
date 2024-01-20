@@ -22,6 +22,7 @@ protocol TDSectionRowActions {
     var swipeActions: ((Int, TDSectionRowActionType) -> Void)? { get }
     var submitAction: ((String) -> Void)? { get }
     var cancelAction: (() -> Void)? { get }
+    var moveAction: ((IndexSet, Int) -> Void)? { get }
 }
 
 enum TDSectionRowActionType: Identifiable {
@@ -68,11 +69,18 @@ struct TDListSectionView<ViewModel>: View where ViewModel: TDListSectionViewMode
                     id: \.element.id) { index, row in
                 if row.isEditing {
                     newRow(index)
+                        .id(row.id)
                 } else {
-                    sectionRow(row, index: index )
+                    sectionRow(row, index: index)
+                        .id(row.id)
                 }
             }
+            .onMove(perform: moveRows)
         }
+    }
+    
+    func moveRows(from source: IndexSet, to destination: Int) {
+        actions.moveAction?(source, destination)
     }
 }
 
@@ -124,7 +132,6 @@ private extension TDListSectionView {
                 index: index
             )
         }
-        .id(index)
     }
     
     @ViewBuilder
@@ -155,7 +162,6 @@ private extension TDListSectionView {
             }
         }
         .frame(height: 40)
-        .id(index)
         .onAppear {
             isNewRowFocused = true
         }
@@ -219,6 +225,7 @@ extension List: TDSectionRow {
         var swipeActions: ((Int, TDSectionRowActionType) -> Void)?
         var submitAction: ((String) -> Void)?
         var cancelAction: (() -> Void)?
+        var moveAction: ((IndexSet, Int) -> Void)?
     }
     
     return TDListSectionView(viewModel: ViewModel(),

@@ -7,6 +7,7 @@ private struct ListActions: TDSectionRowActions {
     var swipeActions: ((Int, TDSectionRowActionType) -> Void)?
     var submitAction: ((String) -> Void)?
     var cancelAction: (() -> Void)?
+    var moveAction: ((IndexSet, Int) -> Void)?
 }
 
 struct HomeView: View {
@@ -173,7 +174,8 @@ private extension HomeView {
         ListActions(tapAction: tapAction,
                     swipeActions: swipeActions,
                     submitAction: submitAction,
-                    cancelAction: cancelAction)
+                    cancelAction: cancelAction,
+                    moveAction: moveAction)
     }
     
     var tapAction: (Int) -> Void {
@@ -199,6 +201,13 @@ private extension HomeView {
     
     var cancelAction: () -> Void {
         { store.send(.didTapCancelAddRowButton) }
+    }
+    
+    var moveAction: ((IndexSet, Int) -> Void) {
+        {
+            store.state.viewModel.listsSection.rows.move(fromOffsets: $0, toOffset: $1)
+            store.send(.didSortLists)
+        }
     }
 }
 

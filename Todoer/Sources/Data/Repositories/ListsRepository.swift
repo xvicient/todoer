@@ -24,6 +24,10 @@ protocol ListsRepositoryApi {
     func updateList(
         _ list: List
     ) async throws -> List
+    
+    func sortLists(
+        lists: [List]
+    ) async throws
 }
 
 final class ListsRepository: ListsRepositoryApi {
@@ -81,6 +85,14 @@ final class ListsRepository: ListsRepositoryApi {
         _ list: List
     ) async throws -> List {
         try await listsDataSource.updateList(list.toDTO).toDomain
+    }
+    
+    func sortLists(
+        lists: [List]
+    ) async throws {
+        try await listsDataSource.sortLists(
+            lists: lists.map { $0.toDTO }
+        )
     }
 }
 

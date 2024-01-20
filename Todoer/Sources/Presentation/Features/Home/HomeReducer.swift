@@ -26,6 +26,7 @@ extension Home {
             case didTapCancelAddRowButton
             case didTapSubmitListButton(String)
             case didTapSignoutButton
+            case didSortLists
 
             
             // MARK: - Results
@@ -36,6 +37,7 @@ extension Home {
             case acceptInvitationResult(Result<Void, Error>)
             case declineInvitationResult(Result<Void, Error>)
             case addListResult(Result<List, Error>)
+            case sortListsResult(Result<Void, Error>)
         }
         
         @MainActor
@@ -48,6 +50,7 @@ extension Home {
             case idle
             case loading
             case addingList
+            case sortingList
             case unexpectedError
         }
         

@@ -78,6 +78,11 @@ internal extension Home.Reducer {
                 state: &state
             )
             
+        case (.idle, .didSortLists):
+            return onDidSortLists(
+                state: &state
+            )
+            
         case (.idle, .fetchDataResult(let result)),
             (.loading, .fetchDataResult(let result)):
             return onFetchDataResult(
@@ -117,6 +122,12 @@ internal extension Home.Reducer {
             
         case (_, .addListResult(let result)):
             return onAddListResult(
+                state: &state,
+                result: result
+            )
+            
+        case (.sortingList, .sortListsResult(let result)):
+            return onSortListsResult(
                 state: &state,
                 result: result
             )
@@ -281,6 +292,20 @@ private extension Home.Reducer {
         return .none
     }
     
+    func onDidSortLists(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .sortingList
+        let lists = state.viewModel.listsSection.rows
+            .map { $0 as? List }
+            .compactMap { $0 }
+        return .task(Task {
+            .sortListsResult(
+                await dependencies.useCase.sortLists(lists: lists)
+            )
+        })
+    }
+    
     func onFetchDataResult(
         state: inout State,
         result: Result<([List], [Invitation]), Error>
@@ -371,6 +396,19 @@ private extension Home.Reducer {
             state.viewState = .idle
             state.viewModel.listsSection.rows.removeAll { $0 is EmptyRow }
             state.viewModel.listsSection.rows.append(list)
+        case .failure:
+            state.viewState = .unexpectedError
+        }
+        return .none
+    }
+    
+    func onSortListsResult(
+        state: inout State,
+        result: Result<Void, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
         case .failure:
             state.viewState = .unexpectedError
         }

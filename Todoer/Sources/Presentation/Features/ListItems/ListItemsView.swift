@@ -7,6 +7,7 @@ private struct ListActions: TDSectionRowActions {
     var swipeActions: ((Int, TDSectionRowActionType) -> Void)?
     var submitAction: ((String) -> Void)?
     var cancelAction: (() -> Void)?
+    var moveAction: ((IndexSet, Int) -> Void)?
 }
 
 struct ListItemsView: View {

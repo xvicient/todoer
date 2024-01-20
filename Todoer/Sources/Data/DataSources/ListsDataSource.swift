@@ -28,6 +28,10 @@ protocol ListsDataSourceApi {
     func updateList(
         _ list: ListDTO
     ) async throws -> ListDTO
+    
+    func sortLists(
+        lists: [ListDTO]
+    ) async throws
 }
 
 final class ListsDataSource: ListsDataSourceApi {
@@ -132,5 +136,27 @@ final class ListsDataSource: ListsDataSourceApi {
         
         try await listsCollection.document(id).updateData(encodedData)
         return list
+    }
+    
+    func sortLists(
+        lists: [ListDTO]
+    ) async throws {
+        let productsBatch = Firestore.firestore().batch()
+        
+        try lists.enumerated().forEach { index, list in
+            guard let id = list.id else {
+                return
+            }
+            var mutableList = list
+            mutableList.dateCreated = index
+            
+            let encodedData = try Firestore.Encoder().encode(mutableList)
+            productsBatch.updateData(
+                encodedData,
+                forDocument: listsCollection.document(id)
+            )
+        }
+        
+        try await productsBatch.commit()
     }
 }

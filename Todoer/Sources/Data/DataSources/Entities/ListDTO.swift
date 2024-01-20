@@ -6,5 +6,5 @@ struct ListDTO: Identifiable, Codable, Hashable {
     let name: String
     let done: Bool
     var uuid: [String]
-    let dateCreated: Int
+    var dateCreated: Int
 }
