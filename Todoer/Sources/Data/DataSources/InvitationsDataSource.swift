@@ -70,7 +70,7 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
                                 listId: listId,
                                 listName: listName,
                                 invitedId: invitedId,
-                                dateCreated: Date().milliseconds)
+                                index: Date().milliseconds)
         _ = try invitationsCollection.addDocument(from: dto)
     }
     

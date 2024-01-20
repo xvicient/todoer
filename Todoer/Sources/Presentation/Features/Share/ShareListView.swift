@@ -63,7 +63,7 @@ struct ShareView_Previews: PreviewProvider {
                 name: "",
                 done: true,
                 uuid: [],
-                dateCreated: 0
+                index: 0
             )
         )
     }

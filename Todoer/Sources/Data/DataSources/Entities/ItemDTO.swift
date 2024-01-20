@@ -5,5 +5,5 @@ struct ItemDTO: Identifiable, Codable, Hashable {
     @DocumentID var id: String?
     let name: String
     var done: Bool
-    var dateCreated: Int
+    var index: Int
 }

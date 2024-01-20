@@ -6,5 +6,5 @@ struct List: Identifiable, Equatable, Hashable {
     let name: String
     var done: Bool
     var uuid: [String]
-    let dateCreated: Int
+    let index: Int
 }

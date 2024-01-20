@@ -206,12 +206,12 @@ extension List: TDSectionRow {
                                            name: "Test",
                                            done: true,
                                            uuid: [],
-                                           dateCreated: 0),
+                                           index: 0),
                                       List(documentId: "",
                                            name: "Test2",
                                            done: false,
                                            uuid: [],
-                                           dateCreated: 1)]
+                                           index: 1)]
         
         var leadingActions: (any TDSectionRow) -> [TDSectionRowActionType] = {
             [$0.done ? .undone : .done]

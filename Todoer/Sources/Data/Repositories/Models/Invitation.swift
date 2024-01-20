@@ -8,5 +8,5 @@ struct Invitation: Identifiable, Equatable, Hashable {
     let listId: String
     let listName: String
     let invitedId: String
-    let dateCreated: Int
+    let index: Int
 }

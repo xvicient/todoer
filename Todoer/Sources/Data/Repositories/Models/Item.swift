@@ -5,5 +5,5 @@ struct Item: Identifiable, Equatable, Hashable {
     let documentId: String
     let name: String
     var done: Bool
-    let dateCreated: Int
+    let index: Int
 }

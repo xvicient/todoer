@@ -167,7 +167,7 @@ private extension Home.UseCase {
     ) -> AnyPublisher<[List], Error> {
         listsRepository.fetchLists()
             .tryMap { lists in
-                lists.sorted { $0.dateCreated < $1.dateCreated }
+                lists.sorted { $0.index < $1.index }
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -177,7 +177,7 @@ private extension Home.UseCase {
     ) -> AnyPublisher<[Invitation], Error> {
         invitationsRepository.fetchInvitations()
             .tryMap { invitations in
-                invitations.sorted { $0.dateCreated < $1.dateCreated }
+                invitations.sorted { $0.index < $1.index }
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

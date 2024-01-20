@@ -69,6 +69,6 @@ private extension InvitationDTO {
                    listId: listId,
                    listName: listName,
                    invitedId: invitedId,
-                   dateCreated: dateCreated)
+                   index: index)
     }
 }

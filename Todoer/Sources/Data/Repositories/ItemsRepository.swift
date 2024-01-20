@@ -86,7 +86,7 @@ private extension ItemDTO {
         Item(documentId: id ?? "",
              name: name,
              done: done,
-             dateCreated: dateCreated)
+             index: index)
     }
 }
 
@@ -95,6 +95,6 @@ private extension Item {
         ItemDTO(id: documentId,
                 name: name,
                 done: done,
-                dateCreated: dateCreated)
+                index: index)
     }
 }

@@ -83,7 +83,7 @@ final class ListsDataSource: ListsDataSourceApi {
         let dto = ListDTO(name: name,
                           done: false,
                           uuid: [uuid],
-                          dateCreated: Date().milliseconds)
+                          index: Date().milliseconds)
         return try await listsCollection
             .addDocument(from: dto)
             .getDocument()
@@ -148,7 +148,7 @@ final class ListsDataSource: ListsDataSourceApi {
                 return
             }
             var mutableList = list
-            mutableList.dateCreated = index
+            mutableList.index = index
             
             let encodedData = try Firestore.Encoder().encode(mutableList)
             productsBatch.updateData(

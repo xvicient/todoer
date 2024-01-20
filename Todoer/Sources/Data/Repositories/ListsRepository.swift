@@ -102,7 +102,7 @@ private extension ListDTO {
              name: name,
              done: done,
              uuid: uuid,
-             dateCreated: dateCreated)
+             index: index)
     }
 }
 
@@ -112,6 +112,6 @@ private extension List {
                 name: name,
                 done: done,
                 uuid: uuid,
-                dateCreated: dateCreated)
+                index: index)
     }
 }

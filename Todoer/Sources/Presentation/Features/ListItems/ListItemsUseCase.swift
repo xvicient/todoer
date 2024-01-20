@@ -43,7 +43,7 @@ extension ListItems {
         ) -> AnyPublisher<[Item], Error> {
             itemsRepository.fetchItems(listId: listId)
                 .tryMap { items in
-                    items.sorted { $0.dateCreated < $1.dateCreated }
+                    items.sorted { $0.index < $1.index }
                 }
                 .receive(on: DispatchQueue.main)
                 .eraseToAnyPublisher()

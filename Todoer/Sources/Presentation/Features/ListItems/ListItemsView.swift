@@ -157,6 +157,6 @@ private extension ListItemsView {
             name: "Test",
             done: false,
             uuid: [""],
-            dateCreated: 1)
+            index: 1)
     )
 }
