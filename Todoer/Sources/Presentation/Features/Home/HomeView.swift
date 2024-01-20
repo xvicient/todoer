@@ -2,16 +2,10 @@ import SwiftUI
 
 // MARK: - HomeView
 
-private struct ListActions: TDSectionRowActions {
-    var tapAction: ((Int) -> Void)?
-    var swipeActions: ((Int, TDSectionRowActionType) -> Void)?
-    var submitAction: ((String) -> Void)?
-    var cancelAction: (() -> Void)?
-    var moveAction: ((IndexSet, Int) -> Void)?
-}
-
 struct HomeView: View {
     @ObservedObject private var store: Store<Home.Reducer>
+    @FocusState private var isNewRowFocused: Bool
+    @State private var newRowText = ""
     
     init(store: Store<Home.Reducer>) {
         self.store = store
@@ -77,7 +71,7 @@ private extension HomeView {
             .scrollContentBackground(.hidden)
             .onChange(of: store.state.viewState == .addingList, {
                 withAnimation {
-                    scrollView.scrollTo(store.state.viewModel.listsSection.rows.count - 1,
+                    scrollView.scrollTo(store.state.viewModel.lists.count - 1,
                                         anchor: .bottom)
                 }
             })
@@ -130,10 +124,110 @@ private extension HomeView {
     
     @ViewBuilder
     var listsSection: some View {
-        TDListSectionView(viewModel: store.state.viewModel.listsSection,
-                          actions: listActions,
-                          sectionTitle: Constants.Text.todos,
-                          newRowPlaceholder: Constants.Text.list)
+        Section(header:
+                    Text(Constants.Text.todos)
+            .foregroundColor(.textWhite)
+        ) {
+            ForEach(Array(store.state.viewModel.lists.enumerated()),
+                    id: \.element.id) { index, row in
+                if row.isEditing {
+                    newRow(index)
+                        .id(row.id)
+                } else {
+                    sectionRow(row, index: index)
+                        .id(row.id)
+                }
+            }
+                    .onMove(perform: moveList)
+        }
+    }
+    
+    @ViewBuilder
+    func sectionRow(
+        _ row: Home.Reducer.ListRow,
+        index: Int
+    ) -> some View {
+        Group {
+            HStack {
+                (row.list.done ? Image.largecircleFillCircle : Image.circle)
+                    .foregroundColor(.buttonBlack)
+                Button(action: {
+                    store.send(.didTapList(index))
+                }) {
+                    Text(row.list.name)
+                        .strikethrough(row.list.done)
+                        .frame(maxWidth: .infinity,
+                               alignment: .leading)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.borderless)
+                .foregroundColor(.textBlack)
+            }
+            .frame(height: 40)
+        }
+        .swipeActions(edge: .leading) {
+            swipeActions(
+                row.leadingActions,
+                index: index
+            )
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            swipeActions(
+                row.trailingActions,
+                index: index
+            )
+        }
+    }
+    
+    @ViewBuilder
+    func newRow(_ index: Int) -> some View {
+        HStack {
+            Image.circle
+                .foregroundColor(.buttonBlack)
+            TextField(Constants.Text.list, text: $newRowText)
+                .foregroundColor(.textBlack)
+                .focused($isNewRowFocused)
+                .onAppear {
+                    newRowText = ""
+                }
+                .onSubmit {
+                    hideKeyboard()
+                    store.send(.didTapSubmitListButton($newRowText.wrappedValue))
+                }
+                .submitLabel(.done)
+            Button(action: {
+                withAnimation {
+                    store.send(.didTapCancelAddRowButton)
+                }
+            }) {
+                Image.xmark
+                    .resizable()
+                    .frame(width: 12, height: 12)
+                    .foregroundColor(.buttonBlack)
+            }
+        }
+        .frame(height: 40)
+        .onAppear {
+            isNewRowFocused = true
+        }
+    }
+    
+    @ViewBuilder
+    func swipeActions(
+        _ actions: [Home.Reducer.SwipeAction],
+        index: Int
+    ) -> some View {
+        ForEach(actions,
+                id: \.id) { option in
+            Button {
+                withAnimation {
+                    swipeActions(index, option)
+                }
+            } label: {
+                option.icon
+            }
+            .tint(option.tint)
+        }
     }
     
     @ViewBuilder
@@ -170,19 +264,7 @@ private extension HomeView {
 // MARK: - Private
 
 private extension HomeView {
-    var listActions: ListActions {
-        ListActions(tapAction: tapAction,
-                    swipeActions: swipeActions,
-                    submitAction: submitAction,
-                    cancelAction: cancelAction,
-                    moveAction: moveAction)
-    }
-    
-    var tapAction: (Int) -> Void {
-        { store.send(.didTapList($0)) }
-    }
-    
-    var swipeActions: (Int, TDSectionRowActionType) -> Void {
+    var swipeActions: (Int, Home.Reducer.SwipeAction) -> Void {
         { index, option in
             switch option {
             case .done, .undone:
@@ -195,19 +277,8 @@ private extension HomeView {
         }
     }
     
-    var submitAction: (String) -> Void {
-        { store.send(.didTapSubmitListButton($0)) }
-    }
-    
-    var cancelAction: () -> Void {
-        { store.send(.didTapCancelAddRowButton) }
-    }
-    
-    var moveAction: ((IndexSet, Int) -> Void) {
-        {
-            store.state.viewModel.listsSection.rows.move(fromOffsets: $0, toOffset: $1)
-            store.send(.didSortLists)
-        }
+    func moveList(fromOffset: IndexSet, toOffset: Int) {
+        store.send(.didSortLists(fromOffset, toOffset))
     }
 }
 

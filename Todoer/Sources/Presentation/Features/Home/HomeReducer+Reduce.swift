@@ -1,4 +1,5 @@
 import Combine
+import Foundation
 
 // MARK: - Home Reducer
 
@@ -78,9 +79,11 @@ internal extension Home.Reducer {
                 state: &state
             )
             
-        case (.idle, .didSortLists):
+        case (.idle, .didSortLists(let fromIndex, let toIndex)):
             return onDidSortLists(
-                state: &state
+                state: &state,
+                fromIndex: fromIndex,
+                toIndex: toIndex
             )
             
         case (.idle, .fetchDataResult(let result)),
@@ -195,7 +198,7 @@ private extension Home.Reducer {
         state: inout State,
         index: Int
     ) -> Effect<Action> {
-        guard let list = state.viewModel.listsSection.rows[index] as? List else {
+        guard let list = state.viewModel.lists[safe: index]?.list else {
             state.viewState = .unexpectedError
             return .none
         }
@@ -207,10 +210,12 @@ private extension Home.Reducer {
         state: inout State,
         index: Int
     ) -> Effect<Action> {
-        guard let list = state.viewModel.listsSection.rows[index] as? List else {
+        guard let list = state.viewModel.lists[safe: index]?.list else {
             state.viewState = .unexpectedError
             return .none
         }
+        state.viewState = .updatingList
+        state.viewModel.lists[index].list.done.toggle()
         return .task(Task {
             .toggleListResult(
                 await dependencies.useCase.toggleList(list: list)
@@ -222,10 +227,12 @@ private extension Home.Reducer {
         state: inout State,
         index: Int
     ) -> Effect<Action> {
-        guard let list = state.viewModel.listsSection.rows[index] as? List else {
+        guard let list = state.viewModel.lists[safe: index]?.list else {
             state.viewState = .unexpectedError
             return .none
         }
+        state.viewState = .updatingList
+        state.viewModel.lists.remove(at: index)
         return .task(Task {
             .deleteListResult(
                 await dependencies.useCase.deleteList(list.documentId)
@@ -237,7 +244,7 @@ private extension Home.Reducer {
         state: inout State,
         index: Int
     ) -> Effect<Action> {
-        guard let list = state.viewModel.listsSection.rows[index] as? List else {
+        guard let list = state.viewModel.lists[safe: index]?.list else {
             state.viewState = .unexpectedError
             return .none
         }
@@ -249,13 +256,13 @@ private extension Home.Reducer {
     func onDidTapAddRowButton(
         state: inout State
     ) -> Effect<Action> {
-        guard !state.viewModel.listsSection.rows.contains(
-            where: { $0 is EmptyRow }
+        guard !state.viewModel.lists.contains(
+            where: { $0.isEditing }
         ) else {
             return .none
         }
         state.viewState = .addingList
-        state.viewModel.listsSection.rows.append(EmptyRow())
+        state.viewModel.lists.append(emptyList)
         return .none
     }
     
@@ -263,7 +270,7 @@ private extension Home.Reducer {
         state: inout State
     ) -> Effect<Action> {
         state.viewState = .idle
-        state.viewModel.listsSection.rows.removeAll { $0 is EmptyRow }
+        state.viewModel.lists.removeAll { $0.isEditing }
         return .none
     }
     
@@ -293,12 +300,14 @@ private extension Home.Reducer {
     }
     
     func onDidSortLists(
-        state: inout State
+        state: inout State,
+        fromIndex: IndexSet,
+        toIndex: Int
     ) -> Effect<Action> {
         state.viewState = .sortingList
-        let lists = state.viewModel.listsSection.rows
-            .map { $0 as? List }
-            .compactMap { $0 }
+        state.viewModel.lists.move(fromOffsets: fromIndex, toOffset: toIndex)
+        let lists = state.viewModel.lists
+            .map { $0.list }
         return .task(Task {
             .sortListsResult(
                 await dependencies.useCase.sortLists(lists: lists)
@@ -313,7 +322,7 @@ private extension Home.Reducer {
         switch result {
         case .success(let data):
             state.viewState = .idle
-            state.viewModel.listsSection.rows = data.0
+            state.viewModel.lists = data.0.map { $0.toListRow }
             state.viewModel.invitations = data.1
         case .failure:
             state.viewState = .unexpectedError
@@ -394,8 +403,8 @@ private extension Home.Reducer {
         switch result {
         case .success(let list):
             state.viewState = .idle
-            state.viewModel.listsSection.rows.removeAll { $0 is EmptyRow }
-            state.viewModel.listsSection.rows.append(list)
+            state.viewModel.lists.removeAll { $0.isEditing }
+            state.viewModel.lists.append(list.toListRow)
         case .failure:
             state.viewState = .unexpectedError
         }
@@ -413,5 +422,29 @@ private extension Home.Reducer {
             state.viewState = .unexpectedError
         }
         return .none
+    }
+    
+    var emptyList: ListRow {
+        ListRow(
+            list: List(
+                documentId: "",
+                name: "",
+                done: false,
+                uuid: [],
+                index: Date().milliseconds
+            ),
+            isEditing: true)
+    }
+}
+
+// MARK: - List to ListRow
+
+private extension List {
+    var toListRow: Home.Reducer.ListRow {
+        Home.Reducer.ListRow(
+            list: self,
+            leadingActions: [self.done ? .undone : .done],
+            trailingActions: [.delete, .share]
+        )
     }
 }

@@ -26,7 +26,7 @@ extension Home {
             case didTapCancelAddRowButton
             case didTapSubmitListButton(String)
             case didTapSignoutButton
-            case didSortLists
+            case didSortLists(IndexSet, Int)
 
             
             // MARK: - Results
@@ -51,6 +51,7 @@ extension Home {
             case loading
             case addingList
             case sortingList
+            case updatingList
             case unexpectedError
         }
         
@@ -70,28 +71,53 @@ internal extension Home.Reducer {
     
     @MainActor
     struct ViewModel {
-        var listsSection = ListsSection()
+        var lists = [ListRow]()
         var invitations = [Invitation]()
         var photoUrl = ""
     }
     
-    // MARK: - TDListSectionViewModel
-    
-    final class ListsSection: TDListSectionViewModel {
-        var rows: [any TDSectionRow] = []
-        var leadingActions: (any TDSectionRow) -> [TDSectionRowActionType] {
-            { [$0.done ? .undone : .done] }
+    struct ListRow: Identifiable {        
+        let id = UUID()
+        var list: List
+        let leadingActions: [SwipeAction]
+        let trailingActions: [SwipeAction]
+        var isEditing: Bool
+        
+        init(list: List,
+             leadingActions: [SwipeAction] = [],
+             trailingActions: [SwipeAction] = [],
+             isEditing: Bool = false) {
+            self.list = list
+            self.leadingActions = leadingActions
+            self.trailingActions = trailingActions
+            self.isEditing = isEditing
         }
-        var trailingActions: [TDSectionRowActionType] = [.delete, .share]
     }
     
-    // MARK: - EmptyRow
-    
-    struct EmptyRow: TDSectionRow {
-        var id = UUID()
-        var documentId = ""
-        var name = ""
-        var done = false
-        var isEditing = true
+    enum SwipeAction: Identifiable {
+        case share
+        case done
+        case undone
+        case delete
+        
+        var id: UUID { UUID() }
+        
+        var tint: Color {
+            switch self {
+            case .share: return .buttonBlack
+            case .done: return .buttonBlack
+            case .undone: return .buttonBlack
+            case .delete: return .buttonDestructive
+            }
+        }
+        
+        var icon: Image {
+            switch self {
+            case .share: return .squareAndArrowUp
+            case .done: return .largecircleFillCircle
+            case .undone: return .circle
+            case .delete: return .trash
+            }
+        }
     }
 }
