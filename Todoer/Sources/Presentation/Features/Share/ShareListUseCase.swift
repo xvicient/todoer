@@ -14,8 +14,15 @@ protocol ShareListUseCaseApi {
 
 extension ShareList {
     struct UseCase: ShareListUseCaseApi {
-        private enum Errors: Error {
+        private enum Errors: Error, LocalizedError {
             case unexpectedError
+            
+            var errorDescription: String? {
+                switch self {
+                case .unexpectedError:
+                    return "Unexpected error."
+                }
+            }
         }
         
         private let usersRepository: UsersRepositoryApi

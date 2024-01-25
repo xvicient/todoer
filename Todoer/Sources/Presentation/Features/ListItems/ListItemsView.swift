@@ -35,13 +35,10 @@ struct ListItemsView: View {
         .disabled(
             store.state.viewState == .loading
         )
-        .alert(isPresented: Binding(
-            get: { store.state.viewState == .unexpectedError },
-            set: { _ in }
-        )) {
+        .alert(isPresented: alertBinding) {
             Alert(
                 title: Text(Constants.Text.errorTitle),
-                message: Text(Constants.Text.unexpectedError),
+                message: alertErrorMessage,
                 dismissButton: .default(Text(Constants.Text.errorOkButton)) {
                     store.send(.didTapDismissError)
                 }
@@ -103,6 +100,13 @@ private extension ListItemsView {
             ProgressView()
         }
     }
+    
+    @ViewBuilder
+    var alertErrorMessage: Text? {
+        if case let .error(error) = store.state.viewState {
+            Text(error)
+        }
+    }
 }
 
 // MARK: - Private
@@ -133,6 +137,15 @@ private extension ListItemsView {
     
     var cancelAction: () -> Void {
         { store.send(.didTapCancelAddRowButton) }
+    }
+    
+    var alertBinding: Binding<Bool> {
+        Binding(
+            get: {
+                { if case .error = store.state.viewState { return true } else { return false } }()
+            },
+            set: { _ in }
+        )
     }
 }
 

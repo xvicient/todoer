@@ -38,6 +38,39 @@ struct ShareListView: View {
         .onAppear {
             store.send(.onAppear)
         }
+        .alert(isPresented: alertBinding) {
+            Alert(
+                title: Text(Constants.Text.errorTitle),
+                message: alertErrorMessage,
+                dismissButton: .default(Text(Constants.Text.errorOkButton)) {
+                    store.send(.didTapDismissError)
+                }
+            )
+        }
+    }
+}
+
+// MARK: - ViewBuilders
+
+private extension ShareListView {
+    @ViewBuilder
+    var alertErrorMessage: Text? {
+        if case let .error(error) = store.state.viewState {
+            Text(error)
+        }
+    }
+}
+
+// MARK: - Private
+
+private extension ShareListView {
+    var alertBinding: Binding<Bool> {
+        Binding(
+            get: {
+                { if case .error = store.state.viewState { return true } else { return false } }()
+            },
+            set: { _ in }
+        )
     }
 }
 
@@ -50,6 +83,8 @@ private extension ShareListView {
             static let sharingWithTitle = "Sharing with"
             static let shareButtonTitle = "Share"
             static let sharePlaceholder = "Email..."
+            static let errorTitle = "Error"
+            static let errorOkButton = "Ok"
         }
     }
 }

@@ -12,10 +12,20 @@ extension Authentication {
         case google
     }
     struct UseCase: AuthenticationUseCaseApi {
-        enum Errors: Error {
+        enum Errors: Error, LocalizedError {
             case emailInUse
             case emptyAuthEmail
+            
+            var errorDescription: String? {
+                switch self {
+                case .emailInUse:
+                    return "Email already in use."
+                case .emptyAuthEmail:
+                    return "Invalid email."
+                }
+            }
         }
+        
         private let usersRepository: UsersRepositoryApi
         private let singInService: SignInServiceApi
         private let authenticationService: AuthenticationServiceApi

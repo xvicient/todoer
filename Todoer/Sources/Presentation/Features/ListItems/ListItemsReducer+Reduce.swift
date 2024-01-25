@@ -170,8 +170,8 @@ private extension ListItems.Reducer {
         case .success(let items):
             state.viewState = .idle
             state.viewModel.itemsSection.rows = items
-        case .failure:
-            state.viewState = .unexpectedError
+        case .failure(let error):
+            state.viewState = .error(error.localizedDescription)
         }
         return .none
     }
@@ -185,8 +185,8 @@ private extension ListItems.Reducer {
             state.viewState = .idle
             state.viewModel.itemsSection.rows.removeAll { $0 is EmptyRow }
             state.viewModel.itemsSection.rows.append(item)
-        case .failure:
-            state.viewState = .unexpectedError
+        case .failure(let error):
+            state.viewState = .error(error.localizedDescription)
         }
         return .none
     }

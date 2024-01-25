@@ -134,7 +134,7 @@ private extension HomeView {
                     newRow(index)
                         .id(row.id)
                 } else {
-                    sectionRow(row, index: index)
+                    listRow(row, index: index)
                         .id(row.id)
                 }
             }
@@ -143,7 +143,7 @@ private extension HomeView {
     }
     
     @ViewBuilder
-    func sectionRow(
+    func listRow(
         _ row: Home.Reducer.ListRow,
         index: Int
     ) -> some View {

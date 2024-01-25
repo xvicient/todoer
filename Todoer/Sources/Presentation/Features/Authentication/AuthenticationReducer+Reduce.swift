@@ -71,7 +71,7 @@ private extension Authentication.Reducer {
             if error.code == 1001 {
                 state.viewState = .idle
             } else {
-                state.viewState = .unexpectedError
+                state.viewState = .error(error.localizedDescription)
             }
         }
         return .none
@@ -88,12 +88,12 @@ private extension Authentication.Reducer {
         case .failure(let error):
             switch error {
             case Authentication.UseCase.Errors.emailInUse:
-                state.viewState = .emailInUseError
+                state.viewState = .error(error.localizedDescription)
             default:
                 if error.code == -5 {
                     state.viewState = .idle
                 } else {
-                    state.viewState = .unexpectedError
+                    state.viewState = .error(error.localizedDescription)
                 }
             }
         }

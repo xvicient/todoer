@@ -27,14 +27,10 @@ struct AuthenticationView: View {
             appInfoView
         }
         .background(.backgroundWhite)
-        .alert(isPresented: Binding(
-            get: { store.state.viewState == .unexpectedError ||
-                store.state.viewState == .emailInUseError},
-            set: { _ in }
-        )) {
+        .alert(isPresented: alertBinding) {
             Alert(
                 title: Text(Constants.Text.errorTitle),
-                message: store.state.viewState.errorText,
+                message: alertErrorMessage,
                 dismissButton: .default(Text(Constants.Text.errorOkButton)) {
                     store.send(.didTapDismissError)
                 }
@@ -43,35 +39,6 @@ struct AuthenticationView: View {
         .disabled(
             store.state.viewState == .loading
         )
-    }
-    
-    private func typeWriter(at position: String.Index) {
-        if position == captionText.startIndex {
-            caption = ""
-        }
-        
-        if position < captionText.endIndex {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.04) {
-                let char = captionText[position]
-                caption.append(char)
-                typeWriter(at: captionText.index(after: position))
-            }
-        }
-    }
-}
-
-// MARK: - ViewState errors
-
-private extension Authentication.Reducer.ViewState {
-    var errorText: Text? {
-        switch self {
-        case .unexpectedError:
-            return Text(AuthenticationView.Constants.Text.unexpectedError)
-        case .emailInUseError:
-            return Text(AuthenticationView.Constants.Text.emailInUseError)
-        default:
-            return nil
-        }
     }
 }
 
@@ -191,6 +158,40 @@ private extension AuthenticationView {
             }
         }
     }
+    
+    @ViewBuilder
+    var alertErrorMessage: Text? {
+        if case let .error(error) = store.state.viewState {
+            Text(error)
+        }
+    }
+}
+
+// MARK: - Private
+
+private extension AuthenticationView {
+    func typeWriter(at position: String.Index) {
+        if position == captionText.startIndex {
+            caption = ""
+        }
+        
+        if position < captionText.endIndex {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.04) {
+                let char = captionText[position]
+                caption.append(char)
+                typeWriter(at: captionText.index(after: position))
+            }
+        }
+    }
+    
+    var alertBinding: Binding<Bool> {
+        Binding(
+            get: {
+                { if case .error = store.state.viewState { return true } else { return false } }()
+            },
+            set: { _ in }
+        )
+    }
 }
 
 // MARK: - Constants
@@ -201,8 +202,6 @@ internal extension AuthenticationView {
             static let login = "Login"
             static let signInWithGoogle = "Sign in with Google"
             static let errorTitle = "Error"
-            static let unexpectedError = "Unexpected error"
-            static let emailInUseError = "Email already registered"
             static let errorOkButton = "Ok"
             
         }

@@ -38,11 +38,11 @@ extension ListItems {
             var viewModel = ViewModel()
         }
         
-        enum ViewState {
+        enum ViewState: Equatable {
             case idle
             case loading
             case addingItem
-            case unexpectedError
+            case error(String)
         }
         
         internal let dependencies: ListItemsDependencies

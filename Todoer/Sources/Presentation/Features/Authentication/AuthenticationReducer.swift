@@ -23,11 +23,10 @@ extension Authentication {
             var viewState = ViewState.idle
         }
         
-        enum ViewState {
+        enum ViewState: Equatable {
             case idle
             case loading
-            case unexpectedError
-            case emailInUseError
+            case error(String)
         }
         
         internal let coordinator: Coordinator
