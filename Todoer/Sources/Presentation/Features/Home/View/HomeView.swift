@@ -157,6 +157,8 @@ private extension HomeView {
                     store.send(.didTapList(index))
                 }) {
                     Text(row.list.name)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.leading)
                         .strikethrough(row.list.done)
                         .frame(maxWidth: .infinity,
                                alignment: .leading)
@@ -165,7 +167,7 @@ private extension HomeView {
                 .buttonStyle(.borderless)
                 .foregroundColor(.textBlack)
             }
-            .frame(height: 40)
+            .frame(minHeight: 40)
         }
         .swipeActions(edge: .leading) {
             swipeActions(

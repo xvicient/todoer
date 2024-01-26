@@ -87,6 +87,8 @@ private extension ListItemsView {
                     .foregroundColor(.buttonBlack)
                 Button(action: {}) {
                     Text(row.item.name)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.leading)
                         .strikethrough(row.item.done)
                         .frame(maxWidth: .infinity,
                                alignment: .leading)
@@ -95,7 +97,7 @@ private extension ListItemsView {
                 .buttonStyle(.borderless)
                 .foregroundColor(.textBlack)
             }
-            .frame(height: 40)
+            .frame(minHeight: 40)
         }
         .swipeActions(edge: .leading) {
             swipeActions(
