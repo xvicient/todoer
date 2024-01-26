@@ -16,10 +16,6 @@ protocol ListsDataSourceApi {
         _ documentId: String
     ) async throws
     
-    func toggleList(
-        _ list: ListDTO
-    ) async throws
-    
     func importList(
         id: String,
         uuid: String
@@ -107,20 +103,6 @@ final class ListsDataSource: ListsDataSourceApi {
         } else {
             throw Errors.encodingError
         }
-    }
-    
-    func toggleList(
-        _ list: ListDTO
-    ) async throws {
-        guard let id = list.id else {
-            throw Errors.invalidDTO
-        }
-        
-        guard let encodedData = try? Firestore.Encoder().encode(list) else {
-            throw Errors.encodingError
-        }
-        
-        try await listsCollection.document(id).updateData(encodedData)
     }
     
     func updateList(

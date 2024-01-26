@@ -13,10 +13,6 @@ protocol ListsRepositoryApi {
         _ documentId: String
     ) async throws
     
-    func toggleList(
-        _ list: List
-    ) async throws
-    
     func importList(
         id: String
     ) async throws
@@ -67,12 +63,6 @@ final class ListsRepository: ListsRepositoryApi {
         _ documentId: String
     ) async throws {
         try await listsDataSource.deleteList(documentId)
-    }
-    
-    func toggleList(
-        _ list: List
-    ) async throws {
-        try await listsDataSource.toggleList(list.toDTO)
     }
     
     func importList(

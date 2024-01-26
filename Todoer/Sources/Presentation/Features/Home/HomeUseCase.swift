@@ -20,9 +20,9 @@ protocol HomeUseCaseApi {
         invitationId: String
     ) async -> Result<Void, Error>
     
-    func toggleList(
+    func updateList(
         list: List
-    ) async -> Result<Void, Error>
+    ) async -> Result<List, Error>
     
     func deleteList(
         _ documentId: String
@@ -110,18 +110,16 @@ extension Home {
             }
         }
         
-        func toggleList(
+        func updateList(
             list: List
-        ) async -> Result<Void, Error> {
+        ) async -> Result<List, Error> {
             do {
-                var mutableList = list
-                mutableList.done.toggle()
-                try await listsRepository.toggleList(mutableList)
+                let updatedList = try await listsRepository.updateList(list)
                 try await productsRepository.toogleAllItems(
-                    listId: mutableList.documentId,
-                    done: mutableList.done
+                    listId: list.documentId,
+                    done: list.done
                 )
-                return .success(())
+                return .success(updatedList)
             } catch {
                 return .failure(error)
             }

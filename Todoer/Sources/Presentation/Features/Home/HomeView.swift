@@ -131,7 +131,7 @@ private extension HomeView {
             ForEach(Array(store.state.viewModel.lists.enumerated()),
                     id: \.element.id) { index, row in
                 if row.isEditing {
-                    newRow(index)
+                    newRow(row, index: index)
                         .id(row.id)
                 } else {
                     listRow(row, index: index)
@@ -180,24 +180,33 @@ private extension HomeView {
     }
     
     @ViewBuilder
-    func newRow(_ index: Int) -> some View {
+    func newRow(
+        _ row: Home.Reducer.ListRow,
+        index: Int
+    ) -> some View {
         HStack {
-            Image.circle
+            (row.list.done ? Image.largecircleFillCircle : Image.circle)
                 .foregroundColor(.buttonBlack)
             TextField(Constants.Text.list, text: $newRowText)
                 .foregroundColor(.textBlack)
                 .focused($isNewRowFocused)
                 .onAppear {
-                    newRowText = ""
+                    newRowText = row.list.name
                 }
                 .onSubmit {
                     hideKeyboard()
-                    store.send(.didTapSubmitListButton($newRowText.wrappedValue))
+                    if row.list.name.isEmpty {
+                        store.send(.didTapSubmitListButton($newRowText.wrappedValue))
+                    } else {
+                        store.send(.didTapUpdateListButton(index, $newRowText.wrappedValue))
+                    }
                 }
                 .submitLabel(.done)
             Button(action: {
-                withAnimation {
-                    store.send(.didTapCancelAddRowButton)
+                if row.list.name.isEmpty {
+                    store.send(.didTapCancelAddListButton)
+                } else {
+                    store.send(.didTapCancelEditListButton)
                 }
             }) {
                 Image.xmark
@@ -232,7 +241,8 @@ private extension HomeView {
     
     @ViewBuilder
     var newRowButton: some View {
-        if store.state.viewState != .addingList {
+        if store.state.viewState != .addingList &&
+            store.state.viewState != .editingList {
             VStack {
                 Spacer()
                 Button(action: {
@@ -273,6 +283,8 @@ private extension HomeView {
                 store.send(.didTapDeleteListButton(index))
             case .share:
                 store.send(.didTapShareListButton(index))
+            case .edit:
+                store.send(.didTapEditListButton(index))
             }
         }
     }

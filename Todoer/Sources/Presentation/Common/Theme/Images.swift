@@ -17,4 +17,5 @@ extension Image {
     static let plusCircleFill = Image(systemName: "plus.circle.fill")
     static let personCropCircle = Image(systemName: "person.crop.circle")
     static let trash = Image(systemName: "trash")
+    static let squareAndPencil = Image(systemName: "square.and.pencil")
 }
