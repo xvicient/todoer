@@ -89,9 +89,13 @@ internal extension Home.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let list):
-            state.viewState = .idle
-            state.viewModel.lists.removeAll { $0.isEditing }
-            state.viewModel.lists.append(list.toListRow)
+            if let index = state.viewModel.lists.firstIndex(where: { $0.isEditing }) {
+                state.viewState = .idle
+                state.viewModel.lists.remove(at: index)
+                state.viewModel.lists.insert(list.toListRow, at: index)
+            } else {
+                state.viewState = .unexpectedError
+            }
         case .failure:
             state.viewState = .unexpectedError
         }

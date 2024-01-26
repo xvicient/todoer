@@ -116,24 +116,22 @@ private extension ListItemsView {
                 .foregroundColor(.textBlack)
                 .focused($isNewRowFocused)
                 .onAppear {
-                    newRowText = ""
+                    newRowText = row.item.name
                 }
                 .onSubmit {
                     hideKeyboard()
                     if row.item.name.isEmpty {
                         store.send(.didTapSubmitItemButton($newRowText.wrappedValue))
                     } else {
-//                        store.send(.didTapUpdateListButton(index, $newRowText.wrappedValue))
+                        store.send(.didTapUpdateItemButton(index, $newRowText.wrappedValue))
                     }
                 }
                 .submitLabel(.done)
             Button(action: {
-                withAnimation {
-                    if row.item.name.isEmpty {
-                        store.send(.didTapCancelAddRowButton)
-                    } else {
-//                        store.send(.didTapCancelEditListButton)
-                    }
+                if row.item.name.isEmpty {
+                    store.send(.didTapCancelAddItemButton)
+                } else {
+                    store.send(.didTapCancelEditItemButton)
                 }
             }) {
                 Image.xmark
@@ -168,12 +166,13 @@ private extension ListItemsView {
     
     @ViewBuilder
     var newRowButton: some View {
-        if store.state.viewState != .addingItem {
+        if store.state.viewState != .addingItem &&
+            store.state.viewState != .editingItem {
             VStack {
                 Spacer()
                 Button(action: {
                     withAnimation {
-                        store.send(.didTapAddRowButton)
+                        store.send(.didTapAddItemButton)
                     }
                 }, label: {
                     Image.plusCircleFill
@@ -218,7 +217,7 @@ private extension ListItemsView {
             case .share:
                 break
             case .edit:
-                break
+                store.send(.didTapEditItemButton(index))
             }
         }
     }

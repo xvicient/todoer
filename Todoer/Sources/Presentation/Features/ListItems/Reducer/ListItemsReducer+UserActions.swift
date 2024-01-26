@@ -19,7 +19,7 @@ internal extension ListItems.Reducer {
         list.done = state.viewModel.items.allSatisfy({ $0.item.done })
         return .task(Task {
             .toggleItemResult(
-                await dependencies.useCase.updateItem(
+                await dependencies.useCase.updateItemDone(
                     item: item,
                     list: list
                 )
@@ -79,6 +79,50 @@ internal extension ListItems.Reducer {
                 )
             )
         })
+    }
+    
+    func onDidTapEditItemButton(
+        state: inout State,
+        index: Int
+    ) -> Effect<Action> {
+        guard let item = state.viewModel.items[safe: index]?.item else {
+            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+            return .none
+        }
+        state.viewState = .editingItem
+        state.viewModel.items.remove(at: index)
+        state.viewModel.items.insert(newItemRow(item: item), at: index)
+
+        return .none
+    }
+    
+    func onDidTapUpdateItemButton(
+        state: inout State,
+        index: Int,
+        name: String
+    ) -> Effect<Action> {
+        guard var item = state.viewModel.items[safe: index]?.item else {
+            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+            return .none
+        }
+        item.name = name
+        let listId = dependencies.list.documentId
+        return .task(Task {
+            .addItemResult(
+                await dependencies.useCase.updateItemName(
+                    item: item,
+                    listId: listId
+                )
+            )
+        })
+    }
+    
+    func onDidTapCancelEditItemButton(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
+        state.viewModel.items.removeAll { $0.isEditing }
+        return onAppear(state: &state)
     }
 }
 

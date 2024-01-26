@@ -16,14 +16,19 @@ protocol ListItemsUseCaseApi {
         listId: String
     ) async -> Result<Void, Error>
     
-    func updateItem(
+    func updateItemName(
+        item: Item,
+        listId: String
+    ) async -> Result<Item, Error>
+    
+    func updateItemDone(
         item: Item,
         list: List
     ) async -> Result<Item, Error>
 }
 
 extension ListItems {
-    struct UseCase: ListItemsUseCaseApi {        
+    struct UseCase: ListItemsUseCaseApi {
         private let itemsRepository: ItemsRepositoryApi
         private let listsRepository: ListsRepositoryApi
         
@@ -85,19 +90,35 @@ extension ListItems {
             }
         }
         
-        func updateItem(
+        func updateItemName(
+            item: Item,
+            listId: String
+        ) async -> Result<Item, Error> {
+            do {
+                let updatedItem = try await itemsRepository.updateItem(
+                    item: item,
+                    listId: listId
+                )
+                
+                return .success(updatedItem)
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func updateItemDone(
             item: Item,
             list: List
         ) async -> Result<Item, Error> {
             do {
-                let result = try await itemsRepository.updateItem(
+                let updatedItem = try await itemsRepository.updateItem(
                     item: item,
                     listId: list.documentId
                 )
                 
                 _ = try await listsRepository.updateList(list)
                 
-                return .success(result)
+                return .success(updatedItem)
             } catch {
                 return .failure(error)
             }

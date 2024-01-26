@@ -22,9 +22,13 @@ internal extension ListItems.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let item):
-            state.viewState = .idle
-            state.viewModel.items.removeAll { $0.isEditing }
-            state.viewModel.items.append(item.toItemRow)
+            if let index = state.viewModel.items.firstIndex(where: { $0.isEditing }) {
+                state.viewState = .idle
+                state.viewModel.items.remove(at: index)
+                state.viewModel.items.insert(item.toItemRow, at: index)
+            } else {
+                state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+            }
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }

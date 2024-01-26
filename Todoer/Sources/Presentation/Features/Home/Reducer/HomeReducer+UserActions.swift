@@ -102,7 +102,7 @@ internal extension Home.Reducer {
         }
         state.viewState = .editingList
         state.viewModel.lists.remove(at: index)
-        state.viewModel.lists.append(newListRow(list: list))
+        state.viewModel.lists.insert(newListRow(list: list), at: index)
 
         return .none
     }
@@ -131,7 +131,7 @@ internal extension Home.Reducer {
     ) -> Effect<Action> {
         state.viewState = .idle
         state.viewModel.lists.removeAll { $0.isEditing }
-        return onViewAppear(state: &state)
+        return onAppear(state: &state)
     }
     
     func onDidTapAddRowButton(

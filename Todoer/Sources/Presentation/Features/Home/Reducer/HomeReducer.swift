@@ -76,7 +76,7 @@ extension Home {
             
             switch (state.viewState, action) {
             case (.idle, .onViewAppear):
-                return onViewAppear(
+                return onAppear(
                     state: &state
                 )
             
@@ -205,7 +205,8 @@ extension Home {
                     result: result
                 )
                 
-            case (_, .addListResult(let result)):
+            case (.addingList, .addListResult(let result)),
+                (.editingList, .addListResult(let result)):
                 return onAddListResult(
                     state: &state,
                     result: result

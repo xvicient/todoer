@@ -4,7 +4,7 @@ import Combine
 
 @MainActor
 internal extension Home.Reducer {
-    func onViewAppear(
+    func onAppear(
         state: inout State
     ) -> Effect<Action> {
         state.viewState = .loading

@@ -17,9 +17,12 @@ extension ListItems {
             /// ListItemsReducer+UserActions
             case didTapToggleItemButton(Int)
             case didTapDeleteItemButton(Int)
-            case didTapAddRowButton
-            case didTapCancelAddRowButton
+            case didTapAddItemButton
+            case didTapCancelAddItemButton
             case didTapSubmitItemButton(String)
+            case didTapEditItemButton(Int)
+            case didTapUpdateItemButton(Int, String)
+            case didTapCancelEditItemButton
             case didTapDismissError
             
             // MARK: - Results
@@ -41,6 +44,7 @@ extension ListItems {
             case loading
             case addingItem
             case updatingItem
+            case editingItem
             case error(String)
         }
         
@@ -76,12 +80,12 @@ extension ListItems {
                     index: index
                 )
                 
-            case (.idle, .didTapAddRowButton):
+            case (.idle, .didTapAddItemButton):
                 return onDidTapAddRowButton(
                     state: &state
                 )
                 
-            case (.addingItem, .didTapCancelAddRowButton):
+            case (.addingItem, .didTapCancelAddItemButton):
                 return onDidTapCancelAddRowButton(
                     state: &state
                 )
@@ -99,7 +103,8 @@ extension ListItems {
                     result: result
                 )
                 
-            case (.addingItem, .addItemResult(let result)):
+            case (.addingItem, .addItemResult(let result)),
+                (.editingItem, .addItemResult(let result)):
                 return onAddItemResult(
                     state: &state,
                     result: result
@@ -112,6 +117,24 @@ extension ListItems {
                 return onToggleItemResult(
                     state: &state,
                     result: result
+                )
+                
+            case (.idle, .didTapEditItemButton(let index)):
+                return onDidTapEditItemButton(
+                    state: &state,
+                    index: index
+                )
+                
+            case (.editingItem, .didTapCancelEditItemButton):
+                return onDidTapCancelEditItemButton(
+                    state: &state
+                )
+                
+            case (.editingItem, .didTapUpdateItemButton(let index, let name)):
+                return onDidTapUpdateItemButton(
+                    state: &state,
+                    index: index,
+                    name: name
                 )
                 
             case (.error, .didTapDismissError):
