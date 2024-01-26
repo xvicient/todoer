@@ -173,7 +173,7 @@ private extension Home.UseCase {
     
     func fetchInvitations(
     ) -> AnyPublisher<[Invitation], Error> {
-        invitationsRepository.fetchInvitations()
+        invitationsRepository.getInvitations()
             .map { invitations in
                 invitations.sorted { $0.index < $1.index }
             }

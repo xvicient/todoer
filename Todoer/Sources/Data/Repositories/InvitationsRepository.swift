@@ -2,8 +2,13 @@ import Combine
 import Foundation
 
 protocol InvitationsRepositoryApi {
-    func fetchInvitations(
+    func getInvitations(
     ) -> AnyPublisher<[Invitation], Error>
+    
+    func getInvitation(
+        invitedId: String,
+        listId: String
+    ) async throws -> Invitation?
     
     func sendInvitation(
         ownerName: String,
@@ -19,6 +24,9 @@ protocol InvitationsRepositoryApi {
 }
 
 final class InvitationsRepository: InvitationsRepositoryApi {
+    
+    typealias SearchField = InvitationsDataSource.SearchField
+    
     let invitationsDataSource: InvitationsDataSourceApi
     let usersDataSource: UsersDataSourceApi
     
@@ -28,9 +36,11 @@ final class InvitationsRepository: InvitationsRepositoryApi {
         self.usersDataSource = usersDataSource
     }
     
-    func fetchInvitations(
+    func getInvitations(
     ) -> AnyPublisher<[Invitation], Error> {
-        invitationsDataSource.fetchInvitations(uuid: usersDataSource.uuid)
+        invitationsDataSource.getInvitations(
+            with: [SearchField(.invitedId, .equal(usersDataSource.uuid))]
+        )
             .tryMap { invitations in
                 invitations.map {
                     $0.toDomain
@@ -38,6 +48,18 @@ final class InvitationsRepository: InvitationsRepositoryApi {
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+    
+    func getInvitation(
+        invitedId: String,
+        listId: String
+    ) async throws -> Invitation? {
+        try await invitationsDataSource.getInvitations(
+            with: [SearchField(.invitedId, .equal(invitedId)),
+                   SearchField(.listId, .equal(listId))]
+        )
+        .map { $0.toDomain }
+        .first
     }
     
     func sendInvitation(

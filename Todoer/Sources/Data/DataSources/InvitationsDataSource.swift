@@ -3,9 +3,13 @@ import FirebaseFirestoreSwift
 import Combine
 
 protocol InvitationsDataSourceApi {
-    func fetchInvitations(
-        uuid: String
+    func getInvitations(
+        with fields: [InvitationsDataSource.SearchField]
     ) -> AnyPublisher<[InvitationDTO], Error>
+    
+    func getInvitations(
+        with fields: [InvitationsDataSource.SearchField]
+    ) async throws -> [InvitationDTO]
     
     func sendInvitation(
         ownerName: String,
@@ -22,6 +26,23 @@ protocol InvitationsDataSourceApi {
 
 final class InvitationsDataSource: InvitationsDataSourceApi {
     
+    struct SearchField {
+        enum Key: String {
+            case invitedId
+            case listId
+        }
+        enum Filter {
+            case equal(String)
+        }
+        let key: Key
+        let filter: Filter
+        
+        init(_ key: Key, _ filter: Filter) {
+            self.key = key
+            self.filter = filter
+        }
+    }
+    
     private var snapshotListener: ListenerRegistration?
     private var listenerSubject: PassthroughSubject<[InvitationDTO], Error>?
     
@@ -32,14 +53,13 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
         listenerSubject = nil
     }
     
-    func fetchInvitations(
-        uuid: String
+    func getInvitations(
+        with fields: [SearchField]
     ) -> AnyPublisher<[InvitationDTO], Error> {
         let subject = PassthroughSubject<[InvitationDTO], Error>()
         listenerSubject = subject
         
-        invitationsCollection
-            .whereField("invitedId", isEqualTo: uuid)
+        invitationsQuery(with: fields)
             .addSnapshotListener { query, error in
                 if let error = error {
                     subject.send(completion: .failure(error))
@@ -56,6 +76,15 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
         return subject
             .removeDuplicates()
             .eraseToAnyPublisher()
+    }
+    
+    func getInvitations(
+        with fields: [SearchField]
+    ) async throws -> [InvitationDTO] {
+        try await invitationsQuery(with: fields)
+            .getDocuments()
+            .documents
+            .map { try $0.data(as: InvitationDTO.self) }
     }
     
     func sendInvitation(
@@ -78,5 +107,20 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
         _ documentId: String
     ) async throws {
         try await invitationsCollection.document(documentId).delete()
+    }
+    
+    private func invitationsQuery(
+        with fields: [SearchField]
+    ) -> Query {
+        var query: Query = invitationsCollection
+        
+        fields.forEach {
+            switch $0.filter {
+            case .equal(let value):
+                query = query.whereField($0.key.rawValue, isEqualTo: value)
+            }
+        }
+        
+        return query
     }
 }
