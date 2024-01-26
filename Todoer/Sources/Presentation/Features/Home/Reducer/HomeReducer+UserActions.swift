@@ -191,7 +191,9 @@ internal extension Home.Reducer {
             .map { $0.list }
         return .task(Task {
             .sortListsResult(
-                await dependencies.useCase.sortLists(lists: lists)
+                await dependencies.useCase.sortLists(
+                    lists: lists
+                )
             )
         })
     }

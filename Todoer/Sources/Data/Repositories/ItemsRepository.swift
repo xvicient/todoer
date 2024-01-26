@@ -25,6 +25,11 @@ protocol ItemsRepositoryApi {
         listId: String?,
         done: Bool
     ) async throws
+    
+    func sortItems(
+        items: [Item],
+        listId: String
+    ) async throws
 }
 
 final class ItemsRepository: ItemsRepositoryApi {
@@ -61,23 +66,40 @@ final class ItemsRepository: ItemsRepositoryApi {
         itemId: String,
         listId: String
     ) async throws {
-        try await itemsDataSource.deleteItem(itemId: itemId,
-                                             listId: listId)
+        try await itemsDataSource.deleteItem(
+            itemId: itemId,
+            listId: listId
+        )
     }
     
     func updateItem(
         item: Item,
         listId: String
     )  async throws -> Item {
-        try await itemsDataSource.updateItem(item: item.toDTO,
-                                             listId: listId).toDomain
+        try await itemsDataSource.updateItem(
+            item: item.toDTO,
+            listId: listId
+        ).toDomain
     }
     
     func toogleAllItems(
         listId: String?,
         done: Bool
     ) async throws {
-        try await itemsDataSource.toogleAllItems(listId: listId, done: done)
+        try await itemsDataSource.toogleAllItems(
+            listId: listId,
+            done: done
+        )
+    }
+    
+    func sortItems(
+        items: [Item],
+        listId: String
+    ) async throws {
+        try await itemsDataSource.sortItems(
+            items: items.map { $0.toDTO },
+            listId: listId
+        )
     }
 }
 

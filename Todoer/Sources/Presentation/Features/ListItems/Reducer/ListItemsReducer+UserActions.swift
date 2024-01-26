@@ -124,6 +124,27 @@ internal extension ListItems.Reducer {
         state.viewModel.items.removeAll { $0.isEditing }
         return onAppear(state: &state)
     }
+    
+    func onDidSortItems(
+        state: inout State,
+        fromIndex: IndexSet,
+        toIndex: Int
+    ) -> Effect<Action> {
+        state.viewState = .sortingItems
+        state.viewModel.items.move(fromOffsets: fromIndex, toOffset: toIndex)
+        let items = state.viewModel.items
+            .map { $0.item }
+        let listId = dependencies.list.documentId
+        return .task(Task {
+            .sortItemsResult(
+                await dependencies.useCase.sortItems(
+                    items: items,
+                    listId: listId
+                )
+            )
+        })
+    }
+      
 }
 
 // MARK: - Private

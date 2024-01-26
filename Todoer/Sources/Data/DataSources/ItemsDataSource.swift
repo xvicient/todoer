@@ -26,6 +26,11 @@ protocol ItemsDataSourceApi {
         listId: String?,
         done: Bool
     ) async throws
+    
+    func sortItems(
+        items: [ItemDTO],
+        listId: String
+    ) async throws
 }
 
 final class ItemsDataSource: ItemsDataSourceApi {
@@ -134,6 +139,29 @@ final class ItemsDataSource: ItemsDataSourceApi {
             productsBatch.updateData(
                 encodedData,
                 forDocument: collection.document($0.documentID)
+            )
+        }
+        
+        try await productsBatch.commit()
+    }
+    
+    func sortItems(
+        items: [ItemDTO],
+        listId: String
+    ) async throws {
+        let productsBatch = Firestore.firestore().batch()
+        
+        try items.enumerated().forEach { index, item in
+            guard let id = item.id else {
+                return
+            }
+            var mutableItem = item
+            mutableItem.index = index
+            
+            let encodedData = try Firestore.Encoder().encode(mutableItem)
+            productsBatch.updateData(
+                encodedData,
+                forDocument: itemsCollection(listId: listId).document(id)
             )
         }
         

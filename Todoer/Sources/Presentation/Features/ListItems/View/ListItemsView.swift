@@ -46,17 +46,23 @@ private extension ListItemsView {
     var itemsList: some View {
         ScrollViewReader { scrollView in
             SwiftUI.List {
-                ForEach(Array(store.state.viewModel.items.enumerated()),
-                        id: \.element.id) { index, row in
-                    if row.isEditing {
-                        newRow(row, index: index)
-                            .id(row.id)
-                    } else {
-                        itemRow(row, index: index)
-                            .id(row.id)
+                Section(
+                    header:
+                        Text(listName)
+                        .foregroundColor(.textBlack)
+                ) {
+                    ForEach(Array(store.state.viewModel.items.enumerated()),
+                            id: \.element.id) { index, row in
+                        if row.isEditing {
+                            newRow(row, index: index)
+                                .id(row.id)
+                        } else {
+                            itemRow(row, index: index)
+                                .id(row.id)
+                        }
                     }
+                            .onMove(perform: moveItem)
                 }
-                .onMove(perform: moveItem)
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
@@ -78,7 +84,7 @@ private extension ListItemsView {
         Group {
             HStack {
                 (row.item.done ? Image.largecircleFillCircle : Image.circle)
-                .foregroundColor(.buttonBlack)
+                    .foregroundColor(.buttonBlack)
                 Button(action: {}) {
                     Text(row.item.name)
                         .strikethrough(row.item.done)
@@ -109,42 +115,42 @@ private extension ListItemsView {
     func newRow(
         _ row: ListItems.Reducer.ItemRow,
         index: Int) -> some View {
-        HStack {
-            Image.circle
-                .foregroundColor(.buttonBlack)
-            TextField(Constants.Text.item, text: $newRowText)
-                .foregroundColor(.textBlack)
-                .focused($isNewRowFocused)
-                .onAppear {
-                    newRowText = row.item.name
-                }
-                .onSubmit {
-                    hideKeyboard()
-                    if row.item.name.isEmpty {
-                        store.send(.didTapSubmitItemButton($newRowText.wrappedValue))
-                    } else {
-                        store.send(.didTapUpdateItemButton(index, $newRowText.wrappedValue))
-                    }
-                }
-                .submitLabel(.done)
-            Button(action: {
-                if row.item.name.isEmpty {
-                    store.send(.didTapCancelAddItemButton)
-                } else {
-                    store.send(.didTapCancelEditItemButton)
-                }
-            }) {
-                Image.xmark
-                    .resizable()
-                    .frame(width: 12, height: 12)
+            HStack {
+                Image.circle
                     .foregroundColor(.buttonBlack)
+                TextField(Constants.Text.item, text: $newRowText)
+                    .foregroundColor(.textBlack)
+                    .focused($isNewRowFocused)
+                    .onAppear {
+                        newRowText = row.item.name
+                    }
+                    .onSubmit {
+                        hideKeyboard()
+                        if row.item.name.isEmpty {
+                            store.send(.didTapSubmitItemButton($newRowText.wrappedValue))
+                        } else {
+                            store.send(.didTapUpdateItemButton(index, $newRowText.wrappedValue))
+                        }
+                    }
+                    .submitLabel(.done)
+                Button(action: {
+                    if row.item.name.isEmpty {
+                        store.send(.didTapCancelAddItemButton)
+                    } else {
+                        store.send(.didTapCancelEditItemButton)
+                    }
+                }) {
+                    Image.xmark
+                        .resizable()
+                        .frame(width: 12, height: 12)
+                        .foregroundColor(.buttonBlack)
+                }
+            }
+            .frame(height: 40)
+            .onAppear {
+                isNewRowFocused = true
             }
         }
-        .frame(height: 40)
-        .onAppear {
-            isNewRowFocused = true
-        }
-    }
     
     @ViewBuilder
     func swipeActions(
@@ -223,7 +229,7 @@ private extension ListItemsView {
     }
     
     func moveItem(fromOffset: IndexSet, toOffset: Int) {
-//        store.send(.didSortLists(fromOffset, toOffset))
+        store.send(.didSortItems(fromOffset, toOffset))
     }
     
     var alertBinding: Binding<Bool> {

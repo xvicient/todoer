@@ -1,3 +1,5 @@
+import Foundation
+
 // MARK: - ListItemsReducer
 
 protocol ListItemsDependencies {
@@ -23,6 +25,7 @@ extension ListItems {
             case didTapEditItemButton(Int)
             case didTapUpdateItemButton(Int, String)
             case didTapCancelEditItemButton
+            case didSortItems(IndexSet, Int)
             case didTapDismissError
             
             // MARK: - Results
@@ -31,6 +34,7 @@ extension ListItems {
             case addItemResult(Result<Item, Error>)
             case deleteItemResult(Result<Void, Error>)
             case toggleItemResult(Result<Item, Error>)
+            case sortItemsResult(Result<Void, Error>)
         }
         
         @MainActor
@@ -45,6 +49,7 @@ extension ListItems {
             case addingItem
             case updatingItem
             case editingItem
+            case sortingItems
             case error(String)
         }
         
@@ -135,6 +140,19 @@ extension ListItems {
                     state: &state,
                     index: index,
                     name: name
+                )
+                
+            case (.idle, .didSortItems(let fromIndex, let toIndex)):
+                return onDidSortItems(
+                    state: &state,
+                    fromIndex: fromIndex,
+                    toIndex: toIndex
+                )
+                
+            case (.sortingItems, .sortItemsResult(let result)):
+                return onSortItemsResult(
+                    state: &state,
+                    result: result
                 )
                 
             case (.error, .didTapDismissError):

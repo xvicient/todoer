@@ -54,6 +54,19 @@ internal extension ListItems.Reducer {
         }
         return .none
     }
+    
+    func onSortItemsResult(
+        state: inout State,
+        result: Result<Void, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
+        case .failure:
+            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+        }
+        return .none
+    }
 }
 
 // MARK: - Item to ItemRow

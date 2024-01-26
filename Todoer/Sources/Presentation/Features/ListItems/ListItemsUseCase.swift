@@ -25,6 +25,11 @@ protocol ListItemsUseCaseApi {
         item: Item,
         list: List
     ) async -> Result<Item, Error>
+    
+    func sortItems(
+        items: [Item],
+        listId: String
+    ) async -> Result<Void, Error>
 }
 
 extension ListItems {
@@ -119,6 +124,21 @@ extension ListItems {
                 _ = try await listsRepository.updateList(list)
                 
                 return .success(updatedItem)
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func sortItems(
+            items: [Item],
+            listId: String
+        ) async -> Result<Void, Error> {
+            do {
+                try await itemsRepository.sortItems(
+                    items: items,
+                    listId: listId
+                )
+                return .success(())
             } catch {
                 return .failure(error)
             }
