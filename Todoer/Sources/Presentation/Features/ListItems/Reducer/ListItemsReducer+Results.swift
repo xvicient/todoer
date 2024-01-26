@@ -37,6 +37,19 @@ internal extension ListItems.Reducer {
         state.viewState = .idle
         return .none
     }
+    
+    func onToggleItemResult(
+        state: inout State,
+        result: Result<Item, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
+        case .failure:
+            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+        }
+        return .none
+    }
 }
 
 // MARK: - Item to ItemRow
@@ -46,7 +59,7 @@ private extension Item {
         ListItems.Reducer.ItemRow(
             item: self,
             leadingActions: [self.done ? .undone : .done],
-            trailingActions: [.delete, .share, .edit]
+            trailingActions: [.delete, .edit]
         )
     }
 }

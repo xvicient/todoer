@@ -181,13 +181,13 @@ extension Home {
                     result: result
                 )
                 
-            case (_, .toggleListResult(let result)):
+            case (.updatingList, .toggleListResult(let result)):
                 return onToggleListResult(
                     state: &state,
                     result: result
                 )
                 
-            case (_, .deleteListResult(let result)):
+            case (.updatingList, .deleteListResult(let result)):
                 return onDeleteListResult(
                     state: &state,
                     result: result

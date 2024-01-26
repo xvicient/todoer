@@ -8,7 +8,6 @@ internal extension ListItems.Reducer {
         state: inout State,
         index: Int
     ) -> Effect<Action> {
-        
         guard state.viewModel.items[safe: index] != nil else {
             state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
             return .none
@@ -19,7 +18,7 @@ internal extension ListItems.Reducer {
         var list = dependencies.list
         list.done = state.viewModel.items.allSatisfy({ $0.item.done })
         return .task(Task {
-            .updateItemResult(
+            .toggleItemResult(
                 await dependencies.useCase.updateItem(
                     item: item,
                     list: list

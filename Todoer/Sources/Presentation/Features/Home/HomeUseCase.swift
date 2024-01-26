@@ -180,7 +180,7 @@ private extension Home.UseCase {
             .map { invitations in
                 invitations.map {
                     var invitation = $0
-                    if $0.ownerEmail.contains("privaterelay.appleid.com") {
+                    if $0.ownerEmail.isAppleInternalEmail {
                         invitation.ownerEmail = ""
                     }
                     return invitation
@@ -188,5 +188,11 @@ private extension Home.UseCase {
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+}
+
+private extension String {
+    var isAppleInternalEmail: Bool {
+        contains("privaterelay.appleid.com")
     }
 }

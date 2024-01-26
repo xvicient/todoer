@@ -27,7 +27,7 @@ extension ListItems {
             case fetchItemsResult(Result<[Item], Error>)
             case addItemResult(Result<Item, Error>)
             case deleteItemResult(Result<Void, Error>)
-            case updateItemResult(Result<Item, Error>)
+            case toggleItemResult(Result<Item, Error>)
         }
         
         @MainActor
@@ -108,10 +108,13 @@ extension ListItems {
             case (.idle, .deleteItemResult):
                 return .none
                 
-            case (.idle, .updateItemResult):
-                return .none
+            case (.updatingItem, .toggleItemResult(let result)):
+                return onToggleItemResult(
+                    state: &state,
+                    result: result
+                )
                 
-            case (_, .didTapDismissError):
+            case (.error, .didTapDismissError):
                 return onDidTapDismissError(
                     state: &state
                 )
