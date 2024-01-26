@@ -23,12 +23,7 @@ protocol ListItemsUseCaseApi {
 }
 
 extension ListItems {
-    struct UseCase: ListItemsUseCaseApi {
-        private enum Errors: Error {
-            case emptyItemName
-            case unexpectedError
-        }
-        
+    struct UseCase: ListItemsUseCaseApi {        
         private let itemsRepository: ItemsRepositoryApi
         private let listsRepository: ListsRepositoryApi
         

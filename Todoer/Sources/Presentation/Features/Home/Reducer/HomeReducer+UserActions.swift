@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 
 // MARK: - Reducer user actions
@@ -196,7 +195,11 @@ internal extension Home.Reducer {
             )
         })
     }
-    
+}
+
+// MARK: - Private
+
+private extension Home.Reducer {
     func newListRow(list: List = List.emptyList) -> ListRow {
         ListRow(
             list: list,

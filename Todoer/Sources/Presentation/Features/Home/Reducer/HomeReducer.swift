@@ -1,5 +1,4 @@
-import Combine
-import SwiftUI
+import Foundation
 
 // MARK: - HomeReducer
 
@@ -68,6 +67,7 @@ extension Home {
         }
         
         // MARK: - Reduce
+        
         @MainActor
         func reduce(
             _ state: inout State,
@@ -220,68 +220,6 @@ extension Home {
             default:
                 Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
                 return .none
-            }
-        }
-    }
-}
-
-// MARK: - Private
-
-internal extension Home.Reducer {
-    
-    // MARK: - ViewModel
-    
-    @MainActor
-    struct ViewModel {
-        var lists = [ListRow]()
-        var invitations = [Invitation]()
-        var photoUrl = ""
-    }
-    
-    struct ListRow: Identifiable {        
-        let id = UUID()
-        var list: List
-        let leadingActions: [SwipeAction]
-        let trailingActions: [SwipeAction]
-        var isEditing: Bool
-        
-        init(list: List,
-             leadingActions: [SwipeAction] = [],
-             trailingActions: [SwipeAction] = [],
-             isEditing: Bool = false) {
-            self.list = list
-            self.leadingActions = leadingActions
-            self.trailingActions = trailingActions
-            self.isEditing = isEditing
-        }
-    }
-    
-    enum SwipeAction: Identifiable {
-        case share
-        case done
-        case undone
-        case delete
-        case edit
-        
-        var id: UUID { UUID() }
-        
-        var tint: Color {
-            switch self {
-            case .share: return .buttonBlack
-            case .done: return .buttonBlack
-            case .undone: return .buttonBlack
-            case .delete: return .buttonDestructive
-            case .edit: return .buttonBlack
-            }
-        }
-        
-        var icon: Image {
-            switch self {
-            case .share: return .squareAndArrowUp
-            case .done: return .largecircleFillCircle
-            case .undone: return .circle
-            case .delete: return .trash
-            case .edit: return .squareAndPencil
             }
         }
     }

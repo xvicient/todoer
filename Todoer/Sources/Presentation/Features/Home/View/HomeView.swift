@@ -84,7 +84,7 @@ private extension HomeView {
             Section(
                 header:
                     Text(Constants.Text.invitations)
-                    .foregroundColor(.textWhite)
+                    .foregroundColor(.textBlack)
             ) {
                 ForEach(store.state.viewModel.invitations) { invitation in
                     HStack {
@@ -128,7 +128,7 @@ private extension HomeView {
     var listsSection: some View {
         Section(header:
                     Text(Constants.Text.todos)
-            .foregroundColor(.textWhite)
+            .foregroundColor(.textBlack)
         ) {
             ForEach(Array(store.state.viewModel.lists.enumerated()),
                     id: \.element.id) { index, row in
@@ -225,7 +225,7 @@ private extension HomeView {
     
     @ViewBuilder
     func swipeActions(
-        _ actions: [Home.Reducer.SwipeAction],
+        _ actions: [TDSwipeAction],
         index: Int
     ) -> some View {
         ForEach(actions,
@@ -276,7 +276,7 @@ private extension HomeView {
 // MARK: - Private
 
 private extension HomeView {
-    var swipeActions: (Int, Home.Reducer.SwipeAction) -> Void {
+    var swipeActions: (Int, TDSwipeAction) -> Void {
         { index, option in
             switch option {
             case .done, .undone:
