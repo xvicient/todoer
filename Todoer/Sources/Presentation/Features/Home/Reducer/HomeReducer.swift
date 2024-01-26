@@ -12,12 +12,12 @@ extension Home {
     struct Reducer: Todoer.Reducer {
         enum Action {
             // MARK: - View appear
-            /// HomeReducer+ReduceViewAppear
+            /// HomeReducer+ViewAppear
             case onViewAppear
             case onProfilePhotoAppear
 
             // MARK: - User actions
-            /// HomeReducer+ReduceUserActions
+            /// HomeReducer+UserActions
             case didTapAcceptInvitation(String, String)
             case didTapDeclineInvitation(String)
             case didTapList(Int)
@@ -33,8 +33,8 @@ extension Home {
             case didTapSignoutButton
             case didSortLists(IndexSet, Int)
 
-            // MARK: - Actions results
-            /// HomeReducer+ReduceActionResults
+            // MARK: - Results
+            /// HomeReducer+Results
             case fetchDataResult(Result<([List], [Invitation]), Error>)
             case getPhotoUrlResult(Result<String, Error>)
             case toggleListResult(Result<List, Error>)
