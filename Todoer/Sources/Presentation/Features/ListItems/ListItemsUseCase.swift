@@ -8,7 +8,7 @@ protocol ListItemsUseCaseApi {
     
     func addItem(
         with name: String,
-        listId: String
+        list: List
     ) async -> Result<Item, Error>
     
     func deleteItem(
@@ -51,7 +51,7 @@ extension ListItems {
         
         func addItem(
             with name: String,
-            listId: String
+            list: List
         ) async -> Result<Item, Error> {
             guard !name.isEmpty else {
                 return .failure(Errors.emptyItemName)
@@ -60,8 +60,11 @@ extension ListItems {
             do {
                 let item = try await itemsRepository.addItem(
                     with: name,
-                    listId: listId
+                    listId: list.documentId
                 )
+                
+                _ = try await listsRepository.updateList(list)
+                
                 return .success(item)
             } catch {
                 return .failure(error)

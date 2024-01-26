@@ -152,11 +152,13 @@ private extension ListItems.Reducer {
         state: inout State,
         newItemName: String
     ) -> Effect<Action> {
+        var list = dependencies.list
+        list.done = false
         return .task(Task {
             .addItemResult(
                 await dependencies.useCase.addItem(
                     with: newItemName,
-                    listId: dependencies.list.documentId
+                    list: list
                 )
             )
         })
