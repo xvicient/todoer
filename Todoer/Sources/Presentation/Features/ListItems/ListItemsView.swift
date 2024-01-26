@@ -156,9 +156,7 @@ private extension ListItemsView {
         struct Text {
             static let item = "Item..."
             static let errorTitle = "Error"
-            static let unexpectedError = "Unexpected error"
             static let errorOkButton = "Ok"
-            
         }
     }
 }

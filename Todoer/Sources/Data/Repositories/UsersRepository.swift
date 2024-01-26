@@ -6,7 +6,8 @@ protocol UsersRepositoryApi {
         with uuid: String,
         email: String?,
         displayName: String?,
-        photoUrl: String?
+        photoUrl: String?,
+        provider: String
     ) async throws
     
     func getSelfUser() async throws -> User?
@@ -47,12 +48,14 @@ final class UsersRepository: UsersRepositoryApi {
         with uuid: String,
         email: String?,
         displayName: String?,
-        photoUrl: String?
+        photoUrl: String?,
+        provider: String
     ) async throws {
         try await usersDataSource.createUser(with: uuid,
                                              email: email,
                                              displayName: displayName,
-                                             photoUrl: photoUrl)
+                                             photoUrl: photoUrl,
+                                             provider: provider)
     }
     
     func getSelfUser(

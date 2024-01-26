@@ -7,6 +7,7 @@ struct User: Identifiable, Equatable, Hashable {
     var email: String?
     var displayName: String?
     var photoUrl: String?
+    var provider: String
 }
 
 extension UserDTO {
@@ -15,6 +16,7 @@ extension UserDTO {
              uuid: uuid,
              email: email,
              displayName: displayName,
-             photoUrl: photoUrl)
+             photoUrl: photoUrl,
+             provider: provider)
     }
 }

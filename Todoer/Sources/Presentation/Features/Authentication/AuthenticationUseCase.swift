@@ -10,6 +10,15 @@ extension Authentication {
     enum Provider {
         case apple(ASAuthorization)
         case google
+        
+        var value: String {
+            switch self {
+            case .apple:
+                "apple"
+            case .google:
+                "google"
+            }
+        }
     }
     struct UseCase: AuthenticationUseCaseApi {
         enum Errors: Error, LocalizedError {
@@ -19,7 +28,7 @@ extension Authentication {
             var errorDescription: String? {
                 switch self {
                 case .emailInUse:
-                    return "Email already in use."
+                    return "Email already in use with another provider."
                 case .emptyAuthEmail:
                     return "Invalid email."
                 }
@@ -48,19 +57,18 @@ extension Authentication {
                     throw Errors.emptyAuthEmail
                 }
                 
-                guard try await usersRepository.getNotSelfUser(
+                if let notSelfUser = try await usersRepository.getNotSelfUser(
                     email: email,
                     uid: authData.uid
-                ) == nil else {
+                ), notSelfUser.provider != provider.value {
                     throw Errors.emailInUse
                 }
                 
-                if (try? await usersRepository.getUser(uid: authData.uid)) == nil {
-                    try await usersRepository.createUser(with: authData.uid,
-                                                         email: authData.email,
-                                                         displayName: authData.displayName,
-                                                         photoUrl: authData.photoUrl)
-                }
+                try await usersRepository.createUser(with: authData.uid,
+                                                     email: authData.email,
+                                                     displayName: authData.displayName,
+                                                     photoUrl: authData.photoUrl,
+                                                     provider: provider.value)
                 
                 usersRepository.setUuid(authData.uid)
                 

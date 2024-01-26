@@ -8,7 +8,8 @@ protocol UsersDataSourceApi {
         with uuid: String,
         email: String?,
         displayName: String?,
-        photoUrl: String?
+        photoUrl: String?,
+        provider: String
     ) async throws
     
     func getUsers(
@@ -57,7 +58,8 @@ final class UsersDataSource: UsersDataSourceApi {
         with uuid: String,
         email: String?,
         displayName: String?,
-        photoUrl: String?
+        photoUrl: String?,
+        provider: String
     ) async throws {
         let document = usersCollection.document()
         let documentId = document.documentID
@@ -66,7 +68,8 @@ final class UsersDataSource: UsersDataSourceApi {
             uuid: uuid,
             email: email,
             displayName: displayName,
-            photoUrl: photoUrl
+            photoUrl: photoUrl,
+            provider: provider
         )
         
         _ = try usersCollection.addDocument(from: dto)
