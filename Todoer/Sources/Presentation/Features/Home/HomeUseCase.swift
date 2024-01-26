@@ -164,7 +164,7 @@ private extension Home.UseCase {
     func fetchLists(
     ) -> AnyPublisher<[List], Error> {
         listsRepository.fetchLists()
-            .tryMap { lists in
+            .map { lists in
                 lists.sorted { $0.index < $1.index }
             }
             .receive(on: DispatchQueue.main)
@@ -174,8 +174,17 @@ private extension Home.UseCase {
     func fetchInvitations(
     ) -> AnyPublisher<[Invitation], Error> {
         invitationsRepository.fetchInvitations()
-            .tryMap { invitations in
+            .map { invitations in
                 invitations.sorted { $0.index < $1.index }
+            }
+            .map { invitations in
+                invitations.map {
+                    var invitation = $0
+                    if $0.ownerEmail.contains("privaterelay.appleid.com") {
+                        invitation.ownerEmail = ""
+                    }
+                    return invitation
+                }
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

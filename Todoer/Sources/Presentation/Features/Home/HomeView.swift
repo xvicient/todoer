@@ -92,9 +92,11 @@ private extension HomeView {
                             Text("\(invitation.ownerName)")
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(.textBlack)
-                            Text("(\(invitation.ownerEmail))")
-                                .font(.system(size: 14, weight: .light))
-                                .padding(.bottom, 8)
+                            if !invitation.ownerEmail.isEmpty {
+                                Text("(\(invitation.ownerEmail))")
+                                    .font(.system(size: 14, weight: .light))
+                                    .padding(.bottom, 8)
+                            }
                             Text("\(Constants.Text.wantsToShare)")
                                 .font(.system(size: 14))
                             Text("\(invitation.listName)")
