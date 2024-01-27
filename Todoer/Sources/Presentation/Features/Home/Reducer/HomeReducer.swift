@@ -30,6 +30,7 @@ extension Home {
             case didTapCancelAddListButton
             case didTapSubmitListButton(String)
             case didTapSignoutButton
+            case didTapAboutButton
             case didSortLists(IndexSet, Int)
 
             // MARK: - Results
@@ -158,6 +159,11 @@ extension Home {
                 
             case (.idle, .didTapSignoutButton):
                 return onDidTapSignoutButton(
+                    state: &state
+                )
+                
+            case (.idle, .didTapAboutButton):
+                return onDidTapAboutButton(
                     state: &state
                 )
                 

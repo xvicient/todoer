@@ -41,6 +41,9 @@ private extension HomeView {
                 Button(Constants.Text.logout) {
                     store.send(.didTapSignoutButton)
                 }
+                Button(Constants.Text.about) {
+                    store.send(.didTapAboutButton)
+                }
             } label: {
                 AsyncImage(
                     url: URL(string: store.state.viewModel.photoUrl),
@@ -310,6 +313,7 @@ private extension HomeView {
             static let decline = "Decline"
             static let list = "List..."
             static let logout = "Logout"
+            static let about = "About"
         }
         struct Image {
             static let launchScreen = "LaunchScreen"

@@ -4,6 +4,7 @@ enum Page: Hashable, Identifiable {
     case authentication
     case home
     case listItems(List)
+    case about
     
     var id: Self { self }
 }
@@ -119,6 +120,8 @@ private extension Coordinator {
             ListItems.Builder.makeItemsList(
                 list: list
             )
+        case .about:
+            About.Builder.makeAbout()
         }
     }
 }

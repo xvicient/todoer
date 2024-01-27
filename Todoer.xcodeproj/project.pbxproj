@@ -45,6 +45,8 @@
 		C79A2EE02B64501D00F52FB2 /* ListItemsReducer+UserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EDF2B64501D00F52FB2 /* ListItemsReducer+UserActions.swift */; };
 		C79A2EE22B64507000F52FB2 /* ListItemsReducer+Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EE12B64507000F52FB2 /* ListItemsReducer+Results.swift */; };
 		C79A2EE52B64517200F52FB2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EE42B64517200F52FB2 /* HomeViewModel.swift */; };
+		C79A2EE82B654DBB00F52FB2 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EE72B654DBB00F52FB2 /* AboutView.swift */; };
+		C79A2EEA2B65597E00F52FB2 /* AboutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EE92B65597E00F52FB2 /* AboutBuilder.swift */; };
 		C79CB28B2B0D537A00C2BD18 /* ItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2702B0D537A00C2BD18 /* ItemDTO.swift */; };
 		C79CB28C2B0D537A00C2BD18 /* ItemsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2712B0D537A00C2BD18 /* ItemsDataSource.swift */; };
 		C79CB28D2B0D537A00C2BD18 /* ItemsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2722B0D537A00C2BD18 /* ItemsRepository.swift */; };
@@ -148,6 +150,8 @@
 		C79A2EDF2B64501D00F52FB2 /* ListItemsReducer+UserActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListItemsReducer+UserActions.swift"; sourceTree = "<group>"; };
 		C79A2EE12B64507000F52FB2 /* ListItemsReducer+Results.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListItemsReducer+Results.swift"; sourceTree = "<group>"; };
 		C79A2EE42B64517200F52FB2 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		C79A2EE72B654DBB00F52FB2 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		C79A2EE92B65597E00F52FB2 /* AboutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutBuilder.swift; sourceTree = "<group>"; };
 		C79CB2702B0D537A00C2BD18 /* ItemDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDTO.swift; sourceTree = "<group>"; };
 		C79CB2712B0D537A00C2BD18 /* ItemsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsDataSource.swift; sourceTree = "<group>"; };
 		C79CB2722B0D537A00C2BD18 /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -270,6 +274,7 @@
 		C74C0F452B5588C100926E87 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				C79A2EE62B654DB000F52FB2 /* About */,
 				C7390FCB2B436FA100E49A68 /* Share */,
 				C79CB2C72B13F8E700C2BD18 /* Authentication */,
 				C79CB27D2B0D537A00C2BD18 /* Home */,
@@ -355,6 +360,15 @@
 				C79A2EE42B64517200F52FB2 /* HomeViewModel.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		C79A2EE62B654DB000F52FB2 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				C79A2EE72B654DBB00F52FB2 /* AboutView.swift */,
+				C79A2EE92B65597E00F52FB2 /* AboutBuilder.swift */,
+			);
+			path = About;
 			sourceTree = "<group>";
 		};
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
@@ -766,6 +780,7 @@
 				C79CB2942B0D537A00C2BD18 /* HomeView.swift in Sources */,
 				C79CB28E2B0D537A00C2BD18 /* ListsDataSource.swift in Sources */,
 				C79CB2902B0D537A00C2BD18 /* ListsRepository.swift in Sources */,
+				C79A2EE82B654DBB00F52FB2 /* AboutView.swift in Sources */,
 				C7390FD42B449D6600E49A68 /* ShareListBuilder.swift in Sources */,
 				C7390FCD2B436FB100E49A68 /* ShareListView.swift in Sources */,
 				C77E10772B4FE339009612F8 /* HomeUseCase.swift in Sources */,
@@ -792,6 +807,7 @@
 				C79CB2DE2B162DB100C2BD18 /* UserDTO.swift in Sources */,
 				C79CB2E22B16329800C2BD18 /* UsersRepository.swift in Sources */,
 				C74C0F442B55822B00926E87 /* UINavigationController+backBarButton.swift in Sources */,
+				C79A2EEA2B65597E00F52FB2 /* AboutBuilder.swift in Sources */,
 				C7390FCF2B447AF400E49A68 /* TDTextField.swift in Sources */,
 				C75B4AC92B1DD7A9007CCA48 /* Invitation.swift in Sources */,
 				C7F428652B588B8E00DEE7E9 /* Error+Code.swift in Sources */,

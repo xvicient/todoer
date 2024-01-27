@@ -180,6 +180,13 @@ internal extension Home.Reducer {
         return .none
     }
     
+    func onDidTapAboutButton(
+        state: inout State
+    ) -> Effect<Action> {
+        dependencies.coordinator.push(.about)
+        return .none
+    }
+    
     func onDidSortLists(
         state: inout State,
         fromIndex: IndexSet,
