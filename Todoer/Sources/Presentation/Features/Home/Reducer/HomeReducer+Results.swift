@@ -12,7 +12,7 @@ internal extension Home.Reducer {
             state.viewModel.lists = data.0.map { $0.toListRow }
             state.viewModel.invitations = data.1
         case .failure:
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
         }
         return .none
     }
@@ -39,7 +39,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
         }
         return .none
     }
@@ -52,7 +52,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
         }
         return .none
     }
@@ -65,7 +65,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
         }
         return .none
     }
@@ -78,7 +78,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
         }
         return .none
     }
@@ -94,10 +94,10 @@ internal extension Home.Reducer {
                 state.viewModel.lists.remove(at: index)
                 state.viewModel.lists.insert(list.toListRow, at: index)
             } else {
-                state.viewState = .unexpectedError
+                state.viewState = .error(Errors.default)
             }
         case .failure:
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
         }
         return .none
     }
@@ -110,8 +110,15 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
         }
+        return .none
+    }
+    
+    func onDidTapDismissError(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
         return .none
     }
 }

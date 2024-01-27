@@ -27,6 +27,15 @@ struct HomeView: View {
         .navigationBarItems(
             trailing: navigationBarItems
         )
+        .alert(isPresented: alertBinding) {
+            Alert(
+                title: Text(Constants.Text.errorTitle),
+                message: alertErrorMessage,
+                dismissButton: .default(Text(Constants.Text.errorOkButton)) {
+                    store.send(.didTapDismissError)
+                }
+            )
+        }
     }
 }
 
@@ -281,6 +290,13 @@ private extension HomeView {
             ProgressView()
         }
     }
+    
+    @ViewBuilder
+    var alertErrorMessage: Text? {
+        if case let .error(error) = store.state.viewState {
+            Text(error)
+        }
+    }
 }
 
 // MARK: - Private
@@ -304,6 +320,15 @@ private extension HomeView {
     func moveList(fromOffset: IndexSet, toOffset: Int) {
         store.send(.didSortLists(fromOffset, toOffset))
     }
+    
+    var alertBinding: Binding<Bool> {
+        Binding(
+            get: {
+                { if case .error = store.state.viewState { return true } else { return false } }()
+            },
+            set: { _ in }
+        )
+    }
 }
 
 // MARK: - Constants
@@ -319,6 +344,8 @@ private extension HomeView {
             static let list = "List..."
             static let logout = "Logout"
             static let about = "About"
+            static let errorTitle = "Error"
+            static let errorOkButton = "Ok"
         }
         struct Image {
             static let launchScreen = "LaunchScreen"

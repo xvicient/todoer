@@ -9,6 +9,22 @@ protocol HomeDependencies {
 
 extension Home {
     struct Reducer: Todoer.Reducer {
+        
+        enum Errors: Error, LocalizedError {
+            case unexpectedError
+            
+            var errorDescription: String? {
+                switch self {
+                case .unexpectedError:
+                    return "Unexpected error."
+                }
+            }
+            
+            static var `default`: String {
+                Self.unexpectedError.localizedDescription
+            }
+        }
+        
         enum Action {
             // MARK: - View appear
             /// HomeReducer+ViewAppear
@@ -32,6 +48,7 @@ extension Home {
             case didTapSignoutButton
             case didTapAboutButton
             case didSortLists(IndexSet, Int)
+            case didTapDismissError
 
             // MARK: - Results
             /// HomeReducer+Results
@@ -51,14 +68,14 @@ extension Home {
             var viewModel = ViewModel()
         }
         
-        enum ViewState {
+        enum ViewState: Equatable {
             case idle
             case loading
             case addingList
             case sortingList
             case updatingList
             case editingList
-            case unexpectedError
+            case error(String)
         }
         
         internal let dependencies: HomeDependencies
@@ -222,6 +239,11 @@ extension Home {
                 return onSortListsResult(
                     state: &state,
                     result: result
+                )
+                
+            case (.error, .didTapDismissError):
+                return onDidTapDismissError(
+                    state: &state
                 )
             
             default:

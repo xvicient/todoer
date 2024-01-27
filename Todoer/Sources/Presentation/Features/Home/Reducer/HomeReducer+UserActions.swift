@@ -35,7 +35,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
             return .none
         }
         dependencies.coordinator.push(.listItems(list))
@@ -47,7 +47,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard state.viewModel.lists[safe: index] != nil else {
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
             return .none
         }
         state.viewState = .updatingList
@@ -67,7 +67,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
             return .none
         }
         state.viewState = .updatingList
@@ -84,7 +84,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
             return .none
         }
         dependencies.coordinator.present(sheet: .shareList(list))
@@ -97,7 +97,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
             return .none
         }
         state.viewState = .editingList
@@ -113,7 +113,7 @@ internal extension Home.Reducer {
         name: String
     ) -> Effect<Action> {
         guard var list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
             return .none
         }
         list.name = name
@@ -175,7 +175,7 @@ internal extension Home.Reducer {
         case .success:
             dependencies.coordinator.loggOut()
         case .failure:
-            state.viewState = .unexpectedError
+            state.viewState = .error(Errors.default)
         }
         return .none
     }
