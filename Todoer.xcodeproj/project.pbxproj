@@ -49,6 +49,8 @@
 		C79A2EED2B655FC900F52FB2 /* ShareListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EEC2B655FC900F52FB2 /* ShareListViewModel.swift */; };
 		C79A2EF02B65604E00F52FB2 /* ShareListReducer+UserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EEF2B65604E00F52FB2 /* ShareListReducer+UserActions.swift */; };
 		C79A2EF22B6560AB00F52FB2 /* ShareListReducer+Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EF12B6560AB00F52FB2 /* ShareListReducer+Results.swift */; };
+		C79A2EF52B6561FE00F52FB2 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EF42B6561FE00F52FB2 /* AuthenticationViewModel.swift */; };
+		C79A2EF82B65628F00F52FB2 /* AuthenticationReducer+Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EF72B65628F00F52FB2 /* AuthenticationReducer+Results.swift */; };
 		C79CB28B2B0D537A00C2BD18 /* ItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2702B0D537A00C2BD18 /* ItemDTO.swift */; };
 		C79CB28C2B0D537A00C2BD18 /* ItemsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2712B0D537A00C2BD18 /* ItemsDataSource.swift */; };
 		C79CB28D2B0D537A00C2BD18 /* ItemsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2722B0D537A00C2BD18 /* ItemsRepository.swift */; };
@@ -84,7 +86,7 @@
 		C79CB2F72B17E3C200C2BD18 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F62B17E3C200C2BD18 /* List.swift */; };
 		C79CB2F92B17E56A00C2BD18 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F82B17E56A00C2BD18 /* Item.swift */; };
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
-		C7D9D7242B572B5200272A9B /* AuthenticationReducer+Reduce.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9D7232B572B5200272A9B /* AuthenticationReducer+Reduce.swift */; };
+		C7D9D7242B572B5200272A9B /* AuthenticationReducer+UserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */; };
 		C7F428652B588B8E00DEE7E9 /* Error+Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F428642B588B8E00DEE7E9 /* Error+Code.swift */; };
 		C7F428672B588CB300DEE7E9 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F428662B588CB300DEE7E9 /* AppInfo.swift */; };
 		D6A29C082B09706200FA7F84 /* TodoerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* TodoerTests.swift */; };
@@ -156,6 +158,8 @@
 		C79A2EEC2B655FC900F52FB2 /* ShareListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListViewModel.swift; sourceTree = "<group>"; };
 		C79A2EEF2B65604E00F52FB2 /* ShareListReducer+UserActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareListReducer+UserActions.swift"; sourceTree = "<group>"; };
 		C79A2EF12B6560AB00F52FB2 /* ShareListReducer+Results.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareListReducer+Results.swift"; sourceTree = "<group>"; };
+		C79A2EF42B6561FE00F52FB2 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
+		C79A2EF72B65628F00F52FB2 /* AuthenticationReducer+Results.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+Results.swift"; sourceTree = "<group>"; };
 		C79CB2702B0D537A00C2BD18 /* ItemDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDTO.swift; sourceTree = "<group>"; };
 		C79CB2712B0D537A00C2BD18 /* ItemsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsDataSource.swift; sourceTree = "<group>"; };
 		C79CB2722B0D537A00C2BD18 /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
@@ -188,7 +192,7 @@
 		C79CB2F62B17E3C200C2BD18 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		C79CB2F82B17E56A00C2BD18 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		C7D9D7232B572B5200272A9B /* AuthenticationReducer+Reduce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+Reduce.swift"; sourceTree = "<group>"; };
+		C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+UserActions.swift"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
 		C7F428642B588B8E00DEE7E9 /* Error+Code.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Code.swift"; sourceTree = "<group>"; };
 		C7F428662B588CB300DEE7E9 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
@@ -394,6 +398,25 @@
 			path = Reducer;
 			sourceTree = "<group>";
 		};
+		C79A2EF32B6561EE00F52FB2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */,
+				C79A2EF42B6561FE00F52FB2 /* AuthenticationViewModel.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C79A2EF62B65624C00F52FB2 /* Reducer */ = {
+			isa = PBXGroup;
+			children = (
+				C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */,
+				C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */,
+				C79A2EF72B65628F00F52FB2 /* AuthenticationReducer+Results.swift */,
+			);
+			path = Reducer;
+			sourceTree = "<group>";
+		};
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -492,11 +515,10 @@
 		C79CB2C72B13F8E700C2BD18 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				C79CB2C82B13F8FC00C2BD18 /* AuthenticationView.swift */,
+				C79A2EF62B65624C00F52FB2 /* Reducer */,
+				C79A2EF32B6561EE00F52FB2 /* View */,
 				C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */,
-				C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */,
 				C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */,
-				C7D9D7232B572B5200272A9B /* AuthenticationReducer+Reduce.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -769,7 +791,7 @@
 				C79A2ED62B63B00900F52FB2 /* HomeReducer+Results.swift in Sources */,
 				C79CB2D22B13FDFF00C2BD18 /* SignInService.swift in Sources */,
 				C75B4AC72B1DD750007CCA48 /* InvitationDTO.swift in Sources */,
-				C7D9D7242B572B5200272A9B /* AuthenticationReducer+Reduce.swift in Sources */,
+				C7D9D7242B572B5200272A9B /* AuthenticationReducer+UserActions.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */,
 				C7390FBC2B32ED4F00E49A68 /* AuthenticationUseCase.swift in Sources */,
 				C79CB28D2B0D537A00C2BD18 /* ItemsRepository.swift in Sources */,
@@ -826,8 +848,10 @@
 				C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */,
 				C7390FD12B447C0100E49A68 /* TDButton.swift in Sources */,
 				C75B4ACB2B1DD8D1007CCA48 /* InvitationsDataSource.swift in Sources */,
+				C79A2EF52B6561FE00F52FB2 /* AuthenticationViewModel.swift in Sources */,
 				C79CB2F92B17E56A00C2BD18 /* Item.swift in Sources */,
 				C7390FB62B32E42700E49A68 /* Store.swift in Sources */,
+				C79A2EF82B65628F00F52FB2 /* AuthenticationReducer+Results.swift in Sources */,
 				C79CB2DE2B162DB100C2BD18 /* UserDTO.swift in Sources */,
 				C79CB2E22B16329800C2BD18 /* UsersRepository.swift in Sources */,
 				C74C0F442B55822B00926E87 /* UINavigationController+backBarButton.swift in Sources */,

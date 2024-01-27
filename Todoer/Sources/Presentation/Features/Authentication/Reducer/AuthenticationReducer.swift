@@ -19,8 +19,10 @@ extension Authentication {
             case didTapDismissError
         }
         
+        @MainActor
         struct State {
             var viewState = ViewState.idle
+            var viewModel = ViewModel()
         }
         
         enum ViewState: Equatable {
@@ -38,6 +40,38 @@ extension Authentication {
         ) {
             self.coordinator = coordinator
             self.dependencies = dependencies
+        }
+        
+        @MainActor
+        func reduce(
+            _ state: inout State,
+            _ action: Action
+        ) -> Effect<Action> {
+            switch (state.viewState, action) {
+            case (.idle, .didTapGoogleSignInButton):
+                return onDidTapGoogleSignInButton(
+                    state: &state
+                )
+                
+            case (.idle, .didAppleSignIn(let result)):
+                return onAppleSignIn(
+                    state: &state,
+                    result: result
+                )
+                
+            case (.loading, .signInResult(let result)):
+                return onSignInResult(
+                    state: &state,
+                    result: result
+                )
+                
+            case (_, .didTapDismissError):
+                return onDidTapDismissError(
+                    state: &state
+                )
+                
+            default: return .none
+            }
         }
     }
 }
