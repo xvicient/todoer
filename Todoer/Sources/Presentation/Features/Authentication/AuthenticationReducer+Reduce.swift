@@ -86,15 +86,10 @@ private extension Authentication.Reducer {
             state.viewState = .idle
             coordinator.loggIn()
         case .failure(let error):
-            switch error {
-            case Authentication.UseCase.Errors.emailInUse:
+            if error.code == -5 {
+                state.viewState = .idle
+            } else {
                 state.viewState = .error(error.localizedDescription)
-            default:
-                if error.code == -5 {
-                    state.viewState = .idle
-                } else {
-                    state.viewState = .error(error.localizedDescription)
-                }
             }
         }
         return .none

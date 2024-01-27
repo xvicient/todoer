@@ -42,7 +42,7 @@ final class UsersDataSource: UsersDataSourceApi {
         }
     }
     
-    enum Errors: Error {
+    private enum Errors: Error {
         case missingUser
         case emptyUidList
     }

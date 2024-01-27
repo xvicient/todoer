@@ -9,7 +9,7 @@ internal extension ListItems.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard state.viewModel.items[safe: index] != nil else {
-            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+            state.viewState = .error(Errors.default)
             return .none
         }
         state.viewState = .updatingItem
@@ -86,7 +86,7 @@ internal extension ListItems.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let item = state.viewModel.items[safe: index]?.item else {
-            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+            state.viewState = .error(Errors.default)
             return .none
         }
         state.viewState = .editingItem
@@ -102,7 +102,7 @@ internal extension ListItems.Reducer {
         name: String
     ) -> Effect<Action> {
         guard var item = state.viewModel.items[safe: index]?.item else {
-            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+            state.viewState = .error(Errors.default)
             return .none
         }
         item.name = name

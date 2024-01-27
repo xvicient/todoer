@@ -21,7 +21,7 @@ extension Authentication {
         }
     }
     struct UseCase: AuthenticationUseCaseApi {
-        enum Errors: Error, LocalizedError {
+        private enum Errors: Error, LocalizedError {
             case emailInUse
             case emptyAuthEmail
             

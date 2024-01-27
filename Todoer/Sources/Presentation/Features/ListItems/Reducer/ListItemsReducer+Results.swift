@@ -27,7 +27,7 @@ internal extension ListItems.Reducer {
                 state.viewModel.items.remove(at: index)
                 state.viewModel.items.insert(item.toItemRow, at: index)
             } else {
-                state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+                state.viewState = .error(Errors.default)
             }
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
@@ -50,7 +50,7 @@ internal extension ListItems.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+            state.viewState = .error(Errors.default)
         }
         return .none
     }
@@ -63,7 +63,7 @@ internal extension ListItems.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .error(ListItems.Errors.unexpectedError.localizedDescription)
+            state.viewState = .error(Errors.default)
         }
         return .none
     }

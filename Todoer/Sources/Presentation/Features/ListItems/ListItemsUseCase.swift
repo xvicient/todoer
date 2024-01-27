@@ -34,6 +34,20 @@ protocol ListItemsUseCaseApi {
 
 extension ListItems {
     struct UseCase: ListItemsUseCaseApi {
+        private enum Errors: Error, LocalizedError {
+            case emptyItemName
+            case missingItemId
+            
+            var errorDescription: String? {
+                switch self {
+                case .emptyItemName:
+                    return "Item can't be empty."
+                case .missingItemId:
+                    return "Missing itemId."
+                }
+            }
+        }
+        
         private let itemsRepository: ItemsRepositoryApi
         private let listsRepository: ListsRepositoryApi
         
@@ -81,7 +95,7 @@ extension ListItems {
             listId: String
         ) async -> Result<Void, Error> {
             guard let itemId = itemId else {
-                return .failure(Errors.unexpectedError)
+                return .failure(Errors.missingItemId)
             }
             
             do {

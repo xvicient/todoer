@@ -18,7 +18,7 @@ struct ShareListView: View {
                 store.send(.didTapShareListButton($shareEmailText.wrappedValue))
             }
             .padding(.horizontal, 24)
-            SwiftUI.List(store.state.users) { user in
+            SwiftUI.List(store.state.viewModel.users) { user in
                 Section(
                     header:
                         Text(Constants.Text.sharingWithTitle)

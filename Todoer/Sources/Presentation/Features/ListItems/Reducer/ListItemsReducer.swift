@@ -10,6 +10,21 @@ protocol ListItemsDependencies {
 extension ListItems {
     struct Reducer: Todoer.Reducer {
         
+        enum Errors: Error, LocalizedError {
+            case unexpectedError
+            
+            var errorDescription: String? {
+                switch self {
+                case .unexpectedError:
+                    return "Unexpected error."
+                }
+            }
+            
+            static var `default`: String {
+                Self.unexpectedError.localizedDescription
+            }
+        }
+        
         enum Action {
             // MARK: - View appear
             /// ListItemsReducer+ViewAppear
