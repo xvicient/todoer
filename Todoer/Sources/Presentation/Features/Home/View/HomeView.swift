@@ -88,6 +88,7 @@ private extension HomeView {
                 header:
                     Text(Constants.Text.invitations)
                     .foregroundColor(.textBlack)
+                    .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
             ) {
                 ForEach(store.state.viewModel.invitations) { invitation in
                     HStack {
@@ -121,6 +122,7 @@ private extension HomeView {
                             }
                         }
                     }
+                    .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                     .background()
                 }
             }
@@ -132,14 +134,17 @@ private extension HomeView {
         Section(header:
                     Text(Constants.Text.todos)
             .foregroundColor(.textBlack)
+            .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
         ) {
             ForEach(Array(store.state.viewModel.lists.enumerated()),
                     id: \.element.id) { index, row in
                 if row.isEditing {
                     newRow(row, index: index)
+                        .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                         .id(row.id)
                 } else {
                     listRow(row, index: index)
+                        .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                         .id(row.id)
                 }
             }

@@ -49,15 +49,18 @@ private extension ListItemsView {
                 Section(
                     header:
                         Text(listName)
+                        .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                         .foregroundColor(.textBlack)
                 ) {
                     ForEach(Array(store.state.viewModel.items.enumerated()),
                             id: \.element.id) { index, row in
                         if row.isEditing {
                             newRow(row, index: index)
+                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                                 .id(row.id)
                         } else {
                             itemRow(row, index: index)
+                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                                 .id(row.id)
                         }
                     }
