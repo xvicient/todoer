@@ -337,7 +337,7 @@ private extension HomeView {
     struct Constants {
         struct Text {
             static let invitations = "Invitations"
-            static let todos = "Todo's"
+            static let todos = "To-dos"
             static let wantsToShare = "Wants to share: "
             static let accept = "Accept"
             static let decline = "Decline"
