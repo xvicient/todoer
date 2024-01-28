@@ -15,7 +15,7 @@ enum TDSwipeAction: Identifiable {
         case .done: return .buttonBlack
         case .undone: return .buttonBlack
         case .delete: return .buttonDestructive
-        case .edit: return .buttonBlack
+        case .edit: return .buttonSecondary
         }
     }
     

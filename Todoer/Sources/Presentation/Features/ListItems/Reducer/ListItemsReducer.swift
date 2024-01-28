@@ -39,7 +39,7 @@ extension ListItems {
             case didTapSubmitItemButton(String)
             case didTapEditItemButton(Int)
             case didTapUpdateItemButton(Int, String)
-            case didTapCancelEditItemButton
+            case didTapCancelEditItemButton(Int)
             case didSortItems(IndexSet, Int)
             case didTapDismissError
             
@@ -145,9 +145,10 @@ extension ListItems {
                     index: index
                 )
                 
-            case (.editingItem, .didTapCancelEditItemButton):
+            case (.editingItem, .didTapCancelEditItemButton(let index)):
                 return onDidTapCancelEditItemButton(
-                    state: &state
+                    state: &state,
+                    index: index
                 )
                 
             case (.editingItem, .didTapUpdateItemButton(let index, let name)):
@@ -180,5 +181,17 @@ extension ListItems {
                 return .none
             }
         }
+    }
+}
+
+// MARK: - Item to ItemRow
+
+internal extension Item {
+    var toItemRow: ListItems.Reducer.ItemRow {
+        ListItems.Reducer.ItemRow(
+            item: self,
+            leadingActions: [self.done ? .undone : .done],
+            trailingActions: [.delete, .edit]
+        )
     }
 }

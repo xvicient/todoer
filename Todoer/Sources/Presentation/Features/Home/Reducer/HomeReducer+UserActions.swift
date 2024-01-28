@@ -127,11 +127,17 @@ internal extension Home.Reducer {
     }
     
     func onDidTapCancelEditListButton(
-        state: inout State
+        state: inout State,
+        index: Int
     ) -> Effect<Action> {
+        guard let list = state.viewModel.lists[safe: index]?.list else {
+            state.viewState = .error(Errors.default)
+            return .none
+        }
         state.viewState = .idle
-        state.viewModel.lists.removeAll { $0.isEditing }
-        return onAppear(state: &state)
+        state.viewModel.lists.remove(at: index)
+        state.viewModel.lists.insert(list.toListRow, at: index)
+        return .none
     }
     
     func onDidTapAddRowButton(

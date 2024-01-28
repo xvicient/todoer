@@ -4,9 +4,9 @@ struct AboutView: View {
     var body: some View {
         VStack {
             SwiftUI.List {
-                aboutTodoerSection
                 privacyPolicySection
                 termsOfServiceSection
+                aboutTodoerSection
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
@@ -20,31 +20,13 @@ struct AboutView: View {
 
 private extension AboutView {
     @ViewBuilder
-    var aboutTodoerSection: some View {
+    var privacyPolicySection: some View {
         Section(header:
-                    Text(Constants.Text.aboutTodoer)
+                    Text(Constants.Text.privacyPolicyTitle)
             .font(.headline)
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundStyle(.textBlack)
             .listRowInsets(EdgeInsets())
-        ) {
-            Text("\(AppInfo.appName) \(AppInfo.appVersion) (\(AppInfo.buildNumber)) - \(AppInfo.environment)\n\(Constants.Text.copyright)")
-                .font(.system(size: 14))
-                .listRowInsets(EdgeInsets())
-        }
-    }
-    
-    @ViewBuilder
-    var privacyPolicySection: some View {
-        Section(header:
-                VStack(alignment: .leading) {
-                    Divider().padding(.bottom, 16)
-                    Text(Constants.Text.privacyPolicyTitle)
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundStyle(.textBlack)
-                        .listRowInsets(EdgeInsets())
-                }.listRowInsets(EdgeInsets())
         ) {}
         Section(header:
                     Text(Constants.Text.collectedInformationSection)
@@ -127,6 +109,17 @@ private extension AboutView {
             .listRowInsets(EdgeInsets())
         ) {
             Text(Constants.Text.terminationOfService)
+                .font(.system(size: 14))
+                .listRowInsets(EdgeInsets())
+        }
+    }
+    @ViewBuilder
+    var aboutTodoerSection: some View {
+        Section(header:
+                    Divider().padding(.bottom, 16)
+            .listRowInsets(EdgeInsets())
+        ) {
+            Text("\(AppInfo.appName) \(AppInfo.appVersion) (\(AppInfo.buildNumber)) - \(AppInfo.environment)\n\(Constants.Text.copyright)")
                 .font(.system(size: 14))
                 .listRowInsets(EdgeInsets())
         }

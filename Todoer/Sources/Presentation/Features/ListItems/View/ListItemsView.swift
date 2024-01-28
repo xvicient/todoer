@@ -139,10 +139,12 @@ private extension ListItemsView {
                     }
                     .submitLabel(.done)
                 Button(action: {
-                    if row.item.name.isEmpty {
-                        store.send(.didTapCancelAddItemButton)
-                    } else {
-                        store.send(.didTapCancelEditItemButton)
+                    withAnimation {
+                        if row.item.name.isEmpty {
+                            store.send(.didTapCancelAddItemButton)
+                        } else {
+                            store.send(.didTapCancelEditItemButton(index))
+                        }
                     }
                 }) {
                     Image.xmark

@@ -68,15 +68,3 @@ internal extension ListItems.Reducer {
         return .none
     }
 }
-
-// MARK: - Item to ItemRow
-
-private extension Item {
-    var toItemRow: ListItems.Reducer.ItemRow {
-        ListItems.Reducer.ItemRow(
-            item: self,
-            leadingActions: [self.done ? .undone : .done],
-            trailingActions: [.delete, .edit]
-        )
-    }
-}

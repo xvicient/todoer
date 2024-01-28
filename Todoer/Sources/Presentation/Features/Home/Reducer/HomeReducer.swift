@@ -41,7 +41,7 @@ extension Home {
             case didTapShareListButton(Int)
             case didTapEditListButton(Int)
             case didTapUpdateListButton(Int, String)
-            case didTapCancelEditListButton
+            case didTapCancelEditListButton(Int)
             case didTapAddRowButton
             case didTapCancelAddListButton
             case didTapSubmitListButton(String)
@@ -146,9 +146,10 @@ extension Home {
                     index: index
                 )
                 
-            case (.editingList, .didTapCancelEditListButton):
+            case (.editingList, .didTapCancelEditListButton(let index)):
                 return onDidTapCancelEditListButton(
-                    state: &state
+                    state: &state,
+                    index: index
                 )
                 
             case (.editingList, .didTapUpdateListButton(let index, let name)):
@@ -251,5 +252,17 @@ extension Home {
                 return .none
             }
         }
+    }
+}
+
+// MARK: - List to ListRow
+
+internal extension List {
+    var toListRow: Home.Reducer.ListRow {
+        Home.Reducer.ListRow(
+            list: self,
+            leadingActions: [self.done ? .undone : .done],
+            trailingActions: [.delete, .share, .edit]
+        )
     }
 }

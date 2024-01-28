@@ -17,7 +17,6 @@ struct HomeView: View {
             newRowButton
             loadingView
         }
-        .background(.backgroundWhite)
         .onAppear {
             store.send(.onViewAppear)
         }
@@ -224,10 +223,12 @@ private extension HomeView {
                 }
                 .submitLabel(.done)
             Button(action: {
-                if row.list.name.isEmpty {
-                    store.send(.didTapCancelAddListButton)
-                } else {
-                    store.send(.didTapCancelEditListButton)
+                withAnimation {
+                    if row.list.name.isEmpty {
+                        store.send(.didTapCancelAddListButton)
+                    } else {
+                        store.send(.didTapCancelEditListButton(index))
+                    }
                 }
             }) {
                 Image.xmark

@@ -118,11 +118,17 @@ internal extension ListItems.Reducer {
     }
     
     func onDidTapCancelEditItemButton(
-        state: inout State
+        state: inout State,
+        index: Int
     ) -> Effect<Action> {
+        guard let item = state.viewModel.items[safe: index]?.item else {
+            state.viewState = .error(Errors.default)
+            return .none
+        }
         state.viewState = .idle
-        state.viewModel.items.removeAll { $0.isEditing }
-        return onAppear(state: &state)
+        state.viewModel.items.remove(at: index)
+        state.viewModel.items.insert(item.toItemRow, at: index)
+        return .none
     }
     
     func onDidSortItems(

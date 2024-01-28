@@ -122,15 +122,3 @@ internal extension Home.Reducer {
         return .none
     }
 }
-
-// MARK: - List to ListRow
-
-private extension List {
-    var toListRow: Home.Reducer.ListRow {
-        Home.Reducer.ListRow(
-            list: self,
-            leadingActions: [self.done ? .undone : .done],
-            trailingActions: [.delete, .share, .edit]
-        )
-    }
-}
