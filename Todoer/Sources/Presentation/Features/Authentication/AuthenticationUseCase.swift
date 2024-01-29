@@ -64,11 +64,13 @@ extension Authentication {
                     throw Errors.emailInUse
                 }
                 
-                try await usersRepository.createUser(with: authData.uid,
-                                                     email: authData.email,
-                                                     displayName: authData.displayName,
-                                                     photoUrl: authData.photoUrl,
-                                                     provider: provider.value)
+                if (try? await usersRepository.getUser(uid: authData.uid)) == nil {
+                    try await usersRepository.createUser(with: authData.uid,
+                                                         email: authData.email,
+                                                         displayName: authData.displayName,
+                                                         photoUrl: authData.photoUrl,
+                                                         provider: provider.value)
+                }
                 
                 usersRepository.setUuid(authData.uid)
                 
