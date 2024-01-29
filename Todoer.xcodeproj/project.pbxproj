@@ -237,6 +237,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C730919A2B67F1740090CE06 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C730919B2B67F17D0090CE06 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C730919C2B67F1890090CE06 /* Presentation */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		C730919C2B67F1890090CE06 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				C730919D2B67F1910090CE06 /* Features */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		C730919D2B67F1910090CE06 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				C730919E2B67F1970090CE06 /* Authentication */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		C730919E2B67F1970090CE06 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				D6A29C072B09706200FA7F84 /* TodoerTests.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		C7390FBF2B3633AE00E49A68 /* Redux */ = {
 			isa = PBXGroup;
 			children = (
@@ -627,7 +666,8 @@
 		D6A29C062B09706200FA7F84 /* TodoerTests */ = {
 			isa = PBXGroup;
 			children = (
-				D6A29C072B09706200FA7F84 /* TodoerTests.swift */,
+				C730919B2B67F17D0090CE06 /* Sources */,
+				C730919A2B67F1740090CE06 /* Resources */,
 			);
 			path = TodoerTests;
 			sourceTree = "<group>";
@@ -1068,7 +1108,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xvicient.todoer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1104,7 +1144,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xvicient.todoer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

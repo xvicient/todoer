@@ -11,7 +11,6 @@ struct AboutView: View {
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
             .scrollContentBackground(.hidden)
-            .padding(.top, 24)
         }
     }
 }
@@ -26,6 +25,7 @@ private extension AboutView {
             .font(.headline)
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundStyle(.textBlack)
+            .padding(.top, 24)
             .listRowInsets(EdgeInsets())
         ) {}
         Section(header:

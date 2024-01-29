@@ -32,7 +32,7 @@ internal extension Authentication.Reducer {
                 )
             })
         case .failure(let error):
-            if error.code == 1001 {
+            if error.code == 1001 || error.code == 1000 {
                 state.viewState = .idle
             } else {
                 state.viewState = .error(error.localizedDescription)

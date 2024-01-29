@@ -12,7 +12,7 @@ struct AuthenticationView: View {
     @State private var sloganOpacity = 0.0
     @State private var loginDetent = PresentationDetent.height(171)
     @State var caption: String = "Get things done!"
-    let captionText: String = "Get things done!"
+    private let captionText: String = "Get things done!"
     
     init(store: Store<Authentication.Reducer>) {
         self.store = store
