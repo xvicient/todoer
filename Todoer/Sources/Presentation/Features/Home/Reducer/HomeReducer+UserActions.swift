@@ -214,11 +214,25 @@ internal extension Home.Reducer {
     func onDidTapDeleteAccountButton(
         state: inout State
     ) -> Effect<Action> {
+        state.viewState = .confirmAccountDelete
+        return .none
+    }
+    
+    func onDidTapConfirmDeletingAccount(
+        state: inout State
+    ) -> Effect<Action> {
         return .task(Task {
             .deleteAccountResult(
                 await dependencies.useCase.deleteAccount()
             )
         })
+    }
+    
+    func onDidTapDismissDeletingAccount(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
+        return .none
     }
 }
 

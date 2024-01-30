@@ -26,12 +26,24 @@ struct HomeView: View {
         .navigationBarItems(
             trailing: navigationBarItems
         )
-        .alert(isPresented: alertBinding) {
+        .alert(isPresented: alertErrorBinding) {
             Alert(
                 title: Text(Constants.Text.errorTitle),
                 message: alertErrorMessage,
-                dismissButton: .default(Text(Constants.Text.errorOkButton)) {
+                dismissButton: .default(Text(Constants.Text.okButton)) {
                     store.send(.didTapDismissError)
+                }
+            )
+        }
+        .alert(isPresented: deleteAccountConfirmationBinding) {
+            Alert(
+                title: Text(""),
+                message: deleteAccountConfirmationMessage,
+                primaryButton: .destructive(Text(Constants.Text.deleteButton)) {
+                    store.send(.didTapConfirmAlert)
+                },
+                secondaryButton: .default(Text(Constants.Text.cancelButton)) {
+                    store.send(.didTapDismissAlert)
                 }
             )
         }
@@ -301,6 +313,13 @@ private extension HomeView {
             Text(error)
         }
     }
+    
+    @ViewBuilder
+    var deleteAccountConfirmationMessage: Text? {
+        if case .confirmAccountDelete = store.state.viewState {
+            Text(Constants.Text.deleteAccountConfirmation)
+        }
+    }
 }
 
 // MARK: - Private
@@ -325,10 +344,19 @@ private extension HomeView {
         store.send(.didSortLists(fromOffset, toOffset))
     }
     
-    var alertBinding: Binding<Bool> {
+    var alertErrorBinding: Binding<Bool> {
         Binding(
             get: {
                 { if case .error = store.state.viewState { return true } else { return false } }()
+            },
+            set: { _ in }
+        )
+    }
+    
+    var deleteAccountConfirmationBinding: Binding<Bool> {
+        Binding(
+            get: {
+                { if case .confirmAccountDelete = store.state.viewState { return true } else { return false } }()
             },
             set: { _ in }
         )
@@ -349,8 +377,11 @@ private extension HomeView {
             static let logout = "Logout"
             static let about = "About"
             static let deleteAccount = "Delete account"
+            static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
             static let errorTitle = "Error"
-            static let errorOkButton = "Ok"
+            static let okButton = "Ok"
+            static let deleteButton = "Delete"
+            static let cancelButton = "Cancel"
         }
         struct Image {
             static let launchScreen = "LaunchScreen"

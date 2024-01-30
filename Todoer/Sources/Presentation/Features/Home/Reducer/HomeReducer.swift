@@ -49,6 +49,8 @@ extension Home {
             case didTapAboutButton
             case didSortLists(IndexSet, Int)
             case didTapDismissError
+            case didTapConfirmAlert
+            case didTapDismissAlert
             case didTapDeleteAccountButton
 
             // MARK: - Results
@@ -78,6 +80,7 @@ extension Home {
             case updatingList
             case editingList
             case error(String)
+            case confirmAccountDelete
         }
         
         internal let dependencies: HomeDependencies
@@ -199,6 +202,21 @@ extension Home {
                     state: &state
                 )
                 
+            case (.confirmAccountDelete, .didTapConfirmAlert):
+                return onDidTapConfirmDeletingAccount(
+                    state: &state
+                )
+                
+            case (.confirmAccountDelete, .didTapDismissAlert):
+                return onDidTapDismissDeletingAccount(
+                    state: &state
+                )
+                
+            case (.error, .didTapDismissError):
+                return onDidTapDismissError(
+                    state: &state
+                )
+                
             case (.idle, .fetchDataResult(let result)),
                 (.loading, .fetchDataResult(let result)):
                 return onFetchDataResult(
@@ -249,15 +267,10 @@ extension Home {
                     result: result
                 )
                 
-            case (.idle, .deleteAccountResult(let result)):
+            case (.confirmAccountDelete, .deleteAccountResult(let result)):
                 return onDeleteAccountResult(
                     state: &state,
                     result: result
-                )
-                
-            case (.error, .didTapDismissError):
-                return onDidTapDismissError(
-                    state: &state
                 )
             
             default:
