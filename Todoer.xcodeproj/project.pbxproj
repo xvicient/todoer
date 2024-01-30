@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C70682252B68DF97008BB192 /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682242B68DF97008BB192 /* TestStore.swift */; };
 		C71432E62B66E340004EEBF4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C71432E52B66E340004EEBF4 /* FirebaseAuth */; };
 		C71432E82B66E340004EEBF4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = C71432E72B66E340004EEBF4 /* FirebaseCrashlytics */; };
 		C71432EA2B66E340004EEBF4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C71432E92B66E340004EEBF4 /* FirebaseFirestore */; };
@@ -91,7 +92,7 @@
 		C7D9D7242B572B5200272A9B /* AuthenticationReducer+UserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */; };
 		C7F428652B588B8E00DEE7E9 /* Error+Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F428642B588B8E00DEE7E9 /* Error+Code.swift */; };
 		C7F428672B588CB300DEE7E9 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F428662B588CB300DEE7E9 /* AppInfo.swift */; };
-		D6A29C082B09706200FA7F84 /* TodoerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* TodoerTests.swift */; };
+		D6A29C082B09706200FA7F84 /* AuthenticationReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */; };
 		D6A29C122B09706200FA7F84 /* TodoerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C112B09706200FA7F84 /* TodoerUITests.swift */; };
 		D6A29C142B09706200FA7F84 /* TodoerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */; };
 		D6A29C2A2B09780800FA7F84 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D6A29C292B09780800FA7F84 /* FirebaseFirestore */; };
@@ -116,6 +117,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C70682242B68DF97008BB192 /* TestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStore.swift; sourceTree = "<group>"; };
 		C7390FB52B32E42700E49A68 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducer.swift; sourceTree = "<group>"; };
 		C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCase.swift; sourceTree = "<group>"; };
@@ -198,7 +200,7 @@
 		C7F428662B588CB300DEE7E9 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C032B09706200FA7F84 /* TodoerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6A29C072B09706200FA7F84 /* TodoerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerTests.swift; sourceTree = "<group>"; };
+		D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducerTests.swift; sourceTree = "<group>"; };
 		D6A29C0D2B09706200FA7F84 /* TodoerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
 		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -237,6 +239,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C70682232B68DF82008BB192 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				C70682242B68DF97008BB192 /* TestStore.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
 		C730919A2B67F1740090CE06 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -247,6 +257,7 @@
 		C730919B2B67F17D0090CE06 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C70682232B68DF82008BB192 /* Application */,
 				C730919C2B67F1890090CE06 /* Presentation */,
 			);
 			path = Sources;
@@ -271,7 +282,7 @@
 		C730919E2B67F1970090CE06 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				D6A29C072B09706200FA7F84 /* TodoerTests.swift */,
+				D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -935,7 +946,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6A29C082B09706200FA7F84 /* TodoerTests.swift in Sources */,
+				D6A29C082B09706200FA7F84 /* AuthenticationReducerTests.swift in Sources */,
+				C70682252B68DF97008BB192 /* TestStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
