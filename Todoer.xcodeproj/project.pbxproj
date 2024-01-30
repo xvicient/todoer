@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C70682252B68DF97008BB192 /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682242B68DF97008BB192 /* TestStore.swift */; };
+		C70682272B6996FB008BB192 /* AuthenticationUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */; };
 		C71432E62B66E340004EEBF4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C71432E52B66E340004EEBF4 /* FirebaseAuth */; };
 		C71432E82B66E340004EEBF4 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = C71432E72B66E340004EEBF4 /* FirebaseCrashlytics */; };
 		C71432EA2B66E340004EEBF4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C71432E92B66E340004EEBF4 /* FirebaseFirestore */; };
@@ -118,6 +119,7 @@
 
 /* Begin PBXFileReference section */
 		C70682242B68DF97008BB192 /* TestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStore.swift; sourceTree = "<group>"; };
+		C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCaseMock.swift; sourceTree = "<group>"; };
 		C7390FB52B32E42700E49A68 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducer.swift; sourceTree = "<group>"; };
 		C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCase.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */,
+				C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -946,6 +949,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C70682272B6996FB008BB192 /* AuthenticationUseCaseMock.swift in Sources */,
 				D6A29C082B09706200FA7F84 /* AuthenticationReducerTests.swift in Sources */,
 				C70682252B68DF97008BB192 /* TestStore.swift in Sources */,
 			);

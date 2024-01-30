@@ -19,7 +19,7 @@ final class TestStore<R: Reducer>: ObservableObject {
         self.reducer = reducer
     }
     
-    func send(_ action: R.Action) {
+    private func send(_ action: R.Action) {
         expectedAction = action
         switch reducer.reduce(&state, action) {
         case .none:
@@ -35,6 +35,15 @@ final class TestStore<R: Reducer>: ObservableObject {
                 try? await send(task.value)
             }
         }
+    }
+    
+    func send(
+        _ action: R.Action,
+        assert expectation: ((_ state: inout R.State) -> Bool)
+    ) async {
+        send(action)
+//        XCTAssertEqual(expectedAction, action) // TODO: - conform equatable
+        XCTAssert(expectation(&state))
     }
     
     func receive(

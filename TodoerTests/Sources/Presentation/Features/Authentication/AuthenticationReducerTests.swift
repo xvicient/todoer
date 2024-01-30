@@ -7,7 +7,9 @@ final class AuthenticationReducerTests: XCTestCase {
         var useCase: AuthenticationUseCaseApi
     }
     
-    var store: TestStore<Authentication.Reducer>!
+    private var store: TestStore<Authentication.Reducer>!
+    private var useCaseMock = AuthenticationUseCaseMock()
+    private var useCaseError = AuthenticationUseCaseMock.UseCaseError.error
     
     override func setUp() {
         super.setUp()
@@ -20,35 +22,43 @@ final class AuthenticationReducerTests: XCTestCase {
             reducer: Authentication.Reducer(
                 coordinator: Coordinator(),
                 dependencies: Dependencies(
-                    useCase: UseCaseMock()
+                    useCase: useCaseMock
                 )
             )
         )
     }
     
-    func testDidTapGoogleSignInButton() async {
-        store.send(.didTapGoogleSignInButton)
-
-        XCTAssertEqual(store.state.viewState, .loading)
+    func testDidTapGoogleSignInButton_Success() async {
+        givenASuccessfullSingIn()
         
-        await store.receive(.signInResult(.success(()))) {
+        await store.send(.didTapGoogleSignInButton) {
+            $0.viewState == .loading
+        }
+        
+        await store.receive(.signInResult(useCaseMock.result)) {
             $0.viewState == .idle
         }
     }
     
-    func test1() {
-        XCTAssert(true)
+    func testDidTapGoogleSignInButton_Failure() async {
+        givenAFailureSingIn()
+        
+        await store.send(.didTapGoogleSignInButton) {
+            $0.viewState == .loading
+        }
+        
+        await store.receive(.signInResult(useCaseMock.result)) {
+            $0.viewState == .error(useCaseError.localizedDescription)
+        }
     }
 }
 
-struct UseCaseMock: AuthenticationUseCaseApi {
-    enum UseCaseError: Error {
-        case error
-    }
-    func singIn(provider: Authentication.Provider) async -> (Result<Void, Error>) {
-        .success(())
-//        .failure(UseCaseError.error)
+private extension AuthenticationReducerTests {
+    func givenASuccessfullSingIn() {
+        useCaseMock.result = .success(())
     }
     
-    
+    func givenAFailureSingIn() {
+        useCaseMock.result = .failure(useCaseError)
+    }
 }
