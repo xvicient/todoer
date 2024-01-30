@@ -24,9 +24,15 @@ protocol ListsRepositoryApi {
     func sortLists(
         lists: [List]
     ) async throws
+    
+    func deleteSelfUserLists(
+    ) async throws
 }
 
 final class ListsRepository: ListsRepositoryApi {
+    
+    typealias SearchField = ListsDataSource.SearchField
+    
     let listsDataSource: ListsDataSourceApi
     let usersDataSource: UsersDataSourceApi
     let itemsDataSource: ItemsDataSourceApi
@@ -82,6 +88,13 @@ final class ListsRepository: ListsRepositoryApi {
     ) async throws {
         try await listsDataSource.sortLists(
             lists: lists.map { $0.toDTO }
+        )
+    }
+    
+    func deleteSelfUserLists(
+    ) async throws {
+        try await listsDataSource.deleteLists(
+            with: [SearchField(.uuid, .arrayContains(usersDataSource.uuid))]
         )
     }
 }

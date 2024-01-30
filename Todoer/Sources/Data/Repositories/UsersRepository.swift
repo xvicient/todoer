@@ -28,6 +28,9 @@ protocol UsersRepositoryApi {
     func getNotSelfUsers(
         uids: [String]
     ) async throws -> [User]
+    
+    func deleteUser(
+    ) async throws
 }
 
 final class UsersRepository: UsersRepositoryApi {
@@ -112,5 +115,10 @@ final class UsersRepository: UsersRepositoryApi {
             )
             .map { $0.toDomain }
         }
+    }
+    
+    func deleteUser(
+    ) async throws {
+        try await usersDataSource.deleteUser()
     }
 }

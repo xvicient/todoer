@@ -28,9 +28,30 @@ protocol ListsDataSourceApi {
     func sortLists(
         lists: [ListDTO]
     ) async throws
+    
+    func deleteLists(
+        with fields: [ListsDataSource.SearchField]
+    ) async throws
 }
 
 final class ListsDataSource: ListsDataSourceApi {
+    
+    struct SearchField {
+        enum Key: String {
+            case uuid
+        }
+        enum Filter {
+            case arrayContains(String)
+        }
+        let key: Key
+        let filter: Filter
+        
+        init(_ key: Key, _ filter: Filter) {
+            self.key = key
+            self.filter = filter
+        }
+    }
+    
     private enum Errors: Error {
         case invalidDTO
         case encodingError
@@ -140,5 +161,31 @@ final class ListsDataSource: ListsDataSourceApi {
         }
         
         try await productsBatch.commit()
+    }
+    
+    func deleteLists(
+        with fields: [SearchField]
+    ) async throws {
+        try await listsQuery(with: fields)
+            .getDocuments()
+            .documents
+            .forEach {
+                listsCollection.document($0.documentID).delete()
+            }
+    }
+    
+    private func listsQuery(
+        with fields: [SearchField]
+    ) -> Query {
+        var query: Query = listsCollection
+        
+        fields.forEach {
+            switch $0.filter {
+            case .arrayContains(let value):
+                query = query.whereField($0.key.rawValue, arrayContains: value)
+            }
+        }
+        
+        return query
     }
 }

@@ -35,6 +35,9 @@ protocol HomeUseCaseApi {
     func sortLists(
         lists: [List]
     ) async -> Result<Void, Error>
+    
+    func deleteAccount(
+    ) async -> Result<Void, Error>
 }
 
 extension Home {
@@ -152,6 +155,17 @@ extension Home {
         ) async -> Result<Void, Error> {
             do {
                 try await listsRepository.sortLists(lists: lists)
+                return .success(())
+            } catch {
+                return .failure(error)
+            }
+        }
+        
+        func deleteAccount(
+        ) async -> Result<Void, Error> {
+            do {
+                try await usersRepository.deleteUser()
+                try await listsRepository.deleteSelfUserLists()
                 return .success(())
             } catch {
                 return .failure(error)

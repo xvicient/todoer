@@ -19,6 +19,9 @@ protocol UsersDataSourceApi {
     func setUuid(
         _ value: String
     )
+    
+    func deleteUser(
+    ) async throws
 }
 
 final class UsersDataSource: UsersDataSourceApi {
@@ -94,5 +97,14 @@ final class UsersDataSource: UsersDataSourceApi {
         return try await query.getDocuments()
             .documents
             .map { try $0.data(as: UserDTO.self) }
+    }
+    
+    func deleteUser(
+    ) async throws {
+        try await getUsers(with: [SearchField(.uuid, .equal(uuid))])
+            .compactMap { $0.id }
+            .forEach {
+                usersCollection.document($0).delete()
+            }
     }
 }

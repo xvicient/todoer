@@ -46,11 +46,14 @@ private extension HomeView {
         HStack {
             Spacer()
             Menu {
-                Button(Constants.Text.logout) {
-                    store.send(.didTapSignoutButton)
-                }
                 Button(Constants.Text.about) {
                     store.send(.didTapAboutButton)
+                }
+                Button(Constants.Text.deleteAccount, role: .destructive) {
+                    store.send(.didTapDeleteAccountButton)
+                }
+                Button(Constants.Text.logout) {
+                    store.send(.didTapSignoutButton)
                 }
             } label: {
                 AsyncImage(
@@ -345,6 +348,7 @@ private extension HomeView {
             static let list = "List..."
             static let logout = "Logout"
             static let about = "About"
+            static let deleteAccount = "Delete account"
             static let errorTitle = "Error"
             static let errorOkButton = "Ok"
         }

@@ -49,6 +49,7 @@ extension Home {
             case didTapAboutButton
             case didSortLists(IndexSet, Int)
             case didTapDismissError
+            case didTapDeleteAccountButton
 
             // MARK: - Results
             /// HomeReducer+Results
@@ -60,6 +61,7 @@ extension Home {
             case declineInvitationResult(Result<Void, Error>)
             case addListResult(Result<List, Error>)
             case sortListsResult(Result<Void, Error>)
+            case deleteAccountResult(Result<Void, Error>)
         }
         
         @MainActor
@@ -192,6 +194,11 @@ extension Home {
                     toIndex: toIndex
                 )
                 
+            case (.idle, .didTapDeleteAccountButton):
+                return onDidTapDeleteAccountButton(
+                    state: &state
+                )
+                
             case (.idle, .fetchDataResult(let result)),
                 (.loading, .fetchDataResult(let result)):
                 return onFetchDataResult(
@@ -238,6 +245,12 @@ extension Home {
                 
             case (.sortingList, .sortListsResult(let result)):
                 return onSortListsResult(
+                    state: &state,
+                    result: result
+                )
+                
+            case (.idle, .deleteAccountResult(let result)):
+                return onDeleteAccountResult(
                     state: &state,
                     result: result
                 )

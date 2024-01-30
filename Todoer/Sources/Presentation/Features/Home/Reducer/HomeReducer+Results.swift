@@ -121,4 +121,18 @@ internal extension Home.Reducer {
         state.viewState = .idle
         return .none
     }
+    
+    func onDeleteAccountResult(
+        state: inout State,
+        result: Result<Void, Error>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
+            dependencies.coordinator.loggOut()
+        case .failure:
+            state.viewState = .error(Errors.default)
+        }
+        return .none
+    }
 }

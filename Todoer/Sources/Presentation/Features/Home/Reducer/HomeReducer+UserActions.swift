@@ -210,6 +210,16 @@ internal extension Home.Reducer {
             )
         })
     }
+    
+    func onDidTapDeleteAccountButton(
+        state: inout State
+    ) -> Effect<Action> {
+        return .task(Task {
+            .deleteAccountResult(
+                await dependencies.useCase.deleteAccount()
+            )
+        })
+    }
 }
 
 // MARK: - Private
