@@ -5,6 +5,6 @@ struct List: Identifiable, Equatable, Hashable {
     let documentId: String
     var name: String
     var done: Bool
-    var uuid: [String]
+    var uid: [String]
     let index: Int
 }

@@ -3,7 +3,7 @@ import FirebaseFirestoreSwift
 
 struct UserDTO: Identifiable, Codable, Hashable {
     @DocumentID var id: String?
-    var uuid: String
+    var uid: String
     var email: String?
     var displayName: String?
     var photoUrl: String?
@@ -12,7 +12,7 @@ struct UserDTO: Identifiable, Codable, Hashable {
 
 extension User {
     var toDomain: UserDTO {
-        UserDTO(uuid: uuid,
+        UserDTO(uid: uid,
                 email: email,
                 displayName: displayName,
                 photoUrl: photoUrl,

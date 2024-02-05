@@ -35,7 +35,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
             return .none
         }
         dependencies.coordinator.push(.listItems(list))
@@ -47,7 +47,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard state.viewModel.lists[safe: index] != nil else {
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
             return .none
         }
         state.viewState = .updatingList
@@ -67,7 +67,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
             return .none
         }
         state.viewState = .updatingList
@@ -84,7 +84,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
             return .none
         }
         dependencies.coordinator.present(sheet: .shareList(list))
@@ -97,7 +97,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
             return .none
         }
         state.viewState = .editingList
@@ -113,7 +113,7 @@ internal extension Home.Reducer {
         name: String
     ) -> Effect<Action> {
         guard var list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
             return .none
         }
         list.name = name
@@ -131,7 +131,7 @@ internal extension Home.Reducer {
         index: Int
     ) -> Effect<Action> {
         guard let list = state.viewModel.lists[safe: index]?.list else {
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
             return .none
         }
         state.viewState = .idle
@@ -181,7 +181,7 @@ internal extension Home.Reducer {
         case .success:
             dependencies.coordinator.loggOut()
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }
@@ -214,11 +214,11 @@ internal extension Home.Reducer {
     func onDidTapDeleteAccountButton(
         state: inout State
     ) -> Effect<Action> {
-        state.viewState = .confirmAccountDelete
+        state.viewState = .alert(.destructive)
         return .none
     }
     
-    func onDidTapConfirmDeletingAccount(
+    func onDidTapConfirmDeleteAccount(
         state: inout State
     ) -> Effect<Action> {
         return .task(Task {
@@ -228,7 +228,7 @@ internal extension Home.Reducer {
         })
     }
     
-    func onDidTapDismissDeletingAccount(
+    func onDidTapDismissDeleteAccount(
         state: inout State
     ) -> Effect<Action> {
         state.viewState = .idle
@@ -255,7 +255,7 @@ private extension List {
             documentId: "",
             name: "",
             done: false,
-            uuid: [],
+            uid: [],
             index: Date().milliseconds
         )
     }

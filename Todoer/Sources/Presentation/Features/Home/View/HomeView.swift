@@ -26,26 +26,8 @@ struct HomeView: View {
         .navigationBarItems(
             trailing: navigationBarItems
         )
-        .alert(isPresented: alertErrorBinding) {
-            Alert(
-                title: Text(Constants.Text.errorTitle),
-                message: alertErrorMessage,
-                dismissButton: .default(Text(Constants.Text.okButton)) {
-                    store.send(.didTapDismissError)
-                }
-            )
-        }
-        .alert(isPresented: deleteAccountConfirmationBinding) {
-            Alert(
-                title: Text(""),
-                message: deleteAccountConfirmationMessage,
-                primaryButton: .destructive(Text(Constants.Text.deleteButton)) {
-                    store.send(.didTapConfirmAlert)
-                },
-                secondaryButton: .default(Text(Constants.Text.cancelButton)) {
-                    store.send(.didTapDismissAlert)
-                }
-            )
+        .alert(item: alertBinding) {
+            alert(for: $0)
         }
     }
 }
@@ -306,20 +288,6 @@ private extension HomeView {
             ProgressView()
         }
     }
-    
-    @ViewBuilder
-    var alertErrorMessage: Text? {
-        if case let .error(error) = store.state.viewState {
-            Text(error)
-        }
-    }
-    
-    @ViewBuilder
-    var deleteAccountConfirmationMessage: Text? {
-        if case .confirmAccountDelete = store.state.viewState {
-            Text(Constants.Text.deleteAccountConfirmation)
-        }
-    }
 }
 
 // MARK: - Private
@@ -344,22 +312,40 @@ private extension HomeView {
         store.send(.didSortLists(fromOffset, toOffset))
     }
     
-    var alertErrorBinding: Binding<Bool> {
+    var alertBinding: Binding<Home.Reducer.AlertStyle?> {
         Binding(
             get: {
-                { if case .error = store.state.viewState { return true } else { return false } }()
+                guard case .alert(let data) = store.state.viewState else {
+                    return nil
+                }
+                return data
             },
             set: { _ in }
         )
     }
     
-    var deleteAccountConfirmationBinding: Binding<Bool> {
-        Binding(
-            get: {
-                { if case .confirmAccountDelete = store.state.viewState { return true } else { return false } }()
-            },
-            set: { _ in }
-        )
+    func alert(for style: Home.Reducer.AlertStyle) -> Alert {
+        switch style {
+        case let .error(message):
+            Alert(
+                title: Text(Constants.Text.errorTitle),
+                message: Text(message),
+                dismissButton: .default(Text(Constants.Text.okButton)) {
+                    store.send(.didTapDismissError)
+                }
+            )
+        case .destructive:
+            Alert(
+                title: Text(""),
+                message: Text(Constants.Text.deleteAccountConfirmation),
+                primaryButton: .destructive(Text(Constants.Text.deleteButton)) {
+                    store.send(.didTapConfirmDeleteAccount)
+                },
+                secondaryButton: .default(Text(Constants.Text.cancelButton)) {
+                    store.send(.didTapDismissDeleteAccount)
+                }
+            )
+        }
     }
 }
 

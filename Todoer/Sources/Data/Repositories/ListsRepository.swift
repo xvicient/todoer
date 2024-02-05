@@ -47,7 +47,7 @@ final class ListsRepository: ListsRepositoryApi {
     
     func fetchLists(
     ) -> AnyPublisher<[List], Error> {
-        listsDataSource.fetchLists(uuid: usersDataSource.uuid)
+        listsDataSource.fetchLists(uid: usersDataSource.uid)
             .tryMap { lists in
                 lists.map {
                     $0.toDomain
@@ -62,7 +62,7 @@ final class ListsRepository: ListsRepositoryApi {
     ) async throws -> List {
         try await listsDataSource.addList(
             with: name,
-            uuid: usersDataSource.uuid).toDomain
+            uid: usersDataSource.uid).toDomain
     }
     
     func deleteList(
@@ -74,7 +74,7 @@ final class ListsRepository: ListsRepositoryApi {
     func importList(
         id: String
     ) async throws {
-        try await listsDataSource.importList(id: id, uuid: usersDataSource.uuid)
+        try await listsDataSource.importList(id: id, uid: usersDataSource.uid)
     }
     
     func updateList(
@@ -94,7 +94,7 @@ final class ListsRepository: ListsRepositoryApi {
     func deleteSelfUserLists(
     ) async throws {
         try await listsDataSource.deleteLists(
-            with: [SearchField(.uuid, .arrayContains(usersDataSource.uuid))]
+            with: [SearchField(.uid, .arrayContains(usersDataSource.uid))]
         )
     }
 }
@@ -104,7 +104,7 @@ private extension ListDTO {
         List(documentId: id ?? "",
              name: name,
              done: done,
-             uuid: uuid,
+             uid: uid,
              index: index)
     }
 }
@@ -114,7 +114,7 @@ private extension List {
         ListDTO(id: documentId,
                 name: name,
                 done: done,
-                uuid: uuid,
+                uid: uid,
                 index: index)
     }
 }

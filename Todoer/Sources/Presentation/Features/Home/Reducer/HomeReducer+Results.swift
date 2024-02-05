@@ -12,7 +12,7 @@ internal extension Home.Reducer {
             state.viewModel.lists = data.lists.map { $0.toListRow }
             state.viewModel.invitations = data.invitations
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }
@@ -39,7 +39,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }
@@ -52,7 +52,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }
@@ -65,7 +65,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }
@@ -78,7 +78,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }
@@ -94,10 +94,10 @@ internal extension Home.Reducer {
                 state.viewModel.lists.remove(at: index)
                 state.viewModel.lists.insert(list.toListRow, at: index)
             } else {
-                state.viewState = .error(Errors.default)
+                state.viewState = .alert(.error(Errors.default))
             }
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }
@@ -110,7 +110,7 @@ internal extension Home.Reducer {
         case .success:
             state.viewState = .idle
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }
@@ -131,7 +131,7 @@ internal extension Home.Reducer {
             state.viewState = .idle
             dependencies.coordinator.loggOut()
         case .failure:
-            state.viewState = .error(Errors.default)
+            state.viewState = .alert(.error(Errors.default))
         }
         return .none
     }

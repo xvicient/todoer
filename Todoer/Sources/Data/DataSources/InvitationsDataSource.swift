@@ -100,7 +100,7 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
                                 listName: listName,
                                 invitedId: invitedId,
                                 index: Date().milliseconds)
-        _ = try invitationsCollection.addDocument(from: dto)
+        try invitationsCollection.addDocument(from: dto)
     }
     
     func deleteInvitation(

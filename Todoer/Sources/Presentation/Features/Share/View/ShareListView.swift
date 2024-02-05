@@ -97,7 +97,7 @@ struct ShareView_Previews: PreviewProvider {
                 documentId: "",
                 name: "",
                 done: true,
-                uuid: [],
+                uid: [],
                 index: 0
             )
         )

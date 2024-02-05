@@ -82,7 +82,7 @@ extension Home {
         ) -> ActionResult<EquatableVoid> {
             do {
                 try authenticationService.signOut()
-                usersRepository.setUuid("")
+                usersRepository.setUid("")
                 return .success()
             } catch {
                 return .failure(error)

@@ -4,12 +4,12 @@ import Combine
 
 protocol ListsDataSourceApi {
     func fetchLists(
-        uuid: String
+        uid: String
     ) -> AnyPublisher<[ListDTO], Error>
     
     func addList(
         with name: String,
-        uuid: String
+        uid: String
     ) async throws -> ListDTO
     
     func deleteList(
@@ -18,7 +18,7 @@ protocol ListsDataSourceApi {
     
     func importList(
         id: String,
-        uuid: String
+        uid: String
     ) async throws
     
     func updateList(
@@ -38,7 +38,7 @@ final class ListsDataSource: ListsDataSourceApi {
     
     struct SearchField {
         enum Key: String {
-            case uuid
+            case uid
         }
         enum Filter {
             case arrayContains(String)
@@ -68,13 +68,13 @@ final class ListsDataSource: ListsDataSourceApi {
     
     
     func fetchLists(
-        uuid: String
+        uid: String
     ) -> AnyPublisher<[ListDTO], Error> {
         let subject = PassthroughSubject<[ListDTO], Error>()
         listenerSubject = subject
         
         snapshotListener = listsCollection
-            .whereField("uuid", arrayContains: uuid)
+            .whereField("uid", arrayContains: uid)
             .addSnapshotListener { query, error in
                 if let error = error {
                     subject.send(completion: .failure(error))
@@ -95,11 +95,11 @@ final class ListsDataSource: ListsDataSourceApi {
     
     func addList(
         with name: String,
-        uuid: String
+        uid: String
     ) async throws -> ListDTO {
         let dto = ListDTO(name: name,
                           done: false,
-                          uuid: [uuid],
+                          uid: [uid],
                           index: Date().milliseconds)
         return try await listsCollection
             .addDocument(from: dto)
@@ -115,12 +115,12 @@ final class ListsDataSource: ListsDataSourceApi {
     
     func importList(
         id: String,
-        uuid: String
+        uid: String
     ) async throws {
         let collection = listsCollection.document(id)
         if var dto = try? await collection.getDocument().data(as: ListDTO.self) {
-            dto.uuid.append(uuid)
-            _ = try? collection.setData(from: dto)
+            dto.uid.append(uid)
+            try? collection.setData(from: dto)
         } else {
             throw Errors.encodingError
         }

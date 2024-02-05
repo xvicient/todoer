@@ -39,7 +39,7 @@ final class InvitationsRepository: InvitationsRepositoryApi {
     func getInvitations(
     ) -> AnyPublisher<[Invitation], Error> {
         invitationsDataSource.getInvitations(
-            with: [SearchField(.invitedId, .equal(usersDataSource.uuid))]
+            with: [SearchField(.invitedId, .equal(usersDataSource.uid))]
         )
             .tryMap { invitations in
                 invitations.map {

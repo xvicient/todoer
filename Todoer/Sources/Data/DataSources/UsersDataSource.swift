@@ -2,25 +2,21 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 protocol UsersDataSourceApi {
-    var uuid: String { get }
-    
-    func createUser(
-        with uuid: String,
-        email: String?,
-        displayName: String?,
-        photoUrl: String?,
-        provider: String
-    ) async throws
+    var uid: String { get set }
     
     func getUsers(
         with fields: [UsersDataSource.SearchField]
     ) async throws -> [UserDTO]
-
-    func setUuid(
-        _ value: String
-    )
     
     func deleteUser(
+    ) async throws
+    
+    func createUser(
+        with uid: String,
+        email: String?,
+        displayName: String?,
+        photoUrl: String?,
+        provider: String
     ) async throws
 }
 
@@ -28,7 +24,7 @@ final class UsersDataSource: UsersDataSourceApi {
     
     struct SearchField {
         enum Key: String {
-            case uuid
+            case uid
             case email
         }
         enum Filter {
@@ -50,32 +46,12 @@ final class UsersDataSource: UsersDataSourceApi {
         case emptyUidList
     }
     
-    @AppSetting(key: "uuid", defaultValue: "") var uuid: String
+    @AppSetting(key: "uid", defaultValue: "") private var _uid: String
     private let usersCollection = Firestore.firestore().collection("users")
     
-    func setUuid(_ value: String) {
-        uuid = value
-    }
-    
-    func createUser(
-        with uuid: String,
-        email: String?,
-        displayName: String?,
-        photoUrl: String?,
-        provider: String
-    ) async throws {
-        let document = usersCollection.document()
-        let documentId = document.documentID
-        let dto = UserDTO(
-            id: documentId,
-            uuid: uuid,
-            email: email,
-            displayName: displayName,
-            photoUrl: photoUrl,
-            provider: provider
-        )
-        
-        _ = try usersCollection.addDocument(from: dto)
+    var uid: String {
+        get { _uid }
+        set { _uid = newValue }
     }
     
     func getUsers(
@@ -101,10 +77,31 @@ final class UsersDataSource: UsersDataSourceApi {
     
     func deleteUser(
     ) async throws {
-        try await getUsers(with: [SearchField(.uuid, .equal(uuid))])
+        try await getUsers(with: [SearchField(.uid, .equal(uid))])
             .compactMap { $0.id }
             .forEach {
                 usersCollection.document($0).delete()
             }
+    }
+    
+    func createUser(
+        with uid: String,
+        email: String?,
+        displayName: String?,
+        photoUrl: String?,
+        provider: String
+    ) async throws {
+        let document = usersCollection.document()
+        let documentId = document.documentID
+        let dto = UserDTO(
+            id: documentId,
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoUrl: photoUrl,
+            provider: provider
+        )
+        
+        try usersCollection.addDocument(from: dto)
     }
 }

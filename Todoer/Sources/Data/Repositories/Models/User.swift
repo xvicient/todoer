@@ -3,7 +3,7 @@ import Foundation
 struct User: Identifiable, Equatable, Hashable {
     let id = UUID()
     let documentId: String
-    var uuid: String
+    var uid: String
     var email: String?
     var displayName: String?
     var photoUrl: String?
@@ -13,7 +13,7 @@ struct User: Identifiable, Equatable, Hashable {
 extension UserDTO {
     var toDomain: User {
         User(documentId: id ?? "",
-             uuid: uuid,
+             uid: uid,
              email: email,
              displayName: displayName,
              photoUrl: photoUrl,

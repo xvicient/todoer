@@ -267,7 +267,7 @@ private extension ListItemsView {
             documentId: "1",
             name: "Test",
             done: false,
-            uuid: [""],
+            uid: [""],
             index: 1)
     )
 }

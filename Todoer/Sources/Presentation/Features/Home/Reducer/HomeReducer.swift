@@ -56,8 +56,8 @@ extension Home {
             case didTapAboutButton
             case didSortLists(IndexSet, Int)
             case didTapDismissError
-            case didTapConfirmAlert
-            case didTapDismissAlert
+            case didTapConfirmDeleteAccount
+            case didTapDismissDeleteAccount
             case didTapDeleteAccountButton
 
             // MARK: - Results
@@ -86,8 +86,7 @@ extension Home {
             case sortingList
             case updatingList
             case editingList
-            case error(String)
-            case confirmAccountDelete
+            case alert(AlertStyle)
         }
         
         internal let dependencies: HomeDependencies
@@ -176,7 +175,8 @@ extension Home {
                     state: &state
                 )
                 
-            case (.addingList, .didTapCancelAddListButton):
+            case (.addingList, .didTapCancelAddListButton),
+                (.idle, .didTapCancelAddListButton):
                 return onDidTapCancelAddListButton(
                     state: &state
                 )
@@ -209,17 +209,17 @@ extension Home {
                     state: &state
                 )
                 
-            case (.confirmAccountDelete, .didTapConfirmAlert):
-                return onDidTapConfirmDeletingAccount(
+            case (.alert, .didTapConfirmDeleteAccount):
+                return onDidTapConfirmDeleteAccount(
                     state: &state
                 )
                 
-            case (.confirmAccountDelete, .didTapDismissAlert):
-                return onDidTapDismissDeletingAccount(
+            case (.alert, .didTapDismissDeleteAccount):
+                return onDidTapDismissDeleteAccount(
                     state: &state
                 )
                 
-            case (.error, .didTapDismissError):
+            case (.alert, .didTapDismissError):
                 return onDidTapDismissError(
                     state: &state
                 )
@@ -274,7 +274,7 @@ extension Home {
                     result: result
                 )
                 
-            case (.confirmAccountDelete, .deleteAccountResult(let result)):
+            case (.alert, .deleteAccountResult(let result)):
                 return onDeleteAccountResult(
                     state: &state,
                     result: result

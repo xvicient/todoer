@@ -72,7 +72,7 @@ extension Authentication {
                                                          provider: provider.value)
                 }
                 
-                usersRepository.setUuid(authData.uid)
+                usersRepository.setUid(authData.uid)
                 
                 return .success()
             } catch {
