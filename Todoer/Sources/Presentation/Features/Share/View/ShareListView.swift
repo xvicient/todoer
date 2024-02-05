@@ -10,8 +10,7 @@ struct ShareListView: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            TDTitle(title: Constants.Text.shareTitle,
-                    image: .squareAndArrowUp)
+            title
             TDTextField(text: $shareEmailText,
                         placeholder: Constants.Text.sharePlaceholder)
             TDButton(title: Constants.Text.shareButtonTitle) {
@@ -58,6 +57,19 @@ private extension ShareListView {
         if case let .error(error) = store.state.viewState {
             Text(error)
         }
+    }
+    
+    @ViewBuilder
+    var title: some View {
+        HStack {
+            Image.squareAndArrowUp
+                .foregroundColor(.backgroundBlack)
+            Text(Constants.Text.shareTitle)
+                .foregroundColor(.textBlack)
+            Spacer()
+        }
+        .padding(.horizontal, 24)
+        .padding(.top, 24)
     }
 }
 

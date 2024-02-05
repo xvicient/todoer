@@ -27,7 +27,6 @@
 		C7390FD42B449D6600E49A68 /* ShareListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD32B449D6600E49A68 /* ShareListBuilder.swift */; };
 		C7390FD62B449DC200E49A68 /* ShareListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD52B449DC200E49A68 /* ShareListReducer.swift */; };
 		C7390FD82B44A03900E49A68 /* ShareListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */; };
-		C7390FDA2B44BBDE00E49A68 /* TDTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD92B44BBDE00E49A68 /* TDTitle.swift */; };
 		C7390FDE2B45FEBB00E49A68 /* View+HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */; };
 		C74C0F442B55822B00926E87 /* UINavigationController+backBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C0F432B55822B00926E87 /* UINavigationController+backBarButton.swift */; };
 		C74C0F4B2B5589E600926E87 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C0F4A2B5589E600926E87 /* Images.swift */; };
@@ -136,7 +135,6 @@
 		C7390FD32B449D6600E49A68 /* ShareListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListBuilder.swift; sourceTree = "<group>"; };
 		C7390FD52B449DC200E49A68 /* ShareListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListReducer.swift; sourceTree = "<group>"; };
 		C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListUseCase.swift; sourceTree = "<group>"; };
-		C7390FD92B44BBDE00E49A68 /* TDTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDTitle.swift; sourceTree = "<group>"; };
 		C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HideKeyboard.swift"; sourceTree = "<group>"; };
 		C74C0F432B55822B00926E87 /* UINavigationController+backBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+backBarButton.swift"; sourceTree = "<group>"; };
 		C74C0F4A2B5589E600926E87 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
@@ -331,7 +329,6 @@
 			children = (
 				C7390FCE2B447AF400E49A68 /* TDTextField.swift */,
 				C7390FD02B447C0100E49A68 /* TDButton.swift */,
-				C7390FD92B44BBDE00E49A68 /* TDTitle.swift */,
 				C79A2ED72B64449500F52FB2 /* TDSwipeAction.swift */,
 			);
 			path = Components;
@@ -887,7 +884,6 @@
 				C79CB2972B0D537A00C2BD18 /* ListItemsView.swift in Sources */,
 				C79CB2E02B162E6000C2BD18 /* UsersDataSource.swift in Sources */,
 				C79A2ED82B64449500F52FB2 /* TDSwipeAction.swift in Sources */,
-				C7390FDA2B44BBDE00E49A68 /* TDTitle.swift in Sources */,
 				C79CB2E62B163BAA00C2BD18 /* AppSetting.swift in Sources */,
 				C77E10792B5036F1009612F8 /* ListItemsReducer+ViewAppear.swift in Sources */,
 				C79CB2F22B177FBC00C2BD18 /* TextFieldStyle.swift in Sources */,
