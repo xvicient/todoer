@@ -9,27 +9,27 @@ protocol ListItemsUseCaseApi {
     func addItem(
         with name: String,
         list: List
-    ) async -> Result<Item, Error>
+    ) async -> ActionResult<Item>
     
     func deleteItem(
         itemId: String?,
         listId: String
-    ) async -> Result<Void, Error>
+    ) async -> ActionResult<EquatableVoid>
     
     func updateItemName(
         item: Item,
         listId: String
-    ) async -> Result<Item, Error>
+    ) async -> ActionResult<Item>
     
     func updateItemDone(
         item: Item,
         list: List
-    ) async -> Result<Item, Error>
+    ) async -> ActionResult<Item>
     
     func sortItems(
         items: [Item],
         listId: String
-    ) async -> Result<Void, Error>
+    ) async -> ActionResult<EquatableVoid>
 }
 
 extension ListItems {
@@ -71,7 +71,7 @@ extension ListItems {
         func addItem(
             with name: String,
             list: List
-        ) async -> Result<Item, Error> {
+        ) async -> ActionResult<Item> {
             guard !name.isEmpty else {
                 return .failure(Errors.emptyItemName)
             }
@@ -93,7 +93,7 @@ extension ListItems {
         func deleteItem(
             itemId: String?,
             listId: String
-        ) async -> Result<Void, Error> {
+        ) async -> ActionResult<EquatableVoid> {
             guard let itemId = itemId else {
                 return .failure(Errors.missingItemId)
             }
@@ -103,7 +103,7 @@ extension ListItems {
                     itemId: itemId,
                     listId: listId
                 )
-                return .success(())
+                return .success()
             } catch {
                 return .failure(error)
             }
@@ -112,7 +112,7 @@ extension ListItems {
         func updateItemName(
             item: Item,
             listId: String
-        ) async -> Result<Item, Error> {
+        ) async -> ActionResult<Item> {
             do {
                 let updatedItem = try await itemsRepository.updateItem(
                     item: item,
@@ -128,7 +128,7 @@ extension ListItems {
         func updateItemDone(
             item: Item,
             list: List
-        ) async -> Result<Item, Error> {
+        ) async -> ActionResult<Item> {
             do {
                 let updatedItem = try await itemsRepository.updateItem(
                     item: item,
@@ -146,13 +146,13 @@ extension ListItems {
         func sortItems(
             items: [Item],
             listId: String
-        ) async -> Result<Void, Error> {
+        ) async -> ActionResult<EquatableVoid> {
             do {
                 try await itemsRepository.sortItems(
                     items: items,
                     listId: listId
                 )
-                return .success(())
+                return .success()
             } catch {
                 return .failure(error)
             }

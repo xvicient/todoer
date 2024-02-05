@@ -106,7 +106,7 @@ private extension AuthenticationView {
                 SignInWithAppleButton(.signIn) { request in
                     request.requestedScopes = [.fullName, .email]
                 } onCompletion: {
-                    store.send(.didAppleSignIn($0))
+                    store.send(.didAppleSignIn($0.actionResult))
                 }
                 .frame(height: 44)
                 .signInWithAppleButtonStyle(.black)
@@ -204,6 +204,17 @@ internal extension AuthenticationView {
             static let errorTitle = "Error"
             static let errorOkButton = "Ok"
             
+        }
+    }
+}
+
+extension Result where Success == ASAuthorization {
+    var actionResult: ActionResult<ASAuthorization> {
+        switch self {
+        case let .success(value):
+            return .success(value)
+        case let .failure(error):
+            return .failure(error)
         }
     }
 }

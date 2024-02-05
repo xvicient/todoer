@@ -7,6 +7,8 @@ protocol HomeDependencies {
     var coordinator: Coordinator { get}
 }
 
+typealias HomeData = Home.Reducer.HomeData
+
 extension Home {
     struct Reducer: Todoer.Reducer {
         
@@ -25,7 +27,12 @@ extension Home {
             }
         }
         
-        enum Action {
+        struct HomeData: Equatable {
+            let lists: [List]
+            let invitations: [Invitation]
+        }
+        
+        enum Action: Equatable {
             // MARK: - View appear
             /// HomeReducer+ViewAppear
             case onViewAppear
@@ -55,15 +62,15 @@ extension Home {
 
             // MARK: - Results
             /// HomeReducer+Results
-            case fetchDataResult(Result<([List], [Invitation]), Error>)
-            case getPhotoUrlResult(Result<String, Error>)
-            case toggleListResult(Result<List, Error>)
-            case deleteListResult(Result<Void, Error>)
-            case acceptInvitationResult(Result<Void, Error>)
-            case declineInvitationResult(Result<Void, Error>)
-            case addListResult(Result<List, Error>)
-            case sortListsResult(Result<Void, Error>)
-            case deleteAccountResult(Result<Void, Error>)
+            case fetchDataResult(ActionResult<HomeData>)
+            case getPhotoUrlResult(ActionResult<String>)
+            case toggleListResult(ActionResult<List>)
+            case deleteListResult(ActionResult<EquatableVoid>)
+            case acceptInvitationResult(ActionResult<EquatableVoid>)
+            case declineInvitationResult(ActionResult<EquatableVoid>)
+            case addListResult(ActionResult<List>)
+            case sortListsResult(ActionResult<EquatableVoid>)
+            case deleteAccountResult(ActionResult<EquatableVoid>)
         }
         
         @MainActor

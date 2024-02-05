@@ -25,7 +25,7 @@ extension ListItems {
             }
         }
         
-        enum Action {
+        enum Action: Equatable {
             // MARK: - View appear
             /// ListItemsReducer+ViewAppear
             case onAppear
@@ -45,11 +45,11 @@ extension ListItems {
             
             // MARK: - Results
             /// ListItemsReducer+Results
-            case fetchItemsResult(Result<[Item], Error>)
-            case addItemResult(Result<Item, Error>)
-            case deleteItemResult(Result<Void, Error>)
-            case toggleItemResult(Result<Item, Error>)
-            case sortItemsResult(Result<Void, Error>)
+            case fetchItemsResult(ActionResult<[Item]>)
+            case addItemResult(ActionResult<Item>)
+            case deleteItemResult(ActionResult<EquatableVoid>)
+            case toggleItemResult(ActionResult<Item>)
+            case sortItemsResult(ActionResult<EquatableVoid>)
         }
         
         @MainActor

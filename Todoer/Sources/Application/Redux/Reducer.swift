@@ -1,7 +1,7 @@
 protocol Reducer<State, Action> {
     associatedtype State
     
-    associatedtype Action
+    associatedtype Action: Equatable
     
     func reduce(
         _ state: inout State,

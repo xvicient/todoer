@@ -3,7 +3,7 @@ import AuthenticationServices
 protocol AuthenticationUseCaseApi {
     func singIn(
         provider: Authentication.Provider
-    ) async -> (Result<Void, Error>)
+    ) async -> ActionResult<EquatableVoid>
 }
 
 extension Authentication {
@@ -49,7 +49,7 @@ extension Authentication {
         
         func singIn(
             provider: Authentication.Provider
-        ) async -> (Result<Void, Error>) {
+        ) async -> ActionResult<EquatableVoid> {
             do {
                 let authData = try await getAuthData(for: provider)
                 
@@ -74,7 +74,7 @@ extension Authentication {
                 
                 usersRepository.setUuid(authData.uid)
                 
-                return .success(())
+                return .success()
             } catch {
                 try? authenticationService.signOut()
                 return .failure(error)

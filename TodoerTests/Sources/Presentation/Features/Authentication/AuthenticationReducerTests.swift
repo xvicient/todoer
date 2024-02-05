@@ -55,7 +55,7 @@ final class AuthenticationReducerTests: XCTestCase {
 
 private extension AuthenticationReducerTests {
     func givenASuccessfullSingIn() {
-        useCaseMock.result = .success(())
+        useCaseMock.result = .success()
     }
     
     func givenAFailureSingIn() {

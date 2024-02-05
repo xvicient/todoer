@@ -4,13 +4,13 @@
 internal extension Home.Reducer {    
     func onFetchDataResult(
         state: inout State,
-        result: Result<([List], [Invitation]), Error>
+        result: ActionResult<HomeData>
     ) -> Effect<Action> {
         switch result {
         case .success(let data):
             state.viewState = .idle
-            state.viewModel.lists = data.0.map { $0.toListRow }
-            state.viewModel.invitations = data.1
+            state.viewModel.lists = data.lists.map { $0.toListRow }
+            state.viewModel.invitations = data.invitations
         case .failure:
             state.viewState = .error(Errors.default)
         }
@@ -19,7 +19,7 @@ internal extension Home.Reducer {
     
     func onPhotoUrlResult(
         state: inout State,
-        result: Result<String, Error>
+        result: ActionResult<String>
     ) -> Effect<Action> {
         state.viewState = .idle
         switch result {
@@ -33,7 +33,7 @@ internal extension Home.Reducer {
     
     func onToggleListResult(
         state: inout State,
-        result: Result<List, Error>
+        result: ActionResult<List>
     ) -> Effect<Action> {
         switch result {
         case .success:
@@ -46,7 +46,7 @@ internal extension Home.Reducer {
     
     func onDeleteListResult(
         state: inout State,
-        result: Result<Void, Error>
+        result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:
@@ -59,7 +59,7 @@ internal extension Home.Reducer {
     
     func onAcceptInvitationResult(
         state: inout State,
-        result: Result<Void, Error>
+        result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:
@@ -72,7 +72,7 @@ internal extension Home.Reducer {
     
     func onDeclineInvitationResult(
         state: inout State,
-        result: Result<Void, Error>
+        result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:
@@ -85,7 +85,7 @@ internal extension Home.Reducer {
     
     func onAddListResult(
         state: inout State,
-        result: Result<List, Error>
+        result: ActionResult<List>
     ) -> Effect<Action> {
         switch result {
         case .success(let list):
@@ -104,7 +104,7 @@ internal extension Home.Reducer {
     
     func onSortListsResult(
         state: inout State,
-        result: Result<Void, Error>
+        result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:
@@ -124,7 +124,7 @@ internal extension Home.Reducer {
     
     func onDeleteAccountResult(
         state: inout State,
-        result: Result<Void, Error>
+        result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:

@@ -1,7 +1,7 @@
 @testable import Todoer
 
 class AuthenticationUseCaseMock: AuthenticationUseCaseApi {
-    var result: Result<Void, Error>!
+    var result: ActionResult<EquatableVoid>!
     
     enum UseCaseError: Error {
         case error
@@ -9,7 +9,7 @@ class AuthenticationUseCaseMock: AuthenticationUseCaseApi {
     
     func singIn(
         provider: Authentication.Provider
-    ) async -> (Result<Void, Error>) {
+    ) async ->ActionResult<EquatableVoid>{
         result
     }
 }

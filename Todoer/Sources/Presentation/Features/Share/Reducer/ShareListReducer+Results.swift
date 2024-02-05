@@ -4,7 +4,7 @@
 internal extension ShareList.Reducer {
     func onFetchUsersResult(
         state: inout State,
-        result: Result<[User], Error>
+        result: ActionResult<[User]>
     ) -> Effect<Action> {
         if case .success(let users) = result {
             state.viewModel.users = users
@@ -14,10 +14,10 @@ internal extension ShareList.Reducer {
     
     func onShareListResult(
         state: inout State,
-        result: Result<Void, Error>
+        result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
-        case .success():
+        case .success:
             state.viewState = .idle
             dependencies.coordinator.dismissSheet()
         case .failure(let error):

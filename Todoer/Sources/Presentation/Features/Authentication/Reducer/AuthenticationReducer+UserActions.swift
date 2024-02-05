@@ -19,7 +19,7 @@ internal extension Authentication.Reducer {
     }
     func onAppleSignIn(
         state: inout State,
-        result: Result<ASAuthorization, Error>
+        result: ActionResult<ASAuthorization>
     ) -> Effect<Action> {
         switch result {
         case .success(let authorization):

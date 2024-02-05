@@ -8,26 +8,12 @@ extension Authentication {
     struct Reducer: Todoer.Reducer {
         
         enum Action: Equatable {
-            static func == (
-                lhs: Authentication.Reducer.Action,
-                rhs: Authentication.Reducer.Action
-            ) -> Bool {
-                switch (lhs, rhs) {
-                case (.didTapGoogleSignInButton, .didTapGoogleSignInButton),
-                    (.didAppleSignIn, .didAppleSignIn),
-                    (.signInResult, .signInResult),
-                    (.didTapDismissError, .didTapDismissError):
-                    return true
-                default: return false
-                }
-            }
-            
             // MARK: - User actions
             case didTapGoogleSignInButton
-            case didAppleSignIn(Result<ASAuthorization, Error>)
+            case didAppleSignIn(ActionResult<ASAuthorization>)
             
             // MARK: - Results
-            case signInResult(Result<Void, Error>)
+            case signInResult(ActionResult<EquatableVoid>)
             
             // MARK: - Errors
             case didTapDismissError

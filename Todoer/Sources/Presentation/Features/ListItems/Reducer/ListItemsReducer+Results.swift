@@ -4,7 +4,7 @@
 internal extension ListItems.Reducer {    
     func onFetchItemsResult(
         state: inout State,
-        result: Result<[Item], Error>
+        result: ActionResult<[Item]>
     ) -> Effect<Action> {
         switch result {
         case .success(let items):
@@ -18,7 +18,7 @@ internal extension ListItems.Reducer {
     
     func onAddItemResult(
         state: inout State,
-        result: Result<Item, Error>
+        result: ActionResult<Item>
     ) -> Effect<Action> {
         switch result {
         case .success(let item):
@@ -44,7 +44,7 @@ internal extension ListItems.Reducer {
     
     func onToggleItemResult(
         state: inout State,
-        result: Result<Item, Error>
+        result: ActionResult<Item>
     ) -> Effect<Action> {
         switch result {
         case .success:
@@ -57,7 +57,7 @@ internal extension ListItems.Reducer {
     
     func onSortItemsResult(
         state: inout State,
-        result: Result<Void, Error>
+        result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:

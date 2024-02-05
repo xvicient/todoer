@@ -6,52 +6,36 @@ import XCTest
 
 @MainActor
 final class TestStore<R: Reducer>: ObservableObject {
-    @Published private(set) var state: R.State
-    private let reducer: R
-    private var cancellables: Set<AnyCancellable> = []
+    @Published private var store: Store<R>
     private var expectedAction: R.Action?
     
     init(
         initialState: R.State,
         reducer: R
     ) {
-        self.state = initialState
-        self.reducer = reducer
+        self.store = .init(initialState: initialState, reducer: reducer)
     }
     
     private func send(_ action: R.Action) {
         expectedAction = action
-        switch reducer.reduce(&state, action) {
-        case .none:
-            break
-        case .publish(let publisher):
-            publisher
-                .receive(on: DispatchQueue.main)
-                .sink(receiveValue: send)
-                .store(in: &cancellables)
-        case .task(let task):
-            guard let task = task else { return }
-            Task {
-                try? await send(task.value)
-            }
-        }
+        store.send(action)
     }
     
     func send(
         _ action: R.Action,
-        assert expectation: ((_ state: inout R.State) -> Bool)
+        assert expectation: ((_ state: R.State) -> Bool)
     ) async {
         send(action)
-//        XCTAssertEqual(expectedAction, action) // TODO: - conform equatable
-        XCTAssert(expectation(&state))
+        XCTAssertEqual(expectedAction, action)
+        XCTAssert(expectation(store.state))
     }
     
     func receive(
         _ action: R.Action,
-        assert expectation: ((_ state: inout R.State) -> Bool)
+        assert expectation: ((_ state: R.State) -> Bool)
     ) async {
         try? await Task.sleep(nanoseconds: 1 * 1_000_000)
-//        XCTAssertEqual(expectedAction, action) // TODO: - conform equatable
-        XCTAssert(expectation(&state))
+        XCTAssertEqual(expectedAction, action)
+        XCTAssert(expectation(store.state))
     }
 }

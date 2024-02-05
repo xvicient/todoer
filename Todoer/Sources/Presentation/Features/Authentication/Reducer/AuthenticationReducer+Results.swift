@@ -6,7 +6,7 @@ import AuthenticationServices
 internal extension Authentication.Reducer {
     func onSignInResult(
         state: inout State,
-        result: Result<Void, Error>
+        result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:

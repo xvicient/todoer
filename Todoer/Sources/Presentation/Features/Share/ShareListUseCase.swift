@@ -4,12 +4,12 @@ import Combine
 protocol ShareListUseCaseApi {
     func fetchUsers(
         uids: [String]
-    ) async -> Result<[User], Error>
+    ) async -> ActionResult<[User]>
     
     func shareList(
         shareEmail: String,
         list: List
-    ) async -> Result<Void, Error>
+    ) async -> ActionResult<EquatableVoid>
 }
 
 extension ShareList {
@@ -39,7 +39,7 @@ extension ShareList {
         
         func fetchUsers(
             uids: [String]
-        ) async -> Result<[User], Error> {
+        ) async -> ActionResult<[User]> {
             do {
                 let result = try await usersRepository.getNotSelfUsers(uids: uids)
                 return .success(result)
@@ -51,7 +51,7 @@ extension ShareList {
         func shareList(
             shareEmail: String,
             list: List
-        ) async -> Result<Void, Error> {
+        ) async -> ActionResult<EquatableVoid> {
             do {
                 guard let invitedUser = try? await usersRepository.getUser(email: shareEmail) else {
                     return .failure(Errors.emailNotFound)
@@ -61,7 +61,7 @@ extension ShareList {
                     invitedId: invitedUser.uuid,
                     listId: list.documentId
                 )) == nil else {
-                    return .success(())
+                    return .success()
                 }
                 
                 guard let selfUser = try? await usersRepository.getSelfUser(),
@@ -78,7 +78,7 @@ extension ShareList {
                     invitedId: invitedUser.uuid
                 )
                 
-                return .success(())
+                return .success()
             } catch {
                 return .failure(error)
             }

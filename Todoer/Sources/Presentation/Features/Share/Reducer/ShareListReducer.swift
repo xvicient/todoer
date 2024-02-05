@@ -9,7 +9,7 @@ protocol ShareListDependencies {
 extension ShareList {
     struct Reducer: Todoer.Reducer {
         
-        enum Action {
+        enum Action: Equatable {
             // MARK: - View appear
             /// ShareListReducer+ViewAppear
             case onAppear
@@ -21,8 +21,8 @@ extension ShareList {
             
             // MARK: - Results
             /// ShareListReducer+Results
-            case fetchUsersResult(Result<[User], Error>)
-            case shareListResult(Result<Void, Error>)
+            case fetchUsersResult(ActionResult<[User]>)
+            case shareListResult(ActionResult<EquatableVoid>)
         }
         
         @MainActor

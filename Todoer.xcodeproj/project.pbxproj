@@ -89,6 +89,8 @@
 		C79CB2F42B17DCB000C2BD18 /* Date+Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F32B17DCB000C2BD18 /* Date+Time.swift */; };
 		C79CB2F72B17E3C200C2BD18 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F62B17E3C200C2BD18 /* List.swift */; };
 		C79CB2F92B17E56A00C2BD18 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2F82B17E56A00C2BD18 /* Item.swift */; };
+		C7B1AA322B703FBB00BC18D3 /* ActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B1AA312B703FBB00BC18D3 /* ActionResult.swift */; };
+		C7B1AA392B70E59900BC18D3 /* EquatableVoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7B1AA382B70E59900BC18D3 /* EquatableVoid.swift */; };
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
 		C7D9D7242B572B5200272A9B /* AuthenticationReducer+UserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */; };
 		C7F428652B588B8E00DEE7E9 /* Error+Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F428642B588B8E00DEE7E9 /* Error+Code.swift */; };
@@ -195,6 +197,8 @@
 		C79CB2F32B17DCB000C2BD18 /* Date+Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Time.swift"; sourceTree = "<group>"; };
 		C79CB2F62B17E3C200C2BD18 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		C79CB2F82B17E56A00C2BD18 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		C7B1AA312B703FBB00BC18D3 /* ActionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionResult.swift; sourceTree = "<group>"; };
+		C7B1AA382B70E59900BC18D3 /* EquatableVoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquatableVoid.swift; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+UserActions.swift"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
@@ -296,6 +300,8 @@
 				C7390FB52B32E42700E49A68 /* Store.swift */,
 				C7390FBD2B34C9F500E49A68 /* Reducer.swift */,
 				C7390FC72B3CC68500E49A68 /* Effect.swift */,
+				C7B1AA312B703FBB00BC18D3 /* ActionResult.swift */,
+				C7B1AA382B70E59900BC18D3 /* EquatableVoid.swift */,
 			);
 			path = Redux;
 			sourceTree = "<group>";
@@ -892,6 +898,7 @@
 				C79CB2952B0D537A00C2BD18 /* HomeBuilder.swift in Sources */,
 				C79A2EF22B6560AB00F52FB2 /* ShareListReducer+Results.swift in Sources */,
 				C79A2ED42B63AF2900F52FB2 /* HomeReducer+UserActions.swift in Sources */,
+				C7B1AA322B703FBB00BC18D3 /* ActionResult.swift in Sources */,
 				C77E107B2B504154009612F8 /* HomeReducer+ViewAppear.swift in Sources */,
 				C79CB2EE2B16A3AD00C2BD18 /* Coordinator.swift in Sources */,
 				C79CB2D52B13FEA200C2BD18 /* UIViewController+TopViewController.swift in Sources */,
@@ -924,6 +931,7 @@
 				C7390FC82B3CC68500E49A68 /* Effect.swift in Sources */,
 				C7390FC42B3637F200E49A68 /* ListItemsReducer.swift in Sources */,
 				C7F428672B588CB300DEE7E9 /* AppInfo.swift in Sources */,
+				C7B1AA392B70E59900BC18D3 /* EquatableVoid.swift in Sources */,
 				C7390FDE2B45FEBB00E49A68 /* View+HideKeyboard.swift in Sources */,
 				C79CB2D92B154D2600C2BD18 /* AuthDataDTO.swift in Sources */,
 				C79CB2C92B13F8FC00C2BD18 /* AuthenticationView.swift in Sources */,
@@ -1184,9 +1192,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xvicient.todoerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Todoer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Todoer";
 			};
 			name = Debug;
@@ -1203,9 +1214,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xvicient.todoerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Todoer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Todoer";
 			};
 			name = Release;
@@ -1220,9 +1234,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xvicient.todoerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = Todoer;
 			};
 			name = Debug;
@@ -1237,9 +1254,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xvicient.todoerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = Todoer;
 			};
 			name = Release;
