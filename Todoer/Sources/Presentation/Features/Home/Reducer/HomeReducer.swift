@@ -175,8 +175,7 @@ extension Home {
                     state: &state
                 )
                 
-            case (.addingList, .didTapCancelAddListButton),
-                (.idle, .didTapCancelAddListButton):
+            case (.addingList, .didTapCancelAddListButton):
                 return onDidTapCancelAddListButton(
                     state: &state
                 )

@@ -87,15 +87,16 @@ internal extension Home.Reducer {
         state: inout State,
         result: ActionResult<List>
     ) -> Effect<Action> {
+        guard let index = state.viewModel.lists.firstIndex(where: { $0.isEditing }) else {
+            state.viewState = .alert(.error(Errors.default))
+            return .none
+        }
+        state.viewModel.lists.remove(at: index)
+        
         switch result {
         case .success(let list):
-            if let index = state.viewModel.lists.firstIndex(where: { $0.isEditing }) {
-                state.viewState = .idle
-                state.viewModel.lists.remove(at: index)
-                state.viewModel.lists.insert(list.toListRow, at: index)
-            } else {
-                state.viewState = .alert(.error(Errors.default))
-            }
+            state.viewModel.lists.insert(list.toListRow, at: index)
+            state.viewState = .idle
         case .failure(let error):
             state.viewState = .alert(.error(error.localizedDescription))
         }

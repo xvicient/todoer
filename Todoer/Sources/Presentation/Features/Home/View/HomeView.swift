@@ -233,6 +233,7 @@ private extension HomeView {
                     .frame(width: 12, height: 12)
                     .foregroundColor(.buttonBlack)
             }
+            .buttonStyle(.borderless)
         }
         .frame(height: 40)
         .onAppear {
