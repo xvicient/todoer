@@ -42,6 +42,17 @@ protocol HomeUseCaseApi {
 
 extension Home {
     struct UseCase: HomeUseCaseApi {
+        private enum Errors: Error, LocalizedError {
+            case emptyListName
+            
+            var errorDescription: String? {
+                switch self {
+                case .emptyListName:
+                    return "List can't be empty."
+                }
+            }
+        }
+        
         private let listsRepository: ListsRepositoryApi
         private let productsRepository: ItemsRepositoryApi
         private let invitationsRepository: InvitationsRepositoryApi
@@ -142,6 +153,10 @@ extension Home {
         func addList(
             name: String
         ) async -> ActionResult<List> {
+            guard !name.isEmpty else {
+                return .failure(Errors.emptyListName)
+            }
+            
             do {
                 let list = try await listsRepository.addList(with: name)
                 return .success(list)

@@ -12,7 +12,7 @@ protocol ListItemsUseCaseApi {
     ) async -> ActionResult<Item>
     
     func deleteItem(
-        itemId: String?,
+        itemId: String,
         listId: String
     ) async -> ActionResult<EquatableVoid>
     
@@ -36,14 +36,11 @@ extension ListItems {
     struct UseCase: ListItemsUseCaseApi {
         private enum Errors: Error, LocalizedError {
             case emptyItemName
-            case missingItemId
             
             var errorDescription: String? {
                 switch self {
                 case .emptyItemName:
                     return "Item can't be empty."
-                case .missingItemId:
-                    return "Missing itemId."
                 }
             }
         }
@@ -91,13 +88,9 @@ extension ListItems {
         }
         
         func deleteItem(
-            itemId: String?,
+            itemId: String,
             listId: String
         ) async -> ActionResult<EquatableVoid> {
-            guard let itemId = itemId else {
-                return .failure(Errors.missingItemId)
-            }
-            
             do {
                 try await itemsRepository.deleteItem(
                     itemId: itemId,

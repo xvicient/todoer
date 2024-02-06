@@ -96,8 +96,8 @@ internal extension Home.Reducer {
             } else {
                 state.viewState = .alert(.error(Errors.default))
             }
-        case .failure:
-            state.viewState = .alert(.error(Errors.default))
+        case .failure(let error):
+            state.viewState = .alert(.error(error.localizedDescription))
         }
         return .none
     }
