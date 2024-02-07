@@ -42,6 +42,7 @@ extension ListItems {
             case didTapCancelEditItemButton(Int)
             case didSortItems(IndexSet, Int)
             case didTapDismissError
+            case didTapAutoSortItems
             
             // MARK: - Results
             /// ListItemsReducer+Results
@@ -163,6 +164,11 @@ extension ListItems {
                     state: &state,
                     fromIndex: fromIndex,
                     toIndex: toIndex
+                )
+                
+            case (.idle, .didTapAutoSortItems):
+                return onDidTapAutoSortItems(
+                    state: &state
                 )
                 
             case (.sortingItems, .sortItemsResult(let result)):

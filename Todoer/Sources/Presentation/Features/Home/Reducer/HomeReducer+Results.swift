@@ -116,13 +116,6 @@ internal extension Home.Reducer {
         return .none
     }
     
-    func onDidTapDismissError(
-        state: inout State
-    ) -> Effect<Action> {
-        state.viewState = .idle
-        return .none
-    }
-    
     func onDeleteAccountResult(
         state: inout State,
         result: ActionResult<EquatableVoid>

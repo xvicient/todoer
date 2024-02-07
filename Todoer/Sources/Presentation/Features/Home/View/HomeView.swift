@@ -24,7 +24,8 @@ struct HomeView: View {
             store.state.viewState == .loading
         )
         .navigationBarItems(
-            trailing: navigationBarItems
+            leading: navigationBarLeadingItems,
+            trailing: navigationBarTrailingItems
         )
         .alert(item: alertBinding) {
             alert(for: $0)
@@ -36,7 +37,27 @@ struct HomeView: View {
 
 private extension HomeView {
     @ViewBuilder
-    var navigationBarItems: some View {
+    var navigationBarTrailingItems: some View {
+        HStack {
+            Spacer()
+            Menu {
+                Button(Constants.Text.autoSort) {
+                    withAnimation {
+                        store.send(.didTapAutoSortLists)
+                    }
+                }
+            } label: {
+                Image.ellipsis
+                    .resizable()
+                    .scaleEffect(0.75)
+                    .rotationEffect(Angle(degrees: 90))
+                    .foregroundColor(.buttonBlack)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var navigationBarLeadingItems: some View {
         HStack {
             Spacer()
             Menu {
@@ -272,7 +293,7 @@ private extension HomeView {
                 }, label: {
                     Image.plusCircleFill
                         .resizable()
-                        .frame(width: 48.0, height: 48.0)
+                        .frame(width: 42.0, height: 42.0)
                         .foregroundColor(.textBlack)
                         .background(
                             RoundedRectangle(cornerRadius: 24)
@@ -363,6 +384,7 @@ private extension HomeView {
             static let list = "List..."
             static let logout = "Logout"
             static let about = "About"
+            static let autoSort = "Auto sort"
             static let deleteAccount = "Delete account"
             static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
             static let errorTitle = "Error"

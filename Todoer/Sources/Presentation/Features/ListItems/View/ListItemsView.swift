@@ -20,12 +20,14 @@ struct ListItemsView: View {
             newRowButton
             loadingView
         }
-        .background(.backgroundWhite)
         .onAppear {
             store.send(.onAppear)
         }
         .disabled(
             store.state.viewState == .loading
+        )
+        .navigationBarItems(
+            trailing: navigationBarTrailingItems
         )
         .alert(isPresented: alertBinding) {
             Alert(
@@ -41,7 +43,26 @@ struct ListItemsView: View {
 
 // MARK: - Private
 
-private extension ListItemsView {
+private extension ListItemsView {@ViewBuilder
+    var navigationBarTrailingItems: some View {
+        HStack {
+            Spacer()
+            Menu {
+                Button(Constants.Text.autoSort) {
+                    withAnimation {
+                        store.send(.didTapAutoSortItems)
+                    }
+                }
+            } label: {
+                Image.ellipsis
+                    .resizable()
+                    .scaleEffect(0.75)
+                    .rotationEffect(Angle(degrees: 90))
+                    .foregroundColor(.buttonBlack)
+            }
+        }
+    }
+    
     @ViewBuilder
     var itemsList: some View {
         ScrollViewReader { scrollView in
@@ -190,7 +211,7 @@ private extension ListItemsView {
                 }, label: {
                     Image.plusCircleFill
                         .resizable()
-                        .frame(width: 48.0, height: 48.0)
+                        .frame(width: 42.0, height: 42.0)
                         .foregroundColor(.textBlack)
                         .background(
                             RoundedRectangle(cornerRadius: 24)
@@ -257,6 +278,7 @@ private extension ListItemsView {
             static let item = "Item..."
             static let errorTitle = "Error"
             static let errorOkButton = "Ok"
+            static let autoSort = "Auto sort"
         }
     }
 }

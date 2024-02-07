@@ -234,6 +234,36 @@ internal extension Home.Reducer {
         state.viewState = .idle
         return .none
     }
+    
+    func onDidTapDismissError(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
+        return .none
+    }
+    
+    func onDidTapAutoSortLists(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .sortingList
+        state.viewModel.lists
+            .filter { !$0.list.done }
+            .enumerated()
+            .forEach { index, item in
+                if let fromOffset = state.viewModel.lists.firstIndex(where: { $0.id == item.id }) {
+                    state.viewModel.lists.move(fromOffsets: IndexSet(integer: fromOffset), toOffset: index)
+                }
+            }
+        let lists = state.viewModel.lists
+            .map { $0.list }
+        return .task(Task {
+            .sortListsResult(
+                await dependencies.useCase.sortLists(
+                    lists: lists
+                )
+            )
+        })
+    }
 }
 
 // MARK: - Private

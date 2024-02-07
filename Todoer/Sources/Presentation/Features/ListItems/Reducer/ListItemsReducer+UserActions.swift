@@ -150,6 +150,31 @@ internal extension ListItems.Reducer {
             )
         })
     }
+    
+    func onDidTapAutoSortItems(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .sortingItems
+        state.viewModel.items
+            .filter { !$0.item.done }
+            .enumerated()
+            .forEach { index, item in
+                if let fromOffset = state.viewModel.items.firstIndex(where: { $0.id == item.id }) {
+                    state.viewModel.items.move(fromOffsets: IndexSet(integer: fromOffset), toOffset: index)
+                }
+            }
+        let items = state.viewModel.items
+            .map { $0.item }
+        let listId = dependencies.list.documentId
+        return .task(Task {
+            .sortItemsResult(
+                await dependencies.useCase.sortItems(
+                    items: items,
+                    listId: listId
+                )
+            )
+        })
+    }
       
 }
 

@@ -18,4 +18,5 @@ extension Image {
     static let personCropCircle = Image(systemName: "person.crop.circle")
     static let trash = Image(systemName: "trash")
     static let squareAndPencil = Image(systemName: "square.and.pencil")
+    static let ellipsis = Image(systemName: "ellipsis")
 }

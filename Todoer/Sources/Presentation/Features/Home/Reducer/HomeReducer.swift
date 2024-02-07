@@ -59,6 +59,7 @@ extension Home {
             case didTapConfirmDeleteAccount
             case didTapDismissDeleteAccount
             case didTapDeleteAccountButton
+            case didTapAutoSortLists
 
             // MARK: - Results
             /// HomeReducer+Results
@@ -220,6 +221,11 @@ extension Home {
                 
             case (.alert, .didTapDismissError):
                 return onDidTapDismissError(
+                    state: &state
+                )
+                
+            case (.idle, .didTapAutoSortLists):
+                return onDidTapAutoSortLists(
                     state: &state
                 )
                 
