@@ -22,7 +22,6 @@ struct TDTextField: View {
                             .stroke(.borderBlack, lineWidth: 1)
                     )
             }
-            .padding(.horizontal, 24)
             if !text.isEmpty {
                 HStack {
                     Spacer()

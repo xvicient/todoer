@@ -9,29 +9,49 @@ struct ShareListView: View {
     }
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
             title
             TDTextField(text: $shareEmailText,
                         placeholder: Constants.Text.sharePlaceholder)
             TDButton(title: Constants.Text.shareButtonTitle) {
                 store.send(.didTapShareListButton($shareEmailText.wrappedValue))
             }
-            .padding(.horizontal, 24)
-            SwiftUI.List(store.state.viewModel.users) { user in
-                Section(
-                    header:
-                        Text(Constants.Text.sharingWithTitle)
-                        .foregroundColor(.textBlack)
-                ) {
-                    Text(user.displayName ?? "")
-                        .foregroundColor(.textBlack)
+            Text(Constants.Text.sharingWithTitle)
+                .foregroundColor(.textBlack)
+                .fontWeight(.medium)
+                .padding(.top, 24)
+                .padding(.bottom, 8)
+            if store.state.viewModel.users.isEmpty {
+                Text(Constants.Text.notSharedYet)
+                    .foregroundColor(.textBlack)
+                    .font(.system(size: 14))
+            } else {
+                ScrollView(.horizontal) {
+                    HStack(spacing: 20) {
+                        ForEach(store.state.viewModel.users) { user in
+                            VStack {
+                                AsyncImage(
+                                    url: URL(string: user.photoUrl ?? ""),
+                                    content: {
+                                        $0.resizable().aspectRatio(contentMode: .fit)
+                                    }, placeholder: {
+                                        Image.personCropCircle
+                                            .tint(.buttonBlack)
+                                    })
+                                .frame(width: 30, height: 30)
+                                .cornerRadius(15.0)
+                                Text(user.displayName ?? "")
+                                    .foregroundColor(.textBlack)
+                                    .font(.system(size: 14))
+                            }
+                        }
+                    }
                 }
+                .scrollIndicators(.hidden)
+                .scrollBounceBehavior(.basedOnSize)
             }
-            .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
-            .scrollContentBackground(.hidden)
         }
-        .padding(.top, 24)
+        .padding(.horizontal, 24)
         .frame(maxHeight: .infinity)
         .background(.backgroundWhite)
         .onAppear {
@@ -64,12 +84,14 @@ private extension ShareListView {
         HStack {
             Image.squareAndArrowUp
                 .foregroundColor(.backgroundBlack)
+                .fontWeight(.medium)
             Text(Constants.Text.shareTitle)
                 .foregroundColor(.textBlack)
+                .fontWeight(.medium)
             Spacer()
         }
-        .padding(.horizontal, 24)
         .padding(.top, 24)
+        .padding(.bottom, 8)
     }
 }
 
@@ -95,6 +117,7 @@ private extension ShareListView {
             static let sharingWithTitle = "Sharing with"
             static let shareButtonTitle = "Share"
             static let sharePlaceholder = "Email..."
+            static let notSharedYet = "Not shared yet"
             static let errorTitle = "Error"
             static let errorOkButton = "Ok"
         }
