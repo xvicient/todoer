@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 
-@MainActor
 final class Store<R: Reducer>: ObservableObject {
     @Published private(set) var state: R.State
     private let reducer: R
@@ -26,7 +25,7 @@ final class Store<R: Reducer>: ObservableObject {
                 .store(in: &cancellables)
         case .task(let task):
             guard let task = task else { return }
-            Task {
+            Task { @MainActor in
                 try? await send(task.value)
             }
         }

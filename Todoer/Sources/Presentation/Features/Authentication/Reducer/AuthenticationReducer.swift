@@ -70,7 +70,9 @@ extension Authentication {
                     state: &state
                 )
                 
-            default: return .none
+            default:
+                Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
+                return .none
             }
         }
     }

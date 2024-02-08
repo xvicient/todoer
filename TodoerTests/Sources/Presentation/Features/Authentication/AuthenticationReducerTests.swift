@@ -3,11 +3,13 @@ import XCTest
 
 @MainActor
 final class AuthenticationReducerTests: XCTestCase {
+    private typealias AuthenticationStore<R: Reducer> = TestStore<R.State, R.Action>
+    
     struct Dependencies: AuthenticationDependencies {
         var useCase: AuthenticationUseCaseApi
     }
     
-    private var store: TestStore<Authentication.Reducer>!
+    private var store: AuthenticationStore<Authentication.Reducer>!
     private var useCaseMock = AuthenticationUseCaseMock()
     private var useCaseError = AuthenticationUseCaseMock.UseCaseError.error
     

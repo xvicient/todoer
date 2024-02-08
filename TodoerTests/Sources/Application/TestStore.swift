@@ -1,41 +1,41 @@
 import Foundation
 import Combine
-
-@testable import Todoer
 import XCTest
 
-@MainActor
-final class TestStore<R: Reducer>: ObservableObject {
-    @Published private var store: Store<R>
-    private var expectedAction: R.Action?
+@testable import Todoer
+
+final class TestStore<State, Action> where Action: Equatable {
+    private let store: Store<TestReducer<State, Action>>
+    private let reducer: TestReducer<State, Action>
     
-    init(
-        initialState: R.State,
+    init<R: Reducer>(
+        initialState: State,
         reducer: R
-    ) {
-        self.store = .init(initialState: initialState, reducer: reducer)
-    }
-    
-    private func send(_ action: R.Action) {
-        expectedAction = action
-        store.send(action)
+    )
+    where
+    R.State == State,
+    R.Action == Action
+    {
+        self.reducer = TestReducer(reduce: reducer.reduce,
+                                   initialState: initialState)
+        self.store = Store(initialState: initialState, reducer: self.reducer)
     }
     
     func send(
-        _ action: R.Action,
-        assert expectation: ((_ state: R.State) -> Bool)
+        _ action: Action,
+        assert expectation: ((_ state: State) -> Bool)
     ) async {
-        send(action)
-        XCTAssertEqual(expectedAction, action)
-        XCTAssert(expectation(store.state))
+        store.send(action)
+        XCTAssertEqual(reducer.expectedAction, action)
+        XCTAssert(expectation(reducer.expectedState))
     }
     
     func receive(
-        _ action: R.Action,
-        assert expectation: ((_ state: R.State) -> Bool)
+        _ action: Action,
+        assert expectation: ((_ state: State) -> Bool)
     ) async {
-        try? await Task.sleep(nanoseconds: 1 * 1_000_000)
-        XCTAssertEqual(expectedAction, action)
-        XCTAssert(expectation(store.state))
+        sleep(1)
+        XCTAssertEqual(reducer.expectedAction, action)
+        XCTAssert(expectation(reducer.expectedState))
     }
 }
