@@ -3,7 +3,6 @@ import SwiftUI
 struct ShareList {
     struct Builder {
         struct Dependencies: ShareListDependencies {
-            var coordinator: Coordinator
             var useCase: ShareListUseCaseApi
             var list: List
         }
@@ -14,11 +13,13 @@ struct ShareList {
             list: List
         ) -> ShareListView {
             let dependencies = Dependencies(
-                coordinator: coordinator,
                 useCase: UseCase(),
                 list: list
             )
-            let reducer = Reducer(dependencies: dependencies)
+            let reducer = Reducer(
+                coordinator: coordinator,
+                dependencies: dependencies
+            )
             let store = Store(initialState: .init(), reducer: reducer)
             return ShareListView(store: store)
         }

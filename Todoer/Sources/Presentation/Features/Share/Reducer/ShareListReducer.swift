@@ -1,7 +1,6 @@
 // MARK: - ShareListReducer
 
 protocol ShareListDependencies {
-    var coordinator: Coordinator { get }
     var useCase: ShareListUseCaseApi { get }
     var list: List { get }
 }
@@ -36,9 +35,14 @@ extension ShareList {
             case error(String)
         }
         
+        internal let coordinator: Coordinator
         internal let dependencies: ShareListDependencies
         
-        init(dependencies: ShareListDependencies) {
+        init(
+            coordinator: Coordinator,
+            dependencies: ShareListDependencies
+        ) {
+            self.coordinator = coordinator
             self.dependencies = dependencies
         }
         

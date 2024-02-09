@@ -30,6 +30,9 @@ final class AuthenticationReducerTests: XCTestCase {
         )
     }
     
+    /// https://github.com/lukejones1/AppleSignIn/tree/master
+    func testDidTapAppleSignInButton_Success() async { }
+    
     func testDidTapGoogleSignInButton_Success() async {
         givenASuccessfullSingIn()
         
@@ -51,6 +54,10 @@ final class AuthenticationReducerTests: XCTestCase {
         
         await store.receive(.signInResult(useCaseMock.result)) {
             $0.viewState == .error(useCaseError.localizedDescription)
+        }
+        
+        await store.send(.didTapDismissError) {
+            $0.viewState == .idle
         }
     }
 }
