@@ -22,7 +22,19 @@ enum FullScreenCover: Hashable, Identifiable {
 }
 
 @MainActor
-final class Coordinator: ObservableObject {
+protocol CoordinatorApi {
+    func loggOut()
+    func loggIn()
+    func push(_ page: Page)
+    func present(sheet: Sheet)
+    func present(fullScreenCover: FullScreenCover)
+    func pop()
+    func popToRoot()
+    func dismissSheet()
+}
+
+@MainActor
+final class Coordinator: CoordinatorApi, ObservableObject {
     
     @Published var path = NavigationPath()
     @Published var sheet: Sheet?

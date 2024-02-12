@@ -12,6 +12,7 @@ final class AuthenticationReducerTests: XCTestCase {
     private var store: AuthenticationStore<Authentication.Reducer>!
     private var useCaseMock = AuthenticationUseCaseMock()
     private var useCaseError = AuthenticationUseCaseMock.UseCaseError.error
+    private var coordinator = TestCoordinator()
     
     override func setUp() {
         super.setUp()
@@ -22,7 +23,7 @@ final class AuthenticationReducerTests: XCTestCase {
         store = TestStore(
             initialState: .init(),
             reducer: Authentication.Reducer(
-                coordinator: Coordinator(),
+                coordinator: coordinator,
                 dependencies: Dependencies(
                     useCase: useCaseMock
                 )
@@ -43,6 +44,8 @@ final class AuthenticationReducerTests: XCTestCase {
         await store.receive(.signInResult(useCaseMock.result)) {
             $0.viewState == .idle
         }
+        
+        XCTAssert(coordinator.isLoggInCalled)
     }
     
     func testDidTapGoogleSignInButton_Failure() async {

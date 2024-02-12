@@ -15,6 +15,7 @@
 		C71FAF112B764511004679E2 /* ShareListUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF102B764511004679E2 /* ShareListUseCaseMock.swift */; };
 		C71FAF142B76601D004679E2 /* UserMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF132B76601D004679E2 /* UserMock.swift */; };
 		C71FAF162B766170004679E2 /* ListMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF152B766170004679E2 /* ListMock.swift */; };
+		C72DA9CD2B7A5C6D00816AE1 /* TestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72DA9CC2B7A5C6D00816AE1 /* TestCoordinator.swift */; };
 		C7390FB62B32E42700E49A68 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB52B32E42700E49A68 /* Store.swift */; };
 		C7390FB82B32E44800E49A68 /* AuthenticationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */; };
 		C7390FBC2B32ED4F00E49A68 /* AuthenticationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */; };
@@ -123,6 +124,7 @@
 		C71FAF132B76601D004679E2 /* UserMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMock.swift; sourceTree = "<group>"; };
 		C71FAF152B766170004679E2 /* ListMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMock.swift; sourceTree = "<group>"; };
 		C72701092B74C01100E9D275 /* TestReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReducer.swift; sourceTree = "<group>"; };
+		C72DA9CC2B7A5C6D00816AE1 /* TestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoordinator.swift; sourceTree = "<group>"; };
 		C7390FB52B32E42700E49A68 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducer.swift; sourceTree = "<group>"; };
 		C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCase.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 			children = (
 				C70682242B68DF97008BB192 /* TestStore.swift */,
 				C72701092B74C01100E9D275 /* TestReducer.swift */,
+				C72DA9CC2B7A5C6D00816AE1 /* TestCoordinator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -858,6 +861,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C74515212B750F5600C6D08E /* AuthenticationReducerTests.swift in Sources */,
+				C72DA9CD2B7A5C6D00816AE1 /* TestCoordinator.swift in Sources */,
 				C74515222B750F5600C6D08E /* TestReducer.swift in Sources */,
 				C74515202B750F5600C6D08E /* TestStore.swift in Sources */,
 				C71FAF112B764511004679E2 /* ShareListUseCaseMock.swift in Sources */,
