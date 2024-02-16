@@ -10,14 +10,14 @@ struct ListItems {
         @MainActor
         static func makeItemsList(
             list: List
-        ) -> ListItemsView {
+        ) -> ListItemsScreen {
             let dependencies = Dependencies(
                 useCase: UseCase(),
                 list: list
             )
             let reducer = Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)
-            return ListItemsView(
+            return ListItemsScreen(
                 store: store,
                 listName: list.name
             )

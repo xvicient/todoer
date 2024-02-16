@@ -11,7 +11,7 @@ struct ShareList {
         static func makeShareList(
             coordinator: Coordinator,
             list: List
-        ) -> ShareListView {
+        ) -> ShareListScreen {
             let dependencies = Dependencies(
                 useCase: UseCase(),
                 list: list
@@ -21,7 +21,7 @@ struct ShareList {
                 dependencies: dependencies
             )
             let store = Store(initialState: .init(), reducer: reducer)
-            return ShareListView(store: store)
+            return ShareListScreen(store: store)
         }
     }
 }

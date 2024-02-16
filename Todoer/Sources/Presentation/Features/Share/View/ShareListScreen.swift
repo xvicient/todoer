@@ -1,6 +1,8 @@
 import SwiftUI
 
-struct ShareListView: View {
+// MARK: - ShareListView
+
+struct ShareListScreen: View {
     @ObservedObject private var store: Store<ShareList.Reducer>
     @State private var shareEmailText: String = ""
     
@@ -71,7 +73,7 @@ struct ShareListView: View {
 
 // MARK: - ViewBuilders
 
-private extension ShareListView {
+private extension ShareListScreen {
     @ViewBuilder
     var alertErrorMessage: Text? {
         if case let .error(error) = store.state.viewState {
@@ -97,11 +99,11 @@ private extension ShareListView {
 
 // MARK: - Private
 
-private extension ShareListView {
+private extension ShareListScreen {
     var alertBinding: Binding<Bool> {
         Binding(
             get: {
-                { if case .error = store.state.viewState { return true } else { return false } }()
+                if case .error = store.state.viewState { return true } else { return false }
             },
             set: { _ in }
         )
@@ -110,7 +112,7 @@ private extension ShareListView {
 
 // MARK: - Constants
 
-private extension ShareListView {
+private extension ShareListScreen {
     struct Constants {
         struct Text {
             static let shareTitle = "Share"

@@ -9,14 +9,14 @@ struct Home {
         @MainActor
         static func makeHome(
             coordinator: Coordinator
-        ) -> HomeView {
+        ) -> HomeScreen {
             let dependencies = Dependencies(
                 useCase: UseCase(),
                 coordinator: coordinator
             )
             let reducer = Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)
-            return HomeView(store: store)
+            return HomeScreen(store: store)
         }
     }
 }

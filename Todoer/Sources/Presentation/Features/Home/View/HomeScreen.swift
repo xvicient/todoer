@@ -1,8 +1,8 @@
 import SwiftUI
 
-// MARK: - HomeView
+// MARK: - HomeScreen
 
-struct HomeView: View {
+struct HomeScreen: View {
     @ObservedObject private var store: Store<Home.Reducer>
     @FocusState private var isNewRowFocused: Bool
     @State private var newRowText = ""
@@ -35,7 +35,7 @@ struct HomeView: View {
 
 // MARK: - ViewBuilders
 
-private extension HomeView {
+private extension HomeScreen {
     @ViewBuilder
     var navigationBarTrailingItems: some View {
         HStack {
@@ -314,7 +314,7 @@ private extension HomeView {
 
 // MARK: - Private
 
-private extension HomeView {
+private extension HomeScreen {
     var swipeActions: (Int, TDSwipeAction) -> Void {
         { index, option in
             switch option {
@@ -373,7 +373,7 @@ private extension HomeView {
 
 // MARK: - Constants
 
-private extension HomeView {
+private extension HomeScreen {
     struct Constants {
         struct Text {
             static let invitations = "Invitations"

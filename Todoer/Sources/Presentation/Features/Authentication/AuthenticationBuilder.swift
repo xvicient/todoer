@@ -5,11 +5,11 @@ struct Authentication {
         @MainActor
         static func makeAuthentication(
             coordinator: Coordinator
-        ) -> AuthenticationView {
+        ) -> AuthenticationScreen {
             struct Dependencies: AuthenticationDependencies {
                 var useCase: AuthenticationUseCaseApi
             }
-            return AuthenticationView(
+            return AuthenticationScreen(
                 store: Store(
                     initialState: .init(),
                     reducer: Authentication.Reducer(

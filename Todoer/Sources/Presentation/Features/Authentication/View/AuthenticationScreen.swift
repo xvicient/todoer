@@ -3,7 +3,9 @@ import AuthenticationServices
 import GoogleSignIn
 import GoogleSignInSwift
 
-struct AuthenticationView: View {
+// MARK: - AuthenticationScreen
+
+struct AuthenticationScreen: View {
     @ObservedObject private var store: Store<Authentication.Reducer>
     @State private var isTopSpacerVisible = true
     @State private var logoTopPadding = 100.0
@@ -44,7 +46,7 @@ struct AuthenticationView: View {
 
 // MARK: - ViewBuilders
 
-private extension AuthenticationView {
+private extension AuthenticationScreen {
     @ViewBuilder
     var logoView: some View {
         VStack {
@@ -169,7 +171,7 @@ private extension AuthenticationView {
 
 // MARK: - Private
 
-private extension AuthenticationView {
+private extension AuthenticationScreen {
     func typeWriter(at position: String.Index) {
         if position == captionText.startIndex {
             caption = ""
@@ -187,7 +189,7 @@ private extension AuthenticationView {
     var alertBinding: Binding<Bool> {
         Binding(
             get: {
-                { if case .error = store.state.viewState { return true } else { return false } }()
+                if case .error = store.state.viewState { return true } else { return false }
             },
             set: { _ in }
         )
@@ -196,7 +198,7 @@ private extension AuthenticationView {
 
 // MARK: - Constants
 
-internal extension AuthenticationView {
+internal extension AuthenticationScreen {
     struct Constants {
         struct Text {
             static let login = "Login"

@@ -1,6 +1,8 @@
 import SwiftUI
 
-struct AboutView: View {
+// MARK: - AboutScreen
+
+struct AboutScreen: View {
     var body: some View {
         VStack {
             SwiftUI.List {
@@ -17,7 +19,7 @@ struct AboutView: View {
 
 // MARK: - ViewBuilders
 
-private extension AboutView {
+private extension AboutScreen {
     @ViewBuilder
     var privacyPolicySection: some View {
         Section(header:
@@ -128,7 +130,7 @@ private extension AboutView {
 
 // MARK: - Constants
 
-private extension AboutView {
+private extension AboutScreen {
     struct Constants {
         struct Text {
             static let aboutTodoer = "About Todoer"
@@ -154,5 +156,5 @@ private extension AboutView {
 }
 
 #Preview {
-    AboutView()
+    AboutScreen()
 }

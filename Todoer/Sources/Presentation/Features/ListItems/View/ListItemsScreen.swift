@@ -1,6 +1,8 @@
 import SwiftUI
 
-struct ListItemsView: View {
+// MARK: - ListItemsScreen
+
+struct ListItemsScreen: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
     @FocusState private var isNewRowFocused: Bool
     @State private var newRowText = ""
@@ -43,7 +45,8 @@ struct ListItemsView: View {
 
 // MARK: - Private
 
-private extension ListItemsView {@ViewBuilder
+private extension ListItemsScreen {
+    @ViewBuilder
     var navigationBarTrailingItems: some View {
         HStack {
             Spacer()
@@ -240,7 +243,7 @@ private extension ListItemsView {@ViewBuilder
 
 // MARK: - Private
 
-private extension ListItemsView {
+private extension ListItemsScreen {
     var swipeActions: (Int, TDSwipeAction) -> Void {
         { index, option in
             switch option {
@@ -263,7 +266,7 @@ private extension ListItemsView {
     var alertBinding: Binding<Bool> {
         Binding(
             get: {
-                { if case .error = store.state.viewState { return true } else { return false } }()
+                if case .error = store.state.viewState { return true } else { return false }
             },
             set: { _ in }
         )
@@ -272,7 +275,7 @@ private extension ListItemsView {
 
 // MARK: - Constants
 
-private extension ListItemsView {
+private extension ListItemsScreen {
     struct Constants {
         struct Text {
             static let item = "Item..."
