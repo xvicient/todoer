@@ -17,14 +17,16 @@ internal extension ListItems.Reducer {
         let item = state.viewModel.items[index].item
         var list = dependencies.list
         list.done = state.viewModel.items.allSatisfy({ $0.item.done })
-        return .task(Task {
-            .toggleItemResult(
-                await dependencies.useCase.updateItemDone(
-                    item: item,
-                    list: list
+        return .task { @MainActor send in
+            await send(
+                .toggleItemResult(
+                    dependencies.useCase.updateItemDone(
+                        item: item,
+                        list: list
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapDeleteItemButton(
@@ -34,14 +36,16 @@ internal extension ListItems.Reducer {
         let itemId = state.viewModel.items[index].item.documentId
         state.viewState = .updatingItem
         state.viewModel.items.remove(at: index)
-        return .task(Task {
-            .deleteItemResult(
-                await dependencies.useCase.deleteItem(
-                    itemId: itemId,
-                    listId: dependencies.list.documentId
+        return .task { send in
+            await send(
+                .deleteItemResult(
+                    dependencies.useCase.deleteItem(
+                        itemId: itemId,
+                        listId: dependencies.list.documentId
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapAddRowButton(
@@ -71,14 +75,16 @@ internal extension ListItems.Reducer {
     ) -> Effect<Action> {
         var list = dependencies.list
         list.done = false
-        return .task(Task {
-            .addItemResult(
-                await dependencies.useCase.addItem(
-                    with: newItemName,
-                    list: list
+        return .task { @MainActor send in
+            await send(
+                .addItemResult(
+                    dependencies.useCase.addItem(
+                        with: newItemName,
+                        list: list
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapEditItemButton(
@@ -92,7 +98,7 @@ internal extension ListItems.Reducer {
         state.viewState = .editingItem
         state.viewModel.items.remove(at: index)
         state.viewModel.items.insert(newItemRow(item: item), at: index)
-
+        
         return .none
     }
     
@@ -107,14 +113,16 @@ internal extension ListItems.Reducer {
         }
         item.name = name
         let listId = dependencies.list.documentId
-        return .task(Task {
-            .addItemResult(
-                await dependencies.useCase.updateItemName(
-                    item: item,
-                    listId: listId
+        return .task { @MainActor send in
+            await send(
+                .addItemResult(
+                    dependencies.useCase.updateItemName(
+                        item: item,
+                        listId: listId
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapCancelEditItemButton(
@@ -141,14 +149,16 @@ internal extension ListItems.Reducer {
         let items = state.viewModel.items
             .map { $0.item }
         let listId = dependencies.list.documentId
-        return .task(Task {
-            .sortItemsResult(
-                await dependencies.useCase.sortItems(
-                    items: items,
-                    listId: listId
+        return .task { send in
+            await send(
+                .sortItemsResult(
+                    dependencies.useCase.sortItems(
+                        items: items,
+                        listId: listId
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapAutoSortItems(
@@ -166,16 +176,18 @@ internal extension ListItems.Reducer {
         let items = state.viewModel.items
             .map { $0.item }
         let listId = dependencies.list.documentId
-        return .task(Task {
-            .sortItemsResult(
-                await dependencies.useCase.sortItems(
-                    items: items,
-                    listId: listId
+        return .task { send in
+            await send(
+                .sortItemsResult(
+                    dependencies.useCase.sortItems(
+                        items: items,
+                        listId: listId
+                    )
                 )
             )
-        })
+        }
     }
-      
+    
 }
 
 // MARK: - Private

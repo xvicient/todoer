@@ -19,10 +19,12 @@ internal extension Home.Reducer {
     func onProfilePhotoAppear(
         state: inout State
     ) -> Effect<Action> {
-        return .task(Task {
-            .getPhotoUrlResult(
-                await dependencies.useCase.getPhotoUrl()
+        return .task { send in
+            await send(
+                .getPhotoUrlResult(
+                    dependencies.useCase.getPhotoUrl()
+                )
             )
-        })
+        }
     }
 }

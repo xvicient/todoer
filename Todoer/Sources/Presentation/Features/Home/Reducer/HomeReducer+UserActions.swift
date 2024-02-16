@@ -9,25 +9,29 @@ internal extension Home.Reducer {
         listId: String,
         invitationId: String
     ) -> Effect<Action> {
-        return .task(Task {
-            .acceptInvitationResult(
-                await dependencies.useCase.acceptInvitation(
+        return .task { send in
+            await send(
+                .acceptInvitationResult(
+                    dependencies.useCase.acceptInvitation(
                         listId: listId,
                         invitationId: invitationId)
+                )
             )
-        })
+        }
     }
     
     func onDidTapDeclineInvitation(
         state: inout State,
         invitationId: String
     ) -> Effect<Action> {
-        return .task(Task {
-            .declineInvitationResult(
-                await dependencies.useCase.declineInvitation(
+        return .task { send in
+            await send(
+                .declineInvitationResult(
+                    dependencies.useCase.declineInvitation(
                         invitationId: invitationId)
+                )
             )
-        })
+        }
     }
     
     func onDidTapList(
@@ -53,13 +57,15 @@ internal extension Home.Reducer {
         state.viewState = .updatingList
         state.viewModel.lists[index].list.done.toggle()
         let list = state.viewModel.lists[index].list
-        return .task(Task {
-            .toggleListResult(
-                await dependencies.useCase.updateList(
-                    list: list
+        return .task { send in
+            await send(
+                .toggleListResult(
+                    dependencies.useCase.updateList(
+                        list: list
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapDeleteListButton(
@@ -72,11 +78,13 @@ internal extension Home.Reducer {
         }
         state.viewState = .updatingList
         state.viewModel.lists.remove(at: index)
-        return .task(Task {
-            .deleteListResult(
-                await dependencies.useCase.deleteList(list.documentId)
+        return .task { send in
+            await send(
+                .deleteListResult(
+                    dependencies.useCase.deleteList(list.documentId)
+                )
             )
-        })
+        }
     }
     
     func onDidTapShareListButton(
@@ -88,7 +96,7 @@ internal extension Home.Reducer {
             return .none
         }
         dependencies.coordinator.present(sheet: .shareList(list))
-
+        
         return .none
     }
     
@@ -103,7 +111,7 @@ internal extension Home.Reducer {
         state.viewState = .editingList
         state.viewModel.lists.remove(at: index)
         state.viewModel.lists.insert(newListRow(list: list), at: index)
-
+        
         return .none
     }
     
@@ -117,13 +125,15 @@ internal extension Home.Reducer {
             return .none
         }
         list.name = name
-        return .task(Task {
-            .addListResult(
-                await dependencies.useCase.updateList(
-                    list: list
+        return .task { @MainActor send in
+            await send(
+                .addListResult(
+                    dependencies.useCase.updateList(
+                        list: list
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapCancelEditListButton(
@@ -165,13 +175,15 @@ internal extension Home.Reducer {
         state: inout State,
         newListName: String
     ) -> Effect<Action> {
-        return .task(Task {
-            .addListResult(
-                await dependencies.useCase.addList(
-                    name: newListName
+        return .task { send in
+            await send(
+                .addListResult(
+                    dependencies.useCase.addList(
+                        name: newListName
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapSignoutButton(
@@ -202,13 +214,15 @@ internal extension Home.Reducer {
         state.viewModel.lists.move(fromOffsets: fromIndex, toOffset: toIndex)
         let lists = state.viewModel.lists
             .map { $0.list }
-        return .task(Task {
-            .sortListsResult(
-                await dependencies.useCase.sortLists(
-                    lists: lists
+        return .task { send in
+            await send(
+                .sortListsResult(
+                    dependencies.useCase.sortLists(
+                        lists: lists
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapDeleteAccountButton(
@@ -221,11 +235,13 @@ internal extension Home.Reducer {
     func onDidTapConfirmDeleteAccount(
         state: inout State
     ) -> Effect<Action> {
-        return .task(Task {
-            .deleteAccountResult(
-                await dependencies.useCase.deleteAccount()
+        return .task { send in
+            await send(
+                .deleteAccountResult(
+                    dependencies.useCase.deleteAccount()
+                )
             )
-        })
+        }
     }
     
     func onDidTapDismissDeleteAccount(
@@ -256,13 +272,15 @@ internal extension Home.Reducer {
             }
         let lists = state.viewModel.lists
             .map { $0.list }
-        return .task(Task {
-            .sortListsResult(
-                await dependencies.useCase.sortLists(
-                    lists: lists
+        return .task { send in
+            await send(
+                .sortListsResult(
+                    dependencies.useCase.sortLists(
+                        lists: lists
+                    )
                 )
             )
-        })
+        }
     }
 }
 

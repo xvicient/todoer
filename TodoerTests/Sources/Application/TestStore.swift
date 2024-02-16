@@ -21,6 +21,7 @@ final class TestStore<State, Action> where Action: Equatable {
         self.store = Store(initialState: initialState, reducer: self.reducer)
     }
     
+    @MainActor
     func send(
         _ action: Action,
         assert expectation: ((_ state: State) -> Bool)
@@ -30,12 +31,31 @@ final class TestStore<State, Action> where Action: Equatable {
         XCTAssert(expectation(reducer.expectedState))
     }
     
+    @MainActor
     func receive(
+        timeout: Int = 5000,
         _ action: Action,
-        assert expectation: ((_ state: State) -> Bool)
+        assert expectation: @escaping ((_ state: State) -> Bool)
     ) async {
-        sleep(1)
-        XCTAssertEqual(reducer.expectedAction, action)
-        XCTAssert(expectation(reducer.expectedState))
+        var expectedResultReceived = false
+        var elapsedTime: UInt64 = 0
+        var pace: UInt64 = 100
+        
+        reducer.expectedResult = (action, { [weak self] in
+            guard let self else { return }
+            XCTAssertEqual(reducer.expectedAction, action)
+            XCTAssert(expectation(reducer.expectedState))
+            expectedResultReceived = true
+        })
+        
+        while !expectedResultReceived && elapsedTime < timeout {
+            elapsedTime += pace
+            try? await Task.sleep(nanoseconds: pace)
+        }
+        
+        guard expectedResultReceived else {
+            XCTFail("Timeout waiting for expected action")
+            return
+        }
     }
 }

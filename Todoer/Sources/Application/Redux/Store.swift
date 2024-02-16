@@ -24,9 +24,10 @@ final class Store<R: Reducer>: ObservableObject {
                 .sink(receiveValue: send)
                 .store(in: &cancellables)
         case .task(let task):
-            guard let task = task else { return }
             Task { @MainActor in
-                try? await send(task.value)
+                await task { action in
+                    self.send(action)
+                }
             }
         }
     }

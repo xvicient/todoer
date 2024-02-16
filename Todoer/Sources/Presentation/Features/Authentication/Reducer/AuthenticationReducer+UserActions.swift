@@ -9,14 +9,17 @@ internal extension Authentication.Reducer {
         state: inout State
     ) -> Effect<Action> {
         state.viewState = .loading
-        return .task(Task {
-            await .signInResult(
-                dependencies.useCase.singIn(
-                    provider: .google
+        return .task { send in
+            await send(
+                .signInResult(
+                    dependencies.useCase.singIn(
+                        provider: .google
+                    )
                 )
             )
-        })
+        }
     }
+    
     func onAppleSignIn(
         state: inout State,
         result: ActionResult<ASAuthorization>
@@ -24,13 +27,15 @@ internal extension Authentication.Reducer {
         switch result {
         case .success(let authorization):
             state.viewState = .loading
-            return .task(Task {
-                await .signInResult(
-                    dependencies.useCase.singIn(
-                        provider: .apple(authorization)
+            return .task { send in
+                await send(
+                    .signInResult(
+                        dependencies.useCase.singIn(
+                            provider: .apple(authorization)
+                        )
                     )
                 )
-            })
+            }
         case .failure(let error):
             if error.code == 1001 || error.code == 1000 {
                 state.viewState = .idle

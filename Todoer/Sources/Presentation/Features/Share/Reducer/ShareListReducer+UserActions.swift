@@ -6,14 +6,16 @@ internal extension ShareList.Reducer {
         state: inout State,
         email: String
     ) -> Effect<Action> {
-        return .task(Task {
-            .shareListResult(
-                await dependencies.useCase.shareList(
-                    shareEmail: email,
-                    list: dependencies.list
+        return .task { send in
+            await send(
+                .shareListResult(
+                    dependencies.useCase.shareList(
+                        shareEmail: email,
+                        list: dependencies.list
+                    )
                 )
             )
-        })
+        }
     }
     
     func onDidTapDismissError(

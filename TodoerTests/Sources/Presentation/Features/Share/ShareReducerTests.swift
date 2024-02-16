@@ -4,6 +4,7 @@ import XCTest
 @MainActor
 final class ShareReducerTests: XCTestCase {
     private typealias ShareStore<R: Reducer> = TestStore<R.State, R.Action>
+    private typealias UseCaseError = ShareListUseCaseMock.UseCaseError
     
     struct Dependencies: ShareListDependencies {
         var useCase: ShareListUseCaseApi
@@ -12,7 +13,6 @@ final class ShareReducerTests: XCTestCase {
     
     private var store: ShareStore<ShareList.Reducer>!
     private var useCaseMock = ShareListUseCaseMock()
-    private var useCaseError = ShareListUseCaseMock.UseCaseError.error
     private var coordinator = TestCoordinator()
     
     override func setUp() {
@@ -79,7 +79,7 @@ final class ShareReducerTests: XCTestCase {
         }
         
         await store.receive(.shareListResult(useCaseMock.shareListResult)) {
-            $0.viewState == .error(useCaseError.localizedDescription)
+            $0.viewState == .error(UseCaseError.error.localizedDescription)
         }
         
         await store.send(.didTapDismissError) {
@@ -94,7 +94,7 @@ private extension ShareReducerTests {
     }
     
     func givenAFailureUsersFetch() {
-        useCaseMock.fetchUsersResult = .failure(useCaseError)
+        useCaseMock.fetchUsersResult = .failure(UseCaseError.error)
     }
     
     func givenASuccessShareList() {
@@ -102,6 +102,6 @@ private extension ShareReducerTests {
     }
     
     func givenAFailureShareList() {
-        useCaseMock.shareListResult = .failure(useCaseError)
+        useCaseMock.shareListResult = .failure(UseCaseError.error)
     }
 }

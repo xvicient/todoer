@@ -4,6 +4,7 @@ import XCTest
 @MainActor
 final class AuthenticationReducerTests: XCTestCase {
     private typealias AuthenticationStore<R: Reducer> = TestStore<R.State, R.Action>
+    private typealias UseCaseError = AuthenticationUseCaseMock.UseCaseError
     
     struct Dependencies: AuthenticationDependencies {
         var useCase: AuthenticationUseCaseApi
@@ -11,7 +12,6 @@ final class AuthenticationReducerTests: XCTestCase {
     
     private var store: AuthenticationStore<Authentication.Reducer>!
     private var useCaseMock = AuthenticationUseCaseMock()
-    private var useCaseError = AuthenticationUseCaseMock.UseCaseError.error
     private var coordinator = TestCoordinator()
     
     override func setUp() {
@@ -56,7 +56,7 @@ final class AuthenticationReducerTests: XCTestCase {
         }
         
         await store.receive(.signInResult(useCaseMock.result)) {
-            $0.viewState == .error(useCaseError.localizedDescription)
+            $0.viewState == .error(UseCaseError.error.localizedDescription)
         }
         
         await store.send(.didTapDismissError) {
@@ -71,6 +71,6 @@ private extension AuthenticationReducerTests {
     }
     
     func givenAFailureSingIn() {
-        useCaseMock.result = .failure(useCaseError)
+        useCaseMock.result = .failure(UseCaseError.error)
     }
 }
