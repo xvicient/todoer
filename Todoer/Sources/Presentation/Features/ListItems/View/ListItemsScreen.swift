@@ -281,7 +281,7 @@ private extension ListItemsScreen {
             static let item = "Item..."
             static let errorTitle = "Error"
             static let errorOkButton = "Ok"
-            static let autoSort = "Auto sort"
+            static let autoSort = "Pending first"
         }
     }
 }

@@ -40,14 +40,3 @@ struct TDTextField: View {
         }
     }
 }
-
-struct TDTextField_Previews: PreviewProvider {
-    static var previews: some View {
-        TDTextField(
-            text: Binding(
-                get: { "Test" },
-                set: { _ in }
-            ),
-            placeholder: "Placeholder")
-    }
-}

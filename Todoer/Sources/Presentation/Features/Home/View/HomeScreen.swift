@@ -110,48 +110,11 @@ private extension HomeScreen {
     @ViewBuilder
     var invitationsSection: some View {
         if !store.state.viewModel.invitations.isEmpty {
-            Section(
-                header:
-                    Text(Constants.Text.invitations)
-                    .foregroundColor(.textBlack)
-                    .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-            ) {
-                ForEach(store.state.viewModel.invitations) { invitation in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("\(invitation.ownerName)")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.textBlack)
-                            if !invitation.ownerEmail.isEmpty {
-                                Text("(\(invitation.ownerEmail))")
-                                    .font(.system(size: 14, weight: .light))
-                                    .padding(.bottom, 8)
-                            }
-                            Text("\(Constants.Text.wantsToShare)")
-                                .font(.system(size: 14))
-                            Text("\(invitation.listName)")
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(.textSecondary)
-                        }
-                        Spacer()
-                        VStack {
-                            TDButton(title: "\(Constants.Text.accept)",
-                                     style: .primary,
-                                     size: .custom(with: 100, height: 32)) {
-                                store.send(.didTapAcceptInvitation(invitation.listId,
-                                                                   invitation.documentId))
-                            }
-                            TDButton(title: "\(Constants.Text.decline)",
-                                     style: .destructive,
-                                     size: .custom(with: 100, height: 32)) {
-                                store.send(.didTapDeclineInvitation(invitation.documentId))
-                            }
-                        }
-                    }
-                    .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-                    .background()
-                }
-            }
+            HomeInvitationsView(
+                invitations: store.state.viewModel.invitations,
+                acceptHandler: { store.send(.didTapAcceptInvitation($0, $1)) },
+                declineHandler: { store.send(.didTapDeclineInvitation($0))}
+            )
         }
     }
     
@@ -376,15 +339,11 @@ private extension HomeScreen {
 private extension HomeScreen {
     struct Constants {
         struct Text {
-            static let invitations = "Invitations"
             static let todos = "To-dos"
-            static let wantsToShare = "Wants to share: "
-            static let accept = "Accept"
-            static let decline = "Decline"
             static let list = "List..."
             static let logout = "Logout"
             static let about = "About"
-            static let autoSort = "Auto sort"
+            static let autoSort = "Pending first"
             static let deleteAccount = "Delete account"
             static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
             static let errorTitle = "Error"
