@@ -1,8 +1,8 @@
 import SwiftUI
 
-// MARK: - TDRowOptions
+// MARK: - TDOptionsMenu
 
-struct TDRowOptions: View {
+struct TDOptionsMenu: View {
     private let sortHandler: () -> Void
     
     init(
@@ -32,7 +32,7 @@ struct TDRowOptions: View {
 
 // MARK: - Constants
 
-private extension TDRowOptions {
+private extension TDOptionsMenu {
     struct Constants {
         struct Text {
             static let autoSort = "To-do first"

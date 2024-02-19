@@ -1,32 +1,53 @@
 import SwiftUI
 
-struct TDRow: View {
-    private let row: Home.Reducer.ListRow
-    private let tapHandler: (() -> Void)?
-    private let swipeHandler: (TDSwipeActionOption) -> Void
+struct TDRow: Identifiable {
+    let id = UUID()
+    var name: String
+    var done: Bool
+    let leadingActions: [TDSwipeAction]
+    let trailingActions: [TDSwipeAction]
+    var isEditing: Bool
+    
+    init(name: String,
+         done: Bool,
+         leadingActions: [TDSwipeAction] = [],
+         trailingActions: [TDSwipeAction] = [],
+         isEditing: Bool = false) {
+        self.name = name
+        self.done = done
+        self.leadingActions = leadingActions
+        self.trailingActions = trailingActions
+        self.isEditing = isEditing
+    }
+}
+
+struct TDRowView: View {
+    private let row: TDRow
+    private let onTap: (() -> Void)?
+    private let onSwipe: (TDSwipeAction) -> Void
     
     init(
-        row: Home.Reducer.ListRow,
-        tapHandler: (() -> Void)? = nil,
-        swipeHandler: @escaping (TDSwipeActionOption) -> Void
+        row: TDRow,
+        onTap: (() -> Void)? = nil,
+        onSwipe: @escaping (TDSwipeAction) -> Void
     ) {
         self.row = row
-        self.tapHandler = tapHandler
-        self.swipeHandler = swipeHandler
+        self.onTap = onTap
+        self.onSwipe = onSwipe
     }
     
     var body: some View {
         Group {
             HStack {
-                (row.list.done ? Image.largecircleFillCircle : Image.circle)
+                (row.done ? Image.largecircleFillCircle : Image.circle)
                     .foregroundColor(.buttonBlack)
                 Button(action: {
-                    tapHandler?()
+                    onTap?()
                 }) {
-                    Text(row.list.name)
+                    Text(row.name)
                         .lineLimit(nil)
                         .multilineTextAlignment(.leading)
-                        .strikethrough(row.list.done)
+                        .strikethrough(row.done)
                         .frame(maxWidth: .infinity,
                                alignment: .leading)
                         .contentShape(Rectangle())
@@ -51,18 +72,17 @@ struct TDRow: View {
             leading: 8,
             bottom: 8,
             trailing: 8))
-        .id(row.id)
     }
     
     @ViewBuilder
     private func swipeActions(
-        _ actions: [TDSwipeActionOption]
+        _ actions: [TDSwipeAction]
     ) -> some View {
         ForEach(actions,
                 id: \.id) { option in
             Button {
                 withAnimation {
-                    swipeHandler(option)
+                    onSwipe(option)
                 }
             } label: {
                 option.icon

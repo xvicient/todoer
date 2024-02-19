@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum TDSwipeActionOption: Identifiable {
+enum TDSwipeAction: Identifiable {
     case share
     case done
     case undone

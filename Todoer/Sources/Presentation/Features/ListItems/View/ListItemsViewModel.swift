@@ -14,13 +14,13 @@ internal extension ListItems.Reducer {
     struct ItemRow: Identifiable {
         let id = UUID()
         var item: Item
-        let leadingActions: [TDSwipeActionOption]
-        let trailingActions: [TDSwipeActionOption]
+        let leadingActions: [TDSwipeAction]
+        let trailingActions: [TDSwipeAction]
         var isEditing: Bool
         
         init(item: Item,
-             leadingActions: [TDSwipeActionOption] = [],
-             trailingActions: [TDSwipeActionOption] = [],
+             leadingActions: [TDSwipeAction] = [],
+             trailingActions: [TDSwipeAction] = [],
              isEditing: Bool = false) {
             self.item = item
             self.leadingActions = leadingActions

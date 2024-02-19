@@ -13,7 +13,7 @@ struct HomeScreen: View {
     
     var body: some View {
         ZStack {
-            content
+            lists
             newRowButton
             loadingView
         }
@@ -38,7 +38,7 @@ struct HomeScreen: View {
 private extension HomeScreen {
     @ViewBuilder
     var navigationBarTrailingItems: some View {
-        TDRowOptions(sortHandler: { store.send(.didTapAutoSortLists) })
+        TDOptionsMenu(sortHandler: { store.send(.didTapAutoSortLists) })
     }
     
     @ViewBuilder
@@ -74,19 +74,26 @@ private extension HomeScreen {
     }
     
     @ViewBuilder
-    var content: some View {
-        ScrollView {
-            invitations
-            listsSection
+    var lists: some View {
+        ScrollViewReader { scrollView in
+            SwiftUI.List {
+                invitationsSection
+                listsSection
+            }
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollContentBackground(.hidden)
+            .onChange(of: store.state.viewState == .addingList, {
+                withAnimation {
+                    scrollView.scrollTo(store.state.viewModel.lists.count - 1,
+                                        anchor: .bottom)
+                }
+            })
         }
-        .scrollIndicators(.hidden)
-        .scrollBounceBehavior(.basedOnSize)
-        .scrollContentBackground(.hidden)
-        .padding(.horizontal, 24)
     }
     
     @ViewBuilder
-    var invitations: some View {
+    var invitationsSection: some View {
         if !store.state.viewModel.invitations.isEmpty {
             HomeInvitationsView(
                 invitations: store.state.viewModel.invitations,
@@ -98,69 +105,36 @@ private extension HomeScreen {
     
     @ViewBuilder
     var listsSection: some View {
-        VStack(alignment: .leading) {
-            Text(Constants.Text.todos)
-                .font(.title3)
-                .foregroundColor(.textBlack)
-            
+        Section(header:
+                    Text(Constants.Text.todos)
+            .foregroundColor(.textBlack)
+            .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
+        ) {
             ForEach(Array(store.state.viewModel.lists.enumerated()),
                     id: \.element.id) { index, row in
                 if row.isEditing {
-                    newRow(row, index: index)
-                        .id(row.id)
-                } else {
-                    TDRow(row: row,
-                          tapHandler: { store.send(.didTapList(index)) },
-                          swipeHandler: { swipeActions(index, $0) }
+                    TDNewRowView(
+                        row: row,
+                        onSubmit: { store.send(.didTapSubmitListButton($0)) },
+                        onUpdate: { store.send(.didTapUpdateListButton(index, $0)) },
+                        onCancelAdd: { store.send(.didTapCancelAddListButton) },
+                        onCancelEdit: { store.send(.didTapCancelEditListButton(index)) }
                     )
+                    .id(index)
+                } else {
+                    TDRowView(
+                        row: TDRow(name: row.list.name,
+                                   done: row.list.done,
+                                   leadingActions: row.leadingActions,
+                                   trailingActions: row.trailingActions,
+                                   isEditing: row.isEditing),
+                        onTap: { store.send(.didTapList(index)) },
+                        onSwipe: { swipeActions(index, $0) }
+                    )
+                    .id(index)
                 }
             }
                     .onMove(perform: moveList)
-        }
-        .padding(.top, 16)
-    }
-    
-    @ViewBuilder
-    func newRow(
-        _ row: Home.Reducer.ListRow,
-        index: Int
-    ) -> some View {
-        HStack {
-            (row.list.done ? Image.largecircleFillCircle : Image.circle)
-                .foregroundColor(.buttonBlack)
-            TextField(Constants.Text.list, text: $newRowText)
-                .foregroundColor(.textBlack)
-                .focused($isNewRowFocused)
-                .onAppear {
-                    newRowText = row.list.name
-                }
-                .onSubmit {
-                    hideKeyboard()
-                    if row.list.name.isEmpty {
-                        store.send(.didTapSubmitListButton($newRowText.wrappedValue))
-                    } else {
-                        store.send(.didTapUpdateListButton(index, $newRowText.wrappedValue))
-                    }
-                }
-                .submitLabel(.done)
-            Button(action: {
-                hideKeyboard()
-                if row.list.name.isEmpty {
-                    store.send(.didTapCancelAddListButton)
-                } else {
-                    store.send(.didTapCancelEditListButton(index))
-                }
-            }) {
-                Image.xmark
-                    .resizable()
-                    .frame(width: 12, height: 12)
-                    .foregroundColor(.buttonBlack)
-            }
-            .buttonStyle(.borderless)
-        }
-        .frame(height: 40)
-        .onAppear {
-            isNewRowFocused = true
         }
     }
     
@@ -199,7 +173,7 @@ private extension HomeScreen {
 // MARK: - Private
 
 private extension HomeScreen {
-    var swipeActions: (Int, TDSwipeActionOption) -> Void {
+    var swipeActions: (Int, TDSwipeAction) -> Void {
         { index, option in
             switch option {
             case .done, .undone:
@@ -261,19 +235,14 @@ private extension HomeScreen {
     struct Constants {
         struct Text {
             static let todos = "To-dos"
-            static let list = "List..."
             static let logout = "Logout"
             static let about = "About"
-            static let autoSort = "To-do first"
             static let deleteAccount = "Delete account"
             static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
             static let errorTitle = "Error"
             static let okButton = "Ok"
             static let deleteButton = "Delete"
             static let cancelButton = "Cancel"
-        }
-        struct Image {
-            static let launchScreen = "LaunchScreen"
         }
     }
 }

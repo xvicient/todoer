@@ -48,7 +48,7 @@ struct ListItemsScreen: View {
 private extension ListItemsScreen {
     @ViewBuilder
     var navigationBarTrailingItems: some View {
-        TDRowOptions(sortHandler: { store.send(.didTapAutoSortItems) })
+        TDOptionsMenu(sortHandler: { store.send(.didTapAutoSortItems) })
     }
     
     @ViewBuilder
@@ -65,11 +65,11 @@ private extension ListItemsScreen {
                             id: \.element.id) { index, row in
                         if row.isEditing {
                             newRow(row, index: index)
-//                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
+                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                                 .id(row.id)
                         } else {
                             itemRow(row, index: index)
-//                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
+                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                                 .id(row.id)
                         }
                     }
@@ -170,7 +170,7 @@ private extension ListItemsScreen {
     
     @ViewBuilder
     func swipeActions(
-        _ actions: [TDSwipeActionOption],
+        _ actions: [TDSwipeAction],
         index: Int
     ) -> some View {
         ForEach(actions,
@@ -229,7 +229,7 @@ private extension ListItemsScreen {
 // MARK: - Private
 
 private extension ListItemsScreen {
-    var swipeActions: (Int, TDSwipeActionOption) -> Void {
+    var swipeActions: (Int, TDSwipeAction) -> Void {
         { index, option in
             switch option {
             case .done, .undone:
