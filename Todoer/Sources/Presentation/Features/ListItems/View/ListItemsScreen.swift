@@ -48,22 +48,7 @@ struct ListItemsScreen: View {
 private extension ListItemsScreen {
     @ViewBuilder
     var navigationBarTrailingItems: some View {
-        HStack {
-            Spacer()
-            Menu {
-                Button(Constants.Text.autoSort) {
-                    withAnimation {
-                        store.send(.didTapAutoSortItems)
-                    }
-                }
-            } label: {
-                Image.ellipsis
-                    .resizable()
-                    .scaleEffect(0.75)
-                    .rotationEffect(Angle(degrees: 90))
-                    .foregroundColor(.buttonBlack)
-            }
-        }
+        TDRowOptions(sortHandler: { store.send(.didTapAutoSortItems) })
     }
     
     @ViewBuilder
@@ -80,11 +65,11 @@ private extension ListItemsScreen {
                             id: \.element.id) { index, row in
                         if row.isEditing {
                             newRow(row, index: index)
-                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
+//                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                                 .id(row.id)
                         } else {
                             itemRow(row, index: index)
-                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
+//                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                                 .id(row.id)
                         }
                     }
@@ -185,7 +170,7 @@ private extension ListItemsScreen {
     
     @ViewBuilder
     func swipeActions(
-        _ actions: [TDSwipeAction],
+        _ actions: [TDSwipeActionOption],
         index: Int
     ) -> some View {
         ForEach(actions,
@@ -244,7 +229,7 @@ private extension ListItemsScreen {
 // MARK: - Private
 
 private extension ListItemsScreen {
-    var swipeActions: (Int, TDSwipeAction) -> Void {
+    var swipeActions: (Int, TDSwipeActionOption) -> Void {
         { index, option in
             switch option {
             case .done, .undone:
@@ -281,7 +266,7 @@ private extension ListItemsScreen {
             static let item = "Item..."
             static let errorTitle = "Error"
             static let errorOkButton = "Ok"
-            static let autoSort = "Pending first"
+            static let autoSort = "To-do first"
         }
     }
 }

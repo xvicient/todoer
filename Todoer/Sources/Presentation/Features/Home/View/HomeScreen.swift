@@ -13,7 +13,7 @@ struct HomeScreen: View {
     
     var body: some View {
         ZStack {
-            lists
+            content
             newRowButton
             loadingView
         }
@@ -38,22 +38,7 @@ struct HomeScreen: View {
 private extension HomeScreen {
     @ViewBuilder
     var navigationBarTrailingItems: some View {
-        HStack {
-            Spacer()
-            Menu {
-                Button(Constants.Text.autoSort) {
-                    withAnimation {
-                        store.send(.didTapAutoSortLists)
-                    }
-                }
-            } label: {
-                Image.ellipsis
-                    .resizable()
-                    .scaleEffect(0.75)
-                    .rotationEffect(Angle(degrees: 90))
-                    .foregroundColor(.buttonBlack)
-            }
-        }
+        TDRowOptions(sortHandler: { store.send(.didTapAutoSortLists) })
     }
     
     @ViewBuilder
@@ -89,26 +74,19 @@ private extension HomeScreen {
     }
     
     @ViewBuilder
-    var lists: some View {
-        ScrollViewReader { scrollView in
-            SwiftUI.List {
-                invitationsSection
-                listsSection
-            }
-            .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
-            .scrollContentBackground(.hidden)
-            .onChange(of: store.state.viewState == .addingList, {
-                withAnimation {
-                    scrollView.scrollTo(store.state.viewModel.lists.count - 1,
-                                        anchor: .bottom)
-                }
-            })
+    var content: some View {
+        ScrollView {
+            invitations
+            listsSection
         }
+        .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
+        .scrollContentBackground(.hidden)
+        .padding(.horizontal, 24)
     }
     
     @ViewBuilder
-    var invitationsSection: some View {
+    var invitations: some View {
         if !store.state.viewModel.invitations.isEmpty {
             HomeInvitationsView(
                 invitations: store.state.viewModel.invitations,
@@ -120,64 +98,26 @@ private extension HomeScreen {
     
     @ViewBuilder
     var listsSection: some View {
-        Section(header:
-                    Text(Constants.Text.todos)
-            .foregroundColor(.textBlack)
-            .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-        ) {
+        VStack(alignment: .leading) {
+            Text(Constants.Text.todos)
+                .font(.title3)
+                .foregroundColor(.textBlack)
+            
             ForEach(Array(store.state.viewModel.lists.enumerated()),
                     id: \.element.id) { index, row in
                 if row.isEditing {
                     newRow(row, index: index)
-                        .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
                         .id(row.id)
                 } else {
-                    listRow(row, index: index)
-                        .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-                        .id(row.id)
+                    TDRow(row: row,
+                          tapHandler: { store.send(.didTapList(index)) },
+                          swipeHandler: { swipeActions(index, $0) }
+                    )
                 }
             }
                     .onMove(perform: moveList)
         }
-    }
-    
-    @ViewBuilder
-    func listRow(
-        _ row: Home.Reducer.ListRow,
-        index: Int
-    ) -> some View {
-        Group {
-            HStack {
-                (row.list.done ? Image.largecircleFillCircle : Image.circle)
-                    .foregroundColor(.buttonBlack)
-                Button(action: {
-                    store.send(.didTapList(index))
-                }) {
-                    Text(row.list.name)
-                        .lineLimit(nil)
-                        .multilineTextAlignment(.leading)
-                        .strikethrough(row.list.done)
-                        .frame(maxWidth: .infinity,
-                               alignment: .leading)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.borderless)
-                .foregroundColor(.textBlack)
-            }
-            .frame(minHeight: 40)
-        }
-        .swipeActions(edge: .leading) {
-            swipeActions(
-                row.leadingActions,
-                index: index
-            )
-        }
-        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-            swipeActions(
-                row.trailingActions,
-                index: index
-            )
-        }
+        .padding(.top, 16)
     }
     
     @ViewBuilder
@@ -204,12 +144,11 @@ private extension HomeScreen {
                 }
                 .submitLabel(.done)
             Button(action: {
-                withAnimation {
-                    if row.list.name.isEmpty {
-                        store.send(.didTapCancelAddListButton)
-                    } else {
-                        store.send(.didTapCancelEditListButton(index))
-                    }
+                hideKeyboard()
+                if row.list.name.isEmpty {
+                    store.send(.didTapCancelAddListButton)
+                } else {
+                    store.send(.didTapCancelEditListButton(index))
                 }
             }) {
                 Image.xmark
@@ -222,24 +161,6 @@ private extension HomeScreen {
         .frame(height: 40)
         .onAppear {
             isNewRowFocused = true
-        }
-    }
-    
-    @ViewBuilder
-    func swipeActions(
-        _ actions: [TDSwipeAction],
-        index: Int
-    ) -> some View {
-        ForEach(actions,
-                id: \.id) { option in
-            Button {
-                withAnimation {
-                    swipeActions(index, option)
-                }
-            } label: {
-                option.icon
-            }
-            .tint(option.tint)
         }
     }
     
@@ -278,7 +199,7 @@ private extension HomeScreen {
 // MARK: - Private
 
 private extension HomeScreen {
-    var swipeActions: (Int, TDSwipeAction) -> Void {
+    var swipeActions: (Int, TDSwipeActionOption) -> Void {
         { index, option in
             switch option {
             case .done, .undone:
@@ -343,7 +264,7 @@ private extension HomeScreen {
             static let list = "List..."
             static let logout = "Logout"
             static let about = "About"
-            static let autoSort = "Pending first"
+            static let autoSort = "To-do first"
             static let deleteAccount = "Delete account"
             static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
             static let errorTitle = "Error"

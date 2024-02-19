@@ -18,12 +18,11 @@ struct HomeInvitationsView: View {
     }
     
     var body: some View {
-        Section(
-            header:
-                Text(Constants.Text.invitations)
+        VStack(alignment: .leading) {
+            Text(Constants.Text.invitations)
+                .font(.title3)
                 .foregroundColor(.textBlack)
-                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-        ) {
+            
             ForEach(invitations) { invitation in
                 HStack {
                     VStack(alignment: .leading) {
@@ -47,7 +46,7 @@ struct HomeInvitationsView: View {
                                  style: .primary,
                                  size: .custom(with: 100, height: 32)) {
                             acceptHandler(invitation.listId,
-                                                    invitation.documentId)
+                                          invitation.documentId)
                         }
                         TDButton(title: "\(Constants.Text.decline)",
                                  style: .destructive,
@@ -56,10 +55,9 @@ struct HomeInvitationsView: View {
                         }
                     }
                 }
-                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-                .background()
             }
         }
+        .padding(.top, 16)
     }
 }
 
