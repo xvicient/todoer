@@ -4,25 +4,22 @@ import SwiftUI
 
 struct HomeInvitationsView: View {
     private let invitations: [Invitation]
-    private let acceptHandler: (String, String) -> Void
-    private let declineHandler: (String) -> Void
+    private let onAccept: (String, String) -> Void
+    private let onDecline: (String) -> Void
     
     init(
         invitations: [Invitation],
-        acceptHandler: @escaping (String, String) -> Void,
-        declineHandler: @escaping (String) -> Void
+        onAccept: @escaping (String, String) -> Void,
+        onDecline: @escaping (String) -> Void
     ) {
         self.invitations = invitations
-        self.acceptHandler = acceptHandler
-        self.declineHandler = declineHandler
+        self.onAccept = onAccept
+        self.onDecline = onDecline
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(Constants.Text.invitations)
-                .font(.title)
-                .foregroundColor(.textBlack)
-            Spacer()
+        Section(header: Text(Constants.Text.invitations).listRowHeaderStyle())
+        {
             ForEach(invitations) { invitation in
                 HStack {
                     VStack(alignment: .leading) {
@@ -45,13 +42,13 @@ struct HomeInvitationsView: View {
                         TDButton(title: "\(Constants.Text.accept)",
                                  style: .primary,
                                  size: .custom(with: 100, height: 32)) {
-                            acceptHandler(invitation.listId,
+                            onAccept(invitation.listId,
                                           invitation.documentId)
                         }
                         TDButton(title: "\(Constants.Text.decline)",
                                  style: .destructive,
                                  size: .custom(with: 100, height: 32)) {
-                            declineHandler(invitation.documentId)
+                            onDecline(invitation.documentId)
                         }
                     }
                 }
@@ -71,12 +68,4 @@ private extension HomeInvitationsView {
             static let decline = "Decline"
         }
     }
-}
-
-#Preview {
-    HomeInvitationsView(
-        invitations: [],
-        acceptHandler: { _, _ in},
-        declineHandler: {_ in }
-    )
 }

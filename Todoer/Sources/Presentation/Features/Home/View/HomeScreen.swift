@@ -4,8 +4,6 @@ import SwiftUI
 
 struct HomeScreen: View {
     @ObservedObject private var store: Store<Home.Reducer>
-    @FocusState private var isNewRowFocused: Bool
-    @State private var newRowText = ""
     
     init(store: Store<Home.Reducer>) {
         self.store = store
@@ -38,39 +36,18 @@ struct HomeScreen: View {
 private extension HomeScreen {
     @ViewBuilder
     var navigationBarTrailingItems: some View {
-        TDOptionsMenu(sortHandler: { store.send(.didTapAutoSortLists) })
+        TDOptionsMenuView(onSort: { store.send(.didTapAutoSortLists) })
     }
     
     @ViewBuilder
     var navigationBarLeadingItems: some View {
-        HStack {
-            Spacer()
-            Menu {
-                Button(Constants.Text.about) {
-                    store.send(.didTapAboutButton)
-                }
-                Button(Constants.Text.deleteAccount, role: .destructive) {
-                    store.send(.didTapDeleteAccountButton)
-                }
-                Button(Constants.Text.logout) {
-                    store.send(.didTapSignoutButton)
-                }
-            } label: {
-                AsyncImage(
-                    url: URL(string: store.state.viewModel.photoUrl),
-                    content: {
-                        $0.resizable().aspectRatio(contentMode: .fit)
-                    }, placeholder: {
-                        Image.personCropCircle
-                            .tint(.buttonBlack)
-                    })
-                .frame(width: 30, height: 30)
-                .cornerRadius(15.0)
-            }
-        }
-        .onAppear {
-            store.send(.onProfilePhotoAppear)
-        }
+        HomeAccountMenuView(
+            profilePhotoUrl: store.state.viewModel.photoUrl,
+            onAboutTap: { store.send(.didTapAboutButton) },
+            onDelteAccountTap: { store.send(.didTapDeleteAccountButton) },
+            onSignoupTap: { store.send(.didTapSignoutButton) },
+            onProfilePhotoAppear: { store.send(.onProfilePhotoAppear) }
+        )
     }
     
     @ViewBuilder
@@ -93,19 +70,16 @@ private extension HomeScreen {
         if !store.state.viewModel.invitations.isEmpty {
             HomeInvitationsView(
                 invitations: store.state.viewModel.invitations,
-                acceptHandler: { store.send(.didTapAcceptInvitation($0, $1)) },
-                declineHandler: { store.send(.didTapDeclineInvitation($0))}
+                onAccept: { store.send(.didTapAcceptInvitation($0, $1)) },
+                onDecline: { store.send(.didTapDeclineInvitation($0))}
             )
         }
     }
     
     @ViewBuilder
     var listsSection: some View {
-        VStack(alignment: .leading) {
-            Text(Constants.Text.todos)
-                .font(.title)
-                .foregroundColor(.textBlack)
-            Spacer()
+        Section(header: Text(Constants.Text.todos).listRowHeaderStyle())
+        {
             ForEach(Array(store.state.viewModel.lists.enumerated()),
                     id: \.element.id) { index, row in
                 if row.isEditing {
@@ -225,9 +199,6 @@ private extension HomeScreen {
     struct Constants {
         struct Text {
             static let todos = "To-dos"
-            static let logout = "Logout"
-            static let about = "About"
-            static let deleteAccount = "Delete account"
             static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
             static let errorTitle = "Error"
             static let okButton = "Ok"

@@ -4,8 +4,6 @@ import SwiftUI
 
 struct ListItemsScreen: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
-    @FocusState private var isNewRowFocused: Bool
-    @State private var newRowText = ""
     private var listName: String
     
     init(
@@ -48,18 +46,15 @@ struct ListItemsScreen: View {
 private extension ListItemsScreen {
     @ViewBuilder
     var navigationBarTrailingItems: some View {
-        TDOptionsMenu(sortHandler: { store.send(.didTapAutoSortItems) })
+        TDOptionsMenuView(sortHandler: { store.send(.didTapAutoSortItems) })
     }
     
     @ViewBuilder
     var itemsList: some View {
         ScrollViewReader { scrollView in
             SwiftUI.List {
-                VStack(alignment: .leading) {
-                    Text(listName)
-                        .font(.title)
-                        .foregroundColor(.textBlack)
-                    Spacer()
+                Section(header: Text(listName).listRowHeaderStyle())
+                {
                     ForEach(Array(store.state.viewModel.items.enumerated()),
                             id: \.element.id) { index, row in
                         if row.isEditing {
@@ -164,7 +159,6 @@ private extension ListItems.Reducer.ItemRow {
 private extension ListItemsScreen {
     struct Constants {
         struct Text {
-            static let item = "Item..."
             static let errorTitle = "Error"
             static let errorOkButton = "Ok"
             static let autoSort = "To-do first"

@@ -1,14 +1,14 @@
 import SwiftUI
 
-// MARK: - TDOptionsMenu
+// MARK: - TDOptionsMenuView
 
-struct TDOptionsMenu: View {
-    private let sortHandler: () -> Void
+struct TDOptionsMenuView: View {
+    private let onSort: () -> Void
     
     init(
-        sortHandler: @escaping () -> Void
+        onSort: @escaping () -> Void
     ) {
-        self.sortHandler = sortHandler
+        self.onSort = onSort
     }
     
     var body: some View {
@@ -17,7 +17,7 @@ struct TDOptionsMenu: View {
             Menu {
                 Button(Constants.Text.autoSort) {
                     withAnimation {
-                        sortHandler()
+                        onSort()
                     }
                 }
             } label: {
@@ -27,12 +27,13 @@ struct TDOptionsMenu: View {
                     .rotationEffect(Angle(degrees: 90))
                     .foregroundColor(.buttonBlack)
             }
-        }    }
+        }
+    }
 }
 
 // MARK: - Constants
 
-private extension TDOptionsMenu {
+private extension TDOptionsMenuView {
     struct Constants {
         struct Text {
             static let autoSort = "To-do first"
