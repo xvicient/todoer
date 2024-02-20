@@ -83,15 +83,11 @@ private extension ListItemsScreen {
                             .onMove(perform: moveItem)
                 }
             }
-            .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
-            .scrollContentBackground(.hidden)
-            .onChange(of: store.state.viewState == .addingItem, {
-                withAnimation {
-                    scrollView.scrollTo(store.state.viewModel.items.count - 1,
-                                        anchor: .bottom)
-                }
-            })
+            .listRowStyle(
+                onChangeOf: store.state.viewState == .addingItem,
+                count: store.state.viewModel.items.count,
+                scrollView: scrollView
+            )
         }
     }
     

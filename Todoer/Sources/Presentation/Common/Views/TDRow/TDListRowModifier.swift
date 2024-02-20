@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TDListRowModifier: ViewModifier {
     var onChangeOf: Bool
-    var index: Int
+    var count: Int
     var scrollView: ScrollViewProxy
     
     func body(content: Content) -> some View {
@@ -19,9 +19,23 @@ struct TDListRowModifier: ViewModifier {
             .scrollContentBackground(.hidden)
             .onChange(of: onChangeOf, {
                 withAnimation {
-                    scrollView.scrollTo(index - 1,
+                    scrollView.scrollTo(count - 1,
                                         anchor: .bottom)
                 }
             })
+    }
+}
+
+extension View {
+    func listRowStyle(
+        onChangeOf: Bool,
+        count: Int,
+        scrollView: ScrollViewProxy
+    ) -> some View {
+        modifier(TDListRowModifier(
+            onChangeOf: onChangeOf,
+            count: count,
+            scrollView: scrollView)
+        )
     }
 }

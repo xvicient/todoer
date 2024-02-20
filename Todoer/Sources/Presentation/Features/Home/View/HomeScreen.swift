@@ -80,15 +80,11 @@ private extension HomeScreen {
                 invitationsSection
                 listsSection
             }
-            .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
-            .scrollContentBackground(.hidden)
-            .onChange(of: store.state.viewState == .addingList, {
-                withAnimation {
-                    scrollView.scrollTo(store.state.viewModel.lists.count - 1,
-                                        anchor: .bottom)
-                }
-            })
+            .listRowStyle(
+                onChangeOf: store.state.viewState == .addingList,
+                count: store.state.viewModel.lists.count,
+                scrollView: scrollView
+            )
         }
     }
     
