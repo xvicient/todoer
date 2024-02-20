@@ -15,7 +15,8 @@ struct TDTextField: View {
                 TextField(placeholder, text: $text)
                     .background(.backgroundWhite)
                     .padding(.vertical, 10)
-                    .padding(.horizontal, 12)
+                    .padding(.leading, 12)
+                    .padding(.trailing, 32)
                     .foregroundColor(.textSecondary)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
@@ -33,7 +34,7 @@ struct TDTextField: View {
                             .frame(width: 14, height: 14)
                             .foregroundColor(.textSecondary)
                             .padding(8)
-                            .padding(.trailing, 24)
+                            .padding(.trailing, 4)
                     }
                 }
             }
