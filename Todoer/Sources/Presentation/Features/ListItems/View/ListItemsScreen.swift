@@ -46,7 +46,7 @@ struct ListItemsScreen: View {
 private extension ListItemsScreen {
     @ViewBuilder
     var navigationBarTrailingItems: some View {
-        TDOptionsMenuView(sortHandler: { store.send(.didTapAutoSortItems) })
+        TDOptionsMenuView(onSort: { store.send(.didTapAutoSortItems) })
     }
     
     @ViewBuilder

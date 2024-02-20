@@ -12,9 +12,7 @@ struct AuthenticationScreen: View {
     @State private var didFinishAnimation = false
     @State private var sloganScale = 0.0
     @State private var sloganOpacity = 0.0
-    @State private var loginDetent = PresentationDetent.height(171)
-    @State var caption: String = "Get things done!"
-    private let captionText: String = "Get things done!"
+    @State var caption: String = ""
     
     init(store: Store<Authentication.Reducer>) {
         self.store = store
@@ -95,7 +93,7 @@ private extension AuthenticationScreen {
             .padding(30)
             .ignoresSafeArea()
             .onAppear{
-                typeWriter(at: captionText.startIndex)
+                typeWriter(at: Constants.Text.getThingsDone.startIndex)
             }
         }
     }
@@ -173,15 +171,15 @@ private extension AuthenticationScreen {
 
 private extension AuthenticationScreen {
     func typeWriter(at position: String.Index) {
-        if position == captionText.startIndex {
+        if position == Constants.Text.getThingsDone.startIndex {
             caption = ""
         }
         
-        if position < captionText.endIndex {
+        if position < Constants.Text.getThingsDone.endIndex {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.04) {
-                let char = captionText[position]
+                let char = Constants.Text.getThingsDone[position]
                 caption.append(char)
-                typeWriter(at: captionText.index(after: position))
+                typeWriter(at: Constants.Text.getThingsDone.index(after: position))
             }
         }
     }
@@ -205,7 +203,7 @@ internal extension AuthenticationScreen {
             static let signInWithGoogle = "Sign in with Google"
             static let errorTitle = "Error"
             static let errorOkButton = "Ok"
-            
+            static let getThingsDone = "Get things done!"
         }
     }
 }
