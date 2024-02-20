@@ -101,11 +101,11 @@ private extension HomeScreen {
     
     @ViewBuilder
     var listsSection: some View {
-        Section(header:
-                    Text(Constants.Text.todos)
-            .foregroundColor(.textBlack)
-            .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-        ) {
+        VStack(alignment: .leading) {
+            Text(Constants.Text.todos)
+                .font(.title)
+                .foregroundColor(.textBlack)
+            Spacer()
             ForEach(Array(store.state.viewModel.lists.enumerated()),
                     id: \.element.id) { index, row in
                 if row.isEditing {
@@ -125,8 +125,7 @@ private extension HomeScreen {
                     )
                     .id(index)
                 }
-            }
-                    .onMove(perform: moveList)
+            }.onMove(perform: moveList)
         }
     }
     

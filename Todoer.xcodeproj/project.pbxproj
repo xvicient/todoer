@@ -360,7 +360,6 @@
 				C77494BE2B8491810062E226 /* TDRow */,
 				C7390FCE2B447AF400E49A68 /* TDTextField.swift */,
 				C7390FD02B447C0100E49A68 /* TDButton.swift */,
-				C79A2ED72B64449500F52FB2 /* TDSwipeAction.swift */,
 				C75FFF052B82B3C3002D0A9B /* TDOptionsMenu.swift */,
 			);
 			path = Views;
@@ -424,6 +423,7 @@
 				C77494BF2B8491A00062E226 /* TDRow.swift */,
 				C77494C12B8493B90062E226 /* TDNewRowButton.swift */,
 				C77494C32B8495DE0062E226 /* TDListRowModifier.swift */,
+				C79A2ED72B64449500F52FB2 /* TDSwipeAction.swift */,
 			);
 			path = TDRow;
 			sourceTree = "<group>";

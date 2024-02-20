@@ -55,12 +55,11 @@ private extension ListItemsScreen {
     var itemsList: some View {
         ScrollViewReader { scrollView in
             SwiftUI.List {
-                Section(
-                    header:
-                        Text(listName)
-                        .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
+                VStack(alignment: .leading) {
+                    Text(listName)
+                        .font(.title)
                         .foregroundColor(.textBlack)
-                ) {
+                    Spacer()
                     ForEach(Array(store.state.viewModel.items.enumerated()),
                             id: \.element.id) { index, row in
                         if row.isEditing {
@@ -79,8 +78,7 @@ private extension ListItemsScreen {
                             )
                             .id(index)
                         }
-                    }
-                            .onMove(perform: moveItem)
+                    }.onMove(perform: moveItem)
                 }
             }
             .listRowStyle(

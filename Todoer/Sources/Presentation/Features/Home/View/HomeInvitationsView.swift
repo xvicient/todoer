@@ -20,9 +20,9 @@ struct HomeInvitationsView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(Constants.Text.invitations)
-                .font(.title3)
+                .font(.title)
                 .foregroundColor(.textBlack)
-            
+            Spacer()
             ForEach(invitations) { invitation in
                 HStack {
                     VStack(alignment: .leading) {
@@ -57,7 +57,6 @@ struct HomeInvitationsView: View {
                 }
             }
         }
-        .padding(.top, 16)
     }
 }
 
