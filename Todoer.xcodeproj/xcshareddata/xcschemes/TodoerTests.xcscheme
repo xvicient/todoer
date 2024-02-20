@@ -13,7 +13,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:TodoerTests.xctestplan"
+            reference = "container:TodoerTests/Resources/TodoerTests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
