@@ -820,6 +820,7 @@
 			packageReferences = (
 				C79CB2BC2B13F06C00C2BD18 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				C71432E42B66E340004EEBF4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C7EB4A862B855B1B00D66D64 /* XCRemoteSwiftPackageReference "swift-format" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -1272,6 +1273,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 7.0.0;
+			};
+		};
+		C7EB4A862B855B1B00D66D64 /* XCRemoteSwiftPackageReference "swift-format" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-format.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 509.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
