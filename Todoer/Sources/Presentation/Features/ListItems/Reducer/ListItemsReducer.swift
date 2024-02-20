@@ -34,7 +34,7 @@ extension ListItems {
             /// ListItemsReducer+UserActions
             case didTapToggleItemButton(Int)
             case didTapDeleteItemButton(Int)
-            case didTapAddItemButton
+            case didTapAddRowButton
             case didTapCancelAddItemButton
             case didTapSubmitItemButton(String)
             case didTapEditItemButton(Int)
@@ -101,7 +101,7 @@ extension ListItems {
                     index: index
                 )
                 
-            case (.idle, .didTapAddItemButton):
+            case (.idle, .didTapAddRowButton):
                 return onDidTapAddRowButton(
                     state: &state
                 )

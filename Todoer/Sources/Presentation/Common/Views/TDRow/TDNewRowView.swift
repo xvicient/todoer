@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TDNewRowView: View {
-    private let row: Home.Reducer.ListRow
+    private let row: TDRow
     private let onSubmit: (String) -> Void
     private let onUpdate: (String) -> Void
     private let onCancelAdd: () -> Void
@@ -10,7 +10,7 @@ struct TDNewRowView: View {
     @State private var newRowText = ""
     
     init(
-        row: Home.Reducer.ListRow,
+        row: TDRow,
         onSubmit: @escaping (String) -> Void,
         onUpdate: @escaping (String) -> Void,
         onCancelAdd: @escaping () -> Void,
@@ -24,17 +24,17 @@ struct TDNewRowView: View {
     
     var body: some View {
         HStack {
-            (row.list.done ? Image.largecircleFillCircle : Image.circle)
+            row.image
                 .foregroundColor(.buttonBlack)
             TextField(Constants.Text.list, text: $newRowText)
                 .foregroundColor(.textBlack)
                 .focused($isNewRowFocused)
                 .onAppear {
-                    newRowText = row.list.name
+                    newRowText = row.name
                 }
                 .onSubmit {
                     hideKeyboard()
-                    if row.list.name.isEmpty {
+                    if row.name.isEmpty {
                         onSubmit($newRowText.wrappedValue)
                     } else {
                         onUpdate($newRowText.wrappedValue)
@@ -43,7 +43,7 @@ struct TDNewRowView: View {
                 .submitLabel(.done)
             Button(action: {
                 hideKeyboard()
-                if row.list.name.isEmpty {
+                if row.name.isEmpty {
                     onCancelAdd()
                 } else {
                     onCancelEdit()

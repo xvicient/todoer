@@ -1,26 +1,5 @@
 import SwiftUI
 
-struct TDRow: Identifiable {
-    let id = UUID()
-    var name: String
-    var done: Bool
-    let leadingActions: [TDSwipeAction]
-    let trailingActions: [TDSwipeAction]
-    var isEditing: Bool
-    
-    init(name: String,
-         done: Bool,
-         leadingActions: [TDSwipeAction] = [],
-         trailingActions: [TDSwipeAction] = [],
-         isEditing: Bool = false) {
-        self.name = name
-        self.done = done
-        self.leadingActions = leadingActions
-        self.trailingActions = trailingActions
-        self.isEditing = isEditing
-    }
-}
-
 struct TDRowView: View {
     private let row: TDRow
     private let onTap: (() -> Void)?
@@ -39,7 +18,7 @@ struct TDRowView: View {
     var body: some View {
         Group {
             HStack {
-                (row.done ? Image.largecircleFillCircle : Image.circle)
+                row.image
                     .foregroundColor(.buttonBlack)
                 Button(action: {
                     onTap?()
@@ -47,7 +26,7 @@ struct TDRowView: View {
                     Text(row.name)
                         .lineLimit(nil)
                         .multilineTextAlignment(.leading)
-                        .strikethrough(row.done)
+                        .strikethrough(row.strikethrough)
                         .frame(maxWidth: .infinity,
                                alignment: .leading)
                         .contentShape(Rectangle())

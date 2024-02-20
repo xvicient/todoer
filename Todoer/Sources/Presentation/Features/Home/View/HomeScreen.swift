@@ -114,7 +114,7 @@ private extension HomeScreen {
                     id: \.element.id) { index, row in
                 if row.isEditing {
                     TDNewRowView(
-                        row: row,
+                        row: row.tdRow,
                         onSubmit: { store.send(.didTapSubmitListButton($0)) },
                         onUpdate: { store.send(.didTapUpdateListButton(index, $0)) },
                         onCancelAdd: { store.send(.didTapCancelAddListButton) },
@@ -123,11 +123,7 @@ private extension HomeScreen {
                     .id(index)
                 } else {
                     TDRowView(
-                        row: TDRow(name: row.list.name,
-                                   done: row.list.done,
-                                   leadingActions: row.leadingActions,
-                                   trailingActions: row.trailingActions,
-                                   isEditing: row.isEditing),
+                        row: row.tdRow,
                         onTap: { store.send(.didTapList(index)) },
                         onSwipe: { swipeActions(index, $0) }
                     )
@@ -142,23 +138,7 @@ private extension HomeScreen {
     var newRowButton: some View {
         if store.state.viewState != .addingList &&
             store.state.viewState != .editingList {
-            VStack {
-                Spacer()
-                Button(action: {
-                    withAnimation {
-                        store.send(.didTapAddRowButton)
-                    }
-                }, label: {
-                    Image.plusCircleFill
-                        .resizable()
-                        .frame(width: 42.0, height: 42.0)
-                        .foregroundColor(.textBlack)
-                        .background(
-                            RoundedRectangle(cornerRadius: 24)
-                                .fill(.backgroundWhite)
-                        )
-                })
-            }
+            TDNewRowButton { store.send(.didTapAddRowButton) }
         }
     }
     
@@ -226,6 +206,21 @@ private extension HomeScreen {
                 }
             )
         }
+    }
+}
+
+// MARK: - ListRow to TDRow
+
+private extension Home.Reducer.ListRow {
+    var tdRow: TDRow {
+        TDRow(
+            name: list.name,
+            image: list.done ? Image.largecircleFillCircle : Image.circle,
+            strikethrough: list.done,
+            leadingActions: leadingActions,
+            trailingActions: trailingActions,
+            isEditing: isEditing
+        )
     }
 }
 

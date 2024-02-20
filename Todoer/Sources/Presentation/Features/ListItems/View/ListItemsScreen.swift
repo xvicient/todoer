@@ -64,13 +64,20 @@ private extension ListItemsScreen {
                     ForEach(Array(store.state.viewModel.items.enumerated()),
                             id: \.element.id) { index, row in
                         if row.isEditing {
-                            newRow(row, index: index)
-                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-                                .id(row.id)
+                            TDNewRowView(
+                                row: row.tdRow,
+                                onSubmit: { store.send(.didTapSubmitItemButton($0)) },
+                                onUpdate: { store.send(.didTapUpdateItemButton(index, $0)) },
+                                onCancelAdd: { store.send(.didTapCancelAddItemButton) },
+                                onCancelEdit: { store.send(.didTapCancelEditItemButton(index)) }
+                            )
+                            .id(index)
                         } else {
-                            itemRow(row, index: index)
-                                .listRowInsets(.init(top: 8, leading: 8, bottom: 8, trailing: 8))
-                                .id(row.id)
+                            TDRowView(
+                                row: row.tdRow,
+                                onSwipe: { swipeActions(index, $0) }
+                            )
+                            .id(index)
                         }
                     }
                             .onMove(perform: moveItem)
@@ -89,125 +96,10 @@ private extension ListItemsScreen {
     }
     
     @ViewBuilder
-    func itemRow(
-        _ row: ListItems.Reducer.ItemRow,
-        index: Int
-    ) -> some View {
-        Group {
-            HStack {
-                (row.item.done ? Image.largecircleFillCircle : Image.circle)
-                    .foregroundColor(.buttonBlack)
-                Button(action: {}) {
-                    Text(row.item.name)
-                        .lineLimit(nil)
-                        .multilineTextAlignment(.leading)
-                        .strikethrough(row.item.done)
-                        .frame(maxWidth: .infinity,
-                               alignment: .leading)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.borderless)
-                .foregroundColor(.textBlack)
-            }
-            .frame(minHeight: 40)
-        }
-        .swipeActions(edge: .leading) {
-            swipeActions(
-                row.leadingActions,
-                index: index
-            )
-        }
-        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-            swipeActions(
-                row.trailingActions,
-                index: index
-            )
-        }
-    }
-    
-    @ViewBuilder
-    func newRow(
-        _ row: ListItems.Reducer.ItemRow,
-        index: Int) -> some View {
-            HStack {
-                Image.circle
-                    .foregroundColor(.buttonBlack)
-                TextField(Constants.Text.item, text: $newRowText)
-                    .foregroundColor(.textBlack)
-                    .focused($isNewRowFocused)
-                    .onAppear {
-                        newRowText = row.item.name
-                    }
-                    .onSubmit {
-                        hideKeyboard()
-                        if row.item.name.isEmpty {
-                            store.send(.didTapSubmitItemButton($newRowText.wrappedValue))
-                        } else {
-                            store.send(.didTapUpdateItemButton(index, $newRowText.wrappedValue))
-                        }
-                    }
-                    .submitLabel(.done)
-                Button(action: {
-                    withAnimation {
-                        if row.item.name.isEmpty {
-                            store.send(.didTapCancelAddItemButton)
-                        } else {
-                            store.send(.didTapCancelEditItemButton(index))
-                        }
-                    }
-                }) {
-                    Image.xmark
-                        .resizable()
-                        .frame(width: 12, height: 12)
-                        .foregroundColor(.buttonBlack)
-                }
-            }
-            .frame(height: 40)
-            .onAppear {
-                isNewRowFocused = true
-            }
-        }
-    
-    @ViewBuilder
-    func swipeActions(
-        _ actions: [TDSwipeAction],
-        index: Int
-    ) -> some View {
-        ForEach(actions,
-                id: \.id) { option in
-            Button {
-                withAnimation {
-                    swipeActions(index, option)
-                }
-            } label: {
-                option.icon
-            }
-            .tint(option.tint)
-        }
-    }
-    
-    @ViewBuilder
     var newRowButton: some View {
         if store.state.viewState != .addingItem &&
             store.state.viewState != .editingItem {
-            VStack {
-                Spacer()
-                Button(action: {
-                    withAnimation {
-                        store.send(.didTapAddItemButton)
-                    }
-                }, label: {
-                    Image.plusCircleFill
-                        .resizable()
-                        .frame(width: 42.0, height: 42.0)
-                        .foregroundColor(.textBlack)
-                        .background(
-                            RoundedRectangle(cornerRadius: 24)
-                                .fill(.backgroundWhite)
-                        )
-                })
-                .foregroundColor(.textWhite)
-            }
+            TDNewRowButton { store.send(.didTapAddRowButton) }
         }
     }
     
@@ -254,6 +146,21 @@ private extension ListItemsScreen {
                 if case .error = store.state.viewState { return true } else { return false }
             },
             set: { _ in }
+        )
+    }
+}
+
+// MARK: - ItemRow to TDRow
+
+private extension ListItems.Reducer.ItemRow {
+    var tdRow: TDRow {
+        TDRow(
+            name: item.name,
+            image: item.done ? Image.largecircleFillCircle : Image.circle,
+            strikethrough: item.done,
+            leadingActions: leadingActions,
+            trailingActions: trailingActions,
+            isEditing: isEditing
         )
     }
 }

@@ -46,6 +46,9 @@
 		C75FFF042B82A80B002D0A9B /* TDRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75FFF032B82A80B002D0A9B /* TDRowView.swift */; };
 		C75FFF062B82B3C3002D0A9B /* TDOptionsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75FFF052B82B3C3002D0A9B /* TDOptionsMenu.swift */; };
 		C77494BD2B840F6B0062E226 /* TDNewRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77494BC2B840F6B0062E226 /* TDNewRowView.swift */; };
+		C77494C02B8491A00062E226 /* TDRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77494BF2B8491A00062E226 /* TDRow.swift */; };
+		C77494C22B8493B90062E226 /* TDNewRowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77494C12B8493B90062E226 /* TDNewRowButton.swift */; };
+		C77494C42B8495DE0062E226 /* TDListRowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77494C32B8495DE0062E226 /* TDListRowModifier.swift */; };
 		C77E10752B4FE29A009612F8 /* HomeReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77E10742B4FE29A009612F8 /* HomeReducer.swift */; };
 		C77E10772B4FE339009612F8 /* HomeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77E10762B4FE339009612F8 /* HomeUseCase.swift */; };
 		C77E10792B5036F1009612F8 /* ListItemsReducer+ViewAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77E10782B5036F1009612F8 /* ListItemsReducer+ViewAppear.swift */; };
@@ -155,6 +158,9 @@
 		C75FFF032B82A80B002D0A9B /* TDRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDRowView.swift; sourceTree = "<group>"; };
 		C75FFF052B82B3C3002D0A9B /* TDOptionsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDOptionsMenu.swift; sourceTree = "<group>"; };
 		C77494BC2B840F6B0062E226 /* TDNewRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDNewRowView.swift; sourceTree = "<group>"; };
+		C77494BF2B8491A00062E226 /* TDRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDRow.swift; sourceTree = "<group>"; };
+		C77494C12B8493B90062E226 /* TDNewRowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDNewRowButton.swift; sourceTree = "<group>"; };
+		C77494C32B8495DE0062E226 /* TDListRowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDListRowModifier.swift; sourceTree = "<group>"; };
 		C77E10742B4FE29A009612F8 /* HomeReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReducer.swift; sourceTree = "<group>"; };
 		C77E10762B4FE339009612F8 /* HomeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUseCase.swift; sourceTree = "<group>"; };
 		C77E10782B5036F1009612F8 /* ListItemsReducer+ViewAppear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListItemsReducer+ViewAppear.swift"; sourceTree = "<group>"; };
@@ -351,12 +357,11 @@
 		C7390FD22B447C1F00E49A68 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C77494BE2B8491810062E226 /* TDRow */,
 				C7390FCE2B447AF400E49A68 /* TDTextField.swift */,
 				C7390FD02B447C0100E49A68 /* TDButton.swift */,
 				C79A2ED72B64449500F52FB2 /* TDSwipeAction.swift */,
-				C75FFF032B82A80B002D0A9B /* TDRowView.swift */,
 				C75FFF052B82B3C3002D0A9B /* TDOptionsMenu.swift */,
-				C77494BC2B840F6B0062E226 /* TDNewRowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -409,6 +414,18 @@
 				C74C0F4A2B5589E600926E87 /* Images.swift */,
 			);
 			path = Theme;
+			sourceTree = "<group>";
+		};
+		C77494BE2B8491810062E226 /* TDRow */ = {
+			isa = PBXGroup;
+			children = (
+				C75FFF032B82A80B002D0A9B /* TDRowView.swift */,
+				C77494BC2B840F6B0062E226 /* TDNewRowView.swift */,
+				C77494BF2B8491A00062E226 /* TDRow.swift */,
+				C77494C12B8493B90062E226 /* TDNewRowButton.swift */,
+				C77494C32B8495DE0062E226 /* TDListRowModifier.swift */,
+			);
+			path = TDRow;
 			sourceTree = "<group>";
 		};
 		C79A2ED22B63AE9B00F52FB2 /* Reducer */ = {
@@ -907,6 +924,7 @@
 				C7390FD82B44A03900E49A68 /* ShareListUseCase.swift in Sources */,
 				C78731E82B5C7EEA006BE19F /* ShareListReducer+ViewAppear.swift in Sources */,
 				C7390FC12B3633C400E49A68 /* CoordinatorView.swift in Sources */,
+				C77494C42B8495DE0062E226 /* TDListRowModifier.swift in Sources */,
 				C75B4AC52B1DD70C007CCA48 /* InvitationsRepository.swift in Sources */,
 				C7390FBE2B34C9F500E49A68 /* Reducer.swift in Sources */,
 				C75B4ACF2B1F70E6007CCA48 /* User.swift in Sources */,
@@ -932,8 +950,10 @@
 				C78731E62B5C3D54006BE19F /* Collection+Safe.swift in Sources */,
 				C77E107D2B52E204009612F8 /* Logger.swift in Sources */,
 				C74C0F4B2B5589E600926E87 /* Images.swift in Sources */,
+				C77494C02B8491A00062E226 /* TDRow.swift in Sources */,
 				C79CB28F2B0D537A00C2BD18 /* ListDTO.swift in Sources */,
 				C7390FC82B3CC68500E49A68 /* Effect.swift in Sources */,
+				C77494C22B8493B90062E226 /* TDNewRowButton.swift in Sources */,
 				C7390FC42B3637F200E49A68 /* ListItemsReducer.swift in Sources */,
 				C7F428672B588CB300DEE7E9 /* AppInfo.swift in Sources */,
 				C7B1AA392B70E59900BC18D3 /* EquatableVoid.swift in Sources */,
