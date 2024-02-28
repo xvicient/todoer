@@ -41,7 +41,7 @@ final class TestStore<State, Action> where Action: Equatable {
 	) async {
 		var expectedResultReceived = false
 		var elapsedTime: UInt64 = 0
-		var pace: UInt64 = 100
+		let pace: UInt64 = 100
 
 		reducer.expectedResult = (
 			action,
