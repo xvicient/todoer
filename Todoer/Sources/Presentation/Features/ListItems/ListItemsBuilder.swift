@@ -1,15 +1,16 @@
 import SwiftUI
+import Common
 
 struct ListItems {
 	struct Builder {
 		struct Dependencies: ListItemsDependencies {
 			var useCase: ListItemsUseCaseApi
-			var list: List
+            var list: Common.List
 		}
 
 		@MainActor
 		static func makeItemsList(
-			list: List
+			list: Common.List
 		) -> ListItemsScreen {
 			let dependencies = Dependencies(
 				useCase: UseCase(),

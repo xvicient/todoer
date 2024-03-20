@@ -1,3 +1,5 @@
+import Common
+
 // MARK: - ShareListReducer
 
 protocol ShareListDependencies {

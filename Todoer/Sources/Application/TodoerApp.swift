@@ -1,5 +1,4 @@
-import Firebase
-import GoogleSignIn
+import Data
 import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -7,7 +6,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		_ application: UIApplication,
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
 	) -> Bool {
-		FirebaseApp.configure()
+        FirebaseManager.configure()
 		return true
 	}
 
@@ -16,7 +15,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		open url: URL,
 		options: [UIApplication.OpenURLOptionsKey: Any] = [:]
 	) -> Bool {
-		return GIDSignIn.sharedInstance.handle(url)
+        GoogleSignInManager.handle(url)
 	}
 }
 

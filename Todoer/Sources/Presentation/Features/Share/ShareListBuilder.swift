@@ -1,4 +1,4 @@
-import SwiftUI
+import Common
 
 struct ShareList {
 	struct Builder {

@@ -1,4 +1,5 @@
 import AuthenticationServices
+import Common
 
 protocol AuthenticationDependencies {
 	var useCase: AuthenticationUseCaseApi { get }
