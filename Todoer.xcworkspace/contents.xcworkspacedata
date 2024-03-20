@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Frameworks/Application/Application.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Frameworks/Presentation/Presentation.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Frameworks/Data/Data.xcodeproj">
    </FileRef>
    <FileRef
