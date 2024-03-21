@@ -13,7 +13,6 @@
 		C77599502BAB35A70040B532 /* Presentation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C775994E2BAB35A70040B532 /* Presentation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C79CB29A2B0D537A00C2BD18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2872B0D537A00C2BD18 /* Assets.xcassets */; };
 		C79CB29B2B0D537A00C2BD18 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */; };
-		C79CB29C2B0D537A00C2BD18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */; };
 		C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */; };
 		C7C535582B545BB000DB4B65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -52,7 +51,6 @@
 		C775994E2BAB35A70040B532 /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79CB2872B0D537A00C2BD18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoerApp.swift; sourceTree = "<group>"; };
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -60,8 +58,6 @@
 		C7D1C9402B906E6F006AB4E6 /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
-		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,17 +96,8 @@
 				C79CB2C62B13F48C00C2BD18 /* Info.plist */,
 				C79CB2872B0D537A00C2BD18 /* Assets.xcassets */,
 				C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */,
-				C79CB2892B0D537A00C2BD18 /* Preview Content */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		C79CB2892B0D537A00C2BD18 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		C7D1C93B2B8F8BE7006AB4E6 /* Frameworks */ = {
@@ -131,7 +118,6 @@
 			isa = PBXGroup;
 			children = (
 				D6A29BF52B09706100FA7F84 /* Todoer */,
-				D6A29C102B09706200FA7F84 /* TodoerUITests */,
 				D6A29BF42B09706100FA7F84 /* Products */,
 				C7D1C93B2B8F8BE7006AB4E6 /* Frameworks */,
 			);
@@ -153,15 +139,6 @@
 				C79CB26D2B0D537A00C2BD18 /* Sources */,
 			);
 			path = Todoer;
-			sourceTree = "<group>";
-		};
-		D6A29C102B09706200FA7F84 /* TodoerUITests */ = {
-			isa = PBXGroup;
-			children = (
-				D6A29C112B09706200FA7F84 /* TodoerUITests.swift */,
-				D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */,
-			);
-			path = TodoerUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,7 +236,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C79CB29A2B0D537A00C2BD18 /* Assets.xcassets in Resources */,
-				C79CB29C2B0D537A00C2BD18 /* Preview Assets.xcassets in Resources */,
 				C7C535582B545BB000DB4B65 /* LaunchScreen.storyboard in Resources */,
 				C79CB29B2B0D537A00C2BD18 /* GoogleService-Info.plist in Resources */,
 			);
@@ -458,7 +434,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "\"Todoer/Resources/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -494,7 +470,7 @@
 				CODE_SIGN_ENTITLEMENTS = Todoer/Resources/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_ASSET_PATHS = "\"Todoer/Resources/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
