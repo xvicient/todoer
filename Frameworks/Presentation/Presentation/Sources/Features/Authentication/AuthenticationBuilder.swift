@@ -1,9 +1,9 @@
 import SwiftUI
 
 public struct Authentication {
-    public struct Builder {
+	public struct Builder {
 		@MainActor
-        public static func makeAuthentication(
+		public static func makeAuthentication(
 			coordinator: Coordinator
 		) -> AuthenticationScreen {
 			struct Dependencies: AuthenticationDependencies {

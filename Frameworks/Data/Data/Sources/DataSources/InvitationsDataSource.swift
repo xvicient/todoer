@@ -1,7 +1,7 @@
 import Combine
+import Common
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import Common
 
 public protocol InvitationsDataSourceApi {
 	func getInvitations(
@@ -27,7 +27,7 @@ public protocol InvitationsDataSourceApi {
 
 public final class InvitationsDataSource: InvitationsDataSourceApi {
 
-    public struct SearchField {
+	public struct SearchField {
 		enum Key: String {
 			case invitedId
 			case listId
@@ -48,15 +48,15 @@ public final class InvitationsDataSource: InvitationsDataSourceApi {
 	private var listenerSubject: PassthroughSubject<[InvitationDTO], Error>?
 
 	private let invitationsCollection = Firestore.firestore().collection("invitations")
-    
-    public init() {}
+
+	public init() {}
 
 	deinit {
 		snapshotListener?.remove()
 		listenerSubject = nil
 	}
 
-    public func getInvitations(
+	public func getInvitations(
 		with fields: [SearchField]
 	) -> AnyPublisher<[InvitationDTO], Error> {
 		let subject = PassthroughSubject<[InvitationDTO], Error>()
@@ -83,7 +83,7 @@ public final class InvitationsDataSource: InvitationsDataSourceApi {
 			.eraseToAnyPublisher()
 	}
 
-    public func getInvitations(
+	public func getInvitations(
 		with fields: [SearchField]
 	) async throws -> [InvitationDTO] {
 		try await invitationsQuery(with: fields)
@@ -92,7 +92,7 @@ public final class InvitationsDataSource: InvitationsDataSourceApi {
 			.map { try $0.data(as: InvitationDTO.self) }
 	}
 
-    public func sendInvitation(
+	public func sendInvitation(
 		ownerName: String,
 		ownerEmail: String,
 		listId: String,
@@ -110,7 +110,7 @@ public final class InvitationsDataSource: InvitationsDataSourceApi {
 		try invitationsCollection.addDocument(from: dto)
 	}
 
-    public func deleteInvitation(
+	public func deleteInvitation(
 		_ documentId: String
 	) async throws {
 		try await invitationsCollection.document(documentId).delete()

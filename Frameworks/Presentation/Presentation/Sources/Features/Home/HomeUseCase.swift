@@ -1,7 +1,7 @@
 import Combine
-import Foundation
 import Common
 import Data
+import Foundation
 
 protocol HomeUseCaseApi {
 	func fetchData() -> AnyPublisher<HomeData, Error>

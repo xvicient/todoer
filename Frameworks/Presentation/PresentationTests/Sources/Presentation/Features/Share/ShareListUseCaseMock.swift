@@ -1,5 +1,5 @@
-@testable import Presentation
 @testable import Common
+@testable import Presentation
 
 class ShareListUseCaseMock: ShareListUseCaseApi {
 

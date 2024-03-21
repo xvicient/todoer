@@ -1,14 +1,14 @@
 import Common
 
 public struct ShareList {
-    public struct Builder {
+	public struct Builder {
 		struct Dependencies: ShareListDependencies {
 			var useCase: ShareListUseCaseApi
 			var list: List
 		}
 
 		@MainActor
-        public static func makeShareList(
+		public static func makeShareList(
 			coordinator: Coordinator,
 			list: List
 		) -> ShareListScreen {

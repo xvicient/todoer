@@ -1,9 +1,9 @@
 import AuthenticationServices
+import Common
 import FirebaseAuth
 import Foundation
 import GoogleSignIn
 import GoogleSignInSwift
-import Common
 
 public protocol SignInServiceApi {
 	func googleSignIn() async throws -> AuthDataDTO
@@ -17,12 +17,11 @@ public final class SignInService: SignInServiceApi {
 	private enum Errors: Error {
 		case signInError
 	}
-    
-    public init() {}
+
+	public init() {}
 
 	@MainActor
-    public func googleSignIn(
-    ) async throws -> AuthDataDTO {
+	public func googleSignIn() async throws -> AuthDataDTO {
 		guard let topVC = Utils.topViewController() else {
 			throw URLError(.cannotFindHost)
 		}
@@ -43,7 +42,7 @@ public final class SignInService: SignInServiceApi {
 	}
 
 	@MainActor
-    public func appleSignIn(
+	public func appleSignIn(
 		authorization: ASAuthorization
 	) async throws -> AuthDataDTO {
 		guard

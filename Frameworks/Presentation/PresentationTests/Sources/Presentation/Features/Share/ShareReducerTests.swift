@@ -1,7 +1,7 @@
 import XCTest
 
-@testable import Presentation
 @testable import Common
+@testable import Presentation
 
 @MainActor
 final class ShareReducerTests: XCTestCase {

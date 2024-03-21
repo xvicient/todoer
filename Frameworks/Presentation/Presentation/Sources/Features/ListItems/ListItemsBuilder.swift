@@ -1,11 +1,11 @@
-import SwiftUI
 import Common
+import SwiftUI
 
 struct ListItems {
 	struct Builder {
 		struct Dependencies: ListItemsDependencies {
 			var useCase: ListItemsUseCaseApi
-            var list: Common.List
+			var list: Common.List
 		}
 
 		@MainActor

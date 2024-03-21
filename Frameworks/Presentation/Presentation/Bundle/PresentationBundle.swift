@@ -1,3 +1,3 @@
 class PresentationBundle {
-    static let bundle = Bundle(for: PresentationBundle.self)
+	static let bundle = Bundle(for: PresentationBundle.self)
 }

@@ -1,5 +1,5 @@
-import SwiftUI
 import Common
+import SwiftUI
 
 // MARK: - ShareListView
 

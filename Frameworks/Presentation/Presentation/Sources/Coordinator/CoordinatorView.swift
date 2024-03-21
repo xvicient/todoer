@@ -2,8 +2,8 @@ import SwiftUI
 
 public struct CoordinatorView: View {
 	@StateObject private var coordinator = Coordinator()
-    
-    public init() {}
+
+	public init() {}
 
 	public var body: some View {
 		NavigationStack(path: $coordinator.path) {

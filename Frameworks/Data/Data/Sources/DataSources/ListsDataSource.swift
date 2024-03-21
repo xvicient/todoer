@@ -36,7 +36,7 @@ public protocol ListsDataSourceApi {
 
 public final class ListsDataSource: ListsDataSourceApi {
 
-    public struct SearchField {
+	public struct SearchField {
 		enum Key: String {
 			case uid
 		}
@@ -59,9 +59,9 @@ public final class ListsDataSource: ListsDataSourceApi {
 
 	private var snapshotListener: ListenerRegistration?
 	private var listenerSubject: PassthroughSubject<[ListDTO], Error>?
-    
-    public init() {}
-    
+
+	public init() {}
+
 	deinit {
 		snapshotListener?.remove()
 		listenerSubject = nil
@@ -69,7 +69,7 @@ public final class ListsDataSource: ListsDataSourceApi {
 
 	private let listsCollection = Firestore.firestore().collection("lists")
 
-    public func fetchLists(
+	public func fetchLists(
 		uid: String
 	) -> AnyPublisher<[ListDTO], Error> {
 		let subject = PassthroughSubject<[ListDTO], Error>()
@@ -98,7 +98,7 @@ public final class ListsDataSource: ListsDataSourceApi {
 			.eraseToAnyPublisher()
 	}
 
-    public func addList(
+	public func addList(
 		with name: String,
 		uid: String
 	) async throws -> ListDTO {
@@ -115,13 +115,13 @@ public final class ListsDataSource: ListsDataSourceApi {
 			.data(as: ListDTO.self)
 	}
 
-    public func deleteList(
+	public func deleteList(
 		_ documentId: String
 	) async throws {
 		try await listsCollection.document(documentId).delete()
 	}
 
-    public func importList(
+	public func importList(
 		id: String,
 		uid: String
 	) async throws {
@@ -135,7 +135,7 @@ public final class ListsDataSource: ListsDataSourceApi {
 		}
 	}
 
-    public func updateList(
+	public func updateList(
 		_ list: ListDTO
 	) async throws -> ListDTO {
 		guard let id = list.id else {
@@ -150,7 +150,7 @@ public final class ListsDataSource: ListsDataSourceApi {
 		return list
 	}
 
-    public func sortLists(
+	public func sortLists(
 		lists: [ListDTO]
 	) async throws {
 		let productsBatch = Firestore.firestore().batch()
@@ -172,7 +172,7 @@ public final class ListsDataSource: ListsDataSourceApi {
 		try await productsBatch.commit()
 	}
 
-    public func deleteLists(
+	public func deleteLists(
 		with fields: [SearchField]
 	) async throws {
 		try await listsQuery(with: fields)

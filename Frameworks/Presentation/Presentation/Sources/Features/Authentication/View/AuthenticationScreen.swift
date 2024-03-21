@@ -1,8 +1,8 @@
 import AuthenticationServices
+import Common
 import GoogleSignIn
 import GoogleSignInSwift
 import SwiftUI
-import Common
 
 // MARK: - AuthenticationScreen
 
@@ -19,7 +19,7 @@ public struct AuthenticationScreen: View {
 		self.store = store
 	}
 
-    public var body: some View {
+	public var body: some View {
 		ZStack {
 			logoView
 			sloganView

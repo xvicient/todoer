@@ -1,4 +1,5 @@
 import SwiftUI
+
 struct Home {
 	struct Builder {
 		struct Dependencies: HomeDependencies {

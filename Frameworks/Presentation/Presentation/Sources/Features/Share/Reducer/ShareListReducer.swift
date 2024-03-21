@@ -8,7 +8,7 @@ protocol ShareListDependencies {
 }
 
 extension ShareList {
-    struct Reducer: Presentation.Reducer {
+	struct Reducer: Presentation.Reducer {
 
 		enum Action: Equatable {
 			// MARK: - View appear

@@ -1,6 +1,6 @@
 import Combine
-import Foundation
 import Common
+import Foundation
 
 public protocol ListsRepositoryApi {
 	func fetchLists() -> AnyPublisher<[List], Error>
@@ -36,7 +36,7 @@ public final class ListsRepository: ListsRepositoryApi {
 	let usersDataSource: UsersDataSourceApi
 	let itemsDataSource: ItemsDataSourceApi
 
-    public init(
+	public init(
 		listsDataSource: ListsDataSourceApi = ListsDataSource(),
 		usersDataSource: UsersDataSourceApi = UsersDataSource(),
 		itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
@@ -46,7 +46,7 @@ public final class ListsRepository: ListsRepositoryApi {
 		self.itemsDataSource = itemsDataSource
 	}
 
-    public func fetchLists() -> AnyPublisher<[List], Error> {
+	public func fetchLists() -> AnyPublisher<[List], Error> {
 		listsDataSource.fetchLists(uid: usersDataSource.uid)
 			.tryMap { lists in
 				lists.map {
@@ -57,7 +57,7 @@ public final class ListsRepository: ListsRepositoryApi {
 			.eraseToAnyPublisher()
 	}
 
-    public func addList(
+	public func addList(
 		with name: String
 	) async throws -> List {
 		try await listsDataSource.addList(
@@ -66,25 +66,25 @@ public final class ListsRepository: ListsRepositoryApi {
 		).toDomain
 	}
 
-    public func deleteList(
+	public func deleteList(
 		_ documentId: String
 	) async throws {
 		try await listsDataSource.deleteList(documentId)
 	}
 
-    public func importList(
+	public func importList(
 		id: String
 	) async throws {
 		try await listsDataSource.importList(id: id, uid: usersDataSource.uid)
 	}
 
-    public func updateList(
+	public func updateList(
 		_ list: List
 	) async throws -> List {
 		try await listsDataSource.updateList(list.toDTO).toDomain
 	}
 
-    public func sortLists(
+	public func sortLists(
 		lists: [List]
 	) async throws {
 		try await listsDataSource.sortLists(
@@ -92,7 +92,7 @@ public final class ListsRepository: ListsRepositoryApi {
 		)
 	}
 
-    public func deleteSelfUserLists() async throws {
+	public func deleteSelfUserLists() async throws {
 		try await listsDataSource.deleteLists(
 			with: [SearchField(.uid, .arrayContains(usersDataSource.uid))]
 		)

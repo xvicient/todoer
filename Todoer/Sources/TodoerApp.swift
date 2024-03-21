@@ -1,13 +1,13 @@
 import Data
-import SwiftUI
 import Presentation
+import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 	func application(
 		_ application: UIApplication,
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
 	) -> Bool {
-        FirebaseManager.configure()
+		FirebaseManager.configure()
 		return true
 	}
 
@@ -16,7 +16,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		open url: URL,
 		options: [UIApplication.OpenURLOptionsKey: Any] = [:]
 	) -> Bool {
-        GoogleSignInManager.handle(url)
+		GoogleSignInManager.handle(url)
 	}
 }
 

@@ -41,8 +41,8 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 
 	private var snapshotListener: ListenerRegistration?
 	private var listenerSubject: PassthroughSubject<[ItemDTO], Error>?
-    
-    public init() {}
+
+	public init() {}
 
 	deinit {
 		snapshotListener?.remove()
@@ -53,7 +53,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 		Firestore.firestore().collection("lists").document(listId).collection("items")
 	}
 
-    public func fetchItems(
+	public func fetchItems(
 		listId: String
 	) -> AnyPublisher<[ItemDTO], Error> {
 		let subject = PassthroughSubject<[ItemDTO], Error>()
@@ -81,7 +81,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 
 	}
 
-    public func addItem(
+	public func addItem(
 		with name: String,
 		listId: String
 	) async throws -> ItemDTO {
@@ -101,14 +101,14 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 		}
 	}
 
-    public func deleteItem(
+	public func deleteItem(
 		itemId: String,
 		listId: String
 	) async throws {
 		try await itemsCollection(listId: listId).document(itemId).delete()
 	}
 
-    public func updateItem(
+	public func updateItem(
 		item: ItemDTO,
 		listId: String
 	) async throws -> ItemDTO {
@@ -124,7 +124,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 		return item
 	}
 
-    public func toogleAllItems(
+	public func toogleAllItems(
 		listId: String?,
 		done: Bool
 	) async throws {
@@ -152,7 +152,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 		try await productsBatch.commit()
 	}
 
-    public func sortItems(
+	public func sortItems(
 		items: [ItemDTO],
 		listId: String
 	) async throws {

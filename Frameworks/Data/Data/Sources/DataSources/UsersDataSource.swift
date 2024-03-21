@@ -1,6 +1,6 @@
+import Common
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import Common
 
 public protocol UsersDataSourceApi {
 	var uid: String { get set }
@@ -22,7 +22,7 @@ public protocol UsersDataSourceApi {
 
 public final class UsersDataSource: UsersDataSourceApi {
 
-    public struct SearchField {
+	public struct SearchField {
 		enum Key: String {
 			case uid
 			case email
@@ -48,15 +48,15 @@ public final class UsersDataSource: UsersDataSourceApi {
 
 	@AppSetting(key: "uid", defaultValue: "") private var _uid: String
 	private let usersCollection = Firestore.firestore().collection("users")
-    
-    public init() {}
 
-    public var uid: String {
+	public init() {}
+
+	public var uid: String {
 		get { _uid }
 		set { _uid = newValue }
 	}
 
-    public func getUsers(
+	public func getUsers(
 		with fields: [SearchField]
 	) async throws -> [UserDTO] {
 		var query: Query = usersCollection
@@ -77,7 +77,7 @@ public final class UsersDataSource: UsersDataSourceApi {
 			.map { try $0.data(as: UserDTO.self) }
 	}
 
-    public func deleteUser() async throws {
+	public func deleteUser() async throws {
 		try await getUsers(with: [SearchField(.uid, .equal(uid))])
 			.compactMap { $0.id }
 			.forEach {
@@ -85,7 +85,7 @@ public final class UsersDataSource: UsersDataSourceApi {
 			}
 	}
 
-    public func createUser(
+	public func createUser(
 		with uid: String,
 		email: String?,
 		displayName: String?,

@@ -39,15 +39,15 @@ public final class UsersRepository: UsersRepositoryApi {
 
 	var usersDataSource: UsersDataSourceApi
 
-    public init(usersDataSource: UsersDataSourceApi = UsersDataSource()) {
+	public init(usersDataSource: UsersDataSourceApi = UsersDataSource()) {
 		self.usersDataSource = usersDataSource
 	}
 
-    public func setUid(_ value: String) {
+	public func setUid(_ value: String) {
 		usersDataSource.uid = value
 	}
 
-    public func createUser(
+	public func createUser(
 		with uid: String,
 		email: String?,
 		displayName: String?,
@@ -63,7 +63,7 @@ public final class UsersRepository: UsersRepositoryApi {
 		)
 	}
 
-    public func getSelfUser() async throws -> User? {
+	public func getSelfUser() async throws -> User? {
 		try await usersDataSource.getUsers(
 			with: [SearchField(.uid, .equal(usersDataSource.uid))]
 		)
@@ -71,7 +71,7 @@ public final class UsersRepository: UsersRepositoryApi {
 		.toDomain
 	}
 
-    public func getUser(
+	public func getUser(
 		uid: String
 	) async throws -> User? {
 		try await usersDataSource.getUsers(
@@ -81,7 +81,7 @@ public final class UsersRepository: UsersRepositoryApi {
 		.toDomain
 	}
 
-    public func getUser(
+	public func getUser(
 		email: String
 	) async throws -> User? {
 		try await usersDataSource.getUsers(
@@ -91,7 +91,7 @@ public final class UsersRepository: UsersRepositoryApi {
 		.toDomain
 	}
 
-    public func getNotSelfUser(
+	public func getNotSelfUser(
 		email: String,
 		uid: String
 	) async throws -> User? {
@@ -105,7 +105,7 @@ public final class UsersRepository: UsersRepositoryApi {
 		.toDomain
 	}
 
-    public func getNotSelfUsers(
+	public func getNotSelfUsers(
 		uids: [String]
 	) async throws -> [User] {
 		let notSelfUids = uids.filter { $0 != usersDataSource.uid }
@@ -121,20 +121,20 @@ public final class UsersRepository: UsersRepositoryApi {
 		}
 	}
 
-    public func deleteUser() async throws {
+	public func deleteUser() async throws {
 		try await usersDataSource.deleteUser()
 	}
 }
 
-private extension UserDTO {
-    var toDomain: User {
-        User(
-            documentId: id ?? "",
-            uid: uid,
-            email: email,
-            displayName: displayName,
-            photoUrl: photoUrl,
-            provider: provider
-        )
-    }
+extension UserDTO {
+	fileprivate var toDomain: User {
+		User(
+			documentId: id ?? "",
+			uid: uid,
+			email: email,
+			displayName: displayName,
+			photoUrl: photoUrl,
+			provider: provider
+		)
+	}
 }

@@ -1,6 +1,6 @@
 import Combine
-import Foundation
 import Common
+import Foundation
 
 public protocol ItemsRepositoryApi {
 	func fetchItems(
@@ -36,11 +36,11 @@ public protocol ItemsRepositoryApi {
 public final class ItemsRepository: ItemsRepositoryApi {
 	private let itemsDataSource: ItemsDataSourceApi
 
-    public init(producstDataSource: ItemsDataSourceApi = ItemsDataSource()) {
+	public init(producstDataSource: ItemsDataSourceApi = ItemsDataSource()) {
 		self.itemsDataSource = producstDataSource
 	}
 
-    public func fetchItems(
+	public func fetchItems(
 		listId: String
 	) -> AnyPublisher<[Item], Error> {
 		itemsDataSource.fetchItems(listId: listId)
@@ -53,7 +53,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
 			.eraseToAnyPublisher()
 	}
 
-    public func addItem(
+	public func addItem(
 		with name: String,
 		listId: String
 	) async throws -> Item {
@@ -63,7 +63,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
 		).toDomain
 	}
 
-    public func deleteItem(
+	public func deleteItem(
 		itemId: String,
 		listId: String
 	) async throws {
@@ -73,7 +73,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
 		)
 	}
 
-    public func updateItem(
+	public func updateItem(
 		item: Item,
 		listId: String
 	) async throws -> Item {
@@ -83,7 +83,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
 		).toDomain
 	}
 
-    public func toogleAllItems(
+	public func toogleAllItems(
 		listId: String?,
 		done: Bool
 	) async throws {
@@ -93,7 +93,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
 		)
 	}
 
-    public func sortItems(
+	public func sortItems(
 		items: [Item],
 		listId: String
 	) async throws {

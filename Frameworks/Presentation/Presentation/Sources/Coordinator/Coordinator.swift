@@ -1,11 +1,11 @@
-import SwiftUI
 import Common
 import Data
+import SwiftUI
 
 enum Page: Hashable, Identifiable {
 	case authentication
 	case home
-    case listItems(Common.List)
+	case listItems(Common.List)
 	case about
 
 	var id: Self { self }
