@@ -1,6 +1,5 @@
 import Foundation
 import Common
-import Application
 
 // MARK: - HomeReducer
 
@@ -12,7 +11,7 @@ protocol HomeDependencies {
 typealias HomeData = Home.Reducer.HomeData
 
 extension Home {
-	struct Reducer: Application.Reducer {
+	struct Reducer: Presentation.Reducer {
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError

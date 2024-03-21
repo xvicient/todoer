@@ -1,15 +1,14 @@
 import AuthenticationServices
 import Common
-import Application
 
 protocol AuthenticationDependencies {
 	var useCase: AuthenticationUseCaseApi { get }
 }
 
-extension Authentication {
-	struct Reducer: Application.Reducer {
+public extension Authentication {
+	struct Reducer: Presentation.Reducer {
 
-		enum Action: Equatable {
+        public enum Action: Equatable {
 			// MARK: - User actions
 			case didTapGoogleSignInButton
 			case didAppleSignIn(ActionResult<ASAuthorization>)
@@ -22,7 +21,7 @@ extension Authentication {
 		}
 
 		@MainActor
-		struct State {
+        public struct State {
 			var viewState = ViewState.idle
 			var viewModel = ViewModel()
 		}
@@ -45,7 +44,7 @@ extension Authentication {
 		}
 
 		@MainActor
-		func reduce(
+        public func reduce(
 			_ state: inout State,
 			_ action: Action
 		) -> Effect<Action> {

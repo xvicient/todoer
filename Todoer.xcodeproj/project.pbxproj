@@ -9,15 +9,6 @@
 /* Begin PBXBuildFile section */
 		C70C439F2BAB2E3F009C3ACA /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C70C439C2BAB2E3F009C3ACA /* Data.framework */; };
 		C70C43A02BAB2E3F009C3ACA /* Data.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C70C439C2BAB2E3F009C3ACA /* Data.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C71FAF0F2B7643BE004679E2 /* ShareReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF0E2B7643BE004679E2 /* ShareReducerTests.swift */; };
-		C71FAF112B764511004679E2 /* ShareListUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF102B764511004679E2 /* ShareListUseCaseMock.swift */; };
-		C71FAF142B76601D004679E2 /* UserMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF132B76601D004679E2 /* UserMock.swift */; };
-		C71FAF162B766170004679E2 /* ListMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF152B766170004679E2 /* ListMock.swift */; };
-		C72DA9CD2B7A5C6D00816AE1 /* TestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72DA9CC2B7A5C6D00816AE1 /* TestCoordinator.swift */; };
-		C74515202B750F5600C6D08E /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682242B68DF97008BB192 /* TestStore.swift */; };
-		C74515212B750F5600C6D08E /* AuthenticationReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */; };
-		C74515222B750F5600C6D08E /* TestReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72701092B74C01100E9D275 /* TestReducer.swift */; };
-		C74515232B750F5600C6D08E /* AuthenticationUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */; };
 		C775994F2BAB35A70040B532 /* Presentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C775994E2BAB35A70040B532 /* Presentation.framework */; };
 		C77599502BAB35A70040B532 /* Presentation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C775994E2BAB35A70040B532 /* Presentation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C79CB29A2B0D537A00C2BD18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2872B0D537A00C2BD18 /* Assets.xcassets */; };
@@ -53,19 +44,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C70682242B68DF97008BB192 /* TestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStore.swift; sourceTree = "<group>"; };
-		C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCaseMock.swift; sourceTree = "<group>"; };
 		C70C43942BAB2D1A009C3ACA /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C70C43982BAB2D45009C3ACA /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C70C439B2BAB2E3F009C3ACA /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C70C439C2BAB2E3F009C3ACA /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C71FAF0A2B75132E004679E2 /* TodoerTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TodoerTests.xctestplan; sourceTree = "<group>"; };
-		C71FAF0E2B7643BE004679E2 /* ShareReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReducerTests.swift; sourceTree = "<group>"; };
-		C71FAF102B764511004679E2 /* ShareListUseCaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListUseCaseMock.swift; sourceTree = "<group>"; };
-		C71FAF132B76601D004679E2 /* UserMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMock.swift; sourceTree = "<group>"; };
-		C71FAF152B766170004679E2 /* ListMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMock.swift; sourceTree = "<group>"; };
-		C72701092B74C01100E9D275 /* TestReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReducer.swift; sourceTree = "<group>"; };
-		C72DA9CC2B7A5C6D00816AE1 /* TestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoordinator.swift; sourceTree = "<group>"; };
 		C74515172B750F3D00C6D08E /* TodoerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C775994E2BAB35A70040B532 /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79CB2872B0D537A00C2BD18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -78,7 +60,6 @@
 		C7D1C9402B906E6F006AB4E6 /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducerTests.swift; sourceTree = "<group>"; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
 		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,78 +84,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C70682232B68DF82008BB192 /* Application */ = {
-			isa = PBXGroup;
-			children = (
-				C70682242B68DF97008BB192 /* TestStore.swift */,
-				C72701092B74C01100E9D275 /* TestReducer.swift */,
-				C72DA9CC2B7A5C6D00816AE1 /* TestCoordinator.swift */,
-			);
-			path = Application;
-			sourceTree = "<group>";
-		};
-		C71FAF0D2B7643B1004679E2 /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF0E2B7643BE004679E2 /* ShareReducerTests.swift */,
-				C71FAF102B764511004679E2 /* ShareListUseCaseMock.swift */,
-			);
-			path = Share;
-			sourceTree = "<group>";
-		};
-		C71FAF122B766013004679E2 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF132B76601D004679E2 /* UserMock.swift */,
-				C71FAF152B766170004679E2 /* ListMock.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		C730919A2B67F1740090CE06 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF0A2B75132E004679E2 /* TodoerTests.xctestplan */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		C730919B2B67F17D0090CE06 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF122B766013004679E2 /* Common */,
-				C70682232B68DF82008BB192 /* Application */,
-				C730919C2B67F1890090CE06 /* Presentation */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		C730919C2B67F1890090CE06 /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				C730919D2B67F1910090CE06 /* Features */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
-		C730919D2B67F1910090CE06 /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF0D2B7643B1004679E2 /* Share */,
-				C730919E2B67F1970090CE06 /* Authentication */,
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
-		C730919E2B67F1970090CE06 /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */,
-				C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,7 +131,6 @@
 			isa = PBXGroup;
 			children = (
 				D6A29BF52B09706100FA7F84 /* Todoer */,
-				D6A29C062B09706200FA7F84 /* TodoerTests */,
 				D6A29C102B09706200FA7F84 /* TodoerUITests */,
 				D6A29BF42B09706100FA7F84 /* Products */,
 				C7D1C93B2B8F8BE7006AB4E6 /* Frameworks */,
@@ -245,15 +153,6 @@
 				C79CB26D2B0D537A00C2BD18 /* Sources */,
 			);
 			path = Todoer;
-			sourceTree = "<group>";
-		};
-		D6A29C062B09706200FA7F84 /* TodoerTests */ = {
-			isa = PBXGroup;
-			children = (
-				C730919B2B67F17D0090CE06 /* Sources */,
-				C730919A2B67F1740090CE06 /* Resources */,
-			);
-			path = TodoerTests;
 			sourceTree = "<group>";
 		};
 		D6A29C102B09706200FA7F84 /* TodoerUITests */ = {
@@ -373,15 +272,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C74515212B750F5600C6D08E /* AuthenticationReducerTests.swift in Sources */,
-				C72DA9CD2B7A5C6D00816AE1 /* TestCoordinator.swift in Sources */,
-				C74515222B750F5600C6D08E /* TestReducer.swift in Sources */,
-				C74515202B750F5600C6D08E /* TestStore.swift in Sources */,
-				C71FAF112B764511004679E2 /* ShareListUseCaseMock.swift in Sources */,
-				C71FAF142B76601D004679E2 /* UserMock.swift in Sources */,
-				C74515232B750F5600C6D08E /* AuthenticationUseCaseMock.swift in Sources */,
-				C71FAF0F2B7643BE004679E2 /* ShareReducerTests.swift in Sources */,
-				C71FAF162B766170004679E2 /* ListMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

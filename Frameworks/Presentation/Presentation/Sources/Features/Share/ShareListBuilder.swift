@@ -1,5 +1,4 @@
 import Common
-import Application
 
 public struct ShareList {
     public struct Builder {

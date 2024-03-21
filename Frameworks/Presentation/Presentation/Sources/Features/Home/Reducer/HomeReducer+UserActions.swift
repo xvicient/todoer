@@ -1,6 +1,5 @@
 import Foundation
 import Common
-import Application
 
 // MARK: - Reducer user actions
 

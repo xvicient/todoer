@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import Todoer
+@testable import Presentation
 
 @MainActor
 final class AuthenticationReducerTests: XCTestCase {

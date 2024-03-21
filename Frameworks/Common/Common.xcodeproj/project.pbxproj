@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C7D1C78A2B8F7820006AB4E6 /* Common.docc in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C7892B8F7820006AB4E6 /* Common.docc */; };
 		C7D1C7902B8F7820006AB4E6 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D1C7852B8F7820006AB4E6 /* Common.framework */; };
 		C7D1C7962B8F7820006AB4E6 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D1C7882B8F7820006AB4E6 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C7D1C9312B8F8BAD006AB4E6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */; };
@@ -36,7 +35,6 @@
 /* Begin PBXFileReference section */
 		C7D1C7852B8F7820006AB4E6 /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D1C7882B8F7820006AB4E6 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		C7D1C7892B8F7820006AB4E6 /* Common.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Common.docc; sourceTree = "<group>"; };
 		C7D1C78F2B8F7820006AB4E6 /* CommonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C7D1C9262B8F8BAD006AB4E6 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
@@ -92,7 +90,6 @@
 			children = (
 				C7D1C9232B8F8BAD006AB4E6 /* Sources */,
 				C7D1C7882B8F7820006AB4E6 /* Common.h */,
-				C7D1C7892B8F7820006AB4E6 /* Common.docc */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -250,7 +247,6 @@
 			files = (
 				C7D1C9362B8F8BAD006AB4E6 /* Date+Time.swift in Sources */,
 				C7D1C9352B8F8BAD006AB4E6 /* Collection+Safe.swift in Sources */,
-				C7D1C78A2B8F7820006AB4E6 /* Common.docc in Sources */,
 				C7D1C9392B8F8BAD006AB4E6 /* List.swift in Sources */,
 				C7D1C9312B8F8BAD006AB4E6 /* Logger.swift in Sources */,
 				C7D1C96C2B9072D2006AB4E6 /* UIViewController+TopViewController.swift in Sources */,

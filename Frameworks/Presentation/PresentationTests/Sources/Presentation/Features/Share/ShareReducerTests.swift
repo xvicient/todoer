@@ -1,6 +1,7 @@
 import XCTest
 
-@testable import Todoer
+@testable import Presentation
+@testable import Common
 
 @MainActor
 final class ShareReducerTests: XCTestCase {

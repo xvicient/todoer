@@ -1,6 +1,5 @@
 import Foundation
 import Common
-import Application
 
 // MARK: - ListItemsReducer
 
@@ -10,7 +9,7 @@ protocol ListItemsDependencies {
 }
 
 extension ListItems {
-	struct Reducer: Application.Reducer {
+	struct Reducer: Presentation.Reducer {
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError

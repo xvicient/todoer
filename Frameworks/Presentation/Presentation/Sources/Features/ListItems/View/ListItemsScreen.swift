@@ -1,6 +1,5 @@
 import SwiftUI
 import Common
-import Application
 
 // MARK: - ListItemsScreen
 

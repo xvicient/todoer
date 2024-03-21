@@ -1,4 +1,5 @@
-@testable import Todoer
+@testable import Presentation
+@testable import Common
 
 struct UserMock {
 	static var user: User {

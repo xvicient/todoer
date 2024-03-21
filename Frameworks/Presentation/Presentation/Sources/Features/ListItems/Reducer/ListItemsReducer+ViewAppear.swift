@@ -1,5 +1,4 @@
 import Combine
-import Application
 
 // MARK: - Reducer view appear
 

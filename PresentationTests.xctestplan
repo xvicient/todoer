@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "0442B6B3-F761-45A6-9DBA-93872C48D8E7",
+      "id" : "6F9059F2-8828-4C28-BBE6-28305199592E",
       "name" : "Test Scheme Action",
       "options" : {
 
@@ -14,9 +14,9 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:Todoer.xcodeproj",
-        "identifier" : "C74515162B750F3D00C6D08E",
-        "name" : "TodoerTests"
+        "containerPath" : "container:Presentation.xcodeproj",
+        "identifier" : "C7D44E552BAC6C4F0078AA15",
+        "name" : "PresentationTests"
       }
     }
   ],

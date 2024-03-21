@@ -2,7 +2,6 @@ import Combine
 import Foundation
 import Common
 import Data
-import Application
 
 protocol ShareListUseCaseApi {
 	func fetchUsers(

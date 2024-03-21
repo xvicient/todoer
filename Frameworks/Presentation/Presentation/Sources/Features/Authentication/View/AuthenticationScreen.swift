@@ -3,7 +3,6 @@ import GoogleSignIn
 import GoogleSignInSwift
 import SwiftUI
 import Common
-import Application
 
 // MARK: - AuthenticationScreen
 

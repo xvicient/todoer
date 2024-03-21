@@ -1,4 +1,4 @@
-@testable import Todoer
+@testable import Presentation
 
 class TestReducer<State, Action>: Reducer where Action: Equatable {
 

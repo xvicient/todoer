@@ -1,6 +1,4 @@
 import Common
-import Application
-import Application
 
 // MARK: - ShareListReducer
 
@@ -10,7 +8,7 @@ protocol ShareListDependencies {
 }
 
 extension ShareList {
-	struct Reducer: Application.Reducer {
+    struct Reducer: Presentation.Reducer {
 
 		enum Action: Equatable {
 			// MARK: - View appear

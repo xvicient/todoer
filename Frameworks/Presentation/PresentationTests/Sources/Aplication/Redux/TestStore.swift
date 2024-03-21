@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import XCTest
 
-@testable import Todoer
+@testable import Presentation
 
 final class TestStore<State, Action> where Action: Equatable {
 	private let store: Store<TestReducer<State, Action>>
