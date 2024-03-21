@@ -13,7 +13,4 @@
    <FileRef
       location = "group:Todoer.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:PresentationTests.xctestplan">
-   </FileRef>
 </Workspace>

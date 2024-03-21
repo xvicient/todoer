@@ -62,6 +62,7 @@
 		C72E43DE2BAC8C0900CD7D9A /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C72E43DB2BAC8C0900CD7D9A /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C72E43DF2BAC8C0900CD7D9A /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C72E43DC2BAC8C0900CD7D9A /* Data.framework */; };
 		C72E43E02BAC8C0900CD7D9A /* Data.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C72E43DC2BAC8C0900CD7D9A /* Data.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C72E43E22BAC8DD200CD7D9A /* PresentationTests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = C72E43E12BAC8DD200CD7D9A /* PresentationTests.xctestplan */; };
 		C74FFC172BAC81AF00A94E04 /* ActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74FFC122BAC81AF00A94E04 /* ActionResult.swift */; };
 		C74FFC182BAC81AF00A94E04 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74FFC132BAC81AF00A94E04 /* Reducer.swift */; };
 		C74FFC192BAC81AF00A94E04 /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74FFC142BAC81AF00A94E04 /* Effect.swift */; };
@@ -178,6 +179,7 @@
 		C70C44022BAB34C2009C3ACA /* TDOptionsMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TDOptionsMenuView.swift; sourceTree = "<group>"; };
 		C72E43DB2BAC8C0900CD7D9A /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72E43DC2BAC8C0900CD7D9A /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C72E43E12BAC8DD200CD7D9A /* PresentationTests.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PresentationTests.xctestplan; sourceTree = "<group>"; };
 		C74FFBF42BAC7FDA00A94E04 /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C74FFBF52BAC7FDA00A94E04 /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C74FFC122BAC81AF00A94E04 /* ActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionResult.swift; sourceTree = "<group>"; };
@@ -549,6 +551,7 @@
 		C7D44E0D2BAC68680078AA15 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C72E43E12BAC8DD200CD7D9A /* PresentationTests.xctestplan */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -732,6 +735,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C72E43E22BAC8DD200CD7D9A /* PresentationTests.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
