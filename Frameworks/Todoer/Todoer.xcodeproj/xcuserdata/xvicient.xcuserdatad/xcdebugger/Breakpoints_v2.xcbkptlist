@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "4972A27D-4B25-4F75-88A3-A828557F5031"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "shareList(shareEmail:list:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - f0105b5e9a0bcb4a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 74a4360141252558"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 842ae1d2ede0f748"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 1da5fefafbb67f34"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - eab6814f1634d3a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(11) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 4160e2b5a6267738"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(13) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "196">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - f0105b5e9a0bcba7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 74a43601412525b5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 842ae1d2ede0f7a5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 1da5fefafbb67fd9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - eab6814f1634dd7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(11) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 4160e2b5a62677d5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(13) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "196">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - f0105b5e9a0bcb69"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Todoer.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57"
+                  offsetFromSymbolStart = "100">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - f0105b5e9a0bcbe5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Common.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 74a43601412525f7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Common.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 842ae1d2ede0f7e7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Common.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 1da5fefafbb67f9b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Common.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - eab6814f1634d95"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(11) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Common.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "F482F0AE-FA53-4609-B115-1DB20519C0AB - 4160e2b5a6267797"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(13) suspend resume partial function for Todoer.ShareList.UseCase.shareList(shareEmail: Swift.String, list: Common.List) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Share/ShareListUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "196">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "declineInvitation(invitationId:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - 4d6c86f20503de4d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - 66b5918dbd8407c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - 3373eed79b589a4f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - c04d9ac55c4df44e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "44">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - 4d6c86f20503de4d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "92">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - c04d9ac55c4df44e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "120"
+                  endingLineNumber = "120"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - 4d6c86f20503deb3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "122"
+                  endingLineNumber = "122"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - 66b5918dbd84082"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "122"
+                  endingLineNumber = "122"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - 3373eed79b589ab1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "122"
+                  endingLineNumber = "122"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "8535960C-2CEF-4EE9-BA8B-85A75C265332 - c04d9ac55c4df4b0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for Todoer.Home.UseCase.declineInvitation(invitationId: Swift.String) async -&gt; Todoer.ActionResult&lt;Todoer.EquatableVoid&gt;"
+                  moduleName = "Todoer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xvicient/Developer/todoer/Todoer/Sources/Presentation/Features/Home/HomeUseCase.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "122"
+                  endingLineNumber = "122"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
