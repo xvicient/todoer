@@ -1,5 +1,5 @@
 import AuthenticationServices
-import Common
+import Shared
 import FirebaseAuth
 import Foundation
 import GoogleSignIn

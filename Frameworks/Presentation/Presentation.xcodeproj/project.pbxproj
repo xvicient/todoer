@@ -66,8 +66,6 @@
 		C7A367FE2BAD701700D97CFC /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367C32BAD701700D97CFC /* Store.swift */; };
 		C7A367FF2BAD701700D97CFC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7A367C52BAD701700D97CFC /* Colors.xcassets */; };
 		C7A368002BAD701700D97CFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7A367C62BAD701700D97CFC /* Assets.xcassets */; };
-		C7A3683F2BAD709900D97CFC /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3683D2BAD709900D97CFC /* Common.framework */; };
-		C7A368402BAD709A00D97CFC /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3683D2BAD709900D97CFC /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7A368412BAD709A00D97CFC /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3683E2BAD709900D97CFC /* Data.framework */; };
 		C7A368422BAD709A00D97CFC /* Data.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3683E2BAD709900D97CFC /* Data.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7A3686C2BAD725B00D97CFC /* Presentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3675C2BAD6FF600D97CFC /* Presentation.framework */; };
@@ -82,6 +80,8 @@
 		C7A3687A2BAD72A400D97CFC /* AuthenticationUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A368112BAD703100D97CFC /* AuthenticationUseCaseMock.swift */; };
 		C7D321312BAD8587008742CC /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D321302BAD8587008742CC /* Domain.framework */; };
 		C7D321322BAD8587008742CC /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7D321302BAD8587008742CC /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C7D321342BAD8941008742CC /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D321332BAD8941008742CC /* Shared.framework */; };
+		C7D321352BAD8941008742CC /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7D321332BAD8941008742CC /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,8 +102,8 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C7D321322BAD8587008742CC /* Domain.framework in Embed Frameworks */,
+				C7D321352BAD8941008742CC /* Shared.framework in Embed Frameworks */,
 				C7A368422BAD709A00D97CFC /* Data.framework in Embed Frameworks */,
-				C7A368402BAD709A00D97CFC /* Common.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,6 +185,7 @@
 		C7A3683E2BAD709900D97CFC /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7A368682BAD725B00D97CFC /* PresentationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PresentationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D321302BAD8587008742CC /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7D321332BAD8941008742CC /* Shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,8 +194,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7D321312BAD8587008742CC /* Domain.framework in Frameworks */,
+				C7D321342BAD8941008742CC /* Shared.framework in Frameworks */,
 				C7A368412BAD709A00D97CFC /* Data.framework in Frameworks */,
-				C7A3683F2BAD709900D97CFC /* Common.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,6 +579,7 @@
 		C7A3681F2BAD704600D97CFC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7D321332BAD8941008742CC /* Shared.framework */,
 				C7D321302BAD8587008742CC /* Domain.framework */,
 				C7A3683D2BAD709900D97CFC /* Common.framework */,
 				C7A3683E2BAD709900D97CFC /* Data.framework */,

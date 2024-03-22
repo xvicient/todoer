@@ -1,5 +1,5 @@
 import AuthenticationServices
-import Common
+import Shared
 
 // MARK: - Reducer results
 

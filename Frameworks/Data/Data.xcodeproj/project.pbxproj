@@ -25,8 +25,6 @@
 		C7A367382BAD6E8400D97CFC /* AuthDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367272BAD6E8300D97CFC /* AuthDataDTO.swift */; };
 		C7A367392BAD6E8400D97CFC /* ListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367282BAD6E8300D97CFC /* ListDTO.swift */; };
 		C7A3673A2BAD6E8400D97CFC /* InvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367292BAD6E8300D97CFC /* InvitationDTO.swift */; };
-		C7A3684B2BAD70D600D97CFC /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3684A2BAD70D600D97CFC /* Common.framework */; };
-		C7A3684C2BAD70D600D97CFC /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3684A2BAD70D600D97CFC /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7A368502BAD716300D97CFC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C7A3684F2BAD716300D97CFC /* FirebaseFirestore */; };
 		C7A368522BAD716300D97CFC /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368512BAD716300D97CFC /* FirebaseFirestoreCombine-Community */; };
 		C7A368542BAD716300D97CFC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368532BAD716300D97CFC /* FirebaseFirestoreSwift */; };
@@ -40,6 +38,8 @@
 		C7D3210E2BAD7878008742CC /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D3210D2BAD7878008742CC /* AppSetting.swift */; };
 		C7D3212E2BAD7C96008742CC /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D3212D2BAD7C96008742CC /* Domain.framework */; };
 		C7D3212F2BAD7C96008742CC /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7D3212D2BAD7C96008742CC /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C7D321372BAD895B008742CC /* Shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D321362BAD895B008742CC /* Shared.framework */; };
+		C7D321382BAD895B008742CC /* Shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7D321362BAD895B008742CC /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,7 +50,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C7D3212F2BAD7C96008742CC /* Domain.framework in Embed Frameworks */,
-				C7A3684C2BAD70D600D97CFC /* Common.framework in Embed Frameworks */,
+				C7D321382BAD895B008742CC /* Shared.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,6 +80,7 @@
 		C7A3684A2BAD70D600D97CFC /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D3210D2BAD7878008742CC /* AppSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		C7D3212D2BAD7C96008742CC /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7D321362BAD895B008742CC /* Shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,9 +93,9 @@
 				C7A3685C2BAD71B600D97CFC /* FirebaseFirestoreCombine-Community in Frameworks */,
 				C7A368582BAD71B600D97CFC /* FirebaseAuthCombine-Community in Frameworks */,
 				C7A368562BAD71B600D97CFC /* FirebaseAuth in Frameworks */,
-				C7A3684B2BAD70D600D97CFC /* Common.framework in Frameworks */,
 				C7A368612BAD71BE00D97CFC /* GoogleSignIn in Frameworks */,
 				C7A368502BAD716300D97CFC /* FirebaseFirestore in Frameworks */,
+				C7D321372BAD895B008742CC /* Shared.framework in Frameworks */,
 				C7A368542BAD716300D97CFC /* FirebaseFirestoreSwift in Frameworks */,
 				C7A3685A2BAD71B600D97CFC /* FirebaseFirestore in Frameworks */,
 				C7A3685E2BAD71B600D97CFC /* FirebaseFirestoreSwift in Frameworks */,
@@ -189,6 +190,7 @@
 		C7A368492BAD70D600D97CFC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7D321362BAD895B008742CC /* Shared.framework */,
 				C7D3212D2BAD7C96008742CC /* Domain.framework */,
 				C7A3684A2BAD70D600D97CFC /* Common.framework */,
 			);

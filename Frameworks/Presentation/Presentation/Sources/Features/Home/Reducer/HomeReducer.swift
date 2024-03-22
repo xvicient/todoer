@@ -1,5 +1,5 @@
 import Domain
-import Common
+import Shared
 import Foundation
 
 // MARK: - HomeReducer

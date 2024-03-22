@@ -1,4 +1,4 @@
-import Common
+import Shared
 import SwiftUI
 
 // MARK: - AboutScreen

@@ -1,5 +1,5 @@
 import AuthenticationServices
-import Common
+import Shared
 import GoogleSignIn
 import GoogleSignInSwift
 import SwiftUI

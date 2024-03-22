@@ -14,6 +14,6 @@
       location = "group:Frameworks/Data/Data.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Frameworks/Common/Common.xcodeproj">
+      location = "group:/Users/xvicient/Developer/todoer/Frameworks/Common/Shared.xcodeproj">
    </FileRef>
 </Workspace>

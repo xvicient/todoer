@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C7D1C7962B8F7820006AB4E6 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D1C7882B8F7820006AB4E6 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7D1C7962B8F7820006AB4E6 /* Shared.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D1C7882B8F7820006AB4E6 /* Shared.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C7D1C9312B8F8BAD006AB4E6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */; };
 		C7D1C9322B8F8BAD006AB4E6 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9262B8F8BAD006AB4E6 /* AppInfo.swift */; };
 		C7D1C9342B8F8BAD006AB4E6 /* Error+Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9292B8F8BAD006AB4E6 /* Error+Code.swift */; };
@@ -17,8 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C7D1C7852B8F7820006AB4E6 /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7D1C7882B8F7820006AB4E6 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		C7D1C7852B8F7820006AB4E6 /* Shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7D1C7882B8F7820006AB4E6 /* Shared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
 		C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C7D1C9262B8F8BAD006AB4E6 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		C7D1C9292B8F8BAD006AB4E6 /* Error+Code.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Code.swift"; sourceTree = "<group>"; };
@@ -41,7 +41,7 @@
 		C7D1C77B2B8F7820006AB4E6 = {
 			isa = PBXGroup;
 			children = (
-				C7D1C7872B8F7820006AB4E6 /* Common */,
+				C7D1C7872B8F7820006AB4E6 /* Shared */,
 				C7D1C7862B8F7820006AB4E6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,18 +49,18 @@
 		C7D1C7862B8F7820006AB4E6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1C7852B8F7820006AB4E6 /* Common.framework */,
+				C7D1C7852B8F7820006AB4E6 /* Shared.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C7D1C7872B8F7820006AB4E6 /* Common */ = {
+		C7D1C7872B8F7820006AB4E6 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				C7D1C7882B8F7820006AB4E6 /* Shared.h */,
 				C7D1C9232B8F8BAD006AB4E6 /* Sources */,
-				C7D1C7882B8F7820006AB4E6 /* Common.h */,
 			);
-			path = Common;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		C7D1C9232B8F8BAD006AB4E6 /* Sources */ = {
@@ -99,16 +99,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D1C7962B8F7820006AB4E6 /* Common.h in Headers */,
+				C7D1C7962B8F7820006AB4E6 /* Shared.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C7D1C7842B8F7820006AB4E6 /* Common */ = {
+		C7D1C7842B8F7820006AB4E6 /* Shared */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C7D1C7992B8F7820006AB4E6 /* Build configuration list for PBXNativeTarget "Common" */;
+			buildConfigurationList = C7D1C7992B8F7820006AB4E6 /* Build configuration list for PBXNativeTarget "Shared" */;
 			buildPhases = (
 				C7D1C7802B8F7820006AB4E6 /* Headers */,
 				C7D1C7812B8F7820006AB4E6 /* Sources */,
@@ -119,9 +119,9 @@
 			);
 			dependencies = (
 			);
-			name = Common;
+			name = Shared;
 			productName = Common;
-			productReference = C7D1C7852B8F7820006AB4E6 /* Common.framework */;
+			productReference = C7D1C7852B8F7820006AB4E6 /* Shared.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -139,7 +139,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C7D1C77F2B8F7820006AB4E6 /* Build configuration list for PBXProject "Common" */;
+			buildConfigurationList = C7D1C77F2B8F7820006AB4E6 /* Build configuration list for PBXProject "Shared" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -152,7 +152,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C7D1C7842B8F7820006AB4E6 /* Common */,
+				C7D1C7842B8F7820006AB4E6 /* Shared */,
 			);
 		};
 /* End PBXProject section */
@@ -331,7 +331,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = xvicient.Common;
+				PRODUCT_BUNDLE_IDENTIFIER = xvicient.Shared;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -362,7 +362,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = xvicient.Common;
+				PRODUCT_BUNDLE_IDENTIFIER = xvicient.Shared;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -374,7 +374,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C7D1C77F2B8F7820006AB4E6 /* Build configuration list for PBXProject "Common" */ = {
+		C7D1C77F2B8F7820006AB4E6 /* Build configuration list for PBXProject "Shared" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C7D1C7972B8F7820006AB4E6 /* Debug */,
@@ -383,7 +383,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C7D1C7992B8F7820006AB4E6 /* Build configuration list for PBXNativeTarget "Common" */ = {
+		C7D1C7992B8F7820006AB4E6 /* Build configuration list for PBXNativeTarget "Shared" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C7D1C79A2B8F7820006AB4E6 /* Debug */,
