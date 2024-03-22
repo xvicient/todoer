@@ -7,54 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C70C43A42BAB2EC4009C3ACA /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70C43A32BAB2EC4009C3ACA /* FirebaseManager.swift */; };
-		C70C43A62BAB2F63009C3ACA /* GoogleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70C43A52BAB2F63009C3ACA /* GoogleSignInManager.swift */; };
-		C7D1C8D82B8F8091006AB4E6 /* Data.docc in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8D72B8F8091006AB4E6 /* Data.docc */; };
-		C7D1C8DE2B8F8091006AB4E6 /* Data.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D1C8D32B8F8091006AB4E6 /* Data.framework */; };
-		C7D1C8E42B8F8091006AB4E6 /* Data.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D1C8D62B8F8091006AB4E6 /* Data.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C7D1C9012B8F80F8006AB4E6 /* ItemsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8EF2B8F80F8006AB4E6 /* ItemsDataSource.swift */; };
-		C7D1C9022B8F80F8006AB4E6 /* InvitationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8F02B8F80F8006AB4E6 /* InvitationsDataSource.swift */; };
-		C7D1C9032B8F80F8006AB4E6 /* ListsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8F12B8F80F8006AB4E6 /* ListsDataSource.swift */; };
-		C7D1C9042B8F80F8006AB4E6 /* UsersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8F22B8F80F8006AB4E6 /* UsersDataSource.swift */; };
-		C7D1C9052B8F80F8006AB4E6 /* ItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8F42B8F80F8006AB4E6 /* ItemDTO.swift */; };
-		C7D1C9062B8F80F8006AB4E6 /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8F52B8F80F8006AB4E6 /* UserDTO.swift */; };
-		C7D1C9072B8F80F8006AB4E6 /* AuthDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8F62B8F80F8006AB4E6 /* AuthDataDTO.swift */; };
-		C7D1C9082B8F80F8006AB4E6 /* ListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8F72B8F80F8006AB4E6 /* ListDTO.swift */; };
-		C7D1C9092B8F80F8006AB4E6 /* InvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8F82B8F80F8006AB4E6 /* InvitationDTO.swift */; };
-		C7D1C90A2B8F80F8006AB4E6 /* InvitationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8FA2B8F80F8006AB4E6 /* InvitationsRepository.swift */; };
-		C7D1C90B2B8F80F8006AB4E6 /* ItemsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8FB2B8F80F8006AB4E6 /* ItemsRepository.swift */; };
-		C7D1C90C2B8F80F8006AB4E6 /* UsersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8FC2B8F80F8006AB4E6 /* UsersRepository.swift */; };
-		C7D1C90D2B8F80F8006AB4E6 /* ListsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8FD2B8F80F8006AB4E6 /* ListsRepository.swift */; };
-		C7D1C90E2B8F80F8006AB4E6 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C8FF2B8F80F8006AB4E6 /* AuthenticationService.swift */; };
-		C7D1C90F2B8F80F8006AB4E6 /* SignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9002B8F80F8006AB4E6 /* SignInService.swift */; };
-		C7D1C9582B906FFF006AB4E6 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C7D1C9572B906FFF006AB4E6 /* FirebaseAuth */; };
-		C7D1C95A2B906FFF006AB4E6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C7D1C9592B906FFF006AB4E6 /* FirebaseFirestore */; };
-		C7D1C95C2B906FFF006AB4E6 /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C7D1C95B2B906FFF006AB4E6 /* FirebaseFirestoreCombine-Community */; };
-		C7D1C95E2B906FFF006AB4E6 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7D1C95D2B906FFF006AB4E6 /* FirebaseFirestoreSwift */; };
-		C7D1C9612B907046006AB4E6 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C7D1C9602B907046006AB4E6 /* GoogleSignIn */; };
-		C7D1C9632B907046006AB4E6 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7D1C9622B907046006AB4E6 /* GoogleSignInSwift */; };
-		C7D1C9712B9074D1006AB4E6 /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D1C9702B9074D1006AB4E6 /* Common.framework */; };
-		C7D1C9722B9074D1006AB4E6 /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7D1C9702B9074D1006AB4E6 /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C7A3670D2BAD6E6F00D97CFC /* Data.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A3670C2BAD6E6F00D97CFC /* Data.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C7A3672A2BAD6E8300D97CFC /* ItemsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367152BAD6E8300D97CFC /* ItemsDataSource.swift */; };
+		C7A3672B2BAD6E8300D97CFC /* InvitationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367162BAD6E8300D97CFC /* InvitationsDataSource.swift */; };
+		C7A3672C2BAD6E8300D97CFC /* ListsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367172BAD6E8300D97CFC /* ListsDataSource.swift */; };
+		C7A3672D2BAD6E8300D97CFC /* UsersDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367182BAD6E8300D97CFC /* UsersDataSource.swift */; };
+		C7A3672E2BAD6E8300D97CFC /* InvitationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A3671A2BAD6E8300D97CFC /* InvitationsRepository.swift */; };
+		C7A3672F2BAD6E8300D97CFC /* ItemsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A3671B2BAD6E8300D97CFC /* ItemsRepository.swift */; };
+		C7A367302BAD6E8300D97CFC /* UsersRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A3671C2BAD6E8300D97CFC /* UsersRepository.swift */; };
+		C7A367312BAD6E8300D97CFC /* ListsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A3671D2BAD6E8300D97CFC /* ListsRepository.swift */; };
+		C7A367322BAD6E8300D97CFC /* GoogleSignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A3671F2BAD6E8300D97CFC /* GoogleSignInManager.swift */; };
+		C7A367332BAD6E8300D97CFC /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367202BAD6E8300D97CFC /* FirebaseManager.swift */; };
+		C7A367342BAD6E8300D97CFC /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367222BAD6E8300D97CFC /* AuthenticationService.swift */; };
+		C7A367352BAD6E8300D97CFC /* SignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367232BAD6E8300D97CFC /* SignInService.swift */; };
+		C7A367362BAD6E8300D97CFC /* ItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367252BAD6E8300D97CFC /* ItemDTO.swift */; };
+		C7A367372BAD6E8300D97CFC /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367262BAD6E8300D97CFC /* UserDTO.swift */; };
+		C7A367382BAD6E8400D97CFC /* AuthDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367272BAD6E8300D97CFC /* AuthDataDTO.swift */; };
+		C7A367392BAD6E8400D97CFC /* ListDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367282BAD6E8300D97CFC /* ListDTO.swift */; };
+		C7A3673A2BAD6E8400D97CFC /* InvitationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367292BAD6E8300D97CFC /* InvitationDTO.swift */; };
+		C7A3684B2BAD70D600D97CFC /* Common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3684A2BAD70D600D97CFC /* Common.framework */; };
+		C7A3684C2BAD70D600D97CFC /* Common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7A3684A2BAD70D600D97CFC /* Common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C7A368502BAD716300D97CFC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C7A3684F2BAD716300D97CFC /* FirebaseFirestore */; };
+		C7A368522BAD716300D97CFC /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368512BAD716300D97CFC /* FirebaseFirestoreCombine-Community */; };
+		C7A368542BAD716300D97CFC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368532BAD716300D97CFC /* FirebaseFirestoreSwift */; };
+		C7A368562BAD71B600D97CFC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368552BAD71B600D97CFC /* FirebaseAuth */; };
+		C7A368582BAD71B600D97CFC /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368572BAD71B600D97CFC /* FirebaseAuthCombine-Community */; };
+		C7A3685A2BAD71B600D97CFC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368592BAD71B600D97CFC /* FirebaseFirestore */; };
+		C7A3685C2BAD71B600D97CFC /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C7A3685B2BAD71B600D97CFC /* FirebaseFirestoreCombine-Community */; };
+		C7A3685E2BAD71B600D97CFC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7A3685D2BAD71B600D97CFC /* FirebaseFirestoreSwift */; };
+		C7A368612BAD71BE00D97CFC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368602BAD71BE00D97CFC /* GoogleSignIn */; };
+		C7A368632BAD71BE00D97CFC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368622BAD71BE00D97CFC /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		C7D1C8DF2B8F8091006AB4E6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C7D1C8CA2B8F8091006AB4E6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C7D1C8D22B8F8091006AB4E6;
-			remoteInfo = Data;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
-		C7D1C9732B9074D2006AB4E6 /* Embed Frameworks */ = {
+		C7A3684D2BAD70D600D97CFC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C7D1C9722B9074D1006AB4E6 /* Common.framework in Embed Frameworks */,
+				C7A3684C2BAD70D600D97CFC /* Common.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -62,154 +54,144 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C70C43A32BAB2EC4009C3ACA /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
-		C70C43A52BAB2F63009C3ACA /* GoogleSignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInManager.swift; sourceTree = "<group>"; };
-		C7D1C8D32B8F8091006AB4E6 /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7D1C8D62B8F8091006AB4E6 /* Data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
-		C7D1C8D72B8F8091006AB4E6 /* Data.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Data.docc; sourceTree = "<group>"; };
-		C7D1C8DD2B8F8091006AB4E6 /* DataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7D1C8EF2B8F80F8006AB4E6 /* ItemsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsDataSource.swift; sourceTree = "<group>"; };
-		C7D1C8F02B8F80F8006AB4E6 /* InvitationsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitationsDataSource.swift; sourceTree = "<group>"; };
-		C7D1C8F12B8F80F8006AB4E6 /* ListsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsDataSource.swift; sourceTree = "<group>"; };
-		C7D1C8F22B8F80F8006AB4E6 /* UsersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersDataSource.swift; sourceTree = "<group>"; };
-		C7D1C8F42B8F80F8006AB4E6 /* ItemDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDTO.swift; sourceTree = "<group>"; };
-		C7D1C8F52B8F80F8006AB4E6 /* UserDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
-		C7D1C8F62B8F80F8006AB4E6 /* AuthDataDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthDataDTO.swift; sourceTree = "<group>"; };
-		C7D1C8F72B8F80F8006AB4E6 /* ListDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDTO.swift; sourceTree = "<group>"; };
-		C7D1C8F82B8F80F8006AB4E6 /* InvitationDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitationDTO.swift; sourceTree = "<group>"; };
-		C7D1C8FA2B8F80F8006AB4E6 /* InvitationsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitationsRepository.swift; sourceTree = "<group>"; };
-		C7D1C8FB2B8F80F8006AB4E6 /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
-		C7D1C8FC2B8F80F8006AB4E6 /* UsersRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersRepository.swift; sourceTree = "<group>"; };
-		C7D1C8FD2B8F80F8006AB4E6 /* ListsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsRepository.swift; sourceTree = "<group>"; };
-		C7D1C8FF2B8F80F8006AB4E6 /* AuthenticationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
-		C7D1C9002B8F80F8006AB4E6 /* SignInService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInService.swift; sourceTree = "<group>"; };
-		C7D1C9652B9070AE006AB4E6 /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7D1C9702B9074D1006AB4E6 /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7A367092BAD6E6F00D97CFC /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7A3670C2BAD6E6F00D97CFC /* Data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
+		C7A367152BAD6E8300D97CFC /* ItemsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsDataSource.swift; sourceTree = "<group>"; };
+		C7A367162BAD6E8300D97CFC /* InvitationsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitationsDataSource.swift; sourceTree = "<group>"; };
+		C7A367172BAD6E8300D97CFC /* ListsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsDataSource.swift; sourceTree = "<group>"; };
+		C7A367182BAD6E8300D97CFC /* UsersDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersDataSource.swift; sourceTree = "<group>"; };
+		C7A3671A2BAD6E8300D97CFC /* InvitationsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitationsRepository.swift; sourceTree = "<group>"; };
+		C7A3671B2BAD6E8300D97CFC /* ItemsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsRepository.swift; sourceTree = "<group>"; };
+		C7A3671C2BAD6E8300D97CFC /* UsersRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersRepository.swift; sourceTree = "<group>"; };
+		C7A3671D2BAD6E8300D97CFC /* ListsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsRepository.swift; sourceTree = "<group>"; };
+		C7A3671F2BAD6E8300D97CFC /* GoogleSignInManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleSignInManager.swift; sourceTree = "<group>"; };
+		C7A367202BAD6E8300D97CFC /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		C7A367222BAD6E8300D97CFC /* AuthenticationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
+		C7A367232BAD6E8300D97CFC /* SignInService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInService.swift; sourceTree = "<group>"; };
+		C7A367252BAD6E8300D97CFC /* ItemDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDTO.swift; sourceTree = "<group>"; };
+		C7A367262BAD6E8300D97CFC /* UserDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
+		C7A367272BAD6E8300D97CFC /* AuthDataDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthDataDTO.swift; sourceTree = "<group>"; };
+		C7A367282BAD6E8300D97CFC /* ListDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDTO.swift; sourceTree = "<group>"; };
+		C7A367292BAD6E8300D97CFC /* InvitationDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitationDTO.swift; sourceTree = "<group>"; };
+		C7A3684A2BAD70D600D97CFC /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C7D1C8D02B8F8091006AB4E6 /* Frameworks */ = {
+		C7A367062BAD6E6F00D97CFC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D1C9612B907046006AB4E6 /* GoogleSignIn in Frameworks */,
-				C7D1C95C2B906FFF006AB4E6 /* FirebaseFirestoreCombine-Community in Frameworks */,
-				C7D1C9582B906FFF006AB4E6 /* FirebaseAuth in Frameworks */,
-				C7D1C9632B907046006AB4E6 /* GoogleSignInSwift in Frameworks */,
-				C7D1C95A2B906FFF006AB4E6 /* FirebaseFirestore in Frameworks */,
-				C7D1C9712B9074D1006AB4E6 /* Common.framework in Frameworks */,
-				C7D1C95E2B906FFF006AB4E6 /* FirebaseFirestoreSwift in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C7D1C8DA2B8F8091006AB4E6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C7D1C8DE2B8F8091006AB4E6 /* Data.framework in Frameworks */,
+				C7A368522BAD716300D97CFC /* FirebaseFirestoreCombine-Community in Frameworks */,
+				C7A3685C2BAD71B600D97CFC /* FirebaseFirestoreCombine-Community in Frameworks */,
+				C7A368582BAD71B600D97CFC /* FirebaseAuthCombine-Community in Frameworks */,
+				C7A368562BAD71B600D97CFC /* FirebaseAuth in Frameworks */,
+				C7A3684B2BAD70D600D97CFC /* Common.framework in Frameworks */,
+				C7A368612BAD71BE00D97CFC /* GoogleSignIn in Frameworks */,
+				C7A368502BAD716300D97CFC /* FirebaseFirestore in Frameworks */,
+				C7A368542BAD716300D97CFC /* FirebaseFirestoreSwift in Frameworks */,
+				C7A3685A2BAD71B600D97CFC /* FirebaseFirestore in Frameworks */,
+				C7A3685E2BAD71B600D97CFC /* FirebaseFirestoreSwift in Frameworks */,
+				C7A368632BAD71BE00D97CFC /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C70C43A22BAB2EB6009C3ACA /* Helpers */ = {
+		C7A366FF2BAD6E6E00D97CFC = {
 			isa = PBXGroup;
 			children = (
-				C70C43A32BAB2EC4009C3ACA /* FirebaseManager.swift */,
-				C70C43A52BAB2F63009C3ACA /* GoogleSignInManager.swift */,
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
-		C7D1C8C92B8F8091006AB4E6 = {
-			isa = PBXGroup;
-			children = (
-				C7D1C8D52B8F8091006AB4E6 /* Data */,
-				C7D1C8D42B8F8091006AB4E6 /* Products */,
-				C7D1C9642B9070AE006AB4E6 /* Frameworks */,
+				C7A3670B2BAD6E6F00D97CFC /* Data */,
+				C7A3670A2BAD6E6F00D97CFC /* Products */,
+				C7A368492BAD70D600D97CFC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		C7D1C8D42B8F8091006AB4E6 /* Products */ = {
+		C7A3670A2BAD6E6F00D97CFC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1C8D32B8F8091006AB4E6 /* Data.framework */,
-				C7D1C8DD2B8F8091006AB4E6 /* DataTests.xctest */,
+				C7A367092BAD6E6F00D97CFC /* Data.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C7D1C8D52B8F8091006AB4E6 /* Data */ = {
+		C7A3670B2BAD6E6F00D97CFC /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1C8D62B8F8091006AB4E6 /* Data.h */,
-				C7D1C8ED2B8F80F8006AB4E6 /* Sources */,
-				C7D1C8D72B8F8091006AB4E6 /* Data.docc */,
+				C7A3670C2BAD6E6F00D97CFC /* Data.h */,
+				C7A367132BAD6E8300D97CFC /* Sources */,
 			);
 			path = Data;
 			sourceTree = "<group>";
 		};
-		C7D1C8ED2B8F80F8006AB4E6 /* Sources */ = {
+		C7A367132BAD6E8300D97CFC /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C70C43A22BAB2EB6009C3ACA /* Helpers */,
-				C7D1C8F32B8F80F8006AB4E6 /* Entities */,
-				C7D1C8EE2B8F80F8006AB4E6 /* DataSources */,
-				C7D1C8F92B8F80F8006AB4E6 /* Repositories */,
-				C7D1C8FE2B8F80F8006AB4E6 /* Services */,
+				C7A367142BAD6E8300D97CFC /* DataSources */,
+				C7A367192BAD6E8300D97CFC /* Repositories */,
+				C7A3671E2BAD6E8300D97CFC /* Helpers */,
+				C7A367212BAD6E8300D97CFC /* Services */,
+				C7A367242BAD6E8300D97CFC /* Entities */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		C7D1C8EE2B8F80F8006AB4E6 /* DataSources */ = {
+		C7A367142BAD6E8300D97CFC /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1C8EF2B8F80F8006AB4E6 /* ItemsDataSource.swift */,
-				C7D1C8F02B8F80F8006AB4E6 /* InvitationsDataSource.swift */,
-				C7D1C8F12B8F80F8006AB4E6 /* ListsDataSource.swift */,
-				C7D1C8F22B8F80F8006AB4E6 /* UsersDataSource.swift */,
+				C7A367152BAD6E8300D97CFC /* ItemsDataSource.swift */,
+				C7A367162BAD6E8300D97CFC /* InvitationsDataSource.swift */,
+				C7A367172BAD6E8300D97CFC /* ListsDataSource.swift */,
+				C7A367182BAD6E8300D97CFC /* UsersDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
 		};
-		C7D1C8F32B8F80F8006AB4E6 /* Entities */ = {
+		C7A367192BAD6E8300D97CFC /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1C8F42B8F80F8006AB4E6 /* ItemDTO.swift */,
-				C7D1C8F52B8F80F8006AB4E6 /* UserDTO.swift */,
-				C7D1C8F62B8F80F8006AB4E6 /* AuthDataDTO.swift */,
-				C7D1C8F72B8F80F8006AB4E6 /* ListDTO.swift */,
-				C7D1C8F82B8F80F8006AB4E6 /* InvitationDTO.swift */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
-		C7D1C8F92B8F80F8006AB4E6 /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-				C7D1C8FA2B8F80F8006AB4E6 /* InvitationsRepository.swift */,
-				C7D1C8FB2B8F80F8006AB4E6 /* ItemsRepository.swift */,
-				C7D1C8FC2B8F80F8006AB4E6 /* UsersRepository.swift */,
-				C7D1C8FD2B8F80F8006AB4E6 /* ListsRepository.swift */,
+				C7A3671A2BAD6E8300D97CFC /* InvitationsRepository.swift */,
+				C7A3671B2BAD6E8300D97CFC /* ItemsRepository.swift */,
+				C7A3671C2BAD6E8300D97CFC /* UsersRepository.swift */,
+				C7A3671D2BAD6E8300D97CFC /* ListsRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
 		};
-		C7D1C8FE2B8F80F8006AB4E6 /* Services */ = {
+		C7A3671E2BAD6E8300D97CFC /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1C8FF2B8F80F8006AB4E6 /* AuthenticationService.swift */,
-				C7D1C9002B8F80F8006AB4E6 /* SignInService.swift */,
+				C7A3671F2BAD6E8300D97CFC /* GoogleSignInManager.swift */,
+				C7A367202BAD6E8300D97CFC /* FirebaseManager.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C7A367212BAD6E8300D97CFC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C7A367222BAD6E8300D97CFC /* AuthenticationService.swift */,
+				C7A367232BAD6E8300D97CFC /* SignInService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		C7D1C9642B9070AE006AB4E6 /* Frameworks */ = {
+		C7A367242BAD6E8300D97CFC /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1C9702B9074D1006AB4E6 /* Common.framework */,
-				C7D1C9652B9070AE006AB4E6 /* Common.framework */,
+				C7A367252BAD6E8300D97CFC /* ItemDTO.swift */,
+				C7A367262BAD6E8300D97CFC /* UserDTO.swift */,
+				C7A367272BAD6E8300D97CFC /* AuthDataDTO.swift */,
+				C7A367282BAD6E8300D97CFC /* ListDTO.swift */,
+				C7A367292BAD6E8300D97CFC /* InvitationDTO.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		C7A368492BAD70D600D97CFC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C7A3684A2BAD70D600D97CFC /* Common.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -217,26 +199,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		C7D1C8CE2B8F8091006AB4E6 /* Headers */ = {
+		C7A367042BAD6E6F00D97CFC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D1C8E42B8F8091006AB4E6 /* Data.h in Headers */,
+				C7A3670D2BAD6E6F00D97CFC /* Data.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		C7D1C8D22B8F8091006AB4E6 /* Data */ = {
+		C7A367082BAD6E6F00D97CFC /* Data */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C7D1C8E72B8F8091006AB4E6 /* Build configuration list for PBXNativeTarget "Data" */;
+			buildConfigurationList = C7A367102BAD6E6F00D97CFC /* Build configuration list for PBXNativeTarget "Data" */;
 			buildPhases = (
-				C7D1C8CE2B8F8091006AB4E6 /* Headers */,
-				C7D1C8CF2B8F8091006AB4E6 /* Sources */,
-				C7D1C8D02B8F8091006AB4E6 /* Frameworks */,
-				C7D1C8D12B8F8091006AB4E6 /* Resources */,
-				C7D1C9732B9074D2006AB4E6 /* Embed Frameworks */,
+				C7A367042BAD6E6F00D97CFC /* Headers */,
+				C7A367052BAD6E6F00D97CFC /* Sources */,
+				C7A367062BAD6E6F00D97CFC /* Frameworks */,
+				C7A367072BAD6E6F00D97CFC /* Resources */,
+				C7A3684D2BAD70D600D97CFC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -244,54 +226,36 @@
 			);
 			name = Data;
 			packageProductDependencies = (
-				C7D1C9572B906FFF006AB4E6 /* FirebaseAuth */,
-				C7D1C9592B906FFF006AB4E6 /* FirebaseFirestore */,
-				C7D1C95B2B906FFF006AB4E6 /* FirebaseFirestoreCombine-Community */,
-				C7D1C95D2B906FFF006AB4E6 /* FirebaseFirestoreSwift */,
-				C7D1C9602B907046006AB4E6 /* GoogleSignIn */,
-				C7D1C9622B907046006AB4E6 /* GoogleSignInSwift */,
+				C7A3684F2BAD716300D97CFC /* FirebaseFirestore */,
+				C7A368512BAD716300D97CFC /* FirebaseFirestoreCombine-Community */,
+				C7A368532BAD716300D97CFC /* FirebaseFirestoreSwift */,
+				C7A368552BAD71B600D97CFC /* FirebaseAuth */,
+				C7A368572BAD71B600D97CFC /* FirebaseAuthCombine-Community */,
+				C7A368592BAD71B600D97CFC /* FirebaseFirestore */,
+				C7A3685B2BAD71B600D97CFC /* FirebaseFirestoreCombine-Community */,
+				C7A3685D2BAD71B600D97CFC /* FirebaseFirestoreSwift */,
+				C7A368602BAD71BE00D97CFC /* GoogleSignIn */,
+				C7A368622BAD71BE00D97CFC /* GoogleSignInSwift */,
 			);
 			productName = Data;
-			productReference = C7D1C8D32B8F8091006AB4E6 /* Data.framework */;
+			productReference = C7A367092BAD6E6F00D97CFC /* Data.framework */;
 			productType = "com.apple.product-type.framework";
-		};
-		C7D1C8DC2B8F8091006AB4E6 /* DataTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C7D1C8EA2B8F8091006AB4E6 /* Build configuration list for PBXNativeTarget "DataTests" */;
-			buildPhases = (
-				C7D1C8D92B8F8091006AB4E6 /* Sources */,
-				C7D1C8DA2B8F8091006AB4E6 /* Frameworks */,
-				C7D1C8DB2B8F8091006AB4E6 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C7D1C8E02B8F8091006AB4E6 /* PBXTargetDependency */,
-			);
-			name = DataTests;
-			productName = DataTests;
-			productReference = C7D1C8DD2B8F8091006AB4E6 /* DataTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		C7D1C8CA2B8F8091006AB4E6 /* Project object */ = {
+		C7A367002BAD6E6E00D97CFC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					C7D1C8D22B8F8091006AB4E6 = {
-						CreatedOnToolsVersion = 15.0;
-					};
-					C7D1C8DC2B8F8091006AB4E6 = {
+					C7A367082BAD6E6F00D97CFC = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = C7D1C8CD2B8F8091006AB4E6 /* Build configuration list for PBXProject "Data" */;
+			buildConfigurationList = C7A367032BAD6E6E00D97CFC /* Build configuration list for PBXProject "Data" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -299,30 +263,22 @@
 				en,
 				Base,
 			);
-			mainGroup = C7D1C8C92B8F8091006AB4E6;
+			mainGroup = C7A366FF2BAD6E6E00D97CFC;
 			packageReferences = (
-				C7D1C9562B906FFF006AB4E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				C7D1C95F2B907046006AB4E6 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C7A3685F2BAD71BE00D97CFC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
-			productRefGroup = C7D1C8D42B8F8091006AB4E6 /* Products */;
+			productRefGroup = C7A3670A2BAD6E6F00D97CFC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C7D1C8D22B8F8091006AB4E6 /* Data */,
-				C7D1C8DC2B8F8091006AB4E6 /* DataTests */,
+				C7A367082BAD6E6F00D97CFC /* Data */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C7D1C8D12B8F8091006AB4E6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C7D1C8DB2B8F8091006AB4E6 /* Resources */ = {
+		C7A367072BAD6E6F00D97CFC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -332,50 +288,34 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C7D1C8CF2B8F8091006AB4E6 /* Sources */ = {
+		C7A367052BAD6E6F00D97CFC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D1C9052B8F80F8006AB4E6 /* ItemDTO.swift in Sources */,
-				C7D1C9042B8F80F8006AB4E6 /* UsersDataSource.swift in Sources */,
-				C70C43A62BAB2F63009C3ACA /* GoogleSignInManager.swift in Sources */,
-				C7D1C9092B8F80F8006AB4E6 /* InvitationDTO.swift in Sources */,
-				C7D1C90A2B8F80F8006AB4E6 /* InvitationsRepository.swift in Sources */,
-				C7D1C9022B8F80F8006AB4E6 /* InvitationsDataSource.swift in Sources */,
-				C7D1C8D82B8F8091006AB4E6 /* Data.docc in Sources */,
-				C7D1C90B2B8F80F8006AB4E6 /* ItemsRepository.swift in Sources */,
-				C7D1C90F2B8F80F8006AB4E6 /* SignInService.swift in Sources */,
-				C7D1C9032B8F80F8006AB4E6 /* ListsDataSource.swift in Sources */,
-				C7D1C90C2B8F80F8006AB4E6 /* UsersRepository.swift in Sources */,
-				C7D1C90E2B8F80F8006AB4E6 /* AuthenticationService.swift in Sources */,
-				C7D1C90D2B8F80F8006AB4E6 /* ListsRepository.swift in Sources */,
-				C7D1C9062B8F80F8006AB4E6 /* UserDTO.swift in Sources */,
-				C7D1C9012B8F80F8006AB4E6 /* ItemsDataSource.swift in Sources */,
-				C7D1C9072B8F80F8006AB4E6 /* AuthDataDTO.swift in Sources */,
-				C7D1C9082B8F80F8006AB4E6 /* ListDTO.swift in Sources */,
-				C70C43A42BAB2EC4009C3ACA /* FirebaseManager.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C7D1C8D92B8F8091006AB4E6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				C7A3672F2BAD6E8300D97CFC /* ItemsRepository.swift in Sources */,
+				C7A3673A2BAD6E8400D97CFC /* InvitationDTO.swift in Sources */,
+				C7A367302BAD6E8300D97CFC /* UsersRepository.swift in Sources */,
+				C7A367362BAD6E8300D97CFC /* ItemDTO.swift in Sources */,
+				C7A367332BAD6E8300D97CFC /* FirebaseManager.swift in Sources */,
+				C7A367352BAD6E8300D97CFC /* SignInService.swift in Sources */,
+				C7A367322BAD6E8300D97CFC /* GoogleSignInManager.swift in Sources */,
+				C7A367342BAD6E8300D97CFC /* AuthenticationService.swift in Sources */,
+				C7A3672E2BAD6E8300D97CFC /* InvitationsRepository.swift in Sources */,
+				C7A3672A2BAD6E8300D97CFC /* ItemsDataSource.swift in Sources */,
+				C7A3672D2BAD6E8300D97CFC /* UsersDataSource.swift in Sources */,
+				C7A3672B2BAD6E8300D97CFC /* InvitationsDataSource.swift in Sources */,
+				C7A367392BAD6E8400D97CFC /* ListDTO.swift in Sources */,
+				C7A3672C2BAD6E8300D97CFC /* ListsDataSource.swift in Sources */,
+				C7A367372BAD6E8300D97CFC /* UserDTO.swift in Sources */,
+				C7A367382BAD6E8400D97CFC /* AuthDataDTO.swift in Sources */,
+				C7A367312BAD6E8300D97CFC /* ListsRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		C7D1C8E02B8F8091006AB4E6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C7D1C8D22B8F8091006AB4E6 /* Data */;
-			targetProxy = C7D1C8DF2B8F8091006AB4E6 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		C7D1C8E52B8F8091006AB4E6 /* Debug */ = {
+		C7A3670E2BAD6E6F00D97CFC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -441,7 +381,7 @@
 			};
 			name = Debug;
 		};
-		C7D1C8E62B8F8091006AB4E6 /* Release */ = {
+		C7A3670F2BAD6E6F00D97CFC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -500,7 +440,7 @@
 			};
 			name = Release;
 		};
-		C7D1C8E82B8F8091006AB4E6 /* Debug */ = {
+		C7A367112BAD6E6F00D97CFC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -531,7 +471,7 @@
 			};
 			name = Debug;
 		};
-		C7D1C8E92B8F8091006AB4E6 /* Release */ = {
+		C7A367122BAD6E6F00D97CFC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -557,40 +497,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		C7D1C8EB2B8F8091006AB4E6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JPMAMPZRCV;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = xvicient.DataTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		C7D1C8EC2B8F8091006AB4E6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JPMAMPZRCV;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = xvicient.DataTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -599,29 +505,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C7D1C8CD2B8F8091006AB4E6 /* Build configuration list for PBXProject "Data" */ = {
+		C7A367032BAD6E6E00D97CFC /* Build configuration list for PBXProject "Data" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C7D1C8E52B8F8091006AB4E6 /* Debug */,
-				C7D1C8E62B8F8091006AB4E6 /* Release */,
+				C7A3670E2BAD6E6F00D97CFC /* Debug */,
+				C7A3670F2BAD6E6F00D97CFC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C7D1C8E72B8F8091006AB4E6 /* Build configuration list for PBXNativeTarget "Data" */ = {
+		C7A367102BAD6E6F00D97CFC /* Build configuration list for PBXNativeTarget "Data" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C7D1C8E82B8F8091006AB4E6 /* Debug */,
-				C7D1C8E92B8F8091006AB4E6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C7D1C8EA2B8F8091006AB4E6 /* Build configuration list for PBXNativeTarget "DataTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C7D1C8EB2B8F8091006AB4E6 /* Debug */,
-				C7D1C8EC2B8F8091006AB4E6 /* Release */,
+				C7A367112BAD6E6F00D97CFC /* Debug */,
+				C7A367122BAD6E6F00D97CFC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -629,15 +526,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C7D1C9562B906FFF006AB4E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.21.0;
+				minimumVersion = 10.23.0;
 			};
 		};
-		C7D1C95F2B907046006AB4E6 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+		C7A3685F2BAD71BE00D97CFC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
 			requirement = {
@@ -648,37 +545,57 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C7D1C9572B906FFF006AB4E6 /* FirebaseAuth */ = {
+		C7A3684F2BAD716300D97CFC /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C7D1C9562B906FFF006AB4E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		C7D1C9592B906FFF006AB4E6 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C7D1C9562B906FFF006AB4E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
-		C7D1C95B2B906FFF006AB4E6 /* FirebaseFirestoreCombine-Community */ = {
+		C7A368512BAD716300D97CFC /* FirebaseFirestoreCombine-Community */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C7D1C9562B906FFF006AB4E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseFirestoreCombine-Community";
 		};
-		C7D1C95D2B906FFF006AB4E6 /* FirebaseFirestoreSwift */ = {
+		C7A368532BAD716300D97CFC /* FirebaseFirestoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C7D1C9562B906FFF006AB4E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
 		};
-		C7D1C9602B907046006AB4E6 /* GoogleSignIn */ = {
+		C7A368552BAD71B600D97CFC /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C7D1C95F2B907046006AB4E6 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			package = C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		C7A368572BAD71B600D97CFC /* FirebaseAuthCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAuthCombine-Community";
+		};
+		C7A368592BAD71B600D97CFC /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		C7A3685B2BAD71B600D97CFC /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
+		};
+		C7A3685D2BAD71B600D97CFC /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7A3684E2BAD716300D97CFC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		C7A368602BAD71BE00D97CFC /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7A3685F2BAD71BE00D97CFC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
 		};
-		C7D1C9622B907046006AB4E6 /* GoogleSignInSwift */ = {
+		C7A368622BAD71BE00D97CFC /* GoogleSignInSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C7D1C95F2B907046006AB4E6 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			package = C7A3685F2BAD71BE00D97CFC /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = C7D1C8CA2B8F8091006AB4E6 /* Project object */;
+	rootObject = C7A367002BAD6E6E00D97CFC /* Project object */;
 }
