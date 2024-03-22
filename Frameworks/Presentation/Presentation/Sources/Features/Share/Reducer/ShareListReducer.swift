@@ -1,4 +1,5 @@
 import Common
+import Domain
 
 // MARK: - ShareListReducer
 

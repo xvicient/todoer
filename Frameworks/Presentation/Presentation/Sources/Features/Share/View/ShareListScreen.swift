@@ -1,4 +1,4 @@
-import Common
+import Domain
 import SwiftUI
 
 // MARK: - ShareListView
@@ -143,7 +143,7 @@ struct ShareView_Previews: PreviewProvider {
 	static var previews: some View {
 		ShareList.Builder.makeShareList(
 			coordinator: Coordinator(),
-			list: Common.List(
+			list: Domain.List(
 				documentId: "",
 				name: "",
 				done: true,

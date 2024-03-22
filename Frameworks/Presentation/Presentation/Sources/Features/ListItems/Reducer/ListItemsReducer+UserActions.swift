@@ -1,4 +1,4 @@
-import Common
+import Domain
 import Foundation
 
 // MARK: - Reducer user actions

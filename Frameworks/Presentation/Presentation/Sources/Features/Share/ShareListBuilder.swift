@@ -1,4 +1,4 @@
-import Common
+import Domain
 
 public struct ShareList {
 	public struct Builder {

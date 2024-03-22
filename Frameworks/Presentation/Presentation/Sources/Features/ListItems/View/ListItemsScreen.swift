@@ -1,4 +1,4 @@
-import Common
+import Domain
 import SwiftUI
 
 // MARK: - ListItemsScreen
@@ -179,7 +179,7 @@ extension ListItemsScreen {
 
 #Preview {
 	ListItems.Builder.makeItemsList(
-		list: Common.List(
+		list: Domain.List(
 			documentId: "1",
 			name: "Test",
 			done: false,

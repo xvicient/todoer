@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import Common
+@testable import Domain
 @testable import Presentation
 
 @MainActor

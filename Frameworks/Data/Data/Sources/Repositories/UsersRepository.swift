@@ -1,4 +1,4 @@
-import Common
+import Domain
 
 public protocol UsersRepositoryApi {
 	func setUid(_ value: String)

@@ -1,4 +1,4 @@
-import Common
+import Domain
 import Foundation
 
 extension Home.Reducer {

@@ -5,6 +5,9 @@
       location = "group:Todoer.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Frameworks/Domain/Domain.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Frameworks/Presentation/Presentation.xcodeproj">
    </FileRef>
    <FileRef

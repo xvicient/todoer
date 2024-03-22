@@ -1,4 +1,4 @@
-@testable import Common
+@testable import Domain
 @testable import Presentation
 
 struct UserMock {

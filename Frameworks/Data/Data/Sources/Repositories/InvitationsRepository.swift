@@ -1,5 +1,5 @@
 import Combine
-import Common
+import Domain
 import Foundation
 
 public protocol InvitationsRepositoryApi {

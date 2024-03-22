@@ -1,10 +1,18 @@
 import UIKit
 
 public struct Utils {
+    
+    private static var window: UIWindow? {
+        UIApplication
+            .shared
+            .connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .last
+    }
 
 	@MainActor
 	public static func topViewController(controller: UIViewController? = nil) -> UIViewController? {
-		let controller = controller ?? UIApplication.shared.keyWindow?.rootViewController
+        let controller = controller ?? window?.rootViewController
 
 		if let navigationController = controller as? UINavigationController {
 			return topViewController(controller: navigationController.visibleViewController)

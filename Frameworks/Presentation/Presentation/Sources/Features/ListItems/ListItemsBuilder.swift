@@ -1,16 +1,15 @@
-import Common
-import SwiftUI
+import Domain
 
 struct ListItems {
 	struct Builder {
 		struct Dependencies: ListItemsDependencies {
 			var useCase: ListItemsUseCaseApi
-			var list: Common.List
+			var list: List
 		}
 
 		@MainActor
 		static func makeItemsList(
-			list: Common.List
+			list: List
 		) -> ListItemsScreen {
 			let dependencies = Dependencies(
 				useCase: UseCase(),

@@ -1,5 +1,4 @@
-import Common
-import Foundation
+import Domain
 
 extension ShareList.Reducer {
 

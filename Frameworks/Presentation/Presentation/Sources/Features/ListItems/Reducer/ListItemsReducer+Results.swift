@@ -1,4 +1,4 @@
-import Common
+import Domain
 
 // MARK: - Reducer results
 

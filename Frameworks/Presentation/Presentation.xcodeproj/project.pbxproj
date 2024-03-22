@@ -80,6 +80,8 @@
 		C7A368782BAD72A400D97CFC /* TestReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A3680C2BAD703100D97CFC /* TestReducer.swift */; };
 		C7A368792BAD72A400D97CFC /* TestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A368052BAD703100D97CFC /* TestCoordinator.swift */; };
 		C7A3687A2BAD72A400D97CFC /* AuthenticationUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A368112BAD703100D97CFC /* AuthenticationUseCaseMock.swift */; };
+		C7D321312BAD8587008742CC /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D321302BAD8587008742CC /* Domain.framework */; };
+		C7D321322BAD8587008742CC /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7D321302BAD8587008742CC /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +101,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C7D321322BAD8587008742CC /* Domain.framework in Embed Frameworks */,
 				C7A368422BAD709A00D97CFC /* Data.framework in Embed Frameworks */,
 				C7A368402BAD709A00D97CFC /* Common.framework in Embed Frameworks */,
 			);
@@ -181,6 +184,7 @@
 		C7A3683D2BAD709900D97CFC /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7A3683E2BAD709900D97CFC /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7A368682BAD725B00D97CFC /* PresentationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PresentationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7D321302BAD8587008742CC /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +192,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7D321312BAD8587008742CC /* Domain.framework in Frameworks */,
 				C7A368412BAD709A00D97CFC /* Data.framework in Frameworks */,
 				C7A3683F2BAD709900D97CFC /* Common.framework in Frameworks */,
 			);
@@ -573,6 +578,7 @@
 		C7A3681F2BAD704600D97CFC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C7D321302BAD8587008742CC /* Domain.framework */,
 				C7A3683D2BAD709900D97CFC /* Common.framework */,
 				C7A3683E2BAD709900D97CFC /* Data.framework */,
 			);
