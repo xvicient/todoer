@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C7D1C7962B8F7820006AB4E6 /* Shared.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D1C7882B8F7820006AB4E6 /* Shared.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C7D1C9312B8F8BAD006AB4E6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */; };
 		C7D1C9322B8F8BAD006AB4E6 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9262B8F8BAD006AB4E6 /* AppInfo.swift */; };
 		C7D1C9342B8F8BAD006AB4E6 /* Error+Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9292B8F8BAD006AB4E6 /* Error+Code.swift */; };
@@ -18,7 +17,6 @@
 
 /* Begin PBXFileReference section */
 		C7D1C7852B8F7820006AB4E6 /* Shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7D1C7882B8F7820006AB4E6 /* Shared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
 		C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C7D1C9262B8F8BAD006AB4E6 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		C7D1C9292B8F8BAD006AB4E6 /* Error+Code.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Code.swift"; sourceTree = "<group>"; };
@@ -57,7 +55,6 @@
 		C7D1C7872B8F7820006AB4E6 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				C7D1C7882B8F7820006AB4E6 /* Shared.h */,
 				C7D1C9232B8F8BAD006AB4E6 /* Sources */,
 			);
 			path = Shared;
@@ -99,7 +96,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D1C7962B8F7820006AB4E6 /* Shared.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

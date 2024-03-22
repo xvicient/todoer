@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C7D3211D2BAD7C05008742CC /* Domain.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D3211C2BAD7C05008742CC /* Domain.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C7D321292BAD7C2C008742CC /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D321252BAD7C2C008742CC /* Item.swift */; };
 		C7D3212A2BAD7C2C008742CC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D321262BAD7C2C008742CC /* User.swift */; };
 		C7D3212B2BAD7C2C008742CC /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D321272BAD7C2C008742CC /* List.swift */; };
@@ -16,7 +15,6 @@
 
 /* Begin PBXFileReference section */
 		C7D321192BAD7C05008742CC /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7D3211C2BAD7C05008742CC /* Domain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Domain.h; sourceTree = "<group>"; };
 		C7D321252BAD7C2C008742CC /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		C7D321262BAD7C2C008742CC /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C7D321272BAD7C2C008742CC /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
@@ -53,7 +51,6 @@
 		C7D3211B2BAD7C05008742CC /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				C7D3211C2BAD7C05008742CC /* Domain.h */,
 				C7D321232BAD7C2C008742CC /* Sources */,
 			);
 			path = Domain;
@@ -85,7 +82,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D3211D2BAD7C05008742CC /* Domain.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

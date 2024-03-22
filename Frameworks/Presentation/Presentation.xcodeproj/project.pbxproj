@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C7A3676B2BAD6FF600D97CFC /* Presentation.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A3675F2BAD6FF600D97CFC /* Presentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C7A367C72BAD701700D97CFC /* PresentationBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367752BAD701700D97CFC /* PresentationBundle.swift */; };
 		C7A367C82BAD701700D97CFC /* CoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367782BAD701700D97CFC /* CoordinatorView.swift */; };
 		C7A367C92BAD701700D97CFC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367792BAD701700D97CFC /* Coordinator.swift */; };
@@ -112,7 +111,6 @@
 
 /* Begin PBXFileReference section */
 		C7A3675C2BAD6FF600D97CFC /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7A3675F2BAD6FF600D97CFC /* Presentation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Presentation.h; sourceTree = "<group>"; };
 		C7A367752BAD701700D97CFC /* PresentationBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationBundle.swift; sourceTree = "<group>"; };
 		C7A367782BAD701700D97CFC /* CoordinatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordinatorView.swift; sourceTree = "<group>"; };
 		C7A367792BAD701700D97CFC /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -232,7 +230,6 @@
 		C7A3675E2BAD6FF600D97CFC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				C7A3675F2BAD6FF600D97CFC /* Presentation.h */,
 				C7A367742BAD701700D97CFC /* Bundle */,
 				C7A367C42BAD701700D97CFC /* Resources */,
 				C7A367762BAD701700D97CFC /* Sources */,
@@ -594,7 +591,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7A3676B2BAD6FF600D97CFC /* Presentation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

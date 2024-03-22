@@ -46,7 +46,7 @@
 		C7A368442BAD70B600D97CFC /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7C535572B545BB000DB4B65 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
-		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6A29BF32B09706100FA7F84 /* Main.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Main.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +97,7 @@
 		D6A29BEA2B09706100FA7F84 = {
 			isa = PBXGroup;
 			children = (
-				D6A29BF52B09706100FA7F84 /* Todoer */,
+				D6A29BF52B09706100FA7F84 /* Main */,
 				D6A29BF42B09706100FA7F84 /* Products */,
 				C7D1C93B2B8F8BE7006AB4E6 /* Frameworks */,
 			);
@@ -106,26 +106,26 @@
 		D6A29BF42B09706100FA7F84 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D6A29BF32B09706100FA7F84 /* Todoer.app */,
+				D6A29BF32B09706100FA7F84 /* Main.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D6A29BF52B09706100FA7F84 /* Todoer */ = {
+		D6A29BF52B09706100FA7F84 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				C79CB2862B0D537A00C2BD18 /* Resources */,
 				C79CB26D2B0D537A00C2BD18 /* Sources */,
 			);
-			path = Todoer;
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D6A29BF22B09706100FA7F84 /* Todoer */ = {
+		D6A29BF22B09706100FA7F84 /* Main */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D6A29C172B09706200FA7F84 /* Build configuration list for PBXNativeTarget "Todoer" */;
+			buildConfigurationList = D6A29C172B09706200FA7F84 /* Build configuration list for PBXNativeTarget "Main" */;
 			buildPhases = (
 				D6A29BEF2B09706100FA7F84 /* Sources */,
 				D6A29BF02B09706100FA7F84 /* Frameworks */,
@@ -136,11 +136,11 @@
 			);
 			dependencies = (
 			);
-			name = Todoer;
+			name = Main;
 			packageProductDependencies = (
 			);
 			productName = Listio;
-			productReference = D6A29BF32B09706100FA7F84 /* Todoer.app */;
+			productReference = D6A29BF32B09706100FA7F84 /* Main.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -158,7 +158,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D6A29BEE2B09706100FA7F84 /* Build configuration list for PBXProject "Todoer" */;
+			buildConfigurationList = D6A29BEE2B09706100FA7F84 /* Build configuration list for PBXProject "Main" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -174,7 +174,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D6A29BF22B09706100FA7F84 /* Todoer */,
+				D6A29BF22B09706100FA7F84 /* Main */,
 			);
 		};
 /* End PBXProject section */
@@ -327,7 +327,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Todoer/Resources/Todoer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Main/Resources/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -335,7 +335,7 @@
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Todoer/Resources/Info.plist;
+				INFOPLIST_FILE = Main/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Todoer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -364,14 +364,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Todoer/Resources/Todoer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Main/Resources/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Todoer/Resources/Info.plist;
+				INFOPLIST_FILE = Main/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Todoer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -399,7 +399,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D6A29BEE2B09706100FA7F84 /* Build configuration list for PBXProject "Todoer" */ = {
+		D6A29BEE2B09706100FA7F84 /* Build configuration list for PBXProject "Main" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6A29C152B09706200FA7F84 /* Debug */,
@@ -408,7 +408,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D6A29C172B09706200FA7F84 /* Build configuration list for PBXNativeTarget "Todoer" */ = {
+		D6A29C172B09706200FA7F84 /* Build configuration list for PBXNativeTarget "Main" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D6A29C182B09706200FA7F84 /* Debug */,

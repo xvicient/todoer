@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C7A3670D2BAD6E6F00D97CFC /* Data.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A3670C2BAD6E6F00D97CFC /* Data.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C7A3672A2BAD6E8300D97CFC /* ItemsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367152BAD6E8300D97CFC /* ItemsDataSource.swift */; };
 		C7A3672B2BAD6E8300D97CFC /* InvitationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367162BAD6E8300D97CFC /* InvitationsDataSource.swift */; };
 		C7A3672C2BAD6E8300D97CFC /* ListsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A367172BAD6E8300D97CFC /* ListsDataSource.swift */; };
@@ -59,7 +58,6 @@
 
 /* Begin PBXFileReference section */
 		C7A367092BAD6E6F00D97CFC /* Data.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Data.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7A3670C2BAD6E6F00D97CFC /* Data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
 		C7A367152BAD6E8300D97CFC /* ItemsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsDataSource.swift; sourceTree = "<group>"; };
 		C7A367162BAD6E8300D97CFC /* InvitationsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitationsDataSource.swift; sourceTree = "<group>"; };
 		C7A367172BAD6E8300D97CFC /* ListsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsDataSource.swift; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 		C7A3670B2BAD6E6F00D97CFC /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				C7A3670C2BAD6E6F00D97CFC /* Data.h */,
 				C7A367132BAD6E8300D97CFC /* Sources */,
 			);
 			path = Data;
@@ -230,7 +227,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7A3670D2BAD6E6F00D97CFC /* Data.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

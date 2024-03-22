@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D6A29BF22B09706100FA7F84"
-               BuildableName = "Todoer.app"
-               BlueprintName = "Todoer"
-               ReferencedContainer = "container:Todoer.xcodeproj">
+               BuildableName = "Main.app"
+               BlueprintName = "Main"
+               ReferencedContainer = "container:Main.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,9 +44,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D6A29BF22B09706100FA7F84"
-            BuildableName = "Todoer.app"
-            BlueprintName = "Todoer"
-            ReferencedContainer = "container:Todoer.xcodeproj">
+            BuildableName = "Main.app"
+            BlueprintName = "Main"
+            ReferencedContainer = "container:Main.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -68,9 +68,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D6A29BF22B09706100FA7F84"
-            BuildableName = "Todoer.app"
-            BlueprintName = "Todoer"
-            ReferencedContainer = "container:Todoer.xcodeproj">
+            BuildableName = "Main.app"
+            BlueprintName = "Main"
+            ReferencedContainer = "container:Main.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
