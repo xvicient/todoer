@@ -37,6 +37,7 @@
 		C7A3685E2BAD71B600D97CFC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7A3685D2BAD71B600D97CFC /* FirebaseFirestoreSwift */; };
 		C7A368612BAD71BE00D97CFC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368602BAD71BE00D97CFC /* GoogleSignIn */; };
 		C7A368632BAD71BE00D97CFC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7A368622BAD71BE00D97CFC /* GoogleSignInSwift */; };
+		C7D3210E2BAD7878008742CC /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D3210D2BAD7878008742CC /* AppSetting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -74,6 +75,7 @@
 		C7A367282BAD6E8300D97CFC /* ListDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDTO.swift; sourceTree = "<group>"; };
 		C7A367292BAD6E8300D97CFC /* InvitationDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitationDTO.swift; sourceTree = "<group>"; };
 		C7A3684A2BAD70D600D97CFC /* Common.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Common.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7D3210D2BAD7878008742CC /* AppSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,11 +129,10 @@
 		C7A367132BAD6E8300D97CFC /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C7A367142BAD6E8300D97CFC /* DataSources */,
+				C7D3210A2BAD783D008742CC /* Persistence */,
+				C7D321092BAD77F9008742CC /* Authentication */,
+				C7D321082BAD77DD008742CC /* Firebase */,
 				C7A367192BAD6E8300D97CFC /* Repositories */,
-				C7A3671E2BAD6E8300D97CFC /* Helpers */,
-				C7A367212BAD6E8300D97CFC /* Services */,
-				C7A367242BAD6E8300D97CFC /* Entities */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -150,21 +151,13 @@
 		C7A367192BAD6E8300D97CFC /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				C7A367242BAD6E8300D97CFC /* Entities */,
 				C7A3671A2BAD6E8300D97CFC /* InvitationsRepository.swift */,
 				C7A3671B2BAD6E8300D97CFC /* ItemsRepository.swift */,
 				C7A3671C2BAD6E8300D97CFC /* UsersRepository.swift */,
 				C7A3671D2BAD6E8300D97CFC /* ListsRepository.swift */,
 			);
 			path = Repositories;
-			sourceTree = "<group>";
-		};
-		C7A3671E2BAD6E8300D97CFC /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				C7A3671F2BAD6E8300D97CFC /* GoogleSignInManager.swift */,
-				C7A367202BAD6E8300D97CFC /* FirebaseManager.swift */,
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 		C7A367212BAD6E8300D97CFC /* Services */ = {
@@ -194,6 +187,32 @@
 				C7A3684A2BAD70D600D97CFC /* Common.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C7D321082BAD77DD008742CC /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				C7A367202BAD6E8300D97CFC /* FirebaseManager.swift */,
+				C7A367142BAD6E8300D97CFC /* DataSources */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		C7D321092BAD77F9008742CC /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				C7A3671F2BAD6E8300D97CFC /* GoogleSignInManager.swift */,
+				C7A367212BAD6E8300D97CFC /* Services */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		C7D3210A2BAD783D008742CC /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				C7D3210D2BAD7878008742CC /* AppSetting.swift */,
+			);
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -306,6 +325,7 @@
 				C7A3672B2BAD6E8300D97CFC /* InvitationsDataSource.swift in Sources */,
 				C7A367392BAD6E8400D97CFC /* ListDTO.swift in Sources */,
 				C7A3672C2BAD6E8300D97CFC /* ListsDataSource.swift in Sources */,
+				C7D3210E2BAD7878008742CC /* AppSetting.swift in Sources */,
 				C7A367372BAD6E8300D97CFC /* UserDTO.swift in Sources */,
 				C7A367382BAD6E8400D97CFC /* AuthDataDTO.swift in Sources */,
 				C7A367312BAD6E8300D97CFC /* ListsRepository.swift in Sources */,
@@ -462,6 +482,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = "-Wl,-no_warn_duplicate_libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = xvicient.Data;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -493,6 +514,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = "-Wl,-no_warn_duplicate_libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = xvicient.Data;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

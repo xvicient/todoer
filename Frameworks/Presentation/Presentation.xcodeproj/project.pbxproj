@@ -254,10 +254,11 @@
 		C7A367762BAD701700D97CFC /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C7A367772BAD701700D97CFC /* Coordinator */,
-				C7A3677A2BAD701700D97CFC /* Features */,
-				C7A367AB2BAD701700D97CFC /* Common */,
 				C7A367BD2BAD701700D97CFC /* Application */,
+				C7A3677A2BAD701700D97CFC /* Features */,
+				C7A367AC2BAD701700D97CFC /* Extensions */,
+				C7A367AF2BAD701700D97CFC /* Theme */,
+				C7A367B12BAD701700D97CFC /* Components */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -417,16 +418,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		C7A367AB2BAD701700D97CFC /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				C7A367AC2BAD701700D97CFC /* Extensions */,
-				C7A367AF2BAD701700D97CFC /* Theme */,
-				C7A367B12BAD701700D97CFC /* Views */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 		C7A367AC2BAD701700D97CFC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,7 +435,7 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
-		C7A367B12BAD701700D97CFC /* Views */ = {
+		C7A367B12BAD701700D97CFC /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				C7A367B22BAD701700D97CFC /* TDRow */,
@@ -452,7 +443,7 @@
 				C7A367BB2BAD701700D97CFC /* TDTextField.swift */,
 				C7A367BC2BAD701700D97CFC /* TDOptionsMenuView.swift */,
 			);
-			path = Views;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		C7A367B22BAD701700D97CFC /* TDRow */ = {
@@ -472,6 +463,7 @@
 		C7A367BD2BAD701700D97CFC /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				C7A367772BAD701700D97CFC /* Coordinator */,
 				C7A367BE2BAD701700D97CFC /* Redux */,
 			);
 			path = Application;
@@ -509,10 +501,9 @@
 		C7A368032BAD703100D97CFC /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C7A368042BAD703100D97CFC /* Coordinator */,
-				C7A368062BAD703100D97CFC /* Common */,
 				C7A368092BAD703100D97CFC /* Aplication */,
-				C7A3680D2BAD703100D97CFC /* Presentation */,
+				C7A368062BAD703100D97CFC /* Mocks */,
+				C7A3680E2BAD703100D97CFC /* Features */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -525,18 +516,19 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
-		C7A368062BAD703100D97CFC /* Common */ = {
+		C7A368062BAD703100D97CFC /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
 				C7A368072BAD703100D97CFC /* UserMock.swift */,
 				C7A368082BAD703100D97CFC /* ListMock.swift */,
 			);
-			path = Common;
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		C7A368092BAD703100D97CFC /* Aplication */ = {
 			isa = PBXGroup;
 			children = (
+				C7A368042BAD703100D97CFC /* Coordinator */,
 				C7A3680A2BAD703100D97CFC /* Redux */,
 			);
 			path = Aplication;
@@ -549,14 +541,6 @@
 				C7A3680C2BAD703100D97CFC /* TestReducer.swift */,
 			);
 			path = Redux;
-			sourceTree = "<group>";
-		};
-		C7A3680D2BAD703100D97CFC /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				C7A3680E2BAD703100D97CFC /* Features */,
-			);
-			path = Presentation;
 			sourceTree = "<group>";
 		};
 		C7A3680E2BAD703100D97CFC /* Features */ = {
@@ -940,6 +924,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = "-Wl,-no_warn_duplicate_libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = xvicient.Presentation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -971,6 +956,7 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = "-Wl,-no_warn_duplicate_libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = xvicient.Presentation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -988,6 +974,7 @@
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-Wl,-no_warn_duplicate_libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = xvicient.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1004,6 +991,7 @@
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-Wl,-no_warn_duplicate_libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = xvicient.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;

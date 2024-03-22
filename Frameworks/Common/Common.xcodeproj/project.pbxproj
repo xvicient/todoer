@@ -10,7 +10,6 @@
 		C7D1C7962B8F7820006AB4E6 /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D1C7882B8F7820006AB4E6 /* Common.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C7D1C9312B8F8BAD006AB4E6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */; };
 		C7D1C9322B8F8BAD006AB4E6 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9262B8F8BAD006AB4E6 /* AppInfo.swift */; };
-		C7D1C9332B8F8BAD006AB4E6 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9272B8F8BAD006AB4E6 /* AppSetting.swift */; };
 		C7D1C9342B8F8BAD006AB4E6 /* Error+Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C9292B8F8BAD006AB4E6 /* Error+Code.swift */; };
 		C7D1C9352B8F8BAD006AB4E6 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C92A2B8F8BAD006AB4E6 /* Collection+Safe.swift */; };
 		C7D1C9362B8F8BAD006AB4E6 /* Date+Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D1C92B2B8F8BAD006AB4E6 /* Date+Time.swift */; };
@@ -26,7 +25,6 @@
 		C7D1C7882B8F7820006AB4E6 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C7D1C9262B8F8BAD006AB4E6 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
-		C7D1C9272B8F8BAD006AB4E6 /* AppSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		C7D1C9292B8F8BAD006AB4E6 /* Error+Code.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Error+Code.swift"; sourceTree = "<group>"; };
 		C7D1C92A2B8F8BAD006AB4E6 /* Collection+Safe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
 		C7D1C92B2B8F8BAD006AB4E6 /* Date+Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Time.swift"; sourceTree = "<group>"; };
@@ -88,7 +86,6 @@
 			children = (
 				C7D1C9252B8F8BAD006AB4E6 /* Logger.swift */,
 				C7D1C9262B8F8BAD006AB4E6 /* AppInfo.swift */,
-				C7D1C9272B8F8BAD006AB4E6 /* AppSetting.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -202,7 +199,6 @@
 				C7D1C96C2B9072D2006AB4E6 /* UIViewController+TopViewController.swift in Sources */,
 				C7D1C9372B8F8BAD006AB4E6 /* Item.swift in Sources */,
 				C7D1C9382B8F8BAD006AB4E6 /* User.swift in Sources */,
-				C7D1C9332B8F8BAD006AB4E6 /* AppSetting.swift in Sources */,
 				C7D1C93A2B8F8BAD006AB4E6 /* Invitation.swift in Sources */,
 				C7D1C9322B8F8BAD006AB4E6 /* AppInfo.swift in Sources */,
 				C7D1C9342B8F8BAD006AB4E6 /* Error+Code.swift in Sources */,
