@@ -1,6 +1,6 @@
 import Foundation
 
-public struct UserList: Identifiable, Equatable, Hashable {
+public struct UserList: Identifiable, Equatable, Hashable, Sendable {
     public let id = UUID()
     public let documentId: String
     public var name: String
