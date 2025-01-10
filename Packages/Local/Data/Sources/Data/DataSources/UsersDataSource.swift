@@ -1,4 +1,5 @@
 import FirebaseFirestore
+import Common
 
 protocol UsersDataSourceApi {
 	var uid: String { get set }
@@ -46,7 +47,7 @@ final class UsersDataSource: UsersDataSourceApi {
 		case emptyUidList
 	}
 
-	/*@AppSetting(key: "uid", defaultValue: "")*/ private var _uid: String = "" // TODO
+	@AppSetting(key: "uid", defaultValue: "") private var _uid: String
 	private let usersCollection = Firestore.firestore().collection("users")
 
 	var uid: String {

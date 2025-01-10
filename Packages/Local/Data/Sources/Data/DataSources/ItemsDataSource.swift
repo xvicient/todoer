@@ -1,5 +1,6 @@
 import Combine
 import FirebaseFirestore
+import Common
 
 protocol ItemsDataSourceApi {
 	func fetchItems(
@@ -86,7 +87,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
 			let dto = ItemDTO(
 				name: name,
 				done: false,
-				index: Int(Date().timeIntervalSince1970 * 1000) // Date().milliseconds TODO
+				index: Date().milliseconds
 			)
 			return try await itemsCollection(listId: listId)
 				.addDocument(from: dto)

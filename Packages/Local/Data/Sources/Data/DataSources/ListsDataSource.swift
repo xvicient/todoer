@@ -1,5 +1,6 @@
 import Combine
 import FirebaseFirestore
+import Common
 
 protocol ListsDataSourceApi {
 	func fetchLists(
@@ -102,7 +103,7 @@ final class ListsDataSource: ListsDataSourceApi {
 			name: name,
 			done: false,
 			uid: [uid],
-			index: Int(Date().timeIntervalSince1970 * 1000) // Date().milliseconds TODO
+			index: Date().milliseconds
 		)
 		return
 			try await listsCollection

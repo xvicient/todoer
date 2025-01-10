@@ -1,5 +1,6 @@
 import Combine
 import FirebaseFirestore
+import Common
 
 protocol InvitationsDataSourceApi {
 	func getInvitations(
@@ -101,7 +102,7 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
 			listId: listId,
 			listName: listName,
 			invitedId: invitedId,
-            index: Int(Date().timeIntervalSince1970 * 1000) // Date().milliseconds TODO
+            index: Date().milliseconds
 		)
 		try invitationsCollection.addDocument(from: dto)
 	}
