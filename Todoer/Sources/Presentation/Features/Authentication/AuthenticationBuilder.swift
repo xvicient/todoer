@@ -1,4 +1,5 @@
 import SwiftUI
+import Application
 
 struct Authentication {
 	struct Builder {

@@ -1,3 +1,5 @@
+import Application
+
 // MARK: - View appear
 
 @MainActor

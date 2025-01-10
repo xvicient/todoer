@@ -1,5 +1,6 @@
 import Data
 import Common
+import Application
 
 // MARK: - ShareListReducer
 
@@ -9,7 +10,7 @@ protocol ShareListDependencies {
 }
 
 extension ShareList {
-	struct Reducer: Todoer.Reducer {
+    struct Reducer: Application.Reducer {
 
 		enum Action: Equatable {
 			// MARK: - View appear

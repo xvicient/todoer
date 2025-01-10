@@ -1,12 +1,13 @@
 import AuthenticationServices
 import Common
+import Application
 
 protocol AuthenticationDependencies {
 	var useCase: AuthenticationUseCaseApi { get }
 }
 
 extension Authentication {
-	struct Reducer: Todoer.Reducer {
+	struct Reducer: Application.Reducer {
 
 		enum Action: Equatable {
 			// MARK: - User actions

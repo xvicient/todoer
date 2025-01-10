@@ -1,4 +1,4 @@
-protocol Reducer<State, Action> {
+public protocol Reducer<State, Action> {
 	associatedtype State
 
 	associatedtype Action: Equatable

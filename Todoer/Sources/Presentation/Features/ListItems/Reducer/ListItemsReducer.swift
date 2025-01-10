@@ -1,6 +1,7 @@
 import Foundation
 import Data
 import Common
+import Application
 
 // MARK: - ListItemsReducer
 
@@ -10,7 +11,7 @@ protocol ListItemsDependencies {
 }
 
 extension ListItems {
-	struct Reducer: Todoer.Reducer {
+	struct Reducer: Application.Reducer {
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError

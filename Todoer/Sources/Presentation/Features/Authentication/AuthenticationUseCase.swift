@@ -1,5 +1,6 @@
 import AuthenticationServices
 import Data
+import Application
 
 protocol AuthenticationUseCaseApi {
 	func singIn(

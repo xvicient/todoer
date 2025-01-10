@@ -1,12 +1,12 @@
 import Combine
 import Foundation
 
-final class Store<R: Reducer>: ObservableObject {
-	@Published private(set) var state: R.State
+public final class Store<R: Reducer>: ObservableObject {
+	@Published private(set) public var state: R.State
 	private let reducer: R
 	private var cancellables: Set<AnyCancellable> = []
 
-	init(
+    public init(
 		initialState: R.State,
 		reducer: R
 	) {
@@ -14,7 +14,8 @@ final class Store<R: Reducer>: ObservableObject {
 		self.reducer = reducer
 	}
 
-	func send(_ action: R.Action) {
+    @MainActor
+    public func send(_ action: R.Action) {
 		switch reducer.reduce(&state, action) {
 		case .none:
 			break
@@ -24,7 +25,7 @@ final class Store<R: Reducer>: ObservableObject {
 				.sink(receiveValue: send)
 				.store(in: &cancellables)
 		case .task(let task):
-			Task { @MainActor in
+			Task {
 				await task { action in
 					self.send(action)
 				}

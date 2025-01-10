@@ -63,7 +63,7 @@ extension ActionResult: Hashable where Success: Hashable {
 	}
 }
 
-extension ActionResult where Success == EquatableVoid {
+public extension ActionResult where Success == EquatableVoid {
 	static func success() -> ActionResult {
 		.success(EquatableVoid())
 	}
