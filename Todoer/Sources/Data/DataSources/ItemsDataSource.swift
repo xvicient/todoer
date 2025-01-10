@@ -1,6 +1,5 @@
 import Combine
 import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 protocol ItemsDataSourceApi {
 	func fetchItems(

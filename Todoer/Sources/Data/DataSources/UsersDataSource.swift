@@ -1,5 +1,4 @@
 import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 protocol UsersDataSourceApi {
 	var uid: String { get set }

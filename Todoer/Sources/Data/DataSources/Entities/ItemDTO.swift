@@ -1,5 +1,4 @@
 import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 struct ItemDTO: Identifiable, Codable, Hashable {
 	@DocumentID var id: String?

@@ -51,9 +51,8 @@ final class SignInService: SignInServiceApi {
 		}
 
 		let credential = OAuthProvider.credential(
-			withProviderID: "apple.com",
-			idToken: token,
-			rawNonce: nil
+            providerID: .apple,
+            accessToken: token
 		)
 
 		var authData = try await signIn(credential: credential)
