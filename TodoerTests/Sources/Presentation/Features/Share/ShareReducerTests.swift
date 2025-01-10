@@ -9,7 +9,7 @@ final class ShareReducerTests: XCTestCase {
 
 	struct Dependencies: ShareListDependencies {
 		var useCase: ShareListUseCaseApi
-		var list: List
+		var list: UserList
 	}
 
 	private var store: ShareStore<ShareList.Reducer>!

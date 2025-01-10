@@ -1,4 +1,5 @@
 import Foundation
+import Data
 
 extension Home.Reducer {
 
@@ -13,13 +14,13 @@ extension Home.Reducer {
 
 	struct ListRow: Identifiable {
 		let id = UUID()
-		var list: List
+		var list: UserList
 		let leadingActions: [TDSwipeAction]
 		let trailingActions: [TDSwipeAction]
 		var isEditing: Bool
 
 		init(
-			list: List,
+			list: UserList,
 			leadingActions: [TDSwipeAction] = [],
 			trailingActions: [TDSwipeAction] = [],
 			isEditing: Bool = false

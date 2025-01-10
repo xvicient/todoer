@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import Data
 
 protocol ShareListUseCaseApi {
 	func fetchUsers(
@@ -8,7 +9,7 @@ protocol ShareListUseCaseApi {
 
 	func shareList(
 		shareEmail: String,
-		list: List
+		list: UserList
 	) async -> ActionResult<EquatableVoid>
 }
 
@@ -53,7 +54,7 @@ extension ShareList {
 
 		func shareList(
 			shareEmail: String,
-			list: List
+			list: UserList
 		) async -> ActionResult<EquatableVoid> {
 			do {
 				guard let invitedUser = try? await usersRepository.getUser(email: shareEmail) else {

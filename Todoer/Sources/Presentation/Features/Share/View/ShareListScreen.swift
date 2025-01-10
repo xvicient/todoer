@@ -1,4 +1,5 @@
 import SwiftUI
+import Data
 
 // MARK: - ShareListView
 
@@ -142,7 +143,7 @@ struct ShareView_Previews: PreviewProvider {
 	static var previews: some View {
 		ShareList.Builder.makeShareList(
 			coordinator: Coordinator(),
-			list: List(
+			list: UserList(
 				documentId: "",
 				name: "",
 				done: true,

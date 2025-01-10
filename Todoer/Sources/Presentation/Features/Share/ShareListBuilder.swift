@@ -1,16 +1,17 @@
 import SwiftUI
+import Data
 
 struct ShareList {
 	struct Builder {
 		struct Dependencies: ShareListDependencies {
 			var useCase: ShareListUseCaseApi
-			var list: List
+			var list: UserList
 		}
 
 		@MainActor
 		static func makeShareList(
 			coordinator: Coordinator,
-			list: List
+			list: UserList
 		) -> ShareListScreen {
 			let dependencies = Dependencies(
 				useCase: UseCase(),

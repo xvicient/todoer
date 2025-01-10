@@ -1,4 +1,5 @@
 import Foundation
+import Data
 
 // MARK: - Reducer user actions
 
@@ -294,7 +295,7 @@ extension Home.Reducer {
 // MARK: - Private
 
 extension Home.Reducer {
-	fileprivate func newListRow(list: List = List.emptyList) -> ListRow {
+	fileprivate func newListRow(list: UserList = UserList.emptyList) -> ListRow {
 		ListRow(
 			list: list,
 			isEditing: true
@@ -304,9 +305,9 @@ extension Home.Reducer {
 
 // MARK: - Empty list
 
-extension List {
-	fileprivate static var emptyList: List {
-		List(
+extension UserList {
+	fileprivate static var emptyList: UserList {
+		UserList(
 			documentId: "",
 			name: "",
 			done: false,

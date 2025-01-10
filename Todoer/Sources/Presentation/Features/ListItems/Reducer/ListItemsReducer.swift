@@ -1,10 +1,11 @@
 import Foundation
+import Data
 
 // MARK: - ListItemsReducer
 
 protocol ListItemsDependencies {
 	var useCase: ListItemsUseCaseApi { get }
-	var list: List { get }
+	var list: UserList { get }
 }
 
 extension ListItems {

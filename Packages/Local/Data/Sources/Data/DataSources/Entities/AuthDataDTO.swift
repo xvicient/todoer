@@ -1,17 +1,21 @@
 import FirebaseAuth
 
-struct AuthDataDTO {
-	let uid: String
-	var email: String?
-	var displayName: String?
-	let photoUrl: String?
-	let isAnonymous: Bool
+public struct AuthDataDTO {
+    public let uid: String
+    public let email: String?
+    public let displayName: String?
+    public let photoUrl: String?
+    public let isAnonymous: Bool
 
-	init(user: FirebaseAuth.User) {
+	init(
+        user: FirebaseAuth.User,
+        email: String? = nil,
+        displayName: String? = nil
+    ) {
 		self.uid = user.uid
-		self.email = user.email
+		self.email = email ?? user.email
 		self.photoUrl = user.photoURL?.absoluteString
 		self.isAnonymous = user.isAnonymous
-		self.displayName = user.displayName
+		self.displayName = displayName ?? user.displayName
 	}
 }

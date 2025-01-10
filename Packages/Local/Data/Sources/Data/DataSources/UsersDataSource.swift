@@ -19,6 +19,8 @@ protocol UsersDataSourceApi {
 }
 
 final class UsersDataSource: UsersDataSourceApi {
+    
+    public init() {}
 
 	struct SearchField {
 		enum Key: String {
@@ -44,7 +46,7 @@ final class UsersDataSource: UsersDataSourceApi {
 		case emptyUidList
 	}
 
-	@AppSetting(key: "uid", defaultValue: "") private var _uid: String
+	/*@AppSetting(key: "uid", defaultValue: "")*/ private var _uid: String = "" // TODO
 	private let usersCollection = Firestore.firestore().collection("users")
 
 	var uid: String {

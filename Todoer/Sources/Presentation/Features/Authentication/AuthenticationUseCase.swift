@@ -1,4 +1,5 @@
 import AuthenticationServices
+import Data
 
 protocol AuthenticationUseCaseApi {
 	func singIn(
@@ -93,7 +94,7 @@ extension Authentication {
 			case .apple(let authorization):
 				return try await singInService.appleSignIn(authorization: authorization)
 			case .google:
-				return try await singInService.googleSignIn()
+                return try await singInService.googleSignIn(presentingVC: Utils.topViewController())
 			}
 		}
 	}

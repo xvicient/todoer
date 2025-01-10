@@ -1,4 +1,5 @@
 import Foundation
+import Data
 
 // MARK: - HomeReducer
 
@@ -28,7 +29,7 @@ extension Home {
 		}
 
 		struct HomeData: Equatable {
-			let lists: [List]
+			let lists: [UserList]
 			let invitations: [Invitation]
 		}
 
@@ -65,11 +66,11 @@ extension Home {
 			/// HomeReducer+Results
 			case fetchDataResult(ActionResult<HomeData>)
 			case getPhotoUrlResult(ActionResult<String>)
-			case toggleListResult(ActionResult<List>)
+			case toggleListResult(ActionResult<UserList>)
 			case deleteListResult(ActionResult<EquatableVoid>)
 			case acceptInvitationResult(ActionResult<EquatableVoid>)
 			case declineInvitationResult(ActionResult<EquatableVoid>)
-			case addListResult(ActionResult<List>)
+			case addListResult(ActionResult<UserList>)
 			case sortListsResult(ActionResult<EquatableVoid>)
 			case deleteAccountResult(ActionResult<EquatableVoid>)
 		}
@@ -293,9 +294,9 @@ extension Home {
 	}
 }
 
-// MARK: - List to ListRow
+// MARK: - UserList to ListRow
 
-extension List {
+extension UserList {
 	var toListRow: Home.Reducer.ListRow {
 		Home.Reducer.ListRow(
 			list: self,

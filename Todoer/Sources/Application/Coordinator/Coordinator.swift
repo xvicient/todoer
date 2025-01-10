@@ -1,16 +1,17 @@
 import SwiftUI
+import Data
 
 enum Page: Hashable, Identifiable {
 	case authentication
 	case home
-	case listItems(List)
+	case listItems(UserList)
 	case about
 
 	var id: Self { self }
 }
 
 enum Sheet: Hashable, Identifiable {
-	case shareList(List)
+	case shareList(UserList)
 
 	var id: Self { self }
 }

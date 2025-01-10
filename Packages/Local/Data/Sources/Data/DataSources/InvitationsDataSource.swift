@@ -101,7 +101,7 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
 			listId: listId,
 			listName: listName,
 			invitedId: invitedId,
-			index: Date().milliseconds
+            index: Int(Date().timeIntervalSince1970 * 1000) // Date().milliseconds TODO
 		)
 		try invitationsCollection.addDocument(from: dto)
 	}

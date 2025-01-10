@@ -1,12 +1,12 @@
 import Combine
 import Foundation
 
-protocol ListsRepositoryApi {
-	func fetchLists() -> AnyPublisher<[List], Error>
+public protocol ListsRepositoryApi {
+	func fetchLists() -> AnyPublisher<[UserList], Error>
 
 	func addList(
 		with name: String
-	) async throws -> List
+	) async throws -> UserList
 
 	func deleteList(
 		_ documentId: String
@@ -17,35 +17,27 @@ protocol ListsRepositoryApi {
 	) async throws
 
 	func updateList(
-		_ list: List
-	) async throws -> List
+		_ list: UserList
+	) async throws -> UserList
 
 	func sortLists(
-		lists: [List]
+		lists: [UserList]
 	) async throws
 
 	func deleteSelfUserLists() async throws
 }
 
-final class ListsRepository: ListsRepositoryApi {
+public final class ListsRepository: ListsRepositoryApi {
 
 	typealias SearchField = ListsDataSource.SearchField
 
-	let listsDataSource: ListsDataSourceApi
-	let usersDataSource: UsersDataSourceApi
-	let itemsDataSource: ItemsDataSourceApi
+	let listsDataSource: ListsDataSourceApi = ListsDataSource()
+	let usersDataSource: UsersDataSourceApi = UsersDataSource()
+	let itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
 
-	init(
-		listsDataSource: ListsDataSourceApi = ListsDataSource(),
-		usersDataSource: UsersDataSourceApi = UsersDataSource(),
-		itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
-	) {
-		self.listsDataSource = listsDataSource
-		self.usersDataSource = usersDataSource
-		self.itemsDataSource = itemsDataSource
-	}
+    public init() {}
 
-	func fetchLists() -> AnyPublisher<[List], Error> {
+    public func fetchLists() -> AnyPublisher<[UserList], Error> {
 		listsDataSource.fetchLists(uid: usersDataSource.uid)
 			.tryMap { lists in
 				lists.map {
@@ -56,42 +48,42 @@ final class ListsRepository: ListsRepositoryApi {
 			.eraseToAnyPublisher()
 	}
 
-	func addList(
+    public func addList(
 		with name: String
-	) async throws -> List {
+	) async throws -> UserList {
 		try await listsDataSource.addList(
 			with: name,
 			uid: usersDataSource.uid
 		).toDomain
 	}
 
-	func deleteList(
+    public func deleteList(
 		_ documentId: String
 	) async throws {
 		try await listsDataSource.deleteList(documentId)
 	}
 
-	func importList(
+    public func importList(
 		id: String
 	) async throws {
 		try await listsDataSource.importList(id: id, uid: usersDataSource.uid)
 	}
 
-	func updateList(
-		_ list: List
-	) async throws -> List {
+    public func updateList(
+		_ list: UserList
+	) async throws -> UserList {
 		try await listsDataSource.updateList(list.toDTO).toDomain
 	}
 
-	func sortLists(
-		lists: [List]
+    public func sortLists(
+		lists: [UserList]
 	) async throws {
 		try await listsDataSource.sortLists(
 			lists: lists.map { $0.toDTO }
 		)
 	}
 
-	func deleteSelfUserLists() async throws {
+    public func deleteSelfUserLists() async throws {
 		try await listsDataSource.deleteLists(
 			with: [SearchField(.uid, .arrayContains(usersDataSource.uid))]
 		)
@@ -99,8 +91,8 @@ final class ListsRepository: ListsRepositoryApi {
 }
 
 extension ListDTO {
-	fileprivate var toDomain: List {
-		List(
+	fileprivate var toDomain: UserList {
+		UserList(
 			documentId: id ?? "",
 			name: name,
 			done: done,
@@ -110,7 +102,7 @@ extension ListDTO {
 	}
 }
 
-extension List {
+extension UserList {
 	fileprivate var toDTO: ListDTO {
 		ListDTO(
 			id: documentId,

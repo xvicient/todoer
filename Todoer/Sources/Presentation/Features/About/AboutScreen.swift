@@ -5,7 +5,7 @@ import SwiftUI
 struct AboutScreen: View {
 	var body: some View {
 		VStack {
-			SwiftUI.List {
+			List {
 				privacyPolicySection
 				termsOfServiceSection
 				aboutTodoerSection

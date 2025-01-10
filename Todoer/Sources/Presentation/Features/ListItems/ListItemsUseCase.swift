@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import Data
 
 protocol ListItemsUseCaseApi {
 	func fetchItems(
@@ -8,7 +9,7 @@ protocol ListItemsUseCaseApi {
 
 	func addItem(
 		with name: String,
-		list: List
+		list: UserList
 	) async -> ActionResult<Item>
 
 	func deleteItem(
@@ -23,7 +24,7 @@ protocol ListItemsUseCaseApi {
 
 	func updateItemDone(
 		item: Item,
-		list: List
+		list: UserList
 	) async -> ActionResult<Item>
 
 	func sortItems(
@@ -69,7 +70,7 @@ extension ListItems {
 
 		func addItem(
 			with name: String,
-			list: List
+			list: UserList
 		) async -> ActionResult<Item> {
 			guard !name.isEmpty else {
 				return .failure(Errors.emptyItemName)
@@ -125,7 +126,7 @@ extension ListItems {
 
 		func updateItemDone(
 			item: Item,
-			list: List
+			list: UserList
 		) async -> ActionResult<Item> {
 			do {
 				let updatedItem = try await itemsRepository.updateItem(

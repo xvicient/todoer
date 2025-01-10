@@ -1,8 +1,10 @@
+import Data
+
 // MARK: - ShareListReducer
 
 protocol ShareListDependencies {
 	var useCase: ShareListUseCaseApi { get }
-	var list: List { get }
+	var list: UserList { get }
 }
 
 extension ShareList {

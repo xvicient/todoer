@@ -1,13 +1,13 @@
 import Foundation
 
-struct User: Identifiable, Equatable, Hashable {
-	let id = UUID()
-	let documentId: String
-	var uid: String
-	var email: String?
-	var displayName: String?
-	var photoUrl: String?
-	var provider: String
+public struct User: Identifiable, Equatable, Hashable {
+    public let id = UUID()
+    public let documentId: String
+	public var uid: String
+    public var email: String?
+    public var displayName: String?
+    public var photoUrl: String?
+    public var provider: String
 }
 
 extension UserDTO {

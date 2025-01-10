@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import Data
 
 protocol HomeUseCaseApi {
 	func fetchData() -> AnyPublisher<HomeData, Error>
@@ -18,8 +19,8 @@ protocol HomeUseCaseApi {
 	) async -> ActionResult<EquatableVoid>
 
 	func updateList(
-		list: List
-	) async -> ActionResult<List>
+		list: UserList
+	) async -> ActionResult<UserList>
 
 	func deleteList(
 		_ documentId: String
@@ -27,10 +28,10 @@ protocol HomeUseCaseApi {
 
 	func addList(
 		name: String
-	) async -> ActionResult<List>
+	) async -> ActionResult<UserList>
 
 	func sortLists(
-		lists: [List]
+		lists: [UserList]
 	) async -> ActionResult<EquatableVoid>
 
 	func deleteAccount() async -> ActionResult<EquatableVoid>
@@ -44,7 +45,7 @@ extension Home {
 			var errorDescription: String? {
 				switch self {
 				case .emptyListName:
-					return "List can't be empty."
+					return "UserList can't be empty."
 				}
 			}
 		}
@@ -126,8 +127,8 @@ extension Home {
 		}
 
 		func updateList(
-			list: List
-		) async -> ActionResult<List> {
+			list: UserList
+		) async -> ActionResult<UserList> {
 			do {
 				let updatedList = try await listsRepository.updateList(list)
 				try await productsRepository.toogleAllItems(
@@ -155,7 +156,7 @@ extension Home {
 
 		func addList(
 			name: String
-		) async -> ActionResult<List> {
+		) async -> ActionResult<UserList> {
 			guard !name.isEmpty else {
 				return .failure(Errors.emptyListName)
 			}
@@ -170,7 +171,7 @@ extension Home {
 		}
 
 		func sortLists(
-			lists: [List]
+			lists: [UserList]
 		) async -> ActionResult<EquatableVoid> {
 			do {
 				try await listsRepository.sortLists(lists: lists)
@@ -195,7 +196,7 @@ extension Home {
 }
 
 extension Home.UseCase {
-	fileprivate func fetchLists() -> AnyPublisher<[List], Error> {
+	fileprivate func fetchLists() -> AnyPublisher<[UserList], Error> {
 		listsRepository.fetchLists()
 			.map { lists in
 				lists.sorted { $0.index < $1.index }

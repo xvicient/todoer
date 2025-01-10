@@ -1,13 +1,13 @@
 @testable import Todoer
 
 struct ListMock {
-	static var list: List {
+	static var list: UserList {
 		lists(1).first!
 	}
 
-	static func lists(_ count: Int) -> [List] {
+	static func lists(_ count: Int) -> [UserList] {
 		(0..<count).map {
-			List(
+			UserList(
 				documentId: String($0),
 				name: String($0),
 				done: false,

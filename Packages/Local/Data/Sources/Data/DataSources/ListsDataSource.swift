@@ -102,7 +102,7 @@ final class ListsDataSource: ListsDataSourceApi {
 			name: name,
 			done: false,
 			uid: [uid],
-			index: Date().milliseconds
+			index: Int(Date().timeIntervalSince1970 * 1000) // Date().milliseconds TODO
 		)
 		return
 			try await listsCollection

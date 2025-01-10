@@ -86,7 +86,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
 			let dto = ItemDTO(
 				name: name,
 				done: false,
-				index: Date().milliseconds
+				index: Int(Date().timeIntervalSince1970 * 1000) // Date().milliseconds TODO
 			)
 			return try await itemsCollection(listId: listId)
 				.addDocument(from: dto)

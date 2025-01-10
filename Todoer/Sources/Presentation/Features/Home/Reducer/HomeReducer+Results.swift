@@ -1,3 +1,5 @@
+import Data
+
 // MARK: - Reducer results
 
 @MainActor
@@ -33,7 +35,7 @@ extension Home.Reducer {
 
 	func onToggleListResult(
 		state: inout State,
-		result: ActionResult<List>
+		result: ActionResult<UserList>
 	) -> Effect<Action> {
 		switch result {
 		case .success:
@@ -85,7 +87,7 @@ extension Home.Reducer {
 
 	func onAddListResult(
 		state: inout State,
-		result: ActionResult<List>
+		result: ActionResult<UserList>
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.firstIndex(where: { $0.isEditing }) else {
 			state.viewState = .alert(.error(Errors.default))

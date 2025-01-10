@@ -1,4 +1,5 @@
 import SwiftUI
+import Data
 
 // MARK: - ListItemsScreen
 
@@ -52,7 +53,7 @@ extension ListItemsScreen {
 	@ViewBuilder
 	fileprivate var itemsList: some View {
 		ScrollViewReader { scrollView in
-			SwiftUI.List {
+			List {
 				Section(header: Text(listName).listRowHeaderStyle()) {
 					ForEach(
 						Array(store.state.viewModel.items.enumerated()),
@@ -178,7 +179,7 @@ extension ListItemsScreen {
 
 #Preview {
 	ListItems.Builder.makeItemsList(
-		list: List(
+		list: UserList(
 			documentId: "1",
 			name: "Test",
 			done: false,

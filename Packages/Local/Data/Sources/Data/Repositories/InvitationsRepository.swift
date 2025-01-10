@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-protocol InvitationsRepositoryApi {
+public protocol InvitationsRepositoryApi {
 	func getInvitations() -> AnyPublisher<[Invitation], Error>
 
 	func getInvitation(
@@ -22,22 +22,16 @@ protocol InvitationsRepositoryApi {
 	) async throws
 }
 
-final class InvitationsRepository: InvitationsRepositoryApi {
+public final class InvitationsRepository: InvitationsRepositoryApi {
 
 	typealias SearchField = InvitationsDataSource.SearchField
 
-	let invitationsDataSource: InvitationsDataSourceApi
-	let usersDataSource: UsersDataSourceApi
+	let invitationsDataSource: InvitationsDataSourceApi = InvitationsDataSource()
+	let usersDataSource: UsersDataSourceApi = UsersDataSource()
 
-	init(
-		invitationsDataSource: InvitationsDataSourceApi = InvitationsDataSource(),
-		usersDataSource: UsersDataSourceApi = UsersDataSource()
-	) {
-		self.invitationsDataSource = invitationsDataSource
-		self.usersDataSource = usersDataSource
-	}
+	public init() {}
 
-	func getInvitations() -> AnyPublisher<[Invitation], Error> {
+    public func getInvitations() -> AnyPublisher<[Invitation], Error> {
 		invitationsDataSource.getInvitations(
 			with: [SearchField(.invitedId, .equal(usersDataSource.uid))]
 		)
@@ -50,7 +44,7 @@ final class InvitationsRepository: InvitationsRepositoryApi {
 		.eraseToAnyPublisher()
 	}
 
-	func getInvitation(
+    public func getInvitation(
 		invitedId: String,
 		listId: String
 	) async throws -> Invitation? {
@@ -64,7 +58,7 @@ final class InvitationsRepository: InvitationsRepositoryApi {
 		.first
 	}
 
-	func sendInvitation(
+    public func sendInvitation(
 		ownerName: String,
 		ownerEmail: String,
 		listId: String,
@@ -80,7 +74,7 @@ final class InvitationsRepository: InvitationsRepositoryApi {
 		)
 	}
 
-	func deleteInvitation(
+    public func deleteInvitation(
 		_ documentId: String
 	) async throws {
 		try await invitationsDataSource.deleteInvitation(documentId)

@@ -1,4 +1,5 @@
 import Foundation
+import Data
 
 extension ShareList.Reducer {
 

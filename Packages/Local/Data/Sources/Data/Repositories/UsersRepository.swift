@@ -1,4 +1,4 @@
-protocol UsersRepositoryApi {
+public protocol UsersRepositoryApi {
 
 	func setUid(_ value: String)
 
@@ -32,21 +32,19 @@ protocol UsersRepositoryApi {
 	func deleteUser() async throws
 }
 
-final class UsersRepository: UsersRepositoryApi {
+public final class UsersRepository: UsersRepositoryApi {
 
 	typealias SearchField = UsersDataSource.SearchField
 
-	var usersDataSource: UsersDataSourceApi
+	var usersDataSource: UsersDataSourceApi = UsersDataSource()
 
-	init(usersDataSource: UsersDataSourceApi = UsersDataSource()) {
-		self.usersDataSource = usersDataSource
-	}
+	public init() {}
 
-	func setUid(_ value: String) {
+    public func setUid(_ value: String) {
 		usersDataSource.uid = value
 	}
 
-	func createUser(
+    public func createUser(
 		with uid: String,
 		email: String?,
 		displayName: String?,
@@ -62,7 +60,7 @@ final class UsersRepository: UsersRepositoryApi {
 		)
 	}
 
-	func getSelfUser() async throws -> User? {
+    public func getSelfUser() async throws -> User? {
 		try await usersDataSource.getUsers(
 			with: [SearchField(.uid, .equal(usersDataSource.uid))]
 		)
@@ -70,7 +68,7 @@ final class UsersRepository: UsersRepositoryApi {
 		.toDomain
 	}
 
-	func getUser(
+    public func getUser(
 		uid: String
 	) async throws -> User? {
 		try await usersDataSource.getUsers(
@@ -80,7 +78,7 @@ final class UsersRepository: UsersRepositoryApi {
 		.toDomain
 	}
 
-	func getUser(
+    public func getUser(
 		email: String
 	) async throws -> User? {
 		try await usersDataSource.getUsers(
@@ -90,7 +88,7 @@ final class UsersRepository: UsersRepositoryApi {
 		.toDomain
 	}
 
-	func getNotSelfUser(
+    public func getNotSelfUser(
 		email: String,
 		uid: String
 	) async throws -> User? {
@@ -104,7 +102,7 @@ final class UsersRepository: UsersRepositoryApi {
 		.toDomain
 	}
 
-	func getNotSelfUsers(
+    public func getNotSelfUsers(
 		uids: [String]
 	) async throws -> [User] {
 		let notSelfUids = uids.filter { $0 != usersDataSource.uid }
@@ -120,7 +118,7 @@ final class UsersRepository: UsersRepositoryApi {
 		}
 	}
 
-	func deleteUser() async throws {
+    public func deleteUser() async throws {
 		try await usersDataSource.deleteUser()
 	}
 }

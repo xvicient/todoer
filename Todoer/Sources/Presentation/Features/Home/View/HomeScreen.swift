@@ -53,7 +53,7 @@ extension HomeScreen {
 	@ViewBuilder
 	fileprivate var lists: some View {
 		ScrollViewReader { scrollView in
-			SwiftUI.List {
+			List {
 				invitationsSection
 				listsSection
 			}

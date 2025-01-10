@@ -4,26 +4,27 @@ import Foundation
 import GoogleSignIn
 import GoogleSignInSwift
 
-protocol SignInServiceApi {
-	func googleSignIn() async throws -> AuthDataDTO
+public protocol SignInServiceApi {
+	func googleSignIn(presentingVC: UIViewController?) async throws -> AuthDataDTO
 
 	func appleSignIn(
 		authorization: ASAuthorization
 	) async throws -> AuthDataDTO
 }
 
-final class SignInService: SignInServiceApi {
+public final class SignInService: SignInServiceApi {
 	private enum Errors: Error {
 		case signInError
 	}
+    
+    public init() {}
 
-	@MainActor
-	func googleSignIn() async throws -> AuthDataDTO {
-		guard let topVC = Utils.topViewController() else {
+    public func googleSignIn(presentingVC: UIViewController?) async throws -> AuthDataDTO {
+		guard let topVC = presentingVC else {
 			throw URLError(.cannotFindHost)
 		}
 
-		let gidSignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: topVC)
+        let gidSignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: topVC)
 
 		guard let idToken = gidSignInResult.user.idToken?.tokenString else {
 			throw URLError(.badServerResponse)
@@ -31,15 +32,15 @@ final class SignInService: SignInServiceApi {
 
 		let accessToken = gidSignInResult.user.accessToken.tokenString
 
-		let credential = GoogleAuthProvider.credential(
+		let authCredential = GoogleAuthProvider.credential(
 			withIDToken: idToken,
 			accessToken: accessToken
 		)
-		return try await signIn(credential: credential)
+        
+		return try await signIn(authCredential: authCredential)
 	}
 
-	@MainActor
-	func appleSignIn(
+    public func appleSignIn(
 		authorization: ASAuthorization
 	) async throws -> AuthDataDTO {
 		guard
@@ -50,27 +51,34 @@ final class SignInService: SignInServiceApi {
 			throw Errors.signInError
 		}
 
-		let credential = OAuthProvider.credential(
+		let authCredential = OAuthProvider.credential(
             providerID: .apple,
             accessToken: token
 		)
 
-		var authData = try await signIn(credential: credential)
-		if let email = appleIDCredential.email {
-			authData.email = email
-		}
-
-		if let givenName = appleIDCredential.fullName?.givenName,
-			let familyName = appleIDCredential.fullName?.familyName
-		{
-			authData.displayName = "\(givenName) \(familyName)"
-		}
-
-		return authData
+		return try await signIn(
+            authCredential: authCredential,
+            email: appleIDCredential.email,
+            displayName: appleIDCredential.displayName
+        )
 	}
 
-	private func signIn(credential: AuthCredential) async throws -> AuthDataDTO {
-		let authDataResult = try await Auth.auth().signIn(with: credential)
-		return AuthDataDTO(user: authDataResult.user)
+	private func signIn(
+        authCredential: AuthCredential,
+        email: String? = nil,
+        displayName: String? = nil
+    ) async throws -> AuthDataDTO {
+		let authDataResult = try await Auth.auth().signIn(with: authCredential)
+        return AuthDataDTO(user: authDataResult.user, email: email, displayName: displayName)
 	}
+}
+
+private extension ASAuthorizationAppleIDCredential {
+    var displayName: String? {
+        guard let givenName = fullName?.givenName,
+            let familyName = fullName?.familyName
+        else { return nil }
+        
+        return "\(givenName) \(familyName)"
+    }
 }

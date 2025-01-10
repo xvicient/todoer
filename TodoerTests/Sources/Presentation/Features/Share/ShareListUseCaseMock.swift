@@ -17,7 +17,7 @@ class ShareListUseCaseMock: ShareListUseCaseApi {
 
 	func shareList(
 		shareEmail: String,
-		list: List
+		list: UserList
 	) async -> ActionResult<EquatableVoid> {
 		shareListResult
 	}

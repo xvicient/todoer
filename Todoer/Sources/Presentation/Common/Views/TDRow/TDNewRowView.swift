@@ -79,7 +79,7 @@ struct TDNewRowView: View {
 extension TDNewRowView {
 	fileprivate struct Constants {
 		struct Text {
-			static let list = "List..."
+			static let list = "UserList..."
 		}
 	}
 }
