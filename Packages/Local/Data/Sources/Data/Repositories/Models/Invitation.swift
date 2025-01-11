@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Invitation: Identifiable, Equatable, Hashable {
+public struct Invitation: Identifiable, Equatable, Hashable, Sendable {
     public let id = UUID()
     public let documentId: String
     public let ownerName: String

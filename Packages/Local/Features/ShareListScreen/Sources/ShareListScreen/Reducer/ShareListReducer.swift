@@ -1,25 +1,32 @@
-import AuthenticationServices
+import Data
 import Common
 import Application
 import CoordinatorContract
 
-protocol AuthenticationDependencies {
-	var useCase: AuthenticationUseCaseApi { get }
+// MARK: - ShareListReducer
+
+protocol ShareListDependencies {
+	var useCase: ShareListUseCaseApi { get }
+	var list: UserList { get }
 }
 
-extension Authentication {
-	struct Reducer: Application.Reducer {
+extension ShareList {
+    struct Reducer: Application.Reducer {
 
 		enum Action: Equatable {
+			// MARK: - View appear
+			/// ShareListReducer+ViewAppear
+			case onAppear
+
 			// MARK: - User actions
-			case didTapGoogleSignInButton
-			case didAppleSignIn(ActionResult<ASAuthorization>)
+			/// ShareListReducer+UserActions
+			case didTapShareListButton(String)
+			case didTapDismissError
 
 			// MARK: - Results
-			case signInResult(ActionResult<EquatableVoid>)
-
-			// MARK: - Errors
-			case didTapDismissError
+			/// ShareListReducer+Results
+			case fetchUsersResult(ActionResult<[User]>)
+			case shareListResult(ActionResult<EquatableVoid>)
 		}
 
 		@MainActor
@@ -30,16 +37,15 @@ extension Authentication {
 
 		enum ViewState: Equatable {
 			case idle
-			case loading
 			case error(String)
 		}
 
 		internal let coordinator: any CoordinatorApi
-		internal let dependencies: AuthenticationDependencies
+		internal let dependencies: ShareListDependencies
 
 		init(
 			coordinator: any CoordinatorApi,
-			dependencies: AuthenticationDependencies
+			dependencies: ShareListDependencies
 		) {
 			self.coordinator = coordinator
 			self.dependencies = dependencies
@@ -50,20 +56,27 @@ extension Authentication {
 			_ state: inout State,
 			_ action: Action
 		) -> Effect<Action> {
+
 			switch (state.viewState, action) {
-			case (.idle, .didTapGoogleSignInButton):
-				return onDidTapGoogleSignInButton(
+			case (.idle, .onAppear):
+				return onAppear(
 					state: &state
 				)
 
-			case (.idle, .didAppleSignIn(let result)):
-				return onAppleSignIn(
+			case (.idle, .didTapShareListButton(let email)):
+				return onDidTapShareButton(
+					state: &state,
+					email: email
+				)
+
+			case (.idle, .fetchUsersResult(let result)):
+				return onFetchUsersResult(
 					state: &state,
 					result: result
 				)
 
-			case (.loading, .signInResult(let result)):
-				return onSignInResult(
+			case (.idle, .shareListResult(let result)):
+				return onShareListResult(
 					state: &state,
 					result: result
 				)

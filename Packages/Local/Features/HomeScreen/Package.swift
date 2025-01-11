@@ -4,36 +4,41 @@
 import PackageDescription
 
 let package = Package(
-    name: "AuthenticationScreen",
+    name: "HomeScreen",
     platforms: [
         .iOS(.v17)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "AuthenticationScreen",
-            targets: ["AuthenticationScreen"]),
+            name: "HomeScreen",
+            targets: ["HomeScreen"]),
     ],
     dependencies: [
         .package(path: "../Local/Application"),
         .package(path: "../Local/Common"),
         .package(path: "../Local/Theme"),
         .package(path: "../Local/Coordinator"),
-        .package(path: "../External/GoogleSignInDependencies")
+        .package(path: "../Local/Data")
         
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "AuthenticationScreen",
+            name: "HomeScreen",
             dependencies: [
                 "Application",
                 "Common",
                 .product(name: "ThemeAssets", package: "Theme"),
-                .product(name: "CoordinatorContract", package: "Coordinator"),
-                "GoogleSignInDependencies"
+                .product(name: "ThemeComponents", package: "Theme"),
+                "Data",
+                .product(name: "CoordinatorContract", package: "Coordinator")
             ]
-        )
+        ),
+        .testTarget(
+            name: "HomeScreenTests",
+            dependencies: ["HomeScreen"]
+        ),
     ]
 )

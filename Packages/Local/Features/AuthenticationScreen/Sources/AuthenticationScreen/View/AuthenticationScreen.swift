@@ -4,7 +4,8 @@ import GoogleSignInSwift
 import SwiftUI
 import Common
 import Application
-import Theme
+import ThemeAssets
+import CoordinatorContract
 
 // MARK: - AuthenticationScreen
 
@@ -229,6 +230,19 @@ extension Result where Success == ASAuthorization {
 	}
 }
 
-//#Preview {
-//	Authentication.Builder.makeAuthentication(coordinator: Coordinator())
-//}
+struct AuthenticationScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        Authentication.Builder.makeAuthentication(coordinator: CoordinatorMock())
+    }
+    
+    private struct CoordinatorMock: CoordinatorApi {
+        func loggOut() {}
+        func loggIn() {}
+        func push(_ page: Page) {}
+        func present(sheet: Sheet) {}
+        func present(fullScreenCover: FullScreenCover) {}
+        func pop() {}
+        func popToRoot() {}
+        func dismissSheet() {}
+    }
+}
