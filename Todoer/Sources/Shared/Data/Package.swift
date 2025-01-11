@@ -15,8 +15,9 @@ let package = Package(
             targets: ["Data"]),
     ],
     dependencies: [
-        .package(path: "../External/FirebaseDependencies"),
-        .package(path: "../External/GoogleSignInDependencies")
+        .package(path: "../../../../Packages/External/FirebaseDependencies"),
+        .package(path: "../../../../Packages/External/GoogleSignInDependencies"),
+        .package(path: "../Entities")
         
     ],
     targets: [
@@ -26,7 +27,8 @@ let package = Package(
             name: "Data",
             dependencies: [
                 "FirebaseDependencies",
-                "GoogleSignInDependencies"
+                "GoogleSignInDependencies",
+                "Entities"
             ]
         ),
         .testTarget(

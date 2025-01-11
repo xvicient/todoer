@@ -2,6 +2,7 @@ import AuthenticationServices
 import Data
 import Application
 import Common
+import Entities
 
 protocol AuthenticationUseCaseApi {
 	func singIn(
@@ -91,7 +92,7 @@ extension Authentication {
 
 		private func getAuthData(
 			for provider: Provider
-		) async throws -> AuthDataDTO {
+		) async throws -> AuthData {
 			switch provider {
 			case .apple(let authorization):
 				return try await singInService.appleSignIn(authorization: authorization)

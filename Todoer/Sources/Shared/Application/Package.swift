@@ -15,7 +15,7 @@ let package = Package(
             targets: ["Application"]),
     ],
     dependencies: [
-        .package(path: "../Local/Data")
+        .package(path: "../Data")
         
     ],
     targets: [

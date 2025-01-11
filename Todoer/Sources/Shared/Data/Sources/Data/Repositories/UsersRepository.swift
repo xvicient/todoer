@@ -1,3 +1,5 @@
+import Entities
+
 public protocol UsersRepositoryApi {
 
 	func setUid(_ value: String)
@@ -121,4 +123,29 @@ public final class UsersRepository: UsersRepositoryApi {
     public func deleteUser() async throws {
 		try await usersDataSource.deleteUser()
 	}
+}
+
+extension UserDTO {
+    fileprivate var toDomain: User {
+        User(
+            documentId: id ?? "",
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoUrl: photoUrl,
+            provider: provider
+        )
+    }
+}
+
+extension User {
+    fileprivate var toDomain: UserDTO {
+        UserDTO(
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoUrl: photoUrl,
+            provider: provider
+        )
+    }
 }

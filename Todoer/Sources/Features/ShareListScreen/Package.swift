@@ -15,11 +15,12 @@ let package = Package(
             targets: ["ShareListScreen"]),
     ],
     dependencies: [
-        .package(path: "../Local/Application"),
-        .package(path: "../Local/Common"),
-        .package(path: "../Local/Theme"),
-        .package(path: "../Local/Coordinator"),
-        .package(path: "../Local/Data")
+        .package(path: "../Application"),
+        .package(path: "../Common"),
+        .package(path: "../Theme"),
+        .package(path: "../Coordinator"),
+        .package(path: "../Data"),
+        .package(path: "../Entities")
         
     ],
     targets: [
@@ -33,7 +34,8 @@ let package = Package(
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",
-                .product(name: "CoordinatorContract", package: "Coordinator")
+                .product(name: "CoordinatorContract", package: "Coordinator"),
+                "Entities"
             ]
         ),
         .testTarget(

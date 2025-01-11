@@ -18,12 +18,13 @@ let package = Package(
             targets: ["CoordinatorImpl"])
     ],
     dependencies: [
-        .package(path: "../Local/Data"),
-        .package(path: "../Local/AuthenticationScreen"),
-        .package(path: "../Local/HomeScreen"),
-        .package(path: "../Local/AboutScreen"),
-        .package(path: "../Local/ShareListScreen"),
-        .package(path: "../Local/ListItemsScreen")
+        .package(path: "../Data"),
+        .package(path: "../Entities"),
+        .package(path: "../AuthenticationScreen"),
+        .package(path: "../HomeScreen"),
+        .package(path: "../AboutScreen"),
+        .package(path: "../ShareListScreen"),
+        .package(path: "../ListItemsScreen")
         
     ],
     targets: [
@@ -31,7 +32,10 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "CoordinatorContract",
-            dependencies: ["Data"],
+            dependencies: [
+                "Data",
+                "Entities"
+            ],
             path: "CoordinatorContract/Sources"
         ),
         .target(

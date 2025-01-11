@@ -4,34 +4,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "AboutScreen",
+    name: "Entities",
     platforms: [
         .iOS(.v17)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "AboutScreen",
-            targets: ["AboutScreen"]),
-    ],
-    dependencies: [
-        .package(path: "../Common"),
-        .package(path: "../Theme")
-        
+            name: "Entities",
+            targets: ["Entities"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "AboutScreen",
-            dependencies: [
-                "Common",
-                .product(name: "ThemeAssets", package: "Theme")
-            ]
-        ),
-        .testTarget(
-            name: "AboutScreenTests",
-            dependencies: ["AboutScreen"]
-        ),
+            name: "Entities"),
+
     ]
 )

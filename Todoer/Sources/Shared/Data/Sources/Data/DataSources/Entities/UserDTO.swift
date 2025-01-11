@@ -8,15 +8,3 @@ struct UserDTO: Identifiable, Codable, Hashable {
 	var photoUrl: String?
 	var provider: String
 }
-
-extension User {
-	var toDomain: UserDTO {
-		UserDTO(
-			uid: uid,
-			email: email,
-			displayName: displayName,
-			photoUrl: photoUrl,
-			provider: provider
-		)
-	}
-}

@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import Entities
 
 public protocol ItemsRepositoryApi {
 	func fetchItems(

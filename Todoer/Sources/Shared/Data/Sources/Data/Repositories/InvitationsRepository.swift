@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import Entities
 
 public protocol InvitationsRepositoryApi {
 	func getInvitations() -> AnyPublisher<[Invitation], Error>

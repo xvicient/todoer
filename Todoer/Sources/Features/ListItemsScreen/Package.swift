@@ -15,10 +15,11 @@ let package = Package(
             targets: ["ListItemsScreen"]),
     ],
     dependencies: [
-        .package(path: "../Local/Application"),
-        .package(path: "../Local/Common"),
-        .package(path: "../Local/Theme"),
-        .package(path: "../Local/Data")
+        .package(path: "../Application"),
+        .package(path: "../Common"),
+        .package(path: "../Theme"),
+        .package(path: "../Data"),
+        .package(path: "../Entities")
         
     ],
     targets: [
@@ -30,7 +31,8 @@ let package = Package(
                 "Application",
                 "Common",
                 .product(name: "ThemeComponents", package: "Theme"),
-                "Data"
+                "Data",
+                "Entities"
             ]
         ),
         .testTarget(

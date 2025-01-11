@@ -1,6 +1,7 @@
 import Foundation
-import Data
+import Entities
 import ThemeComponents
+import Entities
 
 // MARK: - ListItemsViewModel
 

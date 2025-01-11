@@ -1,4 +1,5 @@
 import Data
+import Entities
 
 public enum Page: Hashable, Identifiable {
     case authentication

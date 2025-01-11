@@ -25,16 +25,3 @@ public struct User: Identifiable, Equatable, Hashable, Sendable {
         self.provider = provider
     }
 }
-
-extension UserDTO {
-	var toDomain: User {
-		User(
-			documentId: id ?? "",
-			uid: uid,
-			email: email,
-			displayName: displayName,
-			photoUrl: photoUrl,
-			provider: provider
-		)
-	}
-}

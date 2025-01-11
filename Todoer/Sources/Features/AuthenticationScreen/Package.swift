@@ -15,11 +15,11 @@ let package = Package(
             targets: ["AuthenticationScreen"]),
     ],
     dependencies: [
-        .package(path: "../Local/Application"),
-        .package(path: "../Local/Common"),
-        .package(path: "../Local/Theme"),
-        .package(path: "../Local/Coordinator"),
-        .package(path: "../External/GoogleSignInDependencies")
+        .package(path: "../Application"),
+        .package(path: "../Common"),
+        .package(path: "../Theme"),
+        .package(path: "../Coordinator"),
+        .package(path: "../../../../Packages/External/GoogleSignInDependencies")
         
     ],
     targets: [

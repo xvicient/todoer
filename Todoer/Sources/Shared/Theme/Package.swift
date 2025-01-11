@@ -20,7 +20,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../Local/Common")
+        .package(path: "../Common")
         
     ],
     targets: [

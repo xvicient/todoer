@@ -1,5 +1,5 @@
 import SwiftUI
-import Data
+import Entities
 import Application
 import CoordinatorContract
 

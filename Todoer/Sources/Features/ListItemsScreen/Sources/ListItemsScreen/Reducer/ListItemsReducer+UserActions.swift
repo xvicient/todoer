@@ -1,5 +1,5 @@
 import Foundation
-import Data
+import Entities
 import Application
 
 // MARK: - Reducer user actions

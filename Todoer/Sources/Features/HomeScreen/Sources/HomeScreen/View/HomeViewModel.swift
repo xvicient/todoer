@@ -1,5 +1,5 @@
 import Foundation
-import Data
+import Entities
 import ThemeComponents
 
 extension Home.Reducer {

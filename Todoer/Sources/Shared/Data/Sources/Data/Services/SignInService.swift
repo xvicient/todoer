@@ -3,13 +3,14 @@ import FirebaseAuth
 import Foundation
 import GoogleSignIn
 import GoogleSignInSwift
+import Entities
 
 public protocol SignInServiceApi {
-	func googleSignIn(presentingVC: UIViewController?) async throws -> AuthDataDTO
+	func googleSignIn(presentingVC: UIViewController?) async throws -> AuthData
 
 	func appleSignIn(
 		authorization: ASAuthorization
-	) async throws -> AuthDataDTO
+	) async throws -> AuthData
 }
 
 public final class SignInService: SignInServiceApi {
@@ -19,7 +20,9 @@ public final class SignInService: SignInServiceApi {
     
     public init() {}
 
-    public func googleSignIn(presentingVC: UIViewController?) async throws -> AuthDataDTO {
+    public func googleSignIn(
+        presentingVC: UIViewController?
+    ) async throws -> AuthData {
 		guard let topVC = presentingVC else {
 			throw URLError(.cannotFindHost)
 		}
@@ -42,7 +45,7 @@ public final class SignInService: SignInServiceApi {
 
     public func appleSignIn(
 		authorization: ASAuthorization
-	) async throws -> AuthDataDTO {
+	) async throws -> AuthData {
 		guard
 			let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
 			let appleIDToken = appleIDCredential.identityToken,
@@ -67,9 +70,15 @@ public final class SignInService: SignInServiceApi {
         authCredential: AuthCredential,
         email: String? = nil,
         displayName: String? = nil
-    ) async throws -> AuthDataDTO {
-		let authDataResult = try await Auth.auth().signIn(with: authCredential)
-        return AuthDataDTO(user: authDataResult.user, email: email, displayName: displayName)
+    ) async throws -> AuthData {
+        let user = try await Auth.auth().signIn(with: authCredential).user
+        return AuthData(
+            uid: user.uid,
+            email: email ?? user.email,
+            displayName: displayName ?? user.displayName,
+            photoUrl: user.photoURL?.absoluteString,
+            isAnonymous: user.isAnonymous
+        )
 	}
 }
 

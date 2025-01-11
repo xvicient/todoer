@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import Entities
 
 public protocol ListsRepositoryApi {
 	func fetchLists() -> AnyPublisher<[UserList], Error>

@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import Data
 import Application
+import Entities
 
 protocol ListItemsUseCaseApi {
 	func fetchItems(
