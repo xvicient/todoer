@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension View {
+public extension View {
 	func hideKeyboard() {
 		UIApplication.shared.sendAction(
 			#selector(UIResponder.resignFirstResponder),

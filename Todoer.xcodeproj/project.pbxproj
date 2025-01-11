@@ -24,12 +24,10 @@
 		C7390FD42B449D6600E49A68 /* ShareListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD32B449D6600E49A68 /* ShareListBuilder.swift */; };
 		C7390FD62B449DC200E49A68 /* ShareListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD52B449DC200E49A68 /* ShareListReducer.swift */; };
 		C7390FD82B44A03900E49A68 /* ShareListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */; };
-		C7390FDE2B45FEBB00E49A68 /* View+HideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */; };
 		C74515202B750F5600C6D08E /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682242B68DF97008BB192 /* TestStore.swift */; };
 		C74515212B750F5600C6D08E /* AuthenticationReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */; };
 		C74515222B750F5600C6D08E /* TestReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72701092B74C01100E9D275 /* TestReducer.swift */; };
 		C74515232B750F5600C6D08E /* AuthenticationUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */; };
-		C74C0F442B55822B00926E87 /* UINavigationController+backBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C0F432B55822B00926E87 /* UINavigationController+backBarButton.swift */; };
 		C74C0F4B2B5589E600926E87 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C0F4A2B5589E600926E87 /* Images.swift */; };
 		C75EB57D2D31DC1300317D07 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB57C2D31DC1300317D07 /* Application */; };
 		C75EB5812D31DD9B00317D07 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75EB57E2D31DD9B00317D07 /* Coordinator.swift */; };
@@ -72,7 +70,6 @@
 		C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */; };
 		C79CB2AD2B12BBD700C2BD18 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */; };
 		C79CB2C92B13F8FC00C2BD18 /* AuthenticationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2C82B13F8FC00C2BD18 /* AuthenticationScreen.swift */; };
-		C79CB2D52B13FEA200C2BD18 /* UIViewController+TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2D42B13FEA200C2BD18 /* UIViewController+TopViewController.swift */; };
 		C79CB2E42B16330800C2BD18 /* AuthenticationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */; };
 		C7B335932D31CF2700C36D7B /* GoogleSignInDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = C7B335922D31CF2700C36D7B /* GoogleSignInDependencies */; };
 		C7B3359F2D31D3E700C36D7B /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = C7B3359E2D31D3E700C36D7B /* Common */; };
@@ -110,13 +107,13 @@
 		C7390FD32B449D6600E49A68 /* ShareListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListBuilder.swift; sourceTree = "<group>"; };
 		C7390FD52B449DC200E49A68 /* ShareListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListReducer.swift; sourceTree = "<group>"; };
 		C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListUseCase.swift; sourceTree = "<group>"; };
-		C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HideKeyboard.swift"; sourceTree = "<group>"; };
 		C74515172B750F3D00C6D08E /* TodoerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C74C0F432B55822B00926E87 /* UINavigationController+backBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+backBarButton.swift"; sourceTree = "<group>"; };
 		C74C0F4A2B5589E600926E87 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
-		C75EB57A2D31DB6D00317D07 /* Application */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Application; sourceTree = "<group>"; };
 		C75EB57E2D31DD9B00317D07 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		C75EB57F2D31DD9B00317D07 /* CoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorView.swift; sourceTree = "<group>"; };
+		C75EB5832D32671000317D07 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Data; path = Packages/Local/Data; sourceTree = SOURCE_ROOT; };
+		C75EB5842D32672100317D07 /* Application */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Application; path = Packages/Local/Application; sourceTree = SOURCE_ROOT; };
+		C75EB5852D32672100317D07 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Common; path = Packages/Local/Common; sourceTree = SOURCE_ROOT; };
 		C75FFF002B82824A002D0A9B /* HomeInvitationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInvitationsView.swift; sourceTree = "<group>"; };
 		C75FFF032B82A80B002D0A9B /* TDRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDRowView.swift; sourceTree = "<group>"; };
 		C75FFF052B82B3C3002D0A9B /* TDOptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDOptionsMenuView.swift; sourceTree = "<group>"; };
@@ -156,12 +153,9 @@
 		C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C79CB2C82B13F8FC00C2BD18 /* AuthenticationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationScreen.swift; sourceTree = "<group>"; };
-		C79CB2D42B13FEA200C2BD18 /* UIViewController+TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopViewController.swift"; sourceTree = "<group>"; };
 		C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationBuilder.swift; sourceTree = "<group>"; };
 		C7B335952D31D30500C36D7B /* FirebaseDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FirebaseDependencies; sourceTree = "<group>"; };
 		C7B335962D31D30500C36D7B /* GoogleSignInDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GoogleSignInDependencies; sourceTree = "<group>"; };
-		C7B335982D31D30500C36D7B /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
-		C7B3359C2D31D3BC00C36D7B /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+UserActions.swift"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
@@ -304,20 +298,9 @@
 			isa = PBXGroup;
 			children = (
 				C74C0F492B5589DA00926E87 /* Theme */,
-				C74C0F472B55894700926E87 /* Extensions */,
 				C7390FD22B447C1F00E49A68 /* Views */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		C74C0F472B55894700926E87 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				C79CB2D42B13FEA200C2BD18 /* UIViewController+TopViewController.swift */,
-				C7390FDD2B45FEBB00E49A68 /* View+HideKeyboard.swift */,
-				C74C0F432B55822B00926E87 /* UINavigationController+backBarButton.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C74C0F492B5589DA00926E87 /* Theme */ = {
@@ -451,19 +434,22 @@
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C79CB27A2B0D537A00C2BD18 /* Application */,
+				C79CB27A2B0D537A00C2BD18 /* Todoer */,
+				C75EB5842D32672100317D07 /* Application */,
+				C75EB5852D32672100317D07 /* Common */,
+				C75EB5832D32671000317D07 /* Data */,
 				C79CB27C2B0D537A00C2BD18 /* Presentation */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		C79CB27A2B0D537A00C2BD18 /* Application */ = {
+		C79CB27A2B0D537A00C2BD18 /* Todoer */ = {
 			isa = PBXGroup;
 			children = (
 				C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */,
 				C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */,
 			);
-			path = Application;
+			path = Todoer;
 			sourceTree = "<group>";
 		};
 		C79CB27C2B0D537A00C2BD18 /* Presentation */ = {
@@ -539,21 +525,10 @@
 			path = External;
 			sourceTree = "<group>";
 		};
-		C7B335992D31D30500C36D7B /* Local */ = {
-			isa = PBXGroup;
-			children = (
-				C7B335982D31D30500C36D7B /* Data */,
-				C7B3359C2D31D3BC00C36D7B /* Common */,
-				C75EB57A2D31DB6D00317D07 /* Application */,
-			);
-			path = Local;
-			sourceTree = "<group>";
-		};
 		C7B3359A2D31D30500C36D7B /* Packages */ = {
 			isa = PBXGroup;
 			children = (
 				C7B335972D31D30500C36D7B /* External */,
-				C7B335992D31D30500C36D7B /* Local */,
 			);
 			path = Packages;
 			sourceTree = "<group>";
@@ -784,7 +759,6 @@
 				C79A2ED42B63AF2900F52FB2 /* HomeReducer+UserActions.swift in Sources */,
 				C77E107B2B504154009612F8 /* HomeReducer+ViewAppear.swift in Sources */,
 				C77494C62B8501FE0062E226 /* TDListRowHeaderModifier.swift in Sources */,
-				C79CB2D52B13FEA200C2BD18 /* UIViewController+TopViewController.swift in Sources */,
 				C7390FD82B44A03900E49A68 /* ShareListUseCase.swift in Sources */,
 				C75EB5812D31DD9B00317D07 /* Coordinator.swift in Sources */,
 				C75EB5822D31DD9B00317D07 /* CoordinatorView.swift in Sources */,
@@ -810,12 +784,10 @@
 				C77494C02B8491A00062E226 /* TDRow.swift in Sources */,
 				C77494C22B8493B90062E226 /* TDNewRowButton.swift in Sources */,
 				C7390FC42B3637F200E49A68 /* ListItemsReducer.swift in Sources */,
-				C7390FDE2B45FEBB00E49A68 /* View+HideKeyboard.swift in Sources */,
 				C79CB2C92B13F8FC00C2BD18 /* AuthenticationScreen.swift in Sources */,
 				C7390FD12B447C0100E49A68 /* TDButton.swift in Sources */,
 				C79A2EF52B6561FE00F52FB2 /* AuthenticationViewModel.swift in Sources */,
 				C79A2EF82B65628F00F52FB2 /* AuthenticationReducer+Results.swift in Sources */,
-				C74C0F442B55822B00926E87 /* UINavigationController+backBarButton.swift in Sources */,
 				C79A2EEA2B65597E00F52FB2 /* AboutBuilder.swift in Sources */,
 				C7390FCF2B447AF400E49A68 /* TDTextField.swift in Sources */,
 				C79A2EE22B64507000F52FB2 /* ListItemsReducer+Results.swift in Sources */,
