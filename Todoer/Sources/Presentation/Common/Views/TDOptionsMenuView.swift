@@ -1,4 +1,5 @@
 import SwiftUI
+import Theme
 
 // MARK: - TDOptionsMenuView
 
@@ -25,7 +26,7 @@ struct TDOptionsMenuView: View {
 					.resizable()
 					.scaleEffect(0.75)
 					.rotationEffect(Angle(degrees: 90))
-					.foregroundColor(.buttonBlack)
+					.foregroundColor(Color.buttonBlack)
 			}
 		}
 	}

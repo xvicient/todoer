@@ -14,8 +14,6 @@
 		C72241D82D3170550046C0D7 /* FirebaseDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = C72241D72D3170550046C0D7 /* FirebaseDependencies */; };
 		C72241DC2D3172630046C0D7 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = C72241DB2D3172630046C0D7 /* Data */; };
 		C72DA9CD2B7A5C6D00816AE1 /* TestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72DA9CC2B7A5C6D00816AE1 /* TestCoordinator.swift */; };
-		C7390FB82B32E44800E49A68 /* AuthenticationReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */; };
-		C7390FBC2B32ED4F00E49A68 /* AuthenticationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */; };
 		C7390FC42B3637F200E49A68 /* ListItemsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FC32B3637F200E49A68 /* ListItemsReducer.swift */; };
 		C7390FC62B363A8200E49A68 /* ListItemsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FC52B363A8200E49A68 /* ListItemsUseCase.swift */; };
 		C7390FCD2B436FB100E49A68 /* ShareListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FCC2B436FB100E49A68 /* ShareListScreen.swift */; };
@@ -24,14 +22,17 @@
 		C7390FD42B449D6600E49A68 /* ShareListBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD32B449D6600E49A68 /* ShareListBuilder.swift */; };
 		C7390FD62B449DC200E49A68 /* ShareListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD52B449DC200E49A68 /* ShareListReducer.swift */; };
 		C7390FD82B44A03900E49A68 /* ShareListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */; };
+		C74372D12D32AAF9002E1F1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C74372D02D32AAF9002E1F1A /* Assets.xcassets */; };
+		C74372D32D32AB96002E1F1A /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C74372D22D32AB96002E1F1A /* Colors.xcassets */; };
 		C74515202B750F5600C6D08E /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682242B68DF97008BB192 /* TestStore.swift */; };
 		C74515212B750F5600C6D08E /* AuthenticationReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */; };
 		C74515222B750F5600C6D08E /* TestReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72701092B74C01100E9D275 /* TestReducer.swift */; };
 		C74515232B750F5600C6D08E /* AuthenticationUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */; };
-		C74C0F4B2B5589E600926E87 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = C74C0F4A2B5589E600926E87 /* Images.swift */; };
 		C75EB57D2D31DC1300317D07 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB57C2D31DC1300317D07 /* Application */; };
 		C75EB5812D31DD9B00317D07 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75EB57E2D31DD9B00317D07 /* Coordinator.swift */; };
 		C75EB5822D31DD9B00317D07 /* CoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75EB57F2D31DD9B00317D07 /* CoordinatorView.swift */; };
+		C75EB5892D32968B00317D07 /* AuthenticationScreen in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB5882D32968B00317D07 /* AuthenticationScreen */; };
+		C75EB58D2D3299E100317D07 /* Theme in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB58C2D3299E100317D07 /* Theme */; };
 		C75FFF012B82824A002D0A9B /* HomeInvitationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75FFF002B82824A002D0A9B /* HomeInvitationsView.swift */; };
 		C75FFF042B82A80B002D0A9B /* TDRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75FFF032B82A80B002D0A9B /* TDRowView.swift */; };
 		C75FFF062B82B3C3002D0A9B /* TDOptionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75FFF052B82B3C3002D0A9B /* TDOptionsMenuView.swift */; };
@@ -58,23 +59,16 @@
 		C79A2EED2B655FC900F52FB2 /* ShareListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EEC2B655FC900F52FB2 /* ShareListViewModel.swift */; };
 		C79A2EF02B65604E00F52FB2 /* ShareListReducer+UserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EEF2B65604E00F52FB2 /* ShareListReducer+UserActions.swift */; };
 		C79A2EF22B6560AB00F52FB2 /* ShareListReducer+Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EF12B6560AB00F52FB2 /* ShareListReducer+Results.swift */; };
-		C79A2EF52B6561FE00F52FB2 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EF42B6561FE00F52FB2 /* AuthenticationViewModel.swift */; };
-		C79A2EF82B65628F00F52FB2 /* AuthenticationReducer+Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79A2EF72B65628F00F52FB2 /* AuthenticationReducer+Results.swift */; };
 		C79CB2942B0D537A00C2BD18 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB27F2B0D537A00C2BD18 /* HomeScreen.swift */; };
 		C79CB2952B0D537A00C2BD18 /* HomeBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2802B0D537A00C2BD18 /* HomeBuilder.swift */; };
 		C79CB2972B0D537A00C2BD18 /* ListItemsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2832B0D537A00C2BD18 /* ListItemsScreen.swift */; };
 		C79CB2982B0D537A00C2BD18 /* ListItemsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2842B0D537A00C2BD18 /* ListItemsBuilder.swift */; };
-		C79CB29A2B0D537A00C2BD18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2872B0D537A00C2BD18 /* Assets.xcassets */; };
 		C79CB29B2B0D537A00C2BD18 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */; };
 		C79CB29C2B0D537A00C2BD18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */; };
 		C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */; };
-		C79CB2AD2B12BBD700C2BD18 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */; };
-		C79CB2C92B13F8FC00C2BD18 /* AuthenticationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2C82B13F8FC00C2BD18 /* AuthenticationScreen.swift */; };
-		C79CB2E42B16330800C2BD18 /* AuthenticationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */; };
 		C7B335932D31CF2700C36D7B /* GoogleSignInDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = C7B335922D31CF2700C36D7B /* GoogleSignInDependencies */; };
 		C7B3359F2D31D3E700C36D7B /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = C7B3359E2D31D3E700C36D7B /* Common */; };
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
-		C7D9D7242B572B5200272A9B /* AuthenticationReducer+UserActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,8 +91,6 @@
 		C71FAF152B766170004679E2 /* ListMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMock.swift; sourceTree = "<group>"; };
 		C72701092B74C01100E9D275 /* TestReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReducer.swift; sourceTree = "<group>"; };
 		C72DA9CC2B7A5C6D00816AE1 /* TestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoordinator.swift; sourceTree = "<group>"; };
-		C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducer.swift; sourceTree = "<group>"; };
-		C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCase.swift; sourceTree = "<group>"; };
 		C7390FC32B3637F200E49A68 /* ListItemsReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemsReducer.swift; sourceTree = "<group>"; };
 		C7390FC52B363A8200E49A68 /* ListItemsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemsUseCase.swift; sourceTree = "<group>"; };
 		C7390FCC2B436FB100E49A68 /* ShareListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListScreen.swift; sourceTree = "<group>"; };
@@ -107,13 +99,16 @@
 		C7390FD32B449D6600E49A68 /* ShareListBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListBuilder.swift; sourceTree = "<group>"; };
 		C7390FD52B449DC200E49A68 /* ShareListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListReducer.swift; sourceTree = "<group>"; };
 		C7390FD72B44A03900E49A68 /* ShareListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListUseCase.swift; sourceTree = "<group>"; };
+		C74372D02D32AAF9002E1F1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C74372D22D32AB96002E1F1A /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		C74515172B750F3D00C6D08E /* TodoerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C74C0F4A2B5589E600926E87 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		C75EB57E2D31DD9B00317D07 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		C75EB57F2D31DD9B00317D07 /* CoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorView.swift; sourceTree = "<group>"; };
 		C75EB5832D32671000317D07 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Data; path = Packages/Local/Data; sourceTree = SOURCE_ROOT; };
 		C75EB5842D32672100317D07 /* Application */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Application; path = Packages/Local/Application; sourceTree = SOURCE_ROOT; };
 		C75EB5852D32672100317D07 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Common; path = Packages/Local/Common; sourceTree = SOURCE_ROOT; };
+		C75EB5862D32947C00317D07 /* AuthenticationScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AuthenticationScreen; path = Packages/Local/Features/AuthenticationScreen; sourceTree = SOURCE_ROOT; };
+		C75EB58A2D32999400317D07 /* Theme */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Theme; path = Packages/Local/Theme; sourceTree = SOURCE_ROOT; };
 		C75FFF002B82824A002D0A9B /* HomeInvitationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInvitationsView.swift; sourceTree = "<group>"; };
 		C75FFF032B82A80B002D0A9B /* TDRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDRowView.swift; sourceTree = "<group>"; };
 		C75FFF052B82B3C3002D0A9B /* TDOptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDOptionsMenuView.swift; sourceTree = "<group>"; };
@@ -140,24 +135,17 @@
 		C79A2EEC2B655FC900F52FB2 /* ShareListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListViewModel.swift; sourceTree = "<group>"; };
 		C79A2EEF2B65604E00F52FB2 /* ShareListReducer+UserActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareListReducer+UserActions.swift"; sourceTree = "<group>"; };
 		C79A2EF12B6560AB00F52FB2 /* ShareListReducer+Results.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareListReducer+Results.swift"; sourceTree = "<group>"; };
-		C79A2EF42B6561FE00F52FB2 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
-		C79A2EF72B65628F00F52FB2 /* AuthenticationReducer+Results.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+Results.swift"; sourceTree = "<group>"; };
 		C79CB27F2B0D537A00C2BD18 /* HomeScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		C79CB2802B0D537A00C2BD18 /* HomeBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeBuilder.swift; sourceTree = "<group>"; };
 		C79CB2832B0D537A00C2BD18 /* ListItemsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListItemsScreen.swift; sourceTree = "<group>"; };
 		C79CB2842B0D537A00C2BD18 /* ListItemsBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListItemsBuilder.swift; sourceTree = "<group>"; };
-		C79CB2872B0D537A00C2BD18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoerApp.swift; sourceTree = "<group>"; };
-		C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C79CB2C82B13F8FC00C2BD18 /* AuthenticationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationScreen.swift; sourceTree = "<group>"; };
-		C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationBuilder.swift; sourceTree = "<group>"; };
 		C7B335952D31D30500C36D7B /* FirebaseDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FirebaseDependencies; sourceTree = "<group>"; };
 		C7B335962D31D30500C36D7B /* GoogleSignInDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GoogleSignInDependencies; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationReducer+UserActions.swift"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducerTests.swift; sourceTree = "<group>"; };
@@ -177,6 +165,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C75EB58D2D3299E100317D07 /* Theme in Frameworks */,
+				C75EB5892D32968B00317D07 /* AuthenticationScreen in Frameworks */,
 				C72241DC2D3172630046C0D7 /* Data in Frameworks */,
 				C7B335932D31CF2700C36D7B /* GoogleSignInDependencies in Frameworks */,
 				C75EB57D2D31DC1300317D07 /* Application in Frameworks */,
@@ -285,9 +275,9 @@
 		C74C0F452B5588C100926E87 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				C75EB5862D32947C00317D07 /* AuthenticationScreen */,
 				C79A2EE62B654DB000F52FB2 /* About */,
 				C7390FCB2B436FA100E49A68 /* Share */,
-				C79CB2C72B13F8E700C2BD18 /* Authentication */,
 				C79CB27D2B0D537A00C2BD18 /* Home */,
 				C79CB2822B0D537A00C2BD18 /* ListItems */,
 			);
@@ -297,18 +287,9 @@
 		C74C0F462B5588D100926E87 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				C74C0F492B5589DA00926E87 /* Theme */,
 				C7390FD22B447C1F00E49A68 /* Views */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		C74C0F492B5589DA00926E87 /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				C74C0F4A2B5589E600926E87 /* Images.swift */,
-			);
-			path = Theme;
 			sourceTree = "<group>";
 		};
 		C75EB5802D31DD9B00317D07 /* Coordinator */ = {
@@ -412,29 +393,11 @@
 			path = Reducer;
 			sourceTree = "<group>";
 		};
-		C79A2EF32B6561EE00F52FB2 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				C79CB2C82B13F8FC00C2BD18 /* AuthenticationScreen.swift */,
-				C79A2EF42B6561FE00F52FB2 /* AuthenticationViewModel.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		C79A2EF62B65624C00F52FB2 /* Reducer */ = {
-			isa = PBXGroup;
-			children = (
-				C7390FB72B32E44800E49A68 /* AuthenticationReducer.swift */,
-				C7D9D7232B572B5200272A9B /* AuthenticationReducer+UserActions.swift */,
-				C79A2EF72B65628F00F52FB2 /* AuthenticationReducer+Results.swift */,
-			);
-			path = Reducer;
-			sourceTree = "<group>";
-		};
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				C79CB27A2B0D537A00C2BD18 /* Todoer */,
+				C75EB58A2D32999400317D07 /* Theme */,
 				C75EB5842D32672100317D07 /* Application */,
 				C75EB5852D32672100317D07 /* Common */,
 				C75EB5832D32671000317D07 /* Data */,
@@ -488,11 +451,11 @@
 			isa = PBXGroup;
 			children = (
 				C7F428632B58425E00DEE7E9 /* Todoer.entitlements */,
+				C74372D22D32AB96002E1F1A /* Colors.xcassets */,
+				C74372D02D32AAF9002E1F1A /* Assets.xcassets */,
 				C79CB2C62B13F48C00C2BD18 /* Info.plist */,
-				C79CB2872B0D537A00C2BD18 /* Assets.xcassets */,
 				C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */,
 				C79CB2892B0D537A00C2BD18 /* Preview Content */,
-				C79CB2AC2B12BBD700C2BD18 /* Colors.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -503,17 +466,6 @@
 				C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		C79CB2C72B13F8E700C2BD18 /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				C79A2EF62B65624C00F52FB2 /* Reducer */,
-				C79A2EF32B6561EE00F52FB2 /* View */,
-				C79CB2E32B16330800C2BD18 /* AuthenticationBuilder.swift */,
-				C7390FBB2B32ED4F00E49A68 /* AuthenticationUseCase.swift */,
-			);
-			path = Authentication;
 			sourceTree = "<group>";
 		};
 		C7B335972D31D30500C36D7B /* External */ = {
@@ -622,6 +574,8 @@
 				C7B335922D31CF2700C36D7B /* GoogleSignInDependencies */,
 				C7B3359E2D31D3E700C36D7B /* Common */,
 				C75EB57C2D31DC1300317D07 /* Application */,
+				C75EB5882D32968B00317D07 /* AuthenticationScreen */,
+				C75EB58C2D3299E100317D07 /* Theme */,
 			);
 			productName = Listio;
 			productReference = D6A29BF32B09706100FA7F84 /* Todoer.app */;
@@ -662,6 +616,8 @@
 				C7B335912D31CF2700C36D7B /* XCLocalSwiftPackageReference "Packages/External/GoogleSignInDependencies" */,
 				C7B3359D2D31D3E700C36D7B /* XCLocalSwiftPackageReference "Packages/Local/Common" */,
 				C75EB57B2D31DC1300317D07 /* XCLocalSwiftPackageReference "Packages/Local/Application" */,
+				C75EB5872D32968B00317D07 /* XCLocalSwiftPackageReference "Packages/Local/Features/AuthenticationScreen" */,
+				C75EB58B2D3299E100317D07 /* XCLocalSwiftPackageReference "Packages/Local/Theme" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -685,10 +641,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C79CB29A2B0D537A00C2BD18 /* Assets.xcassets in Resources */,
-				C79CB2AD2B12BBD700C2BD18 /* Colors.xcassets in Resources */,
+				C74372D32D32AB96002E1F1A /* Colors.xcassets in Resources */,
 				C79CB29C2B0D537A00C2BD18 /* Preview Assets.xcassets in Resources */,
 				C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */,
+				C74372D12D32AAF9002E1F1A /* Assets.xcassets in Resources */,
 				C79CB29B2B0D537A00C2BD18 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -744,9 +700,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C79A2ED62B63B00900F52FB2 /* HomeReducer+Results.swift in Sources */,
-				C7D9D7242B572B5200272A9B /* AuthenticationReducer+UserActions.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */,
-				C7390FBC2B32ED4F00E49A68 /* AuthenticationUseCase.swift in Sources */,
 				C79A2EE02B64501D00F52FB2 /* ListItemsReducer+UserActions.swift in Sources */,
 				C79CB2972B0D537A00C2BD18 /* ListItemsScreen.swift in Sources */,
 				C79A2ED82B64449500F52FB2 /* TDSwipeAction.swift in Sources */,
@@ -776,18 +730,12 @@
 				C7390FD62B449DC200E49A68 /* ShareListReducer.swift in Sources */,
 				C7390FC62B363A8200E49A68 /* ListItemsUseCase.swift in Sources */,
 				C77494BD2B840F6B0062E226 /* TDNewRowView.swift in Sources */,
-				C7390FB82B32E44800E49A68 /* AuthenticationReducer.swift in Sources */,
 				C77494C82B8503B30062E226 /* HomeAccountMenuView.swift in Sources */,
-				C79CB2E42B16330800C2BD18 /* AuthenticationBuilder.swift in Sources */,
 				C75FFF062B82B3C3002D0A9B /* TDOptionsMenuView.swift in Sources */,
-				C74C0F4B2B5589E600926E87 /* Images.swift in Sources */,
 				C77494C02B8491A00062E226 /* TDRow.swift in Sources */,
 				C77494C22B8493B90062E226 /* TDNewRowButton.swift in Sources */,
 				C7390FC42B3637F200E49A68 /* ListItemsReducer.swift in Sources */,
-				C79CB2C92B13F8FC00C2BD18 /* AuthenticationScreen.swift in Sources */,
 				C7390FD12B447C0100E49A68 /* TDButton.swift in Sources */,
-				C79A2EF52B6561FE00F52FB2 /* AuthenticationViewModel.swift in Sources */,
-				C79A2EF82B65628F00F52FB2 /* AuthenticationReducer+Results.swift in Sources */,
 				C79A2EEA2B65597E00F52FB2 /* AboutBuilder.swift in Sources */,
 				C7390FCF2B447AF400E49A68 /* TDTextField.swift in Sources */,
 				C79A2EE22B64507000F52FB2 /* ListItemsReducer+Results.swift in Sources */,
@@ -1082,6 +1030,14 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/Local/Application;
 		};
+		C75EB5872D32968B00317D07 /* XCLocalSwiftPackageReference "Packages/Local/Features/AuthenticationScreen" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Local/Features/AuthenticationScreen;
+		};
+		C75EB58B2D3299E100317D07 /* XCLocalSwiftPackageReference "Packages/Local/Theme" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Local/Theme;
+		};
 		C7B335912D31CF2700C36D7B /* XCLocalSwiftPackageReference "Packages/External/GoogleSignInDependencies" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/External/GoogleSignInDependencies;
@@ -1115,6 +1071,14 @@
 		C75EB57C2D31DC1300317D07 /* Application */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Application;
+		};
+		C75EB5882D32968B00317D07 /* AuthenticationScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AuthenticationScreen;
+		};
+		C75EB58C2D3299E100317D07 /* Theme */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Theme;
 		};
 		C7B335922D31CF2700C36D7B /* GoogleSignInDependencies */ = {
 			isa = XCSwiftPackageProductDependency;

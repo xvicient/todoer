@@ -1,4 +1,5 @@
 import SwiftUI
+import Theme
 
 struct CoordinatorView: View {
 	@StateObject private var coordinator = Coordinator()
@@ -40,10 +41,10 @@ struct NavigationBarModifier: ViewModifier {
 		else {
 			content
 				.navigationBarTitleDisplayMode(.inline)
-				.toolbarBackground(.backgroundWhite)
+				.toolbarBackground(Color.backgroundWhite)
 				.toolbar {
 					ToolbarItem(placement: .principal) {
-						Image.launchScreen
+						Image.todoer
 							.resizable()
 							.aspectRatio(contentMode: .fit)
 							.frame(width: /*@START_MENU_TOKEN@*/ 100 /*@END_MENU_TOKEN@*/)

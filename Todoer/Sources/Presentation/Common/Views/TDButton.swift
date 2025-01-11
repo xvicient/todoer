@@ -1,4 +1,5 @@
 import SwiftUI
+import Theme
 
 enum TDButtonStyle {
 	case primary
@@ -7,18 +8,18 @@ enum TDButtonStyle {
 	var backgroundColor: Color {
 		switch self {
 		case .primary:
-			return .buttonBlack
+            return Color.buttonBlack
 		case .destructive:
-			return .buttonDestructive
+			return Color.buttonDestructive
 		}
 	}
 
 	var foregroundColor: Color {
 		switch self {
 		case .primary:
-			return .textWhite
+			return Color.textWhite
 		case .destructive:
-			return .textWhite
+			return Color.textWhite
 		}
 	}
 }

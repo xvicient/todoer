@@ -4,6 +4,7 @@ import GoogleSignInSwift
 import SwiftUI
 import Common
 import Application
+import Theme
 
 // MARK: - AuthenticationScreen
 
@@ -28,7 +29,7 @@ struct AuthenticationScreen: View {
 			loadingView
 			appInfoView
 		}
-		.background(.backgroundWhite)
+		.background(Color.backgroundWhite)
 		.alert(isPresented: alertBinding) {
 			Alert(
 				title: Text(Constants.Text.errorTitle),
@@ -53,7 +54,7 @@ extension AuthenticationScreen {
 			if isTopSpacerVisible {
 				Spacer()
 			}
-			Image.launchScreen
+			Image.todoer
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 				.padding(.horizontal, 35)
@@ -87,7 +88,7 @@ extension AuthenticationScreen {
 					Text(caption)
 						.font(.largeTitle)
 						.multilineTextAlignment(.leading)
-						.foregroundColor(.black)
+						.foregroundColor(Color.black)
 				}
 				.offset(x: 0, y: -90)
 				Spacer()
@@ -122,7 +123,7 @@ extension AuthenticationScreen {
 								.resizable()
 								.frame(width: 36, height: 36)
 							Text(Constants.Text.signInWithGoogle)
-								.foregroundColor(.textWhite)
+								.foregroundColor(Color.textWhite)
 								.frame(height: 44)
 								.font(.system(size: 17, weight: .semibold))
 						}
@@ -130,7 +131,7 @@ extension AuthenticationScreen {
 						.contentShape(Rectangle())
 					}
 					.frame(maxWidth: .infinity)
-					.background(.backgroundBlack)
+					.background(Color.backgroundBlack)
 					.cornerRadius(8)
 				}
 				Spacer()
@@ -157,7 +158,7 @@ extension AuthenticationScreen {
 					"\(AppInfo.appName) \(AppInfo.appVersion) (\(AppInfo.buildNumber)) - \(AppInfo.environment)"
 				)
 				.font(.footnote)
-				.foregroundColor(.textSecondary)
+				.foregroundColor(Color.textSecondary)
 				.multilineTextAlignment(.center)
 			}
 		}
@@ -228,6 +229,6 @@ extension Result where Success == ASAuthorization {
 	}
 }
 
-#Preview {
-	Authentication.Builder.makeAuthentication(coordinator: Coordinator())
-}
+//#Preview {
+//	Authentication.Builder.makeAuthentication(coordinator: Coordinator())
+//}

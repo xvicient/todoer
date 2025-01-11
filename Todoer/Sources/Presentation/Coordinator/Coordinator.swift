@@ -1,5 +1,6 @@
 import SwiftUI
 import Data
+import AuthenticationScreen
 
 enum Page: Hashable, Identifiable {
 	case authentication
@@ -123,7 +124,7 @@ extension Coordinator {
 		switch page {
 		case .authentication:
 			Authentication.Builder.makeAuthentication(
-				coordinator: self
+//				coordinator: self
 			)
 		case .home:
 			Home.Builder.makeHome(

@@ -1,4 +1,5 @@
 import SwiftUI
+import Theme
 
 // MARK: - HomeAccountMenuView
 
@@ -44,7 +45,7 @@ struct HomeAccountMenuView: View {
 					},
 					placeholder: {
 						Image.personCropCircle
-							.tint(.buttonBlack)
+							.tint(Color.buttonBlack)
 					}
 				)
 				.frame(width: 30, height: 30)

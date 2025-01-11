@@ -1,5 +1,6 @@
 import SwiftUI
 import Data
+import Theme
 
 // MARK: - HomeInvitationsView
 
@@ -25,7 +26,7 @@ struct HomeInvitationsView: View {
 					VStack(alignment: .leading) {
 						Text("\(invitation.ownerName)")
 							.font(.system(size: 16, weight: .bold))
-							.foregroundColor(.textBlack)
+							.foregroundColor(Color.textBlack)
 						if !invitation.ownerEmail.isEmpty {
 							Text("(\(invitation.ownerEmail))")
 								.font(.system(size: 14, weight: .light))
@@ -35,7 +36,7 @@ struct HomeInvitationsView: View {
 							.font(.system(size: 14))
 						Text("\(invitation.listName)")
 							.font(.system(size: 14, weight: .bold))
-							.foregroundColor(.textSecondary)
+							.foregroundColor(Color.textSecondary)
 					}
 					Spacer()
 					VStack {

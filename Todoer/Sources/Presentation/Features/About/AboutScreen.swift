@@ -1,5 +1,6 @@
 import SwiftUI
 import Common
+import Theme
 
 // MARK: - AboutScreen
 
@@ -28,7 +29,7 @@ extension AboutScreen {
 				Text(Constants.Text.privacyPolicyTitle)
 				.font(.headline)
 				.frame(maxWidth: .infinity, alignment: .leading)
-				.foregroundStyle(.textBlack)
+                .foregroundStyle(Color.textBlack)
 				.padding(.top, 24)
 				.listRowInsets(EdgeInsets())
 		) {}
@@ -36,7 +37,7 @@ extension AboutScreen {
 			header:
 				Text(Constants.Text.collectedInformationSection)
 				.fontWeight(.bold)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.listRowInsets(EdgeInsets())
 		) {
 			Text(Constants.Text.collectedInformation)
@@ -47,7 +48,7 @@ extension AboutScreen {
 			header:
 				Text(Constants.Text.useOfInformationSection)
 				.fontWeight(.bold)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.listRowInsets(EdgeInsets())
 		) {
 			Text(Constants.Text.useOfInformation)
@@ -58,7 +59,7 @@ extension AboutScreen {
 			header:
 				Text(Constants.Text.informationSharingSection)
 				.fontWeight(.bold)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.listRowInsets(EdgeInsets())
 		) {
 			Text(Constants.Text.informationSharing)
@@ -76,7 +77,7 @@ extension AboutScreen {
 					Text(Constants.Text.termsOfServiceTitle)
 						.font(.headline)
 						.frame(maxWidth: .infinity, alignment: .leading)
-						.foregroundStyle(.textBlack)
+						.foregroundStyle(Color.textBlack)
 						.listRowInsets(EdgeInsets())
 				}.listRowInsets(EdgeInsets())
 		) {}
@@ -84,7 +85,7 @@ extension AboutScreen {
 			header:
 				Text(Constants.Text.acceptableUseSection)
 				.fontWeight(.bold)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.listRowInsets(EdgeInsets())
 		) {
 			Text(Constants.Text.acceptableUse)
@@ -95,7 +96,7 @@ extension AboutScreen {
 			header:
 				Text(Constants.Text.responsibilitiesSection)
 				.fontWeight(.bold)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.listRowInsets(EdgeInsets())
 		) {
 			Text(Constants.Text.responsibilities)
@@ -106,7 +107,7 @@ extension AboutScreen {
 			header:
 				Text(Constants.Text.changesToTermsSection)
 				.fontWeight(.bold)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.listRowInsets(EdgeInsets())
 		) {
 			Text(Constants.Text.changesToTerms)
@@ -117,7 +118,7 @@ extension AboutScreen {
 			header:
 				Text(Constants.Text.terminationOfServiceSection)
 				.fontWeight(.bold)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.listRowInsets(EdgeInsets())
 		) {
 			Text(Constants.Text.terminationOfService)

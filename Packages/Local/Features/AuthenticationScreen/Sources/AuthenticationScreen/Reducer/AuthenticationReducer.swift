@@ -33,14 +33,14 @@ extension Authentication {
 			case error(String)
 		}
 
-		internal let coordinator: any CoordinatorApi
+//		internal let coordinator: any CoordinatorApi
 		internal let dependencies: AuthenticationDependencies
 
 		init(
-			coordinator: any CoordinatorApi,
+//			coordinator: any CoordinatorApi,
 			dependencies: AuthenticationDependencies
 		) {
-			self.coordinator = coordinator
+//			self.coordinator = coordinator
 			self.dependencies = dependencies
 		}
 

@@ -1,11 +1,11 @@
 import SwiftUI
 
-extension Image {
+public extension Image {
 	// MARK: - Images
 
-	static let launchScreen = Image("LaunchScreen")
-	static let slogan = Image("Slogan")
-	static let googleLogo = Image("GoogleLogo")
+    static let todoer = Image("Todoer", bundle: .module)
+    static let slogan = Image("Slogan", bundle: .module)
+    static let googleLogo = Image("GoogleLogo", bundle: .module)
 
 	// MARK: - Icons
 

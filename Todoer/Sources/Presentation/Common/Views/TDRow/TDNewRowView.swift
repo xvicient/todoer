@@ -1,4 +1,5 @@
 import SwiftUI
+import Theme
 
 struct TDNewRowView: View {
 	private let row: TDRow
@@ -26,9 +27,9 @@ struct TDNewRowView: View {
 	var body: some View {
 		HStack {
 			row.image
-				.foregroundColor(.buttonBlack)
+				.foregroundColor(Color.buttonBlack)
 			TextField(Constants.Text.list, text: $newRowText)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.focused($isNewRowFocused)
 				.onAppear {
 					newRowText = row.name
@@ -55,7 +56,7 @@ struct TDNewRowView: View {
 				Image.xmark
 					.resizable()
 					.frame(width: 12, height: 12)
-					.foregroundColor(.buttonBlack)
+					.foregroundColor(Color.buttonBlack)
 			}
 			.buttonStyle(.borderless)
 		}

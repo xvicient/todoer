@@ -4,7 +4,6 @@ import Application
 
 // MARK: - Reducer user actions
 
-@MainActor
 extension Authentication.Reducer {
 	func onDidTapGoogleSignInButton(
 		state: inout State

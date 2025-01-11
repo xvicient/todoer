@@ -1,6 +1,7 @@
 import SwiftUI
 import Data
 import Application
+import Theme
 
 // MARK: - ShareListView
 
@@ -23,13 +24,13 @@ struct ShareListScreen: View {
 				store.send(.didTapShareListButton($shareEmailText.wrappedValue))
 			}
 			Text(Constants.Text.sharingWithTitle)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.fontWeight(.medium)
 				.padding(.top, 24)
 				.padding(.bottom, 8)
 			if store.state.viewModel.users.isEmpty {
 				Text(Constants.Text.notSharedYet)
-					.foregroundColor(.textBlack)
+					.foregroundColor(Color.textBlack)
 					.font(.system(size: 14))
 			}
 			else {
@@ -46,13 +47,13 @@ struct ShareListScreen: View {
 									},
 									placeholder: {
 										Image.personCropCircle
-											.tint(.buttonBlack)
+											.tint(Color.buttonBlack)
 									}
 								)
 								.frame(width: 30, height: 30)
 								.cornerRadius(15.0)
 								Text(user.displayName ?? "")
-									.foregroundColor(.textBlack)
+									.foregroundColor(Color.textBlack)
 									.font(.system(size: 14))
 							}
 						}
@@ -64,7 +65,7 @@ struct ShareListScreen: View {
 		}
 		.padding(.horizontal, 24)
 		.frame(maxHeight: .infinity)
-		.background(.backgroundWhite)
+		.background(Color.backgroundWhite)
 		.onAppear {
 			store.send(.onAppear)
 		}
@@ -94,10 +95,10 @@ extension ShareListScreen {
 	fileprivate var title: some View {
 		HStack {
 			Image.squareAndArrowUp
-				.foregroundColor(.backgroundBlack)
+				.foregroundColor(Color.backgroundBlack)
 				.fontWeight(.medium)
 			Text(Constants.Text.shareTitle)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 				.fontWeight(.medium)
 			Spacer()
 		}

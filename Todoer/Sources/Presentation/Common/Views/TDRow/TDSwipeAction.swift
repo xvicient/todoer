@@ -1,4 +1,5 @@
 import SwiftUI
+import Theme
 
 enum TDSwipeAction: Identifiable {
 	case share
@@ -11,21 +12,21 @@ enum TDSwipeAction: Identifiable {
 
 	var tint: Color {
 		switch self {
-		case .share: return .buttonBlack
-		case .done: return .buttonBlack
-		case .undone: return .buttonBlack
-		case .delete: return .buttonDestructive
-		case .edit: return .buttonSecondary
+		case .share: return Color.buttonBlack
+		case .done: return Color.buttonBlack
+		case .undone: return Color.buttonBlack
+		case .delete: return Color.buttonDestructive
+		case .edit: return Color.buttonSecondary
 		}
 	}
 
 	var icon: Image {
 		switch self {
-		case .share: return .squareAndArrowUp
-		case .done: return .largecircleFillCircle
-		case .undone: return .circle
-		case .delete: return .trash
-		case .edit: return .squareAndPencil
+		case .share: return Image.squareAndArrowUp
+		case .done: return Image.largecircleFillCircle
+		case .undone: return Image.circle
+		case .delete: return Image.trash
+		case .edit: return Image.squareAndPencil
 		}
 	}
 }

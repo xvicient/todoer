@@ -1,4 +1,5 @@
 import SwiftUI
+import Theme
 
 struct TDRowView: View {
 	private let row: TDRow
@@ -19,7 +20,7 @@ struct TDRowView: View {
 		Group {
 			HStack {
 				row.image
-					.foregroundColor(.buttonBlack)
+					.foregroundColor(Color.buttonBlack)
 				Button(action: {
 					onTap?()
 				}) {
@@ -34,7 +35,7 @@ struct TDRowView: View {
 						.contentShape(Rectangle())
 				}
 				.buttonStyle(.borderless)
-				.foregroundColor(.textBlack)
+				.foregroundColor(Color.textBlack)
 			}
 			.frame(minHeight: 40)
 		}

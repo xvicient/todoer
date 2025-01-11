@@ -1,12 +1,12 @@
 import SwiftUI
 import Application
 
-struct Authentication {
-	struct Builder {
+public struct Authentication {
+	public struct Builder {
 		@MainActor
-		static func makeAuthentication(
-			coordinator: Coordinator
-		) -> AuthenticationScreen {
+		public static func makeAuthentication(
+//			coordinator: Coordinator
+        ) -> some View {
 			struct Dependencies: AuthenticationDependencies {
 				var useCase: AuthenticationUseCaseApi
 			}
@@ -14,7 +14,7 @@ struct Authentication {
 				store: Store(
 					initialState: .init(),
 					reducer: Authentication.Reducer(
-						coordinator: coordinator,
+//						coordinator: coordinator,
 						dependencies: Dependencies(
 							useCase: Authentication.UseCase()
 						)
