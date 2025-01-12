@@ -70,3 +70,10 @@ struct CoordinatorView_Previews: PreviewProvider {
 		CoordinatorView()
 	}
 }
+
+extension UINavigationController {
+    open override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        navigationBar.topItem?.backButtonDisplayMode = .minimal
+    }
+}

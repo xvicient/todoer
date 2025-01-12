@@ -6,6 +6,7 @@ import Common
 import Application
 import ThemeAssets
 import CoordinatorContract
+import Mocks
 
 // MARK: - AuthenticationScreen
 
@@ -233,16 +234,5 @@ extension Result where Success == ASAuthorization {
 struct AuthenticationScreen_Previews: PreviewProvider {
     static var previews: some View {
         Authentication.Builder.makeAuthentication(coordinator: CoordinatorMock())
-    }
-    
-    private struct CoordinatorMock: CoordinatorApi {
-        func loggOut() {}
-        func loggIn() {}
-        func push(_ page: Page) {}
-        func present(sheet: Sheet) {}
-        func present(fullScreenCover: FullScreenCover) {}
-        func pop() {}
-        func popToRoot() {}
-        func dismissSheet() {}
     }
 }

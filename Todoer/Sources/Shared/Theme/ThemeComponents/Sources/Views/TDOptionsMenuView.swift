@@ -13,23 +13,30 @@ public struct TDOptionsMenuView: View {
 	}
 
     public var body: some View {
-		HStack {
-			Spacer()
-			Menu {
-				Button(Constants.Text.autoSort) {
-					withAnimation {
-						onSort()
-					}
-				}
-			} label: {
-				Image.ellipsis
-					.resizable()
-					.scaleEffect(0.75)
-					.rotationEffect(Angle(degrees: 90))
-					.foregroundColor(Color.buttonBlack)
-			}
-		}
-	}
+        HStack {
+            Menu {
+                Button(Constants.Text.autoSort) {
+                    withAnimation {
+                        onSort()
+                    }
+                }
+            } label: {
+                HStack {
+                    Spacer()
+                    Image.ellipsis
+                        .resizable()
+                        .rotationEffect(Angle(degrees: 90))
+                        .foregroundColor(Color.buttonBlack)
+                        .scaledToFit()
+                        .frame(width: 15)
+                    Spacer()
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .frame(width: 40, height: 40)
+    }
+
 }
 
 // MARK: - Constants
@@ -40,4 +47,10 @@ extension TDOptionsMenuView {
 			static let autoSort = "To-do first"
 		}
 	}
+}
+
+struct TDOptionsMenuView_Previews: PreviewProvider {
+    static var previews: some View {
+        TDOptionsMenuView {}
+    }
 }

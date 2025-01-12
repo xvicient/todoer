@@ -2,6 +2,7 @@ import SwiftUI
 import Application
 import CoordinatorContract
 import ThemeComponents
+import Mocks
 
 // MARK: - HomeScreen
 
@@ -216,16 +217,5 @@ extension HomeScreen {
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         Home.Builder.makeHome(coordinator: CoordinatorMock())
-    }
-    
-    private struct CoordinatorMock: CoordinatorApi {
-        func loggOut() {}
-        func loggIn() {}
-        func push(_ page: Page) {}
-        func present(sheet: Sheet) {}
-        func present(fullScreenCover: FullScreenCover) {}
-        func pop() {}
-        func popToRoot() {}
-        func dismissSheet() {}
     }
 }

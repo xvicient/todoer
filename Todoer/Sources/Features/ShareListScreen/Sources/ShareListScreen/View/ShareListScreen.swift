@@ -4,6 +4,7 @@ import Application
 import ThemeAssets
 import ThemeComponents
 import CoordinatorContract
+import Mocks
 
 // MARK: - ShareListView
 
@@ -156,15 +157,4 @@ struct ShareView_Previews: PreviewProvider {
 			)
 		)
 	}
-    
-    private struct CoordinatorMock: CoordinatorApi {
-        func loggOut() {}
-        func loggIn() {}
-        func push(_ page: Page) {}
-        func present(sheet: Sheet) {}
-        func present(fullScreenCover: FullScreenCover) {}
-        func pop() {}
-        func popToRoot() {}
-        func dismissSheet() {}
-    }
 }

@@ -30,6 +30,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Application", package: "Application"),
                 .product(name: "Common", package: "Common"),
+                .product(name: "Mocks", package: "Common"),
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 "GoogleSignInDependencies"

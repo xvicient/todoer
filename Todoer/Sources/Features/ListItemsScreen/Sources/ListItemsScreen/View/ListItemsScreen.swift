@@ -174,7 +174,6 @@ extension ListItemsScreen {
 		struct Text {
 			static let errorTitle = "Error"
 			static let errorOkButton = "Ok"
-			static let autoSort = "To-do first"
 		}
 	}
 }

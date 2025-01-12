@@ -2,11 +2,11 @@ import Application
 import Combine
 import Foundation
 
+@MainActor
 public final class TestStore<State, Action> where Action: Equatable {
 	private let store: Store<TestReducer<State, Action>>
 	private let reducer: TestReducer<State, Action>
 
-    @MainActor
     public init<R: Reducer>(
 		initialState: State,
 		reducer: R
@@ -22,7 +22,6 @@ public final class TestStore<State, Action> where Action: Equatable {
 		self.store = Store(initialState: initialState, reducer: self.reducer)
 	}
 
-	@MainActor
     public func send(
 		_ action: Action,
 		assert expectation: ((_ state: State) -> Bool)
@@ -32,7 +31,6 @@ public final class TestStore<State, Action> where Action: Equatable {
         assert(expectation(reducer.expectedState))
 	}
 
-	@MainActor
     public func receive(
 		timeout: Int = 5000,
 		_ action: Action,
