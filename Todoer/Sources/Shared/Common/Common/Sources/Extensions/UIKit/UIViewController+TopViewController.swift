@@ -4,7 +4,11 @@ public struct Utils {
 
 	@MainActor
 	public static func topViewController(controller: UIViewController? = nil) -> UIViewController? {
-		let controller = controller ?? UIApplication.shared.keyWindow?.rootViewController
+        let controller = controller ?? UIApplication
+            .shared
+            .connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .last?.rootViewController
 
 		if let navigationController = controller as? UINavigationController {
 			return topViewController(controller: navigationController.visibleViewController)
