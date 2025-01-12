@@ -1,6 +1,4 @@
-import Data
-
-@testable import Todoer
+import Entities
 
 struct ListMock {
 	static var list: UserList {

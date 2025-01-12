@@ -1,7 +1,5 @@
 import Application
 
-@testable import Todoer
-
 class TestReducer<State, Action>: Reducer where Action: Equatable {
 
 	private let reduce: (inout State, Action) -> Effect<Action>

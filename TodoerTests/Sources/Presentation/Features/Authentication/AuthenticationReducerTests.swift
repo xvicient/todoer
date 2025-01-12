@@ -1,7 +1,7 @@
 import XCTest
 import Application
 
-@testable import Todoer
+@testable import AuthenticationScreen
 
 @MainActor
 final class AuthenticationReducerTests: XCTestCase {
@@ -14,7 +14,7 @@ final class AuthenticationReducerTests: XCTestCase {
 
 	private var store: AuthenticationStore<Authentication.Reducer>!
 	private var useCaseMock = AuthenticationUseCaseMock()
-	private var coordinator = TestCoordinator()
+	private var coordinator = CoordinatorMock()
 
 	override func setUp() {
 		super.setUp()

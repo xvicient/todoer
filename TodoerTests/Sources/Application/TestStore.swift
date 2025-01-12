@@ -3,8 +3,6 @@ import Combine
 import Foundation
 import XCTest
 
-@testable import Todoer
-
 final class TestStore<State, Action> where Action: Equatable {
 	private let store: Store<TestReducer<State, Action>>
 	private let reducer: TestReducer<State, Action>

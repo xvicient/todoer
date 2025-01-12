@@ -1,7 +1,7 @@
 import Application
-import Data
+import Entities
 
-@testable import Todoer
+@testable import ShareListScreen
 
 class ShareListUseCaseMock: ShareListUseCaseApi {
 

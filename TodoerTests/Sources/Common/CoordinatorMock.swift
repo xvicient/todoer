@@ -1,8 +1,7 @@
 import SwiftUI
+import CoordinatorContract
 
-@testable import Todoer
-
-final class TestCoordinator: CoordinatorApi {
+final class CoordinatorMock: CoordinatorApi {
 
 	// MARK: - CoordinatorApi
 
@@ -14,11 +13,11 @@ final class TestCoordinator: CoordinatorApi {
 		isLoggInCalled = true
 	}
 
-	func push(_ page: Todoer.Page) {}
+	func push(_ page: Page) {}
 
-	func present(sheet: Todoer.Sheet) {}
+	func present(sheet: Sheet) {}
 
-	func present(fullScreenCover: Todoer.FullScreenCover) {}
+	func present(fullScreenCover: FullScreenCover) {}
 
 	func pop() {}
 

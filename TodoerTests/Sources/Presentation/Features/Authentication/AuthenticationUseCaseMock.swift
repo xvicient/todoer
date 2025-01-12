@@ -1,6 +1,6 @@
 import Application
 
-@testable import Todoer
+@testable import AuthenticationScreen
 
 class AuthenticationUseCaseMock: AuthenticationUseCaseApi {
 	var result: ActionResult<EquatableVoid>!

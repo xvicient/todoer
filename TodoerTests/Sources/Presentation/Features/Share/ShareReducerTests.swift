@@ -1,8 +1,9 @@
 import XCTest
 import Application
 import Data
+import Entities
 
-@testable import Todoer
+@testable import ShareListScreen
 
 @MainActor
 final class ShareReducerTests: XCTestCase {
@@ -16,7 +17,7 @@ final class ShareReducerTests: XCTestCase {
 
 	private var store: ShareStore<ShareList.Reducer>!
 	private var useCaseMock = ShareListUseCaseMock()
-	private var coordinator = TestCoordinator()
+	private var coordinator = CoordinatorMock()
 
 	override func setUp() {
 		super.setUp()
