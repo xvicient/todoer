@@ -29,11 +29,19 @@ let package = Package(
             name: "AuthenticationScreen",
             dependencies: [
                 "Application",
-                "Common",
+                .product(name: "Common", package: "Common"),
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 "GoogleSignInDependencies"
             ]
-        )
+        ),
+        .testTarget(
+            name: "AuthenticationScreenTests",
+            dependencies: [
+                "AuthenticationScreen",
+                "Application",
+                .product(name: "Mocks", package: "Common")
+            ]
+        ),
     ]
 )

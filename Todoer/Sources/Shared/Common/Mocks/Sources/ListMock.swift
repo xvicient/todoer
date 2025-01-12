@@ -1,7 +1,7 @@
 import Entities
 
-struct ListMock {
-	static var list: UserList {
+public struct ListMock {
+    public static var list: UserList {
 		lists(1).first!
 	}
 

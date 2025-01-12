@@ -25,7 +25,7 @@ let package = Package(
         .target(
             name: "AboutScreen",
             dependencies: [
-                "Common",
+                .product(name: "Common", package: "Common"),
                 .product(name: "ThemeAssets", package: "Theme")
             ]
         ),

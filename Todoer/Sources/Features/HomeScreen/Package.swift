@@ -30,7 +30,7 @@ let package = Package(
             name: "HomeScreen",
             dependencies: [
                 "Application",
-                "Common",
+                .product(name: "Common", package: "Common"),
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",

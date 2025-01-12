@@ -29,7 +29,7 @@ let package = Package(
             name: "ListItemsScreen",
             dependencies: [
                 "Application",
-                "Common",
+                .product(name: "Common", package: "Common"),
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",
                 "Entities"

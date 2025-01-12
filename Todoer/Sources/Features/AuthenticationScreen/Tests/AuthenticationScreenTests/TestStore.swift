@@ -7,6 +7,7 @@ final class TestStore<State, Action> where Action: Equatable {
 	private let store: Store<TestReducer<State, Action>>
 	private let reducer: TestReducer<State, Action>
 
+    @MainActor
 	init<R: Reducer>(
 		initialState: State,
 		reducer: R

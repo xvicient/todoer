@@ -30,7 +30,7 @@ let package = Package(
             name: "ShareListScreen",
             dependencies: [
                 "Application",
-                "Common",
+                .product(name: "Common", package: "Common"),
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",
@@ -40,7 +40,13 @@ let package = Package(
         ),
         .testTarget(
             name: "ShareListScreenTests",
-            dependencies: ["ShareListScreen"]
+            dependencies: [
+                "ShareListScreen",
+                "Application",
+                "Entities",
+                "Data",
+                .product(name: "Mocks", package: "Common")
+            ]
         ),
     ]
 )

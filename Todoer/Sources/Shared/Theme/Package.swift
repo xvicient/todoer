@@ -38,7 +38,7 @@ let package = Package(
             name: "ThemeComponents",
             dependencies: [
                 "ThemeAssets",
-                "Common"
+                .product(name: "Common", package: "Common")
             ],
             path: "ThemeComponents/Sources"
         )

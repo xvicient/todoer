@@ -7,19 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C71FAF0F2B7643BE004679E2 /* ShareReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF0E2B7643BE004679E2 /* ShareReducerTests.swift */; };
-		C71FAF112B764511004679E2 /* ShareListUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF102B764511004679E2 /* ShareListUseCaseMock.swift */; };
-		C71FAF142B76601D004679E2 /* UserMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF132B76601D004679E2 /* UserMock.swift */; };
-		C71FAF162B766170004679E2 /* ListMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71FAF152B766170004679E2 /* ListMock.swift */; };
 		C72241D82D3170550046C0D7 /* FirebaseDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = C72241D72D3170550046C0D7 /* FirebaseDependencies */; };
 		C72241DC2D3172630046C0D7 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = C72241DB2D3172630046C0D7 /* Data */; };
-		C72DA9CD2B7A5C6D00816AE1 /* CoordinatorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72DA9CC2B7A5C6D00816AE1 /* CoordinatorMock.swift */; };
 		C74372D12D32AAF9002E1F1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C74372D02D32AAF9002E1F1A /* Assets.xcassets */; };
 		C74372D32D32AB96002E1F1A /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C74372D22D32AB96002E1F1A /* Colors.xcassets */; };
-		C74515202B750F5600C6D08E /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682242B68DF97008BB192 /* TestStore.swift */; };
-		C74515212B750F5600C6D08E /* AuthenticationReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */; };
-		C74515222B750F5600C6D08E /* TestReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72701092B74C01100E9D275 /* TestReducer.swift */; };
-		C74515232B750F5600C6D08E /* AuthenticationUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */; };
 		C75EB57D2D31DC1300317D07 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB57C2D31DC1300317D07 /* Application */; };
 		C75EB5892D32968B00317D07 /* AuthenticationScreen in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB5882D32968B00317D07 /* AuthenticationScreen */; };
 		C77FFADF2D32C6E100C59A48 /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = C77FFADE2D32C6E100C59A48 /* CoordinatorContract */; };
@@ -31,6 +22,12 @@
 		C7B3359F2D31D3E700C36D7B /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = C7B3359E2D31D3E700C36D7B /* Common */; };
 		C7C42E202D332D0C006B8C53 /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = C7C42E1F2D332D0C006B8C53 /* CoordinatorImpl */; };
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
+		C7DE26232D3411920090FF66 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = C7DE26222D3411920090FF66 /* Application */; };
+		C7DE26262D3411A00090FF66 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = C7DE26252D3411A00090FF66 /* Entities */; };
+		C7EA2F382D340E4300B63DDC /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F372D340E4300B63DDC /* CoordinatorContract */; };
+		C7EA2F3A2D340E4300B63DDC /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F392D340E4300B63DDC /* CoordinatorImpl */; };
+		C7EA2F3D2D340E6700B63DDC /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F3C2D340E6700B63DDC /* CoordinatorImpl */; };
+		C7EA2F402D340E7B00B63DDC /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F3F2D340E7B00B63DDC /* Mocks */; };
 		C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = C7F305892D32CCA5004C322D /* ThemeAssets */; };
 		C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */ = {isa = PBXBuildFile; productRef = C7F3058B2D32CCA5004C322D /* ThemeComponents */; };
 /* End PBXBuildFile section */
@@ -46,15 +43,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C70682242B68DF97008BB192 /* TestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStore.swift; sourceTree = "<group>"; };
-		C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationUseCaseMock.swift; sourceTree = "<group>"; };
-		C71FAF0A2B75132E004679E2 /* TodoerTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TodoerTests.xctestplan; sourceTree = "<group>"; };
-		C71FAF0E2B7643BE004679E2 /* ShareReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareReducerTests.swift; sourceTree = "<group>"; };
-		C71FAF102B764511004679E2 /* ShareListUseCaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareListUseCaseMock.swift; sourceTree = "<group>"; };
-		C71FAF132B76601D004679E2 /* UserMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMock.swift; sourceTree = "<group>"; };
-		C71FAF152B766170004679E2 /* ListMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListMock.swift; sourceTree = "<group>"; };
-		C72701092B74C01100E9D275 /* TestReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestReducer.swift; sourceTree = "<group>"; };
-		C72DA9CC2B7A5C6D00816AE1 /* CoordinatorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorMock.swift; sourceTree = "<group>"; };
 		C74372D02D32AAF9002E1F1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C74372D22D32AB96002E1F1A /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		C74515172B750F3D00C6D08E /* TodoerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,7 +66,6 @@
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationReducerTests.swift; sourceTree = "<group>"; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
 		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +75,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7DE26232D3411920090FF66 /* Application in Frameworks */,
+				C7DE26262D3411A00090FF66 /* Entities in Frameworks */,
+				C7EA2F402D340E7B00B63DDC /* Mocks in Frameworks */,
+				C7EA2F382D340E4300B63DDC /* CoordinatorContract in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +95,8 @@
 				C75EB57D2D31DC1300317D07 /* Application in Frameworks */,
 				C72241D82D3170550046C0D7 /* FirebaseDependencies in Frameworks */,
 				C7B3359F2D31D3E700C36D7B /* Common in Frameworks */,
+				C7EA2F3A2D340E4300B63DDC /* CoordinatorImpl in Frameworks */,
+				C7EA2F3D2D340E6700B63DDC /* CoordinatorImpl in Frameworks */,
 				C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */,
 				C7C42E202D332D0C006B8C53 /* CoordinatorImpl in Frameworks */,
 			);
@@ -112,78 +105,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C70682232B68DF82008BB192 /* Application */ = {
-			isa = PBXGroup;
-			children = (
-				C70682242B68DF97008BB192 /* TestStore.swift */,
-				C72701092B74C01100E9D275 /* TestReducer.swift */,
-			);
-			path = Application;
-			sourceTree = "<group>";
-		};
-		C71FAF0D2B7643B1004679E2 /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF0E2B7643BE004679E2 /* ShareReducerTests.swift */,
-				C71FAF102B764511004679E2 /* ShareListUseCaseMock.swift */,
-			);
-			path = Share;
-			sourceTree = "<group>";
-		};
-		C71FAF122B766013004679E2 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF132B76601D004679E2 /* UserMock.swift */,
-				C71FAF152B766170004679E2 /* ListMock.swift */,
-				C72DA9CC2B7A5C6D00816AE1 /* CoordinatorMock.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		C730919A2B67F1740090CE06 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF0A2B75132E004679E2 /* TodoerTests.xctestplan */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		C730919B2B67F17D0090CE06 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF122B766013004679E2 /* Common */,
-				C70682232B68DF82008BB192 /* Application */,
-				C730919C2B67F1890090CE06 /* Presentation */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		C730919C2B67F1890090CE06 /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				C730919D2B67F1910090CE06 /* Features */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
-		C730919D2B67F1910090CE06 /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				C71FAF0D2B7643B1004679E2 /* Share */,
-				C730919E2B67F1970090CE06 /* Authentication */,
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
-		C730919E2B67F1970090CE06 /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				D6A29C072B09706200FA7F84 /* AuthenticationReducerTests.swift */,
-				C70682262B6996FB008BB192 /* AuthenticationUseCaseMock.swift */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
 		C74C0F452B5588C100926E87 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,7 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				D6A29BF52B09706100FA7F84 /* Todoer */,
-				D6A29C062B09706200FA7F84 /* TodoerTests */,
 				D6A29C102B09706200FA7F84 /* TodoerUITests */,
 				C7B3359A2D31D30500C36D7B /* Packages */,
 				C770BF6C2D313EF100B455B5 /* Frameworks */,
@@ -293,15 +213,6 @@
 				C79CB26D2B0D537A00C2BD18 /* Sources */,
 			);
 			path = Todoer;
-			sourceTree = "<group>";
-		};
-		D6A29C062B09706200FA7F84 /* TodoerTests */ = {
-			isa = PBXGroup;
-			children = (
-				C730919B2B67F17D0090CE06 /* Sources */,
-				C730919A2B67F1740090CE06 /* Resources */,
-			);
-			path = TodoerTests;
 			sourceTree = "<group>";
 		};
 		D6A29C102B09706200FA7F84 /* TodoerUITests */ = {
@@ -360,6 +271,8 @@
 				C7F305892D32CCA5004C322D /* ThemeAssets */,
 				C7F3058B2D32CCA5004C322D /* ThemeComponents */,
 				C7C42E1F2D332D0C006B8C53 /* CoordinatorImpl */,
+				C7EA2F392D340E4300B63DDC /* CoordinatorImpl */,
+				C7EA2F3C2D340E6700B63DDC /* CoordinatorImpl */,
 			);
 			productName = Listio;
 			productReference = D6A29BF32B09706100FA7F84 /* Todoer.app */;
@@ -397,7 +310,7 @@
 				C7EB4A862B855B1B00D66D64 /* XCRemoteSwiftPackageReference "swift-format" */,
 				C72241D62D3170550046C0D7 /* XCLocalSwiftPackageReference "Packages/External/FirebaseDependencies" */,
 				C7B335912D31CF2700C36D7B /* XCLocalSwiftPackageReference "Packages/External/GoogleSignInDependencies" */,
-				C7C42E1E2D332D0C006B8C53 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */,
+				C7EA2F3B2D340E6700B63DDC /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -463,15 +376,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C74515212B750F5600C6D08E /* AuthenticationReducerTests.swift in Sources */,
-				C72DA9CD2B7A5C6D00816AE1 /* CoordinatorMock.swift in Sources */,
-				C74515222B750F5600C6D08E /* TestReducer.swift in Sources */,
-				C74515202B750F5600C6D08E /* TestStore.swift in Sources */,
-				C71FAF112B764511004679E2 /* ShareListUseCaseMock.swift in Sources */,
-				C71FAF142B76601D004679E2 /* UserMock.swift in Sources */,
-				C74515232B750F5600C6D08E /* AuthenticationUseCaseMock.swift in Sources */,
-				C71FAF0F2B7643BE004679E2 /* ShareReducerTests.swift in Sources */,
-				C71FAF162B766170004679E2 /* ListMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,7 +670,7 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/External/GoogleSignInDependencies;
 		};
-		C7C42E1E2D332D0C006B8C53 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */ = {
+		C7EA2F3B2D340E6700B63DDC /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/Coordinator;
 		};
@@ -819,6 +723,30 @@
 		C7C42E1F2D332D0C006B8C53 /* CoordinatorImpl */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoordinatorImpl;
+		};
+		C7DE26222D3411920090FF66 /* Application */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Application;
+		};
+		C7DE26252D3411A00090FF66 /* Entities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Entities;
+		};
+		C7EA2F372D340E4300B63DDC /* CoordinatorContract */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoordinatorContract;
+		};
+		C7EA2F392D340E4300B63DDC /* CoordinatorImpl */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoordinatorImpl;
+		};
+		C7EA2F3C2D340E6700B63DDC /* CoordinatorImpl */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoordinatorImpl;
+		};
+		C7EA2F3F2D340E7B00B63DDC /* Mocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Mocks;
 		};
 		C7F305892D32CCA5004C322D /* ThemeAssets */ = {
 			isa = XCSwiftPackageProductDependency;

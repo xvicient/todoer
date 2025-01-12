@@ -1,5 +1,6 @@
 import XCTest
 import Application
+import Mocks
 
 @testable import AuthenticationScreen
 
@@ -12,26 +13,19 @@ final class AuthenticationReducerTests: XCTestCase {
 		var useCase: AuthenticationUseCaseApi
 	}
 
-	private var store: AuthenticationStore<Authentication.Reducer>!
+    private lazy var store: AuthenticationStore<Authentication.Reducer> = {
+        TestStore(
+            initialState: .init(),
+            reducer: Authentication.Reducer(
+                coordinator: coordinator,
+                dependencies: Dependencies(
+                    useCase: useCaseMock
+                )
+            )
+        )
+    }()
 	private var useCaseMock = AuthenticationUseCaseMock()
 	private var coordinator = CoordinatorMock()
-
-	override func setUp() {
-		super.setUp()
-		setupStore()
-	}
-
-	private func setupStore() {
-		store = TestStore(
-			initialState: .init(),
-			reducer: Authentication.Reducer(
-				coordinator: coordinator,
-				dependencies: Dependencies(
-					useCase: useCaseMock
-				)
-			)
-		)
-	}
 
 	/// https://github.com/lukejones1/AppleSignIn/tree/master
 	func testDidTapAppleSignInButton_Success() async {}

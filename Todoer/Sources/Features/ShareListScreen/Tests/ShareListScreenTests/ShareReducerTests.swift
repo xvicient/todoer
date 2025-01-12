@@ -2,6 +2,7 @@ import XCTest
 import Application
 import Data
 import Entities
+import Mocks
 
 @testable import ShareListScreen
 
@@ -15,27 +16,20 @@ final class ShareReducerTests: XCTestCase {
 		var list: UserList
 	}
 
-	private var store: ShareStore<ShareList.Reducer>!
+    private lazy var store: ShareStore<ShareList.Reducer> = {
+        TestStore(
+            initialState: .init(),
+            reducer: ShareList.Reducer(
+                coordinator: coordinator,
+                dependencies: Dependencies(
+                    useCase: useCaseMock,
+                    list: ListMock.list
+                )
+            )
+        )
+    }()
 	private var useCaseMock = ShareListUseCaseMock()
 	private var coordinator = CoordinatorMock()
-
-	override func setUp() {
-		super.setUp()
-		setupStore()
-	}
-
-	private func setupStore() {
-		store = TestStore(
-			initialState: .init(),
-			reducer: ShareList.Reducer(
-				coordinator: coordinator,
-				dependencies: Dependencies(
-					useCase: useCaseMock,
-					list: ListMock.list
-				)
-			)
-		)
-	}
 
 	func testDidViewAppearAndFetchUsers_Success() async {
 		givenASuccessUsersFetch()
