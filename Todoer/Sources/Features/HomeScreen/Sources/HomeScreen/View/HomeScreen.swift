@@ -8,6 +8,13 @@ import Mocks
 
 struct HomeScreen: View {
 	@ObservedObject private var store: Store<Home.Reducer>
+    @State private var searchText = ""
+    
+    private var filteredLists: [Home.Reducer.ListRow] {
+        searchText.isEmpty ? store.state.viewModel.lists : store.state.viewModel.lists.filter {
+            $0.list.name.lowercased().hasPrefix(searchText.lowercased())
+        }
+    }
 
 	init(store: Store<Home.Reducer>) {
 		self.store = store
@@ -66,6 +73,7 @@ extension HomeScreen {
 				count: store.state.viewModel.lists.count,
 				scrollView: scrollView
 			)
+            .searchable(text: $searchText)
 		}
 	}
 
@@ -84,7 +92,7 @@ extension HomeScreen {
 	fileprivate var listsSection: some View {
 		Section(header: Text(Constants.Text.todos).listRowHeaderStyle()) {
 			ForEach(
-				Array(store.state.viewModel.lists.enumerated()),
+				Array(filteredLists.enumerated()),
 				id: \.element.id
 			) { index, row in
 				if row.isEditing {

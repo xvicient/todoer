@@ -8,6 +8,13 @@ import ThemeComponents
 struct ListItemsScreen: View {
 	@ObservedObject private var store: Store<ListItems.Reducer>
 	private var listName: String
+    @State private var searchText = ""
+    
+    private var filteredItems: [ListItems.Reducer.ItemRow] {
+        searchText.isEmpty ? store.state.viewModel.items : store.state.viewModel.items.filter {
+            $0.item.name.lowercased().hasPrefix(searchText.lowercased())
+        }
+    }
 
 	init(
 		store: Store<ListItems.Reducer>,
@@ -58,7 +65,7 @@ extension ListItemsScreen {
 			List {
 				Section(header: Text(listName).listRowHeaderStyle()) {
 					ForEach(
-						Array(store.state.viewModel.items.enumerated()),
+						Array(filteredItems.enumerated()),
 						id: \.element.id
 					) { index, row in
 						if row.isEditing {
@@ -90,6 +97,7 @@ extension ListItemsScreen {
 				count: store.state.viewModel.items.count,
 				scrollView: scrollView
 			)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
 		}
 	}
 
