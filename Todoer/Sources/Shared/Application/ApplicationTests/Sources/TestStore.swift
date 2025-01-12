@@ -1,14 +1,13 @@
 import Application
 import Combine
 import Foundation
-import XCTest
 
-final class TestStore<State, Action> where Action: Equatable {
+public final class TestStore<State, Action> where Action: Equatable {
 	private let store: Store<TestReducer<State, Action>>
 	private let reducer: TestReducer<State, Action>
 
     @MainActor
-	init<R: Reducer>(
+    public init<R: Reducer>(
 		initialState: State,
 		reducer: R
 	)
@@ -24,17 +23,17 @@ final class TestStore<State, Action> where Action: Equatable {
 	}
 
 	@MainActor
-	func send(
+    public func send(
 		_ action: Action,
 		assert expectation: ((_ state: State) -> Bool)
 	) async {
 		store.send(action)
-		XCTAssertEqual(reducer.expectedAction, action)
-		XCTAssert(expectation(reducer.expectedState))
+        assert(reducer.expectedAction == action)
+        assert(expectation(reducer.expectedState))
 	}
 
 	@MainActor
-	func receive(
+    public func receive(
 		timeout: Int = 5000,
 		_ action: Action,
 		assert expectation: @escaping ((_ state: State) -> Bool)
@@ -47,8 +46,8 @@ final class TestStore<State, Action> where Action: Equatable {
 			action,
 			{ [weak self] in
 				guard let self else { return }
-				XCTAssertEqual(reducer.expectedAction, action)
-				XCTAssert(expectation(reducer.expectedState))
+                assert(reducer.expectedAction == action)
+                assert(expectation(reducer.expectedState))
 				expectedResultReceived = true
 			}
 		)
@@ -58,9 +57,6 @@ final class TestStore<State, Action> where Action: Equatable {
 			try? await Task.sleep(nanoseconds: pace)
 		}
 
-		guard expectedResultReceived else {
-			XCTFail("Timeout waiting for expected action")
-			return
-		}
+        assert(expectedResultReceived, "Timeout waiting for expected action")
 	}
 }

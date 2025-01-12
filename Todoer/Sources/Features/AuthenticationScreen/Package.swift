@@ -28,7 +28,7 @@ let package = Package(
         .target(
             name: "AuthenticationScreen",
             dependencies: [
-                "Application",
+                .product(name: "Application", package: "Application"),
                 .product(name: "Common", package: "Common"),
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "CoordinatorContract", package: "Coordinator"),
@@ -39,7 +39,7 @@ let package = Package(
             name: "AuthenticationScreenTests",
             dependencies: [
                 "AuthenticationScreen",
-                "Application",
+                .product(name: "ApplicationTests", package: "Application"),
                 .product(name: "Mocks", package: "Common")
             ]
         ),

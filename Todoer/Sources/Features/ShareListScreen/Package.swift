@@ -29,7 +29,7 @@ let package = Package(
         .target(
             name: "ShareListScreen",
             dependencies: [
-                "Application",
+                .product(name: "Application", package: "Application"),
                 .product(name: "Common", package: "Common"),
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "ThemeComponents", package: "Theme"),
@@ -42,7 +42,7 @@ let package = Package(
             name: "ShareListScreenTests",
             dependencies: [
                 "ShareListScreen",
-                "Application",
+                .product(name: "ApplicationTests", package: "Application"),
                 "Entities",
                 "Data",
                 .product(name: "Mocks", package: "Common")

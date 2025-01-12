@@ -12,7 +12,12 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "Application",
-            targets: ["Application"]),
+            targets: ["Application"]
+        ),
+        .library(
+            name: "ApplicationTests",
+            targets: ["ApplicationTests"]
+        )
     ],
     dependencies: [
         .package(path: "../Data")
@@ -25,7 +30,15 @@ let package = Package(
             name: "Application",
             dependencies: [
                 "Data"
-            ]
+            ],
+            path: "Application/Sources"
+        ),
+        .target(
+            name: "ApplicationTests",
+            dependencies: [
+                "Application"
+            ],
+            path: "ApplicationTests/Sources"
         )
     ]
 )

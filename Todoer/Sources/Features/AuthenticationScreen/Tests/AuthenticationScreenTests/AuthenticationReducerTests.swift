@@ -1,5 +1,6 @@
 import XCTest
 import Application
+import ApplicationTests
 import Mocks
 
 @testable import AuthenticationScreen
