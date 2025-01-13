@@ -11,6 +11,7 @@ protocol ShareListUseCaseApi {
 
 	func shareList(
 		shareEmail: String,
+        owner: String,
 		list: UserList
 	) async -> ActionResult<EquatableVoid>
 }
@@ -56,6 +57,7 @@ extension ShareList {
 
 		func shareList(
 			shareEmail: String,
+            owner: String,
 			list: UserList
 		) async -> ActionResult<EquatableVoid> {
 			do {
@@ -79,7 +81,7 @@ extension ShareList {
 				}
 
 				try await invitationsRepository.sendInvitation(
-					ownerName: selfUser.displayName ?? "User",
+					ownerName: owner,
 					ownerEmail: ownerEmail,
 					listId: list.documentId,
 					listName: list.name,

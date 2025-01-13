@@ -5,13 +5,15 @@ import Application
 extension ShareList.Reducer {
 	func onDidTapShareButton(
 		state: inout State,
-		email: String
+		email: String,
+        owner: String
 	) -> Effect<Action> {
 		return .task { send in
 			await send(
 				.shareListResult(
 					dependencies.useCase.shareList(
 						shareEmail: email,
+                        owner: owner,
 						list: dependencies.list
 					)
 				)
