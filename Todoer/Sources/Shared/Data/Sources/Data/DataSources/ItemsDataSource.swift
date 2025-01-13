@@ -87,7 +87,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
 			let dto = ItemDTO(
 				name: name,
 				done: false,
-				index: Date().milliseconds
+				index: -Date().milliseconds
 			)
 			return try await itemsCollection(listId: listId)
 				.addDocument(from: dto)

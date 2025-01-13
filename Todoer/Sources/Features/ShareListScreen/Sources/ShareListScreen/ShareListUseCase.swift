@@ -73,14 +73,13 @@ extension ShareList {
 				}
 
 				guard let selfUser = try? await usersRepository.getSelfUser(),
-					let ownerName = selfUser.displayName,
 					let ownerEmail = selfUser.email
 				else {
 					return .failure(Errors.unexpectedError)
 				}
 
 				try await invitationsRepository.sendInvitation(
-					ownerName: ownerName,
+					ownerName: selfUser.displayName ?? "User",
 					ownerEmail: ownerEmail,
 					listId: list.documentId,
 					listName: list.name,

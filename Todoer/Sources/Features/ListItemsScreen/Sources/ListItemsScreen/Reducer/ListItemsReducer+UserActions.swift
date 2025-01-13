@@ -61,7 +61,7 @@ extension ListItems.Reducer {
 			return .none
 		}
 		state.viewState = .addingItem
-		state.viewModel.items.append(newItemRow())
+        state.viewModel.items.insert(newItemRow(), at: 0)
 		return .none
 	}
 
