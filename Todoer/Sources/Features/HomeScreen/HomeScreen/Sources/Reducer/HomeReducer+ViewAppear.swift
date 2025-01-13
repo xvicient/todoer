@@ -9,7 +9,7 @@ extension Home.Reducer {
 	) -> Effect<Action> {
 		state.viewState = .loading
 		return .publish(
-			dependencies.useCase.fetchData()
+			useCase.fetchData()
 				.map { .fetchDataResult(.success($0)) }
 				.catch { Just(.fetchDataResult(.failure($0))) }
 				.eraseToAnyPublisher()
@@ -22,7 +22,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.getPhotoUrlResult(
-					dependencies.useCase.getPhotoUrl()
+					useCase.getPhotoUrl()
 				)
 			)
 		}

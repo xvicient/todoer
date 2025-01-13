@@ -1,3 +1,8 @@
 import HomeScreenContract
+import CoordinatorContract
+import SwiftUI
 
-public protocol FeatureProviderAPI: HomeScreenBuilder {}
+public protocol FeatureProviderAPI {
+    @MainActor
+    func makeHomeScreen(coordinator: CoordinatorApi) -> any View
+}

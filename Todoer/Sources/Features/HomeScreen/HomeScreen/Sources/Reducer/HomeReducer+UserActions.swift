@@ -13,7 +13,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.acceptInvitationResult(
-					dependencies.useCase.acceptInvitation(
+					useCase.acceptInvitation(
 						listId: listId,
 						invitationId: invitationId
 					)
@@ -29,7 +29,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.declineInvitationResult(
-					dependencies.useCase.declineInvitation(
+					useCase.declineInvitation(
 						invitationId: invitationId
 					)
 				)
@@ -64,7 +64,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.toggleListResult(
-					dependencies.useCase.updateList(
+					useCase.updateList(
 						list: list
 					)
 				)
@@ -85,7 +85,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.deleteListResult(
-					dependencies.useCase.deleteList(list.documentId)
+					useCase.deleteList(list.documentId)
 				)
 			)
 		}
@@ -133,7 +133,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.addListResult(
-					dependencies.useCase.updateList(
+					useCase.updateList(
 						list: list
 					)
 				)
@@ -185,7 +185,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.addListResult(
-					dependencies.useCase.addList(
+					useCase.addList(
 						name: newListName
 					)
 				)
@@ -197,7 +197,7 @@ extension Home.Reducer {
 	func onDidTapSignoutButton(
 		state: inout State
 	) -> Effect<Action> {
-		switch dependencies.useCase.signOut() {
+		switch useCase.signOut() {
 		case .success:
 			dependencies.coordinator.loggOut()
 		case .failure:
@@ -226,7 +226,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.sortListsResult(
-					dependencies.useCase.sortLists(
+					useCase.sortLists(
 						lists: lists
 					)
 				)
@@ -247,7 +247,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.deleteAccountResult(
-					dependencies.useCase.deleteAccount()
+					useCase.deleteAccount()
 				)
 			)
 		}
@@ -287,7 +287,7 @@ extension Home.Reducer {
 		return .task { send in
 			await send(
 				.sortListsResult(
-					dependencies.useCase.sortLists(
+					useCase.sortLists(
 						lists: lists
 					)
 				)

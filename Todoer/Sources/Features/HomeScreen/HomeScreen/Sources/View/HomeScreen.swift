@@ -3,6 +3,7 @@ import Application
 import CoordinatorContract
 import ThemeComponents
 import Mocks
+import HomeScreenContract
 
 // MARK: - HomeScreen
 
@@ -218,6 +219,8 @@ extension HomeScreen {
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        Home.Builder.makeHome(coordinator: CoordinatorMock())
+        Home.Builder.makeHome(
+            dependencies: Dependencies(coordinator: CoordinatorMock())
+        )
     }
 }

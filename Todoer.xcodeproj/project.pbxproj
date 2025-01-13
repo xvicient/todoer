@@ -117,6 +117,7 @@
 		C74C0F452B5588C100926E87 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */,
 				C7C42E192D332CCD006B8C53 /* AboutScreen */,
 				C7C42E1A2D332CCD006B8C53 /* AuthenticationScreen */,
 				C7C42E1B2D332CCD006B8C53 /* HomeScreen */,
@@ -152,7 +153,6 @@
 			children = (
 				C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */,
 				C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */,
-				D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */,
 				C78AF05E2D332BBF009244AF /* Shared */,
 				C74C0F452B5588C100926E87 /* Features */,
 			);

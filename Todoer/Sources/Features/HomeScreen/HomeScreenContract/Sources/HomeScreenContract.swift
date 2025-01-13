@@ -1,8 +1,16 @@
 import SwiftUI
 import CoordinatorContract
 
-public typealias MakeHomeScreen = (CoordinatorApi) -> any View
+public protocol HomeDependencies {
+    var coordinator: CoordinatorApi { get }
+}
 
-public protocol HomeScreenBuilder {
-    var makeHomeScreen: MakeHomeScreen { get }
+public struct Dependencies: HomeDependencies {
+    public var coordinator: CoordinatorApi
+    
+    public init(
+        coordinator: CoordinatorApi
+    ) {
+        self.coordinator = coordinator
+    }
 }
