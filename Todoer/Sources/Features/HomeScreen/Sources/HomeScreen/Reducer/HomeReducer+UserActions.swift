@@ -166,7 +166,7 @@ extension Home.Reducer {
 			return .none
 		}
 		state.viewState = .addingList
-		state.viewModel.lists.append(newListRow())
+        state.viewModel.lists.insert(newListRow(), at: 0)
 		return .none
 	}
 

@@ -103,7 +103,7 @@ final class ListsDataSource: ListsDataSourceApi {
 			name: name,
 			done: false,
 			uid: [uid],
-			index: Date().milliseconds
+			index: -Date().milliseconds
 		)
 		return
 			try await listsCollection

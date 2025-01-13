@@ -14,4 +14,5 @@ public extension Color {
     static let textBlack = Color("textBlack", bundle: .module)
     static let textSecondary = Color("textSecondary", bundle: .module)
     static let textWhite = Color("textWhite", bundle: .module)
+    static let backgroundSecondary = Color("backgroundSecondary", bundle: .module)
 }

@@ -27,7 +27,6 @@ struct ListItemsScreen: View {
 	var body: some View {
 		ZStack {
 			itemsList
-			newRowButton
 			loadingView
 		}
 		.onAppear {
@@ -61,52 +60,46 @@ extension ListItemsScreen {
 
 	@ViewBuilder
 	fileprivate var itemsList: some View {
-		ScrollViewReader { scrollView in
-			List {
-				Section(header: Text(listName).listRowHeaderStyle()) {
-					ForEach(
-						Array(filteredItems.enumerated()),
-						id: \.element.id
-					) { index, row in
-						if row.isEditing {
-							TDNewRowView(
-								row: row.tdRow,
-								onSubmit: { store.send(.didTapSubmitItemButton($0)) },
-								onUpdate: {
-									store.send(.didTapUpdateItemButton(index, $0))
-								},
-								onCancelAdd: { store.send(.didTapCancelAddItemButton) },
-								onCancelEdit: {
-									store.send(.didTapCancelEditItemButton(index))
-								}
-							)
-							.id(index)
-						}
-						else {
-							TDRowView(
-								row: row.tdRow,
-								onSwipe: { swipeActions(index, $0) }
-							)
-							.id(index)
-						}
-					}.onMove(perform: moveItem)
-				}
-			}
-			.listRowStyle(
-				onChangeOf: store.state.viewState == .addingItem,
-				count: store.state.viewModel.items.count,
-				scrollView: scrollView
-			)
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-		}
-	}
-
-	@ViewBuilder
-	fileprivate var newRowButton: some View {
-		if store.state.viewState != .addingItem && store.state.viewState != .editingItem {
-			TDNewRowButton { store.send(.didTapAddRowButton) }
-		}
-	}
+        List {
+            Section(header: Text(listName).listRowHeaderStyle()) {
+                TDNewRowButton(title: Constants.Text.newRowButtonTitle) {
+                    store.send(.didTapAddRowButton)
+                }
+                .disabled(store.state.viewState == .addingItem || store.state.viewState == .editingItem)
+                .padding(.bottom, 12)
+                ForEach(
+                    Array(filteredItems.enumerated()),
+                    id: \.element.id
+                ) { index, row in
+                    if row.isEditing {
+                        TDNewRowView(
+                            row: row.tdRow,
+                            onSubmit: { store.send(.didTapSubmitItemButton($0)) },
+                            onUpdate: {
+                                store.send(.didTapUpdateItemButton(index, $0))
+                            },
+                            onCancelAdd: { store.send(.didTapCancelAddItemButton) },
+                            onCancelEdit: {
+                                store.send(.didTapCancelEditItemButton(index))
+                            }
+                        )
+                        .id(index)
+                    }
+                    else {
+                        TDRowView(
+                            row: row.tdRow,
+                            onSwipe: { swipeActions(index, $0) }
+                        )
+                        .id(index)
+                    }
+                }.onMove(perform: moveItem)
+            }
+        }
+        .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
+        .scrollContentBackground(.hidden)
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+    }
 
 	@ViewBuilder
 	fileprivate var loadingView: some View {
@@ -182,6 +175,7 @@ extension ListItemsScreen {
 		struct Text {
 			static let errorTitle = "Error"
 			static let errorOkButton = "Ok"
+            static let newRowButtonTitle = "New Item"
 		}
 	}
 }

@@ -23,7 +23,6 @@ struct HomeScreen: View {
 	var body: some View {
 		ZStack {
 			lists
-			newRowButton
 			loadingView
 		}
 		.onAppear {
@@ -63,18 +62,14 @@ extension HomeScreen {
 
 	@ViewBuilder
 	fileprivate var lists: some View {
-		ScrollViewReader { scrollView in
-			List {
-				invitationsSection
-				listsSection
-			}
-			.listRowStyle(
-				onChangeOf: store.state.viewState == .addingList,
-				count: store.state.viewModel.lists.count,
-				scrollView: scrollView
-			)
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
-		}
+        List {
+            invitationsSection
+            listsSection
+        }
+        .scrollIndicators(.hidden)
+        .scrollBounceBehavior(.basedOnSize)
+        .scrollContentBackground(.hidden)
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
 	}
 
 	@ViewBuilder
@@ -89,39 +84,37 @@ extension HomeScreen {
 	}
 
 	@ViewBuilder
-	fileprivate var listsSection: some View {
-		Section(header: Text(Constants.Text.todos).listRowHeaderStyle()) {
-			ForEach(
-				Array(filteredLists.enumerated()),
-				id: \.element.id
-			) { index, row in
-				if row.isEditing {
-					TDNewRowView(
-						row: row.tdRow,
-						onSubmit: { store.send(.didTapSubmitListButton($0)) },
-						onUpdate: { store.send(.didTapUpdateListButton(index, $0)) },
-						onCancelAdd: { store.send(.didTapCancelAddListButton) },
-						onCancelEdit: { store.send(.didTapCancelEditListButton(index)) }
-					)
-					.id(index)
-				}
-				else {
-					TDRowView(
-						row: row.tdRow,
-						onTap: { store.send(.didTapList(index)) },
-						onSwipe: { swipeActions(index, $0) }
-					)
-					.id(index)
-				}
-			}.onMove(perform: moveList)
-		}
-	}
-
-	@ViewBuilder
-	fileprivate var newRowButton: some View {
-		if store.state.viewState != .addingList && store.state.viewState != .editingList {
-			TDNewRowButton { store.send(.didTapAddRowButton) }
-		}
+    fileprivate var listsSection: some View {
+        Section(header: Text(Constants.Text.todos).listRowHeaderStyle()) {
+            TDNewRowButton(title: Constants.Text.newRowButtonTitle) {
+                store.send(.didTapAddRowButton)
+            }
+            .disabled(store.state.viewState == .addingList || store.state.viewState == .editingList)
+            .padding(.bottom, 12)
+            ForEach(
+                Array(filteredLists.enumerated()),
+                id: \.element.id
+            ) { index, row in
+                if row.isEditing {
+                    TDNewRowView(
+                        row: row.tdRow,
+                        onSubmit: { store.send(.didTapSubmitListButton($0)) },
+                        onUpdate: { store.send(.didTapUpdateListButton(index, $0)) },
+                        onCancelAdd: { store.send(.didTapCancelAddListButton) },
+                        onCancelEdit: { store.send(.didTapCancelEditListButton(index)) }
+                    )
+                    .id(index)
+                }
+                else {
+                    TDRowView(
+                        row: row.tdRow,
+                        onTap: { store.send(.didTapList(index)) },
+                        onSwipe: { swipeActions(index, $0) }
+                    )
+                    .id(index)
+                }
+            }.onMove(perform: moveList)
+        }
 	}
 
 	@ViewBuilder
@@ -218,6 +211,7 @@ extension HomeScreen {
 			static let okButton = "Ok"
 			static let deleteButton = "Delete"
 			static let cancelButton = "Cancel"
+            static let newRowButtonTitle = "New To-do"
 		}
 	}
 }
