@@ -73,7 +73,7 @@ extension HomeScreen {
 				count: store.state.viewModel.lists.count,
 				scrollView: scrollView
 			)
-            .searchable(text: $searchText)
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
 		}
 	}
 
