@@ -1,15 +1,18 @@
 import SwiftUI
 import ThemeAssets
 
-public struct TDNewRowButton: View {
+public struct TDActionButton: View {
     private let onTap: () -> Void
     private let title: String
+    private let icon: Image
     
     public init(
         title: String,
+        icon: Image,
         onTap: @escaping () -> Void
     ) {
         self.title = title
+        self.icon = icon
         self.onTap = onTap
     }
     
@@ -21,7 +24,7 @@ public struct TDNewRowButton: View {
         }) {
             VStack {
                 HStack {
-                    Image.plusCircleFill
+                    icon
                         .resizable()
                         .frame(width: 21.0, height: 21.0)
                         .foregroundColor(Color.textBlack)
@@ -37,17 +40,19 @@ public struct TDNewRowButton: View {
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                 }
-                .padding(.top, 12)
+                .frame(height: 50)
+                .padding(.top, 6)
                 .padding(.horizontal, 10)
                 Spacer()
                 HStack {
                     Spacer()
-                    Image.todo
+                    Image.checklistUnchecked
                         .resizable()
-                        .frame(width: 50.0, height: 50.0)
+                        .frame(width: 20.0, height: 20.0)
                         .tint(Color.backgroundWhite)
                 }
-                .padding(.top, -8)
+                .padding(.bottom, 8)
+                .padding(.trailing, 8)
             }
         }
         .buttonStyle(PlainButtonStyle())
@@ -82,6 +87,9 @@ public struct TDNewRowButton: View {
 
 struct TDNewRowButton_Previews: PreviewProvider {
     static var previews: some View {
-        TDNewRowButton(title: "New To-do") {}
+        HStack {
+            TDActionButton(title: "New To-do", icon: Image.plusCircleFill) {}
+            TDActionButton(title: "Sort", icon: Image.plusCircleFill) {}
+        }
     }
 }
