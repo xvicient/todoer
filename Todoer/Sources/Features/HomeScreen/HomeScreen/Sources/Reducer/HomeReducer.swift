@@ -3,13 +3,9 @@ import Entities
 import Common
 import Application
 import CoordinatorContract
+import HomeScreenContract
 
 // MARK: - HomeReducer
-
-protocol HomeDependencies {
-	var useCase: HomeUseCaseApi { get }
-	var coordinator: CoordinatorApi { get }
-}
 
 typealias HomeData = Home.Reducer.HomeData
 
@@ -95,6 +91,7 @@ extension Home {
 		}
 
 		internal let dependencies: HomeDependencies
+        internal let useCase = UseCase()
 
 		init(dependencies: HomeDependencies) {
 			self.dependencies = dependencies
