@@ -41,7 +41,7 @@ struct HomeInvitationsView: View {
 					}
 					Spacer()
 					VStack {
-						TDButton(
+						TDBasicButton(
 							title: "\(Constants.Text.accept)",
 							style: .primary,
 							size: .custom(with: 100, height: 32)
@@ -51,7 +51,7 @@ struct HomeInvitationsView: View {
 								invitation.documentId
 							)
 						}
-						TDButton(
+						TDBasicButton(
 							title: "\(Constants.Text.decline)",
 							style: .destructive,
 							size: .custom(with: 100, height: 32)

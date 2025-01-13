@@ -38,7 +38,7 @@ public enum TDButtonSize {
 	}
 }
 
-public struct TDButton: View {
+public struct TDBasicButton: View {
 	let title: String
 	let style: TDButtonStyle
 	let size: TDButtonSize
@@ -77,7 +77,7 @@ public struct TDButton: View {
 
 struct TOButton_Previews: PreviewProvider {
 	static var previews: some View {
-		TDButton(
+		TDBasicButton(
 			title: "OK",
 			action: {}
 		)
