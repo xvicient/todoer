@@ -1,6 +1,6 @@
+import SwiftUI
 import Firebase
 import GoogleSignIn
-import SwiftUI
 import CoordinatorImpl
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -27,7 +27,7 @@ struct TodoerApp: App {
 
 	var body: some Scene {
 		WindowGroup {
-			CoordinatorView()
+            CoordinatorView(featureProvider: FeatureProvider())
 		}
 	}
 }

@@ -1,11 +1,11 @@
 import SwiftUI
 import Data
 import AuthenticationScreen
-import HomeScreen
 import AboutScreen
 import ShareListScreen
 import ListItemsScreen
 import CoordinatorContract
+import FeatureProviderContract
 
 @MainActor
 final class Coordinator: CoordinatorApi, ObservableObject {
@@ -15,11 +15,16 @@ final class Coordinator: CoordinatorApi, ObservableObject {
 	@Published var fullScreenCover: FullScreenCover?
 	@Published var landingView: AnyView?
 	@Published var landingPage: Page
+    private let featureProvider: FeatureProviderAPI
 
-	init(authenticationService: AuthenticationService = AuthenticationService()) {
-		landingPage = authenticationService.isUserLogged ? .home : .authentication
-		landingView = build(page: landingPage)
-	}
+    init(
+        authenticationService: AuthenticationService = AuthenticationService(),
+        featureProvider: FeatureProviderAPI
+    ) {
+        self.featureProvider = featureProvider
+        landingPage = authenticationService.isUserLogged ? .home : .authentication
+        landingView = build(page: landingPage)
+    }
 
 	@MainActor
 	func loggOut() {
@@ -99,9 +104,7 @@ extension Coordinator {
 				coordinator: self
 			)
 		case .home:
-			Home.Builder.makeHome(
-				coordinator: self
-			)
+            AnyView(featureProvider.makeHomeScreen(self))
 		case let .listItems(list):
 			ListItems.Builder.makeItemsList(
 				list: list

@@ -30,6 +30,10 @@
 		C7EA2F402D340E7B00B63DDC /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F3F2D340E7B00B63DDC /* Mocks */; };
 		C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = C7F305892D32CCA5004C322D /* ThemeAssets */; };
 		C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */ = {isa = PBXBuildFile; productRef = C7F3058B2D32CCA5004C322D /* ThemeComponents */; };
+		D65087372D35B7980056F8F3 /* FeatureProviderContract in Frameworks */ = {isa = PBXBuildFile; productRef = D65087362D35B7980056F8F3 /* FeatureProviderContract */; };
+		D650873A2D35B8570056F8F3 /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = D65087392D35B8570056F8F3 /* CoordinatorContract */; };
+		D650873C2D35B8570056F8F3 /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = D650873B2D35B8570056F8F3 /* CoordinatorImpl */; };
+		D650873E2D35BEDE0056F8F3 /* FeatureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +69,8 @@
 		C7C42E1D2D332CCD006B8C53 /* ShareListScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ShareListScreen; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
+		D65087322D35B61F0056F8F3 /* FeatureProvider */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureProvider; sourceTree = "<group>"; };
+		D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureProvider.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
 		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -86,14 +92,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D65087372D35B7980056F8F3 /* FeatureProviderContract in Frameworks */,
 				C75EB5892D32968B00317D07 /* AuthenticationScreen in Frameworks */,
 				C72241DC2D3172630046C0D7 /* Data in Frameworks */,
 				C77FFADF2D32C6E100C59A48 /* CoordinatorContract in Frameworks */,
 				C7B335932D31CF2700C36D7B /* GoogleSignInDependencies in Frameworks */,
+				D650873C2D35B8570056F8F3 /* CoordinatorImpl in Frameworks */,
 				C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */,
 				C77FFAE12D32C6E100C59A48 /* CoordinatorImpl in Frameworks */,
 				C75EB57D2D31DC1300317D07 /* Application in Frameworks */,
 				C72241D82D3170550046C0D7 /* FirebaseDependencies in Frameworks */,
+				D650873A2D35B8570056F8F3 /* CoordinatorContract in Frameworks */,
 				C7B3359F2D31D3E700C36D7B /* Common in Frameworks */,
 				C7EA2F3A2D340E4300B63DDC /* CoordinatorImpl in Frameworks */,
 				C7EA2F3D2D340E6700B63DDC /* CoordinatorImpl in Frameworks */,
@@ -127,6 +136,7 @@
 		C78AF05E2D332BBF009244AF /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D65087322D35B61F0056F8F3 /* FeatureProvider */,
 				C7C42E0C2D332C8B006B8C53 /* Application */,
 				C7C42E0D2D332C8B006B8C53 /* Common */,
 				C7C42E0E2D332C8B006B8C53 /* Coordinator */,
@@ -142,6 +152,7 @@
 			children = (
 				C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */,
 				C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */,
+				D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */,
 				C78AF05E2D332BBF009244AF /* Shared */,
 				C74C0F452B5588C100926E87 /* Features */,
 			);
@@ -273,6 +284,9 @@
 				C7C42E1F2D332D0C006B8C53 /* CoordinatorImpl */,
 				C7EA2F392D340E4300B63DDC /* CoordinatorImpl */,
 				C7EA2F3C2D340E6700B63DDC /* CoordinatorImpl */,
+				D65087362D35B7980056F8F3 /* FeatureProviderContract */,
+				D65087392D35B8570056F8F3 /* CoordinatorContract */,
+				D650873B2D35B8570056F8F3 /* CoordinatorImpl */,
 			);
 			productName = Listio;
 			productReference = D6A29BF32B09706100FA7F84 /* Todoer.app */;
@@ -310,7 +324,8 @@
 				C7EB4A862B855B1B00D66D64 /* XCRemoteSwiftPackageReference "swift-format" */,
 				C72241D62D3170550046C0D7 /* XCLocalSwiftPackageReference "Packages/External/FirebaseDependencies" */,
 				C7B335912D31CF2700C36D7B /* XCLocalSwiftPackageReference "Packages/External/GoogleSignInDependencies" */,
-				C7EA2F3B2D340E6700B63DDC /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */,
+				D65087352D35B7980056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/FeatureProvider" */,
+				D65087382D35B8570056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -383,6 +398,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D650873E2D35BEDE0056F8F3 /* FeatureProvider.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -670,7 +686,11 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/External/GoogleSignInDependencies;
 		};
-		C7EA2F3B2D340E6700B63DDC /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */ = {
+		D65087352D35B7980056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/FeatureProvider" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Shared/FeatureProvider;
+		};
+		D65087382D35B8570056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/Coordinator;
 		};
@@ -755,6 +775,18 @@
 		C7F3058B2D32CCA5004C322D /* ThemeComponents */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ThemeComponents;
+		};
+		D65087362D35B7980056F8F3 /* FeatureProviderContract */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureProviderContract;
+		};
+		D65087392D35B8570056F8F3 /* CoordinatorContract */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoordinatorContract;
+		};
+		D650873B2D35B8570056F8F3 /* CoordinatorImpl */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoordinatorImpl;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
