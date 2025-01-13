@@ -1,11 +1,14 @@
 import SwiftUI
 import ThemeAssets
 import CoordinatorContract
+import FeatureProviderContract
 
 public struct CoordinatorView: View {
-	@StateObject private var coordinator = Coordinator()
+    @StateObject private var coordinator: Coordinator
     
-    public init() {}
+    public init(featureProvider: FeatureProviderAPI) {
+        _coordinator = StateObject(wrappedValue: Coordinator(featureProvider: featureProvider))
+    }
 
 	public var body: some View {
 		NavigationStack(path: $coordinator.path) {
@@ -60,14 +63,6 @@ struct NavigationBarModifier: ViewModifier {
 extension View {
 	fileprivate func setupNavigationBar(page: Page) -> some View {
 		modifier(NavigationBarModifier(page: page))
-	}
-}
-
-// MARK: - CoordinatorView_Previews
-
-struct CoordinatorView_Previews: PreviewProvider {
-	static var previews: some View {
-		CoordinatorView()
 	}
 }
 

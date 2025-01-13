@@ -11,8 +11,13 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
+            name: "HomeScreenContract",
+            targets: ["HomeScreenContract"]
+        ),
+        .library(
             name: "HomeScreen",
-            targets: ["HomeScreen"]),
+            targets: ["HomeScreen"]
+        )
     ],
     dependencies: [
         .package(path: "../Application"),
@@ -27,8 +32,16 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
+            name: "HomeScreenContract",
+            dependencies: [
+                .product(name: "CoordinatorContract", package: "Coordinator")
+            ],
+            path: "HomeScreenContract/Sources"
+        ),
+        .target(
             name: "HomeScreen",
             dependencies: [
+                "HomeScreenContract",
                 "Application",
                 .product(name: "Common", package: "Common"),
                 .product(name: "Mocks", package: "Common"),
@@ -37,7 +50,8 @@ let package = Package(
                 "Data",
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 "Entities"
-            ]
+            ],
+            path: "HomeScreen/Sources"
         ),
         .testTarget(
             name: "HomeScreenTests",
