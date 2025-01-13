@@ -6,7 +6,6 @@ public extension Image {
     static let todoer = Image("Todoer", bundle: .module)
     static let slogan = Image("Slogan", bundle: .module)
     static let googleLogo = Image("GoogleLogo", bundle: .module)
-    static let todo = Image("Todo", bundle: .module)
 
 	// MARK: - Icons
 
@@ -19,5 +18,7 @@ public extension Image {
 	static let personCropCircle = Image(systemName: "person.crop.circle")
 	static let trash = Image(systemName: "trash")
 	static let squareAndPencil = Image(systemName: "square.and.pencil")
-	static let ellipsis = Image(systemName: "ellipsis")
+    static let ellipsis = Image(systemName: "ellipsis")
+    static let arrowUpArrowDownCircleFill = Image(systemName: "arrow.up.arrow.down.circle.fill")
+    static let checklistUnchecked = Image(systemName: "checklist.unchecked")
 }

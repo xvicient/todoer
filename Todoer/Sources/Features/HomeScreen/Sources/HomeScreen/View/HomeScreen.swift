@@ -32,8 +32,7 @@ struct HomeScreen: View {
 			store.state.viewState == .loading
 		)
 		.navigationBarItems(
-			leading: navigationBarLeadingItems,
-			trailing: navigationBarTrailingItems
+			leading: navigationBarLeadingItems
 		)
 		.alert(item: alertBinding) {
 			alert(for: $0)
@@ -44,11 +43,6 @@ struct HomeScreen: View {
 // MARK: - ViewBuilders
 
 extension HomeScreen {
-	@ViewBuilder
-	fileprivate var navigationBarTrailingItems: some View {
-		TDOptionsMenuView(onSort: { store.send(.didTapAutoSortLists) })
-	}
-
 	@ViewBuilder
 	fileprivate var navigationBarLeadingItems: some View {
 		HomeAccountMenuView(
@@ -86,8 +80,13 @@ extension HomeScreen {
 	@ViewBuilder
     fileprivate var listsSection: some View {
         Section(header: Text(Constants.Text.todos).listRowHeaderStyle()) {
-            TDNewRowButton(title: Constants.Text.newRowButtonTitle) {
-                store.send(.didTapAddRowButton)
+            HStack {
+                TDActionButton(title: Constants.Text.newRowButtonTitle, icon: Image.plusCircleFill) {
+                    store.send(.didTapAddRowButton)
+                }
+                TDActionButton(title: Constants.Text.sortButtonTitle, icon: Image.arrowUpArrowDownCircleFill) {
+                    store.send(.didTapAutoSortLists)
+                }
             }
             .disabled(store.state.viewState == .addingList || store.state.viewState == .editingList)
             .padding(.bottom, 12)
@@ -212,6 +211,7 @@ extension HomeScreen {
 			static let deleteButton = "Delete"
 			static let cancelButton = "Cancel"
             static let newRowButtonTitle = "New To-do"
+            static let sortButtonTitle = "Sort"
 		}
 	}
 }

@@ -35,9 +35,6 @@ struct ListItemsScreen: View {
 		.disabled(
 			store.state.viewState == .loading
 		)
-		.navigationBarItems(
-			trailing: navigationBarTrailingItems
-		)
 		.alert(isPresented: alertBinding) {
 			Alert(
 				title: Text(Constants.Text.errorTitle),
@@ -54,16 +51,16 @@ struct ListItemsScreen: View {
 
 extension ListItemsScreen {
 	@ViewBuilder
-	fileprivate var navigationBarTrailingItems: some View {
-		TDOptionsMenuView(onSort: { store.send(.didTapAutoSortItems) })
-	}
-
-	@ViewBuilder
 	fileprivate var itemsList: some View {
         List {
             Section(header: Text(listName).listRowHeaderStyle()) {
-                TDNewRowButton(title: Constants.Text.newRowButtonTitle) {
-                    store.send(.didTapAddRowButton)
+                HStack {
+                    TDActionButton(title: Constants.Text.newRowButtonTitle, icon: Image.plusCircleFill) {
+                        store.send(.didTapAddRowButton)
+                    }
+                    TDActionButton(title: Constants.Text.sortButtonTitle, icon: Image.arrowUpArrowDownCircleFill) {
+                        store.send(.didTapAutoSortItems)
+                    }
                 }
                 .disabled(store.state.viewState == .addingItem || store.state.viewState == .editingItem)
                 .padding(.bottom, 12)
@@ -176,6 +173,7 @@ extension ListItemsScreen {
 			static let errorTitle = "Error"
 			static let errorOkButton = "Ok"
             static let newRowButtonTitle = "New Item"
+            static let sortButtonTitle = "Sort"
 		}
 	}
 }
