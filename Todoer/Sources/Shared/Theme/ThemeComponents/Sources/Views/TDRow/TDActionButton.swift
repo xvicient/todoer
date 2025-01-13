@@ -32,7 +32,6 @@ public struct TDActionButton: View {
                             RoundedRectangle(cornerRadius: 24)
                                 .fill(Color.backgroundWhite)
                         )
-                    Spacer()
                     Text(title)
                         .font(.system(size: 18))
                         .foregroundColor(Color.textBlack)
@@ -43,7 +42,6 @@ public struct TDActionButton: View {
                 .frame(height: 50)
                 .padding(.top, 6)
                 .padding(.horizontal, 10)
-                Spacer()
                 HStack {
                     Spacer()
                     Image.checklistUnchecked
@@ -51,7 +49,7 @@ public struct TDActionButton: View {
                         .frame(width: 20.0, height: 20.0)
                         .tint(Color.backgroundWhite)
                 }
-                .padding(.bottom, 8)
+                .padding(.bottom, 4)
                 .padding(.trailing, 8)
             }
         }
