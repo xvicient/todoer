@@ -28,7 +28,7 @@ struct ShareListScreen: View {
                 text: $shareEmailText,
                 placeholder: Constants.Text.shareEmailPlaceholder
             )
-			TDButton(title: Constants.Text.shareButtonTitle) {
+			TDBasicButton(title: Constants.Text.shareButtonTitle) {
                 store.send(.didTapShareListButton($shareEmailText.wrappedValue, $shareOwnerNameText.wrappedValue))
 			}
 			Text(Constants.Text.sharingWithTitle)
