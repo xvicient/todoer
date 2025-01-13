@@ -20,7 +20,7 @@ public struct CoordinatorView: View {
 					case .shareList:
 						coordinator.build(sheet: sheet)
 							.presentationDetents(
-								[.height(300)]
+								[.height(350)]
 							)
 					}
 				}

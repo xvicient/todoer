@@ -10,7 +10,8 @@ import Mocks
 
 struct ShareListScreen: View {
 	@ObservedObject private var store: Store<ShareList.Reducer>
-	@State private var shareEmailText: String = ""
+    @State private var shareOwnerNameText: String = ""
+    @State private var shareEmailText: String = ""
 
 	init(store: Store<ShareList.Reducer>) {
 		self.store = store
@@ -20,11 +21,15 @@ struct ShareListScreen: View {
 		VStack(alignment: .leading, spacing: 12) {
 			title
 			TDTextField(
-				text: $shareEmailText,
-				placeholder: Constants.Text.sharePlaceholder
+				text: $shareOwnerNameText,
+                placeholder: Constants.Text.shareOwnerNamePlaceholder
 			)
+            TDTextField(
+                text: $shareEmailText,
+                placeholder: Constants.Text.shareEmailPlaceholder
+            )
 			TDButton(title: Constants.Text.shareButtonTitle) {
-				store.send(.didTapShareListButton($shareEmailText.wrappedValue))
+                store.send(.didTapShareListButton($shareEmailText.wrappedValue, $shareOwnerNameText.wrappedValue))
 			}
 			Text(Constants.Text.sharingWithTitle)
 				.foregroundColor(Color.textBlack)
@@ -136,7 +141,8 @@ extension ShareListScreen {
 			static let shareTitle = "Share"
 			static let sharingWithTitle = "Sharing with"
 			static let shareButtonTitle = "Share"
-			static let sharePlaceholder = "Email..."
+            static let shareOwnerNamePlaceholder = "Your name..."
+			static let shareEmailPlaceholder = "Email to share with..."
 			static let notSharedYet = "Not shared yet"
 			static let errorTitle = "Error"
 			static let errorOkButton = "Ok"

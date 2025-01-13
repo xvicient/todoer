@@ -20,7 +20,7 @@ extension ShareList {
 
 			// MARK: - User actions
 			/// ShareListReducer+UserActions
-			case didTapShareListButton(String)
+			case didTapShareListButton(String, String)
 			case didTapDismissError
 
 			// MARK: - Results
@@ -63,10 +63,11 @@ extension ShareList {
 					state: &state
 				)
 
-			case (.idle, .didTapShareListButton(let email)):
+			case (.idle, .didTapShareListButton(let email, let owner)):
 				return onDidTapShareButton(
 					state: &state,
-					email: email
+					email: email,
+                    owner: owner
 				)
 
 			case (.idle, .fetchUsersResult(let result)):
