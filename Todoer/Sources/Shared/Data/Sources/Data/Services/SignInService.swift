@@ -56,7 +56,7 @@ public final class SignInService: SignInServiceApi {
 
 		let authCredential = OAuthProvider.credential(
             providerID: .apple,
-            accessToken: token
+            idToken: token
 		)
 
 		return try await signIn(
