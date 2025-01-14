@@ -1,6 +1,5 @@
 import SwiftUI
 import Entities
-import HomeScreenContract
 import CoordinatorContract
 
 public protocol FeatureProviderAPI {
