@@ -218,6 +218,10 @@ extension HomeScreen {
 }
 
 struct Home_Previews: PreviewProvider {
+    struct Dependencies: HomeScreenDependencies {
+        let coordinator: CoordinatorApi
+    }
+    
     static var previews: some View {
         Home.Builder.makeHome(
             dependencies: Dependencies(coordinator: CoordinatorMock())

@@ -6,7 +6,7 @@ public struct Home {
     public struct Builder {
         @MainActor
         public static func makeHome(
-            dependencies: HomeDependencies
+            dependencies: HomeScreenDependencies
         ) -> some View {
             let reducer = Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)

@@ -8,6 +8,13 @@ struct FeatureProvider: FeatureProviderAPI {
     
     @MainActor
     func makeHomeScreen(coordinator: CoordinatorApi) -> any View {
-        Home.Builder.makeHome(dependencies: Dependencies(coordinator: coordinator))
+        struct Dependencies: HomeScreenDependencies {
+            let coordinator: CoordinatorApi
+        }
+        return Home.Builder.makeHome(
+            dependencies: Dependencies(
+                coordinator: coordinator
+            )
+        )
     }
 }
