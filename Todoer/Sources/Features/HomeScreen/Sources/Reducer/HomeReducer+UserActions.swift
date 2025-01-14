@@ -40,9 +40,10 @@ extension Home.Reducer {
     @MainActor
     func onDidTapList(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
-		guard let list = state.viewModel.lists[safe: index]?.list else {
+		guard let index = state.viewModel.lists.index(for: uid),
+              let list = state.viewModel.lists[safe: index]?.list else {
 			state.viewState = .alert(.error(Errors.default))
 			return .none
 		}
@@ -52,9 +53,10 @@ extension Home.Reducer {
 
 	func onDidTapToggleListButton(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
-		guard state.viewModel.lists[safe: index] != nil else {
+		guard let index = state.viewModel.lists.index(for: uid),
+              state.viewModel.lists[safe: index] != nil else {
 			state.viewState = .alert(.error(Errors.default))
 			return .none
 		}
@@ -74,9 +76,10 @@ extension Home.Reducer {
 
 	func onDidTapDeleteListButton(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
-		guard let list = state.viewModel.lists[safe: index]?.list else {
+		guard let index = state.viewModel.lists.index(for: uid),
+              let list = state.viewModel.lists[safe: index]?.list else {
 			state.viewState = .alert(.error(Errors.default))
 			return .none
 		}
@@ -94,9 +97,10 @@ extension Home.Reducer {
     @MainActor
     func onDidTapShareListButton(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
-		guard let list = state.viewModel.lists[safe: index]?.list else {
+		guard let index = state.viewModel.lists.index(for: uid),
+              let list = state.viewModel.lists[safe: index]?.list else {
 			state.viewState = .alert(.error(Errors.default))
 			return .none
 		}
@@ -107,9 +111,10 @@ extension Home.Reducer {
 
 	func onDidTapEditListButton(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
-		guard let list = state.viewModel.lists[safe: index]?.list else {
+		guard let index = state.viewModel.lists.index(for: uid),
+              let list = state.viewModel.lists[safe: index]?.list else {
 			state.viewState = .alert(.error(Errors.default))
 			return .none
 		}
@@ -122,10 +127,11 @@ extension Home.Reducer {
 
 	func onDidTapUpdateListButton(
 		state: inout State,
-		index: Int,
+        uid: UUID,
 		name: String
 	) -> Effect<Action> {
-		guard var list = state.viewModel.lists[safe: index]?.list else {
+		guard let index = state.viewModel.lists.index(for: uid),
+              var list = state.viewModel.lists[safe: index]?.list else {
 			state.viewState = .alert(.error(Errors.default))
 			return .none
 		}
@@ -143,9 +149,10 @@ extension Home.Reducer {
 
 	func onDidTapCancelEditListButton(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
-		guard let list = state.viewModel.lists[safe: index]?.list else {
+		guard let index = state.viewModel.lists.index(for: uid),
+              let list = state.viewModel.lists[safe: index]?.list else {
 			state.viewState = .alert(.error(Errors.default))
 			return .none
 		}

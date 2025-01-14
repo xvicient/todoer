@@ -8,9 +8,10 @@ extension ListItems.Reducer {
     
 	func onDidTapToggleItemButton(
 		state: inout State,
-		index: Int
+		uid: UUID
 	) -> Effect<Action> {
-		guard state.viewModel.items[safe: index] != nil else {
+		guard let index = state.viewModel.items.index(for: uid),
+              state.viewModel.items[safe: index] != nil else {
 			state.viewState = .error(Errors.default)
 			return .none
 		}
@@ -33,8 +34,12 @@ extension ListItems.Reducer {
 
 	func onDidTapDeleteItemButton(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
+        guard let index = state.viewModel.items.index(for: uid) else {
+            state.viewState = .error(Errors.default)
+            return .none
+        }
 		let itemId = state.viewModel.items[index].item.documentId
 		state.viewState = .updatingItem
 		state.viewModel.items.remove(at: index)
@@ -93,9 +98,10 @@ extension ListItems.Reducer {
 
 	func onDidTapEditItemButton(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
-		guard let item = state.viewModel.items[safe: index]?.item else {
+		guard let index = state.viewModel.items.index(for: uid),
+              let item = state.viewModel.items[safe: index]?.item else {
 			state.viewState = .error(Errors.default)
 			return .none
 		}
@@ -108,10 +114,11 @@ extension ListItems.Reducer {
 
 	func onDidTapUpdateItemButton(
 		state: inout State,
-		index: Int,
+        uid: UUID,
 		name: String
 	) -> Effect<Action> {
-		guard var item = state.viewModel.items[safe: index]?.item else {
+		guard let index = state.viewModel.items.index(for: uid),
+              var item = state.viewModel.items[safe: index]?.item else {
 			state.viewState = .error(Errors.default)
 			return .none
 		}
@@ -131,9 +138,10 @@ extension ListItems.Reducer {
 
 	func onDidTapCancelEditItemButton(
 		state: inout State,
-		index: Int
+        uid: UUID
 	) -> Effect<Action> {
-		guard let item = state.viewModel.items[safe: index]?.item else {
+		guard let index = state.viewModel.items.index(for: uid),
+              let item = state.viewModel.items[safe: index]?.item else {
 			state.viewState = .error(Errors.default)
 			return .none
 		}
