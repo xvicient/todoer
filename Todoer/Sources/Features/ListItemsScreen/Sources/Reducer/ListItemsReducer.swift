@@ -70,7 +70,7 @@ extension ListItems {
 		}
 
 		internal let dependencies: ListItemsDependencies
-        internal let useCase = UseCase()
+        internal let useCase: ListItemsUseCaseApi = UseCase()
 
 		init(dependencies: ListItemsDependencies) {
 			self.dependencies = dependencies

@@ -1,24 +1,19 @@
 import SwiftUI
 import Application
 import CoordinatorContract
+import AuthenticationScreenContract
 
 public struct Authentication {
 	public struct Builder {
 		@MainActor
 		public static func makeAuthentication(
-            coordinator: CoordinatorApi
+            dependencies: AuthenticationScreenDependencies
         ) -> some View {
-			struct Dependencies: AuthenticationDependencies {
-				var useCase: AuthenticationUseCaseApi
-			}
-			return AuthenticationScreen(
+			AuthenticationScreen(
 				store: Store(
 					initialState: .init(),
 					reducer: Authentication.Reducer(
-						coordinator: coordinator,
-						dependencies: Dependencies(
-							useCase: Authentication.UseCase()
-						)
+						dependencies: dependencies
 					)
 				)
 			)

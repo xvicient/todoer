@@ -21,4 +21,9 @@ public protocol FeatureProviderAPI {
         coordinator: CoordinatorApi,
         list: UserList
     ) -> any View
+    
+    @MainActor
+    func makeAuthenticationScreen(
+        coordinator: CoordinatorApi
+    ) -> any View
 }

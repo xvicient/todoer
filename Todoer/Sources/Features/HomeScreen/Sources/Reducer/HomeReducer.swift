@@ -91,7 +91,7 @@ extension Home {
 		}
 
 		internal let dependencies: HomeScreenDependencies
-        internal let useCase = UseCase()
+        internal let useCase: HomeUseCaseApi = UseCase()
 
 		init(dependencies: HomeScreenDependencies) {
 			self.dependencies = dependencies

@@ -7,6 +7,7 @@ import Application
 import ThemeAssets
 import CoordinatorContract
 import Mocks
+import AuthenticationScreenContract
 
 // MARK: - AuthenticationScreen
 
@@ -232,7 +233,15 @@ extension Result where Success == ASAuthorization {
 }
 
 struct AuthenticationScreen_Previews: PreviewProvider {
+    struct Dependencies: AuthenticationScreenDependencies {
+        let coordinator: CoordinatorApi
+    }
+    
     static var previews: some View {
-        Authentication.Builder.makeAuthentication(coordinator: CoordinatorMock())
+        Authentication.Builder.makeAuthentication(
+            dependencies: Dependencies(
+                coordinator: CoordinatorMock()
+            )
+        )
     }
 }
