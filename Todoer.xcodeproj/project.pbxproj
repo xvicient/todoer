@@ -14,25 +14,20 @@
 		C75EB57D2D31DC1300317D07 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB57C2D31DC1300317D07 /* Application */; };
 		C75EB5892D32968B00317D07 /* AuthenticationScreen in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB5882D32968B00317D07 /* AuthenticationScreen */; };
 		C77FFADF2D32C6E100C59A48 /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = C77FFADE2D32C6E100C59A48 /* CoordinatorContract */; };
-		C77FFAE12D32C6E100C59A48 /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = C77FFAE02D32C6E100C59A48 /* CoordinatorImpl */; };
 		C79CB29B2B0D537A00C2BD18 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */; };
-		C79CB29C2B0D537A00C2BD18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */; };
 		C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */; };
 		C7B335932D31CF2700C36D7B /* GoogleSignInDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = C7B335922D31CF2700C36D7B /* GoogleSignInDependencies */; };
 		C7B3359F2D31D3E700C36D7B /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = C7B3359E2D31D3E700C36D7B /* Common */; };
-		C7C42E202D332D0C006B8C53 /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = C7C42E1F2D332D0C006B8C53 /* CoordinatorImpl */; };
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
 		C7DE26232D3411920090FF66 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = C7DE26222D3411920090FF66 /* Application */; };
 		C7DE26262D3411A00090FF66 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = C7DE26252D3411A00090FF66 /* Entities */; };
 		C7EA2F382D340E4300B63DDC /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F372D340E4300B63DDC /* CoordinatorContract */; };
-		C7EA2F3A2D340E4300B63DDC /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F392D340E4300B63DDC /* CoordinatorImpl */; };
-		C7EA2F3D2D340E6700B63DDC /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F3C2D340E6700B63DDC /* CoordinatorImpl */; };
 		C7EA2F402D340E7B00B63DDC /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F3F2D340E7B00B63DDC /* Mocks */; };
 		C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = C7F305892D32CCA5004C322D /* ThemeAssets */; };
 		C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */ = {isa = PBXBuildFile; productRef = C7F3058B2D32CCA5004C322D /* ThemeComponents */; };
+		D6422B642D3652820090F163 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = D6422B632D3652820090F163 /* Coordinator */; };
 		D65087372D35B7980056F8F3 /* FeatureProviderContract in Frameworks */ = {isa = PBXBuildFile; productRef = D65087362D35B7980056F8F3 /* FeatureProviderContract */; };
 		D650873A2D35B8570056F8F3 /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = D65087392D35B8570056F8F3 /* CoordinatorContract */; };
-		D650873C2D35B8570056F8F3 /* CoordinatorImpl in Frameworks */ = {isa = PBXBuildFile; productRef = D650873B2D35B8570056F8F3 /* CoordinatorImpl */; };
 		D650873E2D35BEDE0056F8F3 /* FeatureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,7 +47,6 @@
 		C74515172B750F3D00C6D08E /* TodoerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C760DF002D3334F20060D496 /* Entities */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Entities; sourceTree = "<group>"; };
 		C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoerApp.swift; sourceTree = "<group>"; };
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7B335952D31D30500C36D7B /* FirebaseDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FirebaseDependencies; sourceTree = "<group>"; };
@@ -97,17 +91,13 @@
 				C72241DC2D3172630046C0D7 /* Data in Frameworks */,
 				C77FFADF2D32C6E100C59A48 /* CoordinatorContract in Frameworks */,
 				C7B335932D31CF2700C36D7B /* GoogleSignInDependencies in Frameworks */,
-				D650873C2D35B8570056F8F3 /* CoordinatorImpl in Frameworks */,
 				C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */,
-				C77FFAE12D32C6E100C59A48 /* CoordinatorImpl in Frameworks */,
 				C75EB57D2D31DC1300317D07 /* Application in Frameworks */,
 				C72241D82D3170550046C0D7 /* FirebaseDependencies in Frameworks */,
 				D650873A2D35B8570056F8F3 /* CoordinatorContract in Frameworks */,
+				D6422B642D3652820090F163 /* Coordinator in Frameworks */,
 				C7B3359F2D31D3E700C36D7B /* Common in Frameworks */,
-				C7EA2F3A2D340E4300B63DDC /* CoordinatorImpl in Frameworks */,
-				C7EA2F3D2D340E6700B63DDC /* CoordinatorImpl in Frameworks */,
 				C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */,
-				C7C42E202D332D0C006B8C53 /* CoordinatorImpl in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,17 +157,8 @@
 				C74372D02D32AAF9002E1F1A /* Assets.xcassets */,
 				C79CB2C62B13F48C00C2BD18 /* Info.plist */,
 				C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */,
-				C79CB2892B0D537A00C2BD18 /* Preview Content */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		C79CB2892B0D537A00C2BD18 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				C79CB28A2B0D537A00C2BD18 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		C7B335972D31D30500C36D7B /* External */ = {
@@ -278,15 +259,11 @@
 				C75EB57C2D31DC1300317D07 /* Application */,
 				C75EB5882D32968B00317D07 /* AuthenticationScreen */,
 				C77FFADE2D32C6E100C59A48 /* CoordinatorContract */,
-				C77FFAE02D32C6E100C59A48 /* CoordinatorImpl */,
 				C7F305892D32CCA5004C322D /* ThemeAssets */,
 				C7F3058B2D32CCA5004C322D /* ThemeComponents */,
-				C7C42E1F2D332D0C006B8C53 /* CoordinatorImpl */,
-				C7EA2F392D340E4300B63DDC /* CoordinatorImpl */,
-				C7EA2F3C2D340E6700B63DDC /* CoordinatorImpl */,
 				D65087362D35B7980056F8F3 /* FeatureProviderContract */,
 				D65087392D35B8570056F8F3 /* CoordinatorContract */,
-				D650873B2D35B8570056F8F3 /* CoordinatorImpl */,
+				D6422B632D3652820090F163 /* Coordinator */,
 			);
 			productName = Listio;
 			productReference = D6A29BF32B09706100FA7F84 /* Todoer.app */;
@@ -325,7 +302,7 @@
 				C72241D62D3170550046C0D7 /* XCLocalSwiftPackageReference "Packages/External/FirebaseDependencies" */,
 				C7B335912D31CF2700C36D7B /* XCLocalSwiftPackageReference "Packages/External/GoogleSignInDependencies" */,
 				D65087352D35B7980056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/FeatureProvider" */,
-				D65087382D35B8570056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */,
+				D6422B622D3652820090F163 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -350,7 +327,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C74372D32D32AB96002E1F1A /* Colors.xcassets in Resources */,
-				C79CB29C2B0D537A00C2BD18 /* Preview Assets.xcassets in Resources */,
 				C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */,
 				C74372D12D32AAF9002E1F1A /* Assets.xcassets in Resources */,
 				C79CB29B2B0D537A00C2BD18 /* GoogleService-Info.plist in Resources */,
@@ -581,7 +557,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_ASSET_PATHS = "\"Todoer/Resources/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -617,7 +593,7 @@
 				CODE_SIGN_ENTITLEMENTS = Todoer/Resources/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_ASSET_PATHS = "\"Todoer/Resources/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -686,13 +662,13 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/External/GoogleSignInDependencies;
 		};
+		D6422B622D3652820090F163 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Shared/Coordinator;
+		};
 		D65087352D35B7980056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/FeatureProvider" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/FeatureProvider;
-		};
-		D65087382D35B8570056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Todoer/Sources/Shared/Coordinator;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -728,10 +704,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CoordinatorContract;
 		};
-		C77FFAE02D32C6E100C59A48 /* CoordinatorImpl */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoordinatorImpl;
-		};
 		C7B335922D31CF2700C36D7B /* GoogleSignInDependencies */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GoogleSignInDependencies;
@@ -739,10 +711,6 @@
 		C7B3359E2D31D3E700C36D7B /* Common */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Common;
-		};
-		C7C42E1F2D332D0C006B8C53 /* CoordinatorImpl */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoordinatorImpl;
 		};
 		C7DE26222D3411920090FF66 /* Application */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -756,14 +724,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CoordinatorContract;
 		};
-		C7EA2F392D340E4300B63DDC /* CoordinatorImpl */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoordinatorImpl;
-		};
-		C7EA2F3C2D340E6700B63DDC /* CoordinatorImpl */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoordinatorImpl;
-		};
 		C7EA2F3F2D340E7B00B63DDC /* Mocks */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Mocks;
@@ -776,6 +736,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ThemeComponents;
 		};
+		D6422B632D3652820090F163 /* Coordinator */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Coordinator;
+		};
 		D65087362D35B7980056F8F3 /* FeatureProviderContract */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FeatureProviderContract;
@@ -783,10 +747,6 @@
 		D65087392D35B8570056F8F3 /* CoordinatorContract */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoordinatorContract;
-		};
-		D650873B2D35B8570056F8F3 /* CoordinatorImpl */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoordinatorImpl;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

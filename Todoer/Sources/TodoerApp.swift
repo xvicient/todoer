@@ -1,7 +1,7 @@
 import SwiftUI
 import Firebase
 import GoogleSignIn
-import CoordinatorImpl
+import Coordinator
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 	func application(
