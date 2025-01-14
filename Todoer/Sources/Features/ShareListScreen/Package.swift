@@ -11,8 +11,13 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
+            name: "ShareListScreenContract",
+            targets: ["ShareListScreenContract"]
+        ),
+        .library(
             name: "ShareListScreen",
-            targets: ["ShareListScreen"]),
+            targets: ["ShareListScreen"]
+        )
     ],
     dependencies: [
         .package(path: "../Application"),
@@ -27,8 +32,17 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
+            name: "ShareListScreenContract",
+            dependencies: [
+                "Entities",
+                .product(name: "CoordinatorContract", package: "Coordinator")
+            ],
+            path: "Contract"
+        ),
+        .target(
             name: "ShareListScreen",
             dependencies: [
+                "ShareListScreenContract",
                 .product(name: "Application", package: "Application"),
                 .product(name: "Common", package: "Common"),
                 .product(name: "Mocks", package: "Common"),
@@ -37,7 +51,8 @@ let package = Package(
                 "Data",
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 "Entities"
-            ]
+            ],
+            path: "Sources"
         ),
         .testTarget(
             name: "ShareListScreenTests",

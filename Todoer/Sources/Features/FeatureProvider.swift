@@ -6,11 +6,16 @@ import HomeScreenContract
 import HomeScreen
 import ListItemsScreenContract
 import ListItemsScreen
+import AboutScreen
+import ShareListScreen
+import ShareListScreenContract
 
 struct FeatureProvider: FeatureProviderAPI {
     
     @MainActor
-    func makeHomeScreen(coordinator: CoordinatorApi) -> any View {
+    func makeHomeScreen(
+        coordinator: CoordinatorApi
+    ) -> any View {
         struct Dependencies: HomeScreenDependencies {
             let coordinator: CoordinatorApi
         }
@@ -22,13 +27,38 @@ struct FeatureProvider: FeatureProviderAPI {
     }
     
     @MainActor
-    func makeListItemsScreen(list: UserList) -> any View {
+    func makeListItemsScreen(
+        list: UserList
+    ) -> any View {
         struct Dependencies: ListItemsDependencies {
             let list: UserList
         }
         
         return ListItems.Builder.makeItemsList(
             dependencies: Dependencies(
+                list: list
+            )
+        )
+    }
+    
+    @MainActor
+    func makeAboutScreen() -> any View {
+        About.Builder.makeAbout()
+    }
+    
+    @MainActor
+    func makeShareListScreen(
+        coordinator: CoordinatorApi,
+        list: UserList
+    ) -> any View {
+        struct Dependencies: ShareListScreenDependencies {
+            let coordinator: CoordinatorApi
+            let list: UserList
+        }
+        
+        return ShareList.Builder.makeShareList(
+            dependencies: Dependencies(
+                coordinator: coordinator,
                 list: list
             )
         )

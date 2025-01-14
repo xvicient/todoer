@@ -11,7 +11,7 @@ extension ShareList.Reducer {
 		return .task { send in
 			await send(
 				.shareListResult(
-					dependencies.useCase.shareList(
+					useCase.shareList(
 						shareEmail: email,
                         owner: owner,
 						list: dependencies.list

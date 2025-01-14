@@ -76,10 +76,7 @@ final class Coordinator: CoordinatorApi, ObservableObject {
 		switch sheet {
 		case .shareList(let list):
 			NavigationStack {
-				ShareList.Builder.makeShareList(
-					coordinator: self,
-					list: list
-				)
+                AnyView(featureProvider.makeShareListScreen(coordinator: self, list: list))
 			}
 		}
 	}
@@ -108,7 +105,7 @@ extension Coordinator {
 		case let .listItems(list):
             AnyView(featureProvider.makeListItemsScreen(list: list))
 		case .about:
-			About.Builder.makeAbout()
+            AnyView(featureProvider.makeAboutScreen())
 		}
 	}
 }
