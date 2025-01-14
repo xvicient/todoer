@@ -1,3 +1,4 @@
+import SwiftUI
 import Data
 import Entities
 
@@ -32,4 +33,22 @@ public protocol CoordinatorApi {
     func pop()
     func popToRoot()
     func dismissSheet()
+}
+
+@MainActor
+public protocol FeatureProviderAPI {
+    func makeHomeScreen(
+        coordinator: CoordinatorApi
+    ) -> any View
+    func makeListItemsScreen(
+        list: UserList
+    ) -> any View
+    func makeAboutScreen() -> any View
+    func makeShareListScreen(
+        coordinator: CoordinatorApi,
+        list: UserList
+    ) -> any View
+    func makeAuthenticationScreen(
+        coordinator: CoordinatorApi
+    ) -> any View
 }

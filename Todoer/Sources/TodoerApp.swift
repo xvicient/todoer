@@ -2,6 +2,7 @@ import SwiftUI
 import FirebaseCore
 import GoogleSignIn
 import Coordinator
+import CoordinatorContract
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 	func application(
