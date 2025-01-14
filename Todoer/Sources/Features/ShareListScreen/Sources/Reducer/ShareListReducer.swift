@@ -2,13 +2,9 @@ import Entities
 import Common
 import Application
 import CoordinatorContract
+import ShareListScreenContract
 
 // MARK: - ShareListReducer
-
-protocol ShareListDependencies {
-	var useCase: ShareListUseCaseApi { get }
-	var list: UserList { get }
-}
 
 extension ShareList {
     struct Reducer: Application.Reducer {
@@ -40,14 +36,12 @@ extension ShareList {
 			case error(String)
 		}
 
-		internal let coordinator: any CoordinatorApi
-		internal let dependencies: ShareListDependencies
+		internal let dependencies: ShareListScreenDependencies
+        internal let useCase = UseCase()
 
 		init(
-			coordinator: any CoordinatorApi,
-			dependencies: ShareListDependencies
+			dependencies: ShareListScreenDependencies
 		) {
-			self.coordinator = coordinator
 			self.dependencies = dependencies
 		}
 

@@ -175,6 +175,8 @@ extension AboutScreen {
 	}
 }
 
-#Preview {
-	AboutScreen()
+struct AboutScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        About.Builder.makeAbout()
+    }
 }

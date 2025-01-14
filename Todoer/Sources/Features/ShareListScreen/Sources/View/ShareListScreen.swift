@@ -5,6 +5,7 @@ import ThemeAssets
 import ThemeComponents
 import CoordinatorContract
 import Mocks
+import ShareListScreenContract
 
 // MARK: - ShareListView
 
@@ -151,16 +152,23 @@ extension ShareListScreen {
 }
 
 struct ShareView_Previews: PreviewProvider {
-	static var previews: some View {
-		ShareList.Builder.makeShareList(
-			coordinator: CoordinatorMock(),
-			list: UserList(
-				documentId: "",
-				name: "",
-				done: true,
-				uid: [],
-				index: 0
-			)
-		)
-	}
+    struct Dependencies: ShareListScreenDependencies {
+        let coordinator: CoordinatorApi
+        let list: UserList
+    }
+    
+    static var previews: some View {
+        ShareList.Builder.makeShareList(
+            dependencies: Dependencies(
+                coordinator: CoordinatorMock(),
+                list: UserList(
+                    documentId: "",
+                    name: "",
+                    done: true,
+                    uid: [],
+                    index: 0
+                )
+            )
+        )
+    }
 }

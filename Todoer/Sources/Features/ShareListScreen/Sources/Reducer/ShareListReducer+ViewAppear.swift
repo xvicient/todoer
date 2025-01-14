@@ -9,7 +9,7 @@ extension ShareList.Reducer {
 		.task { send in
 			await send(
 				.fetchUsersResult(
-					dependencies.useCase.fetchUsers(
+					useCase.fetchUsers(
 						uids: dependencies.list.uid
 					)
 				)
