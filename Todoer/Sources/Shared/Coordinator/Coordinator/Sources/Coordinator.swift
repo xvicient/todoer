@@ -106,9 +106,7 @@ extension Coordinator {
 		case .home:
             AnyView(featureProvider.makeHomeScreen(coordinator: self))
 		case let .listItems(list):
-			ListItems.Builder.makeItemsList(
-				list: list
-			)
+            AnyView(featureProvider.makeListItemsScreen(list: list))
 		case .about:
 			About.Builder.makeAbout()
 		}

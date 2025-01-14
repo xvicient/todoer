@@ -16,11 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Entities"),
-        .package(path: "../AuthenticationScreen"),
-        .package(path: "../HomeScreen"),
-        .package(path: "../AboutScreen"),
-        .package(path: "../ShareListScreen"),
-        .package(path: "../ListItemsScreen")
+        .package(path: "../Coordinator")
         
     ],
     targets: [
@@ -29,7 +25,8 @@ let package = Package(
         .target(
             name: "FeatureProviderContract",
             dependencies: [
-                .product(name: "HomeScreenContract", package: "HomeScreen"),
+                "Entities",
+                .product(name: "CoordinatorContract", package: "Coordinator")
             ],
             path: "FeatureProviderContract/Sources"
         )
