@@ -28,7 +28,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "Common",
-            path: "Common/Sources"
+            path: "Sources/Common"
         ),
         .target(
             name: "Mocks",
@@ -36,7 +36,7 @@ let package = Package(
                 "Entities",
                 .product(name: "CoordinatorContract", package: "Coordinator")
             ],
-            path: "Mocks/Sources"
+            path: "Sources/Mocks"
         )
     ]
 )

@@ -28,7 +28,7 @@ let package = Package(
                 "Entities",
                 .product(name: "CoordinatorContract", package: "Coordinator")
             ],
-            path: "FeatureProviderContract/Sources"
+            path: "Sources"
         )
     ]
 )

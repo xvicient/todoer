@@ -31,14 +31,14 @@ let package = Package(
             dependencies: [
                 "Data"
             ],
-            path: "Application/Sources"
+            path: "Sources/Redux"
         ),
         .target(
             name: "ApplicationTests",
             dependencies: [
                 "Application"
             ],
-            path: "ApplicationTests/Sources"
+            path: "Sources/ReduxTests"
         )
     ]
 )

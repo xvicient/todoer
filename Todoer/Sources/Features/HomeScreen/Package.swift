@@ -36,7 +36,7 @@ let package = Package(
             dependencies: [
                 .product(name: "CoordinatorContract", package: "Coordinator")
             ],
-            path: "HomeScreenContract/Sources"
+            path: "Contract"
         ),
         .target(
             name: "HomeScreen",
@@ -51,7 +51,7 @@ let package = Package(
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 "Entities"
             ],
-            path: "HomeScreen/Sources"
+            path: "Sources"
         ),
         .testTarget(
             name: "HomeScreenTests",
