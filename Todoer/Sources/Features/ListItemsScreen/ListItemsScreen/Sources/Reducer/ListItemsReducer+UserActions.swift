@@ -22,7 +22,7 @@ extension ListItems.Reducer {
 		return .task { send in
 			await send(
 				.toggleItemResult(
-					dependencies.useCase.updateItemDone(
+					useCase.updateItemDone(
 						item: item,
 						list: list
 					)
@@ -41,7 +41,7 @@ extension ListItems.Reducer {
 		return .task { send in
 			await send(
 				.deleteItemResult(
-					dependencies.useCase.deleteItem(
+					useCase.deleteItem(
 						itemId: itemId,
 						listId: dependencies.list.documentId
 					)
@@ -82,7 +82,7 @@ extension ListItems.Reducer {
 		return .task { send in
 			await send(
 				.addItemResult(
-					dependencies.useCase.addItem(
+					useCase.addItem(
 						with: newItemName,
 						list: list
 					)
@@ -120,7 +120,7 @@ extension ListItems.Reducer {
 		return .task { send in
 			await send(
 				.addItemResult(
-					dependencies.useCase.updateItemName(
+					useCase.updateItemName(
 						item: item,
 						listId: listId
 					)
@@ -156,7 +156,7 @@ extension ListItems.Reducer {
 		return .task { send in
 			await send(
 				.sortItemsResult(
-					dependencies.useCase.sortItems(
+					useCase.sortItems(
 						items: items,
 						listId: listId
 					)
@@ -186,7 +186,7 @@ extension ListItems.Reducer {
 		return .task { send in
 			await send(
 				.sortItemsResult(
-					dependencies.useCase.sortItems(
+					useCase.sortItems(
 						items: items,
 						listId: listId
 					)

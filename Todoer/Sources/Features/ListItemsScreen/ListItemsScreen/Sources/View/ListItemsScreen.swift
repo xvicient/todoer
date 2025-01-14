@@ -2,6 +2,7 @@ import SwiftUI
 import Entities
 import Application
 import ThemeComponents
+import ListItemsScreenContract
 
 // MARK: - ListItemsScreen
 
@@ -178,14 +179,22 @@ extension ListItemsScreen {
 	}
 }
 
-#Preview {
-	ListItems.Builder.makeItemsList(
-		list: UserList(
-			documentId: "1",
-			name: "Test",
-			done: false,
-			uid: [""],
-			index: 1
-		)
-	)
+struct Home_Previews: PreviewProvider {
+    struct Dependencies: ListItemsDependencies {
+        var list: UserList
+    }
+    
+    static var previews: some View {
+        ListItems.Builder.makeItemsList(
+            dependencies: Dependencies(
+                list: UserList(
+                    documentId: "1",
+                    name: "Test",
+                    done: false,
+                    uid: [""],
+                    index: 1
+                )
+            )
+        )
+    }
 }

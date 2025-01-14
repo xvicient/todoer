@@ -3,13 +3,9 @@ import Entities
 import Common
 import Application
 import Entities
+import ListItemsScreenContract
 
 // MARK: - ListItemsReducer
-
-protocol ListItemsDependencies {
-	var useCase: ListItemsUseCaseApi { get }
-	var list: UserList { get }
-}
 
 extension ListItems {
 	struct Reducer: Application.Reducer {
@@ -74,6 +70,7 @@ extension ListItems {
 		}
 
 		internal let dependencies: ListItemsDependencies
+        internal let useCase = UseCase()
 
 		init(dependencies: ListItemsDependencies) {
 			self.dependencies = dependencies

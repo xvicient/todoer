@@ -1,8 +1,11 @@
-import FeatureProviderContract
-import HomeScreenContract
-import HomeScreen
 import SwiftUI
 import CoordinatorContract
+import FeatureProviderContract
+import Entities
+import HomeScreenContract
+import HomeScreen
+import ListItemsScreenContract
+import ListItemsScreen
 
 struct FeatureProvider: FeatureProviderAPI {
     
@@ -14,6 +17,19 @@ struct FeatureProvider: FeatureProviderAPI {
         return Home.Builder.makeHome(
             dependencies: Dependencies(
                 coordinator: coordinator
+            )
+        )
+    }
+    
+    @MainActor
+    func makeListItemsScreen(list: UserList) -> any View {
+        struct Dependencies: ListItemsDependencies {
+            let list: UserList
+        }
+        
+        return ListItems.Builder.makeItemsList(
+            dependencies: Dependencies(
+                list: list
             )
         )
     }
