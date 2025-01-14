@@ -8,8 +8,8 @@ extension ShareList.Reducer {
 	) -> Effect<Action> {
 		.task { send in
 			await send(
-				.fetchUsersResult(
-					useCase.fetchUsers(
+				.fetchDataResult(
+					useCase.fetchData(
 						uids: dependencies.list.uid
 					)
 				)

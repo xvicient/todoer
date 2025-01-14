@@ -8,5 +8,6 @@ extension ShareList.Reducer {
 	@MainActor
 	struct ViewModel {
 		var users = [User]()
+        var selfName: String?
 	}
 }

@@ -8,12 +8,19 @@ extension ShareList.Reducer {
 		email: String,
         owner: String
 	) -> Effect<Action> {
+        var ownerName = ""
+        if let selfName = state.viewModel.selfName {
+            ownerName = selfName
+        } else {
+            ownerName = owner
+        }
+        
 		return .task { send in
 			await send(
 				.shareListResult(
 					useCase.shareList(
 						shareEmail: email,
-                        owner: owner,
+                        ownerName: ownerName,
 						list: dependencies.list
 					)
 				)

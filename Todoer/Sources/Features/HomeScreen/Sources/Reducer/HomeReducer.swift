@@ -7,7 +7,7 @@ import HomeScreenContract
 
 // MARK: - HomeReducer
 
-typealias HomeData = Home.Reducer.HomeData
+typealias HomeData = Home.HomeData
 
 extension Home {
 	struct Reducer: Application.Reducer {
@@ -25,11 +25,6 @@ extension Home {
 			static var `default`: String {
 				Self.unexpectedError.localizedDescription
 			}
-		}
-
-        struct HomeData: Equatable, Sendable {
-			let lists: [UserList]
-			let invitations: [Invitation]
 		}
 
 		enum Action: Equatable {

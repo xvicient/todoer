@@ -40,6 +40,12 @@ protocol HomeUseCaseApi {
 }
 
 extension Home {
+    
+    struct HomeData: Equatable, Sendable {
+        let lists: [UserList]
+        let invitations: [Invitation]
+    }
+    
 	struct UseCase: HomeUseCaseApi {
 		private enum Errors: Error, LocalizedError {
 			case emptyListName
