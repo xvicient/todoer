@@ -5,12 +5,13 @@ import Application
 
 @MainActor
 extension ShareList.Reducer {
-	func onFetchUsersResult(
+	func onFetchDataResult(
 		state: inout State,
-		result: ActionResult<[User]>
+        result: ActionResult<ShareData>
 	) -> Effect<Action> {
-		if case .success(let users) = result {
-			state.viewModel.users = users
+		if case .success(let data) = result {
+            state.viewModel.users = data.users
+            state.viewModel.selfName = data.selfName
 		}
 		return .none
 	}

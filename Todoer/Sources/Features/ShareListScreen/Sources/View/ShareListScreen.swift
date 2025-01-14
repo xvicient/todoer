@@ -13,6 +13,12 @@ struct ShareListScreen: View {
 	@ObservedObject private var store: Store<ShareList.Reducer>
     @State private var shareOwnerNameText: String = ""
     @State private var shareEmailText: String = ""
+    private var isShareButtonDisabled: Bool {
+        !((!$shareEmailText.wrappedValue.isEmpty &&
+           !$shareOwnerNameText.wrappedValue.isEmpty) ||
+        (!$shareEmailText.wrappedValue.isEmpty &&
+         store.state.viewModel.selfName != nil))
+    }
 
 	init(store: Store<ShareList.Reducer>) {
 		self.store = store
@@ -21,17 +27,20 @@ struct ShareListScreen: View {
 	var body: some View {
 		VStack(alignment: .leading, spacing: 12) {
 			title
-			TDTextField(
-				text: $shareOwnerNameText,
-                placeholder: Constants.Text.shareOwnerNamePlaceholder
-			)
+            if store.state.viewModel.selfName == nil {
+                TDTextField(
+                    text: $shareOwnerNameText,
+                    placeholder: Constants.Text.shareOwnerNamePlaceholder
+                )
+            }
             TDTextField(
                 text: $shareEmailText,
                 placeholder: Constants.Text.shareEmailPlaceholder
             )
 			TDBasicButton(title: Constants.Text.shareButtonTitle) {
                 store.send(.didTapShareListButton($shareEmailText.wrappedValue, $shareOwnerNameText.wrappedValue))
-			}
+            }
+            .disabled(isShareButtonDisabled)
 			Text(Constants.Text.sharingWithTitle)
 				.foregroundColor(Color.textBlack)
 				.fontWeight(.medium)

@@ -1,3 +1,4 @@
+import Foundation
 import Entities
 import Common
 import Application
@@ -6,8 +7,21 @@ import ShareListScreenContract
 
 // MARK: - ShareListReducer
 
+typealias ShareData = ShareList.ShareData
+
 extension ShareList {
     struct Reducer: Application.Reducer {
+        
+        internal enum Errors: Error, LocalizedError {
+            case missingUserName
+
+            var errorDescription: String? {
+                switch self {
+                case .missingUserName:
+                    return "User name not found."
+                }
+            }
+        }
 
 		enum Action: Equatable {
 			// MARK: - View appear
@@ -21,7 +35,7 @@ extension ShareList {
 
 			// MARK: - Results
 			/// ShareListReducer+Results
-			case fetchUsersResult(ActionResult<[User]>)
+            case fetchDataResult(ActionResult<ShareData>)
 			case shareListResult(ActionResult<EquatableVoid>)
 		}
 
@@ -64,8 +78,8 @@ extension ShareList {
                     owner: owner
 				)
 
-			case (.idle, .fetchUsersResult(let result)):
-				return onFetchUsersResult(
+			case (.idle, .fetchDataResult(let result)):
+				return onFetchDataResult(
 					state: &state,
 					result: result
 				)

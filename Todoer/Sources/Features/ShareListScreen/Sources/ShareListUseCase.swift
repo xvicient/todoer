@@ -5,18 +5,23 @@ import Application
 import Entities
 
 protocol ShareListUseCaseApi {
-	func fetchUsers(
+	func fetchData(
 		uids: [String]
-	) async -> ActionResult<[User]>
+	) async -> ActionResult<ShareData>
 
 	func shareList(
 		shareEmail: String,
-        owner: String,
+        ownerName: String,
 		list: UserList
 	) async -> ActionResult<EquatableVoid>
 }
 
 extension ShareList {
+    struct ShareData: Equatable, Sendable {
+        let users: [User]
+        let selfName: String?
+    }
+    
 	struct UseCase: ShareListUseCaseApi {
 		private enum Errors: Error, LocalizedError {
 			case emailNotFound
@@ -43,12 +48,13 @@ extension ShareList {
 			self.invitationsRepository = invitationsRepository
 		}
 
-		func fetchUsers(
+		func fetchData(
 			uids: [String]
-		) async -> ActionResult<[User]> {
+		) async -> ActionResult<ShareData> {
 			do {
-				let result = try await usersRepository.getNotSelfUsers(uids: uids)
-				return .success(result)
+				let users = try await usersRepository.getNotSelfUsers(uids: uids)
+                let displayName = try? await usersRepository.getSelfUser()?.displayName
+                return .success(ShareData(users: users, selfName: displayName))
 			}
 			catch {
 				return .failure(error)
@@ -57,7 +63,7 @@ extension ShareList {
 
 		func shareList(
 			shareEmail: String,
-            owner: String,
+            ownerName: String,
 			list: UserList
 		) async -> ActionResult<EquatableVoid> {
 			do {
@@ -81,7 +87,7 @@ extension ShareList {
 				}
 
 				try await invitationsRepository.sendInvitation(
-					ownerName: owner,
+					ownerName: ownerName,
 					ownerEmail: ownerEmail,
 					listId: list.documentId,
 					listName: list.name,
