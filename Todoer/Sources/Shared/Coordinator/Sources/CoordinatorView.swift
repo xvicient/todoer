@@ -1,7 +1,6 @@
 import SwiftUI
 import ThemeAssets
 import CoordinatorContract
-import FeatureProviderContract
 
 public struct CoordinatorView: View {
     @StateObject private var coordinator: Coordinator

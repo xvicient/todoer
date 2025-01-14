@@ -25,8 +25,17 @@
 		C7EA2F402D340E7B00B63DDC /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F3F2D340E7B00B63DDC /* Mocks */; };
 		C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = C7F305892D32CCA5004C322D /* ThemeAssets */; };
 		C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */ = {isa = PBXBuildFile; productRef = C7F3058B2D32CCA5004C322D /* ThemeComponents */; };
+		D62464D12D36B3010097F7DE /* AboutScreen in Frameworks */ = {isa = PBXBuildFile; productRef = D62464D02D36B3010097F7DE /* AboutScreen */; };
+		D62464D42D36B30F0097F7DE /* AuthenticationScreen in Frameworks */ = {isa = PBXBuildFile; productRef = D62464D32D36B30F0097F7DE /* AuthenticationScreen */; };
+		D62464D62D36B30F0097F7DE /* AuthenticationScreenContract in Frameworks */ = {isa = PBXBuildFile; productRef = D62464D52D36B30F0097F7DE /* AuthenticationScreenContract */; };
+		D62464D92D36B31F0097F7DE /* HomeScreen in Frameworks */ = {isa = PBXBuildFile; productRef = D62464D82D36B31F0097F7DE /* HomeScreen */; };
+		D62464DB2D36B31F0097F7DE /* HomeScreenContract in Frameworks */ = {isa = PBXBuildFile; productRef = D62464DA2D36B31F0097F7DE /* HomeScreenContract */; };
+		D62464DE2D36B32D0097F7DE /* ListItemsScreen in Frameworks */ = {isa = PBXBuildFile; productRef = D62464DD2D36B32D0097F7DE /* ListItemsScreen */; };
+		D62464E02D36B32D0097F7DE /* ListItemsScreenContract in Frameworks */ = {isa = PBXBuildFile; productRef = D62464DF2D36B32D0097F7DE /* ListItemsScreenContract */; };
+		D62464E32D36B33C0097F7DE /* ShareListScreen in Frameworks */ = {isa = PBXBuildFile; productRef = D62464E22D36B33C0097F7DE /* ShareListScreen */; };
+		D62464E52D36B33C0097F7DE /* ShareListScreenContract in Frameworks */ = {isa = PBXBuildFile; productRef = D62464E42D36B33C0097F7DE /* ShareListScreenContract */; };
+		D62464E82D36B3730097F7DE /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = D62464E72D36B3730097F7DE /* Entities */; };
 		D6422B642D3652820090F163 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = D6422B632D3652820090F163 /* Coordinator */; };
-		D65087372D35B7980056F8F3 /* FeatureProviderContract in Frameworks */ = {isa = PBXBuildFile; productRef = D65087362D35B7980056F8F3 /* FeatureProviderContract */; };
 		D650873A2D35B8570056F8F3 /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = D65087392D35B8570056F8F3 /* CoordinatorContract */; };
 		D650873E2D35BEDE0056F8F3 /* FeatureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */; };
 /* End PBXBuildFile section */
@@ -63,7 +72,6 @@
 		C7C42E1D2D332CCD006B8C53 /* ShareListScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ShareListScreen; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
-		D65087322D35B61F0056F8F3 /* FeatureProvider */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FeatureProvider; sourceTree = "<group>"; };
 		D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureProvider.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
@@ -86,18 +94,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D65087372D35B7980056F8F3 /* FeatureProviderContract in Frameworks */,
 				C75EB5892D32968B00317D07 /* AuthenticationScreen in Frameworks */,
 				C72241DC2D3172630046C0D7 /* Data in Frameworks */,
 				C77FFADF2D32C6E100C59A48 /* CoordinatorContract in Frameworks */,
 				C7B335932D31CF2700C36D7B /* GoogleSignInDependencies in Frameworks */,
+				D62464D62D36B30F0097F7DE /* AuthenticationScreenContract in Frameworks */,
+				D62464D42D36B30F0097F7DE /* AuthenticationScreen in Frameworks */,
 				C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */,
+				D62464D92D36B31F0097F7DE /* HomeScreen in Frameworks */,
 				C75EB57D2D31DC1300317D07 /* Application in Frameworks */,
+				D62464E32D36B33C0097F7DE /* ShareListScreen in Frameworks */,
+				D62464DB2D36B31F0097F7DE /* HomeScreenContract in Frameworks */,
+				D62464DE2D36B32D0097F7DE /* ListItemsScreen in Frameworks */,
 				C72241D82D3170550046C0D7 /* FirebaseDependencies in Frameworks */,
 				D650873A2D35B8570056F8F3 /* CoordinatorContract in Frameworks */,
+				D62464E82D36B3730097F7DE /* Entities in Frameworks */,
 				D6422B642D3652820090F163 /* Coordinator in Frameworks */,
 				C7B3359F2D31D3E700C36D7B /* Common in Frameworks */,
+				D62464E52D36B33C0097F7DE /* ShareListScreenContract in Frameworks */,
+				D62464D12D36B3010097F7DE /* AboutScreen in Frameworks */,
 				C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */,
+				D62464E02D36B32D0097F7DE /* ListItemsScreenContract in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,7 +144,6 @@
 		C78AF05E2D332BBF009244AF /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				D65087322D35B61F0056F8F3 /* FeatureProvider */,
 				C7C42E0C2D332C8B006B8C53 /* Application */,
 				C7C42E0D2D332C8B006B8C53 /* Common */,
 				C7C42E0E2D332C8B006B8C53 /* Coordinator */,
@@ -261,9 +277,18 @@
 				C77FFADE2D32C6E100C59A48 /* CoordinatorContract */,
 				C7F305892D32CCA5004C322D /* ThemeAssets */,
 				C7F3058B2D32CCA5004C322D /* ThemeComponents */,
-				D65087362D35B7980056F8F3 /* FeatureProviderContract */,
 				D65087392D35B8570056F8F3 /* CoordinatorContract */,
 				D6422B632D3652820090F163 /* Coordinator */,
+				D62464D02D36B3010097F7DE /* AboutScreen */,
+				D62464D32D36B30F0097F7DE /* AuthenticationScreen */,
+				D62464D52D36B30F0097F7DE /* AuthenticationScreenContract */,
+				D62464D82D36B31F0097F7DE /* HomeScreen */,
+				D62464DA2D36B31F0097F7DE /* HomeScreenContract */,
+				D62464DD2D36B32D0097F7DE /* ListItemsScreen */,
+				D62464DF2D36B32D0097F7DE /* ListItemsScreenContract */,
+				D62464E22D36B33C0097F7DE /* ShareListScreen */,
+				D62464E42D36B33C0097F7DE /* ShareListScreenContract */,
+				D62464E72D36B3730097F7DE /* Entities */,
 			);
 			productName = Listio;
 			productReference = D6A29BF32B09706100FA7F84 /* Todoer.app */;
@@ -301,8 +326,13 @@
 				C7EB4A862B855B1B00D66D64 /* XCRemoteSwiftPackageReference "swift-format" */,
 				C72241D62D3170550046C0D7 /* XCLocalSwiftPackageReference "Packages/External/FirebaseDependencies" */,
 				C7B335912D31CF2700C36D7B /* XCLocalSwiftPackageReference "Packages/External/GoogleSignInDependencies" */,
-				D65087352D35B7980056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/FeatureProvider" */,
 				D6422B622D3652820090F163 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */,
+				D62464CF2D36B3010097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/AboutScreen" */,
+				D62464D22D36B30F0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/AuthenticationScreen" */,
+				D62464D72D36B31F0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/HomeScreen" */,
+				D62464DC2D36B32D0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ListItemsScreen" */,
+				D62464E12D36B33C0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ShareListScreen" */,
+				D62464E62D36B3730097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Entities" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -664,13 +694,33 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/External/GoogleSignInDependencies;
 		};
+		D62464CF2D36B3010097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/AboutScreen" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Features/AboutScreen;
+		};
+		D62464D22D36B30F0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/AuthenticationScreen" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Features/AuthenticationScreen;
+		};
+		D62464D72D36B31F0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/HomeScreen" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Features/HomeScreen;
+		};
+		D62464DC2D36B32D0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ListItemsScreen" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Features/ListItemsScreen;
+		};
+		D62464E12D36B33C0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ShareListScreen" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Features/ShareListScreen;
+		};
+		D62464E62D36B3730097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Entities" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Shared/Entities;
+		};
 		D6422B622D3652820090F163 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/Coordinator;
-		};
-		D65087352D35B7980056F8F3 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/FeatureProvider" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Todoer/Sources/Shared/FeatureProvider;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -738,13 +788,49 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ThemeComponents;
 		};
+		D62464D02D36B3010097F7DE /* AboutScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AboutScreen;
+		};
+		D62464D32D36B30F0097F7DE /* AuthenticationScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AuthenticationScreen;
+		};
+		D62464D52D36B30F0097F7DE /* AuthenticationScreenContract */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AuthenticationScreenContract;
+		};
+		D62464D82D36B31F0097F7DE /* HomeScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HomeScreen;
+		};
+		D62464DA2D36B31F0097F7DE /* HomeScreenContract */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HomeScreenContract;
+		};
+		D62464DD2D36B32D0097F7DE /* ListItemsScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ListItemsScreen;
+		};
+		D62464DF2D36B32D0097F7DE /* ListItemsScreenContract */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ListItemsScreenContract;
+		};
+		D62464E22D36B33C0097F7DE /* ShareListScreen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShareListScreen;
+		};
+		D62464E42D36B33C0097F7DE /* ShareListScreenContract */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShareListScreenContract;
+		};
+		D62464E72D36B3730097F7DE /* Entities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Entities;
+		};
 		D6422B632D3652820090F163 /* Coordinator */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Coordinator;
-		};
-		D65087362D35B7980056F8F3 /* FeatureProviderContract */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FeatureProviderContract;
 		};
 		D65087392D35B8570056F8F3 /* CoordinatorContract */ = {
 			isa = XCSwiftPackageProductDependency;

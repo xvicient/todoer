@@ -16,8 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Data"),
-        .package(path: "../Entities"),
-        .package(path: "../FeatureProviderContract")
+        .package(path: "../Entities")
         
     ],
     targets: [
@@ -32,8 +31,7 @@ let package = Package(
         .target(
             name: "Coordinator",
             dependencies: [
-                "CoordinatorContract",
-                "FeatureProviderContract"
+                "CoordinatorContract"
             ],
             path: "Sources"
         ),

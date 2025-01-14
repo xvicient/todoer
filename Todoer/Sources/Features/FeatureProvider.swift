@@ -1,6 +1,5 @@
 import SwiftUI
 import CoordinatorContract
-import FeatureProviderContract
 import Entities
 import HomeScreenContract
 import HomeScreen
@@ -12,9 +11,9 @@ import ShareListScreenContract
 import AuthenticationScreenContract
 import AuthenticationScreen
 
+@MainActor
 struct FeatureProvider: FeatureProviderAPI {
     
-    @MainActor
     func makeHomeScreen(
         coordinator: CoordinatorApi
     ) -> any View {
@@ -28,7 +27,6 @@ struct FeatureProvider: FeatureProviderAPI {
         )
     }
     
-    @MainActor
     func makeListItemsScreen(
         list: UserList
     ) -> any View {
@@ -43,12 +41,10 @@ struct FeatureProvider: FeatureProviderAPI {
         )
     }
     
-    @MainActor
     func makeAboutScreen() -> any View {
         About.Builder.makeAbout()
     }
     
-    @MainActor
     func makeShareListScreen(
         coordinator: CoordinatorApi,
         list: UserList
@@ -66,7 +62,6 @@ struct FeatureProvider: FeatureProviderAPI {
         )
     }
     
-    @MainActor
     func makeAuthenticationScreen(
         coordinator: CoordinatorApi
     ) -> any View {

@@ -1,7 +1,6 @@
 import SwiftUI
 import Data
 import CoordinatorContract
-import FeatureProviderContract
 
 @MainActor
 final class Coordinator: CoordinatorApi, ObservableObject {
