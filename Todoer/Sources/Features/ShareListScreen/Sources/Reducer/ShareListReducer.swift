@@ -51,12 +51,14 @@ extension ShareList {
 		}
 
 		internal let dependencies: ShareListScreenDependencies
-        internal let useCase: ShareListUseCaseApi = UseCase()
+        internal let useCase: ShareListUseCaseApi
 
 		init(
-			dependencies: ShareListScreenDependencies
+			dependencies: ShareListScreenDependencies,
+            useCase: ShareListUseCaseApi
 		) {
 			self.dependencies = dependencies
+            self.useCase = useCase
 		}
 
 		@MainActor

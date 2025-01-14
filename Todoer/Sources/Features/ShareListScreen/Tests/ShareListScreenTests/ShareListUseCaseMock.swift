@@ -5,22 +5,23 @@ import Entities
 
 class ShareListUseCaseMock: ShareListUseCaseApi {
 
-	var fetchUsersResult: ActionResult<[User]>!
+	var fetchDataResult: ActionResult<ShareData>!
 	var shareListResult: ActionResult<EquatableVoid>!
 
 	enum UseCaseError: Error {
 		case error
 	}
 
-	func fetchUsers(
+	func fetchData(
 		uids: [String]
-	) async -> ActionResult<[User]> {
-		fetchUsersResult
+	) async -> ActionResult<ShareData> {
+        fetchDataResult
 	}
 
 	func shareList(
-		shareEmail: String,
-		list: UserList
+        shareEmail: String,
+        ownerName: String,
+        list: UserList
 	) async -> ActionResult<EquatableVoid> {
 		shareListResult
 	}

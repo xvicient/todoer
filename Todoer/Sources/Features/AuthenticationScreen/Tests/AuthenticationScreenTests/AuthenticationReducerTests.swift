@@ -2,6 +2,8 @@ import XCTest
 import Application
 import ApplicationTests
 import Mocks
+import AuthenticationScreenContract
+import CoordinatorContract
 
 @testable import AuthenticationScreen
 
@@ -10,18 +12,18 @@ final class AuthenticationReducerTests: XCTestCase {
 	private typealias AuthenticationStore<R: Reducer> = TestStore<R.State, R.Action>
 	private typealias UseCaseError = AuthenticationUseCaseMock.UseCaseError
 
-	struct Dependencies: AuthenticationDependencies {
-		var useCase: AuthenticationUseCaseApi
+	struct Dependencies: AuthenticationScreenDependencies {
+        var coordinator: CoordinatorApi
 	}
 
     private lazy var store: AuthenticationStore<Authentication.Reducer> = {
         TestStore(
             initialState: .init(),
             reducer: Authentication.Reducer(
-                coordinator: coordinator,
                 dependencies: Dependencies(
-                    useCase: useCaseMock
-                )
+                    coordinator: coordinator
+                ),
+                useCase: useCaseMock
             )
         )
     }()
