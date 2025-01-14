@@ -3,6 +3,7 @@ import Application
 import CoordinatorContract
 import ThemeComponents
 import Mocks
+import Common
 import HomeScreenContract
 
 // MARK: - HomeScreen
@@ -10,6 +11,7 @@ import HomeScreenContract
 struct HomeScreen: View {
 	@ObservedObject private var store: Store<Home.Reducer>
     @State private var searchText = ""
+    @State private var isSearchFocused = false
     
     private var filteredLists: [Home.Reducer.ListRow] {
         searchText.isEmpty ? store.state.viewModel.lists : store.state.viewModel.lists.filter {
@@ -23,7 +25,7 @@ struct HomeScreen: View {
 
 	var body: some View {
 		ZStack {
-			lists
+			contentView
 			loadingView
 		}
 		.onAppear {
@@ -56,19 +58,23 @@ extension HomeScreen {
 	}
 
 	@ViewBuilder
-	fileprivate var lists: some View {
+	fileprivate var contentView: some View {
         List {
-            invitationsSection
-            listsSection
+            invitations
+            lists
         }
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
         .scrollContentBackground(.hidden)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(
+            text: $searchText,
+            isPresented: $isSearchFocused,
+            placement: .navigationBarDrawer(displayMode: .always)
+        )
 	}
 
 	@ViewBuilder
-	fileprivate var invitationsSection: some View {
+	fileprivate var invitations: some View {
 		if !store.state.viewModel.invitations.isEmpty {
 			HomeInvitationsView(
 				invitations: store.state.viewModel.invitations,
@@ -79,43 +85,66 @@ extension HomeScreen {
 	}
 
 	@ViewBuilder
-    fileprivate var listsSection: some View {
+    fileprivate var lists: some View {
         Section(header: Text(Constants.Text.todos).listRowHeaderStyle()) {
-            HStack {
-                TDActionButton(title: Constants.Text.newRowButtonTitle, icon: Image.plusCircleFill) {
-                    store.send(.didTapAddRowButton)
-                }
-                TDActionButton(title: Constants.Text.sortButtonTitle, icon: Image.arrowUpArrowDownCircleFill) {
-                    store.send(.didTapAutoSortLists)
-                }
-            }
-            .disabled(store.state.viewState == .addingList || store.state.viewState == .editingList)
-            .padding(.bottom, 12)
-            ForEach(
-                Array(filteredLists.enumerated()),
-                id: \.element.id
-            ) { index, row in
-                if row.isEditing {
-                    TDNewRowView(
-                        row: row.tdRow,
-                        onSubmit: { store.send(.didTapSubmitListButton($0)) },
-                        onUpdate: { store.send(.didTapUpdateListButton(index, $0)) },
-                        onCancelAdd: { store.send(.didTapCancelAddListButton) },
-                        onCancelEdit: { store.send(.didTapCancelEditListButton(index)) }
-                    )
-                    .id(index)
-                }
-                else {
-                    TDRowView(
-                        row: row.tdRow,
-                        onTap: { store.send(.didTapList(index)) },
-                        onSwipe: { swipeActions(index, $0) }
-                    )
-                    .id(index)
-                }
-            }.onMove(perform: moveList)
+            listsHeader
+            listsContent
         }
 	}
+    
+    @ViewBuilder
+    fileprivate var listsHeader: some View {
+        HStack {
+            TDActionButton(
+                title: Constants.Text.newRowButtonTitle,
+                icon: Image.plusCircleFill
+            ) {
+                store.send(.didTapAddRowButton)
+            }
+            TDActionButton(
+                title: Constants.Text.sortButtonTitle,
+                icon: Image.arrowUpArrowDownCircleFill
+            ) {
+                store.send(.didTapAutoSortLists)
+            }
+        }
+        .disabled(
+            store.state.viewState == .addingList ||
+            store.state.viewState == .editingList ||
+            isSearchFocused
+        )
+        .padding(.bottom, 12)
+    }
+
+    @ViewBuilder
+    fileprivate var listsContent: some View {
+        ForEach(
+            Array(filteredLists.enumerated()),
+            id: \.element.id
+        ) { index, row in
+            if row.isEditing {
+                TDNewRowView(
+                    row: row.tdRow,
+                    onSubmit: { store.send(.didTapSubmitListButton($0)) },
+                    onUpdate: { store.send(.didTapUpdateListButton(row.id, $0)) },
+                    onCancelAdd: { store.send(.didTapCancelAddListButton) },
+                    onCancelEdit: { store.send(.didTapCancelEditListButton(row.id)) }
+                )
+                .id(index)
+            }
+            else {
+                TDRowView(
+                    row: row.tdRow,
+                    onTap: { store.send(.didTapList(row.id)) },
+                    onSwipe: { swipeActions(row.id, $0) }
+                )
+                .id(index)
+            }
+        }
+        .if(!isSearchFocused) {
+            $0.onMove(perform: moveList)
+        }
+    }
 
 	@ViewBuilder
 	fileprivate var loadingView: some View {
@@ -128,22 +157,23 @@ extension HomeScreen {
 // MARK: - Private
 
 extension HomeScreen {
-	fileprivate var swipeActions: (Int, TDSwipeAction) -> Void {
-		{ index, option in
+    fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
+		{ rowId, option in
 			switch option {
 			case .done, .undone:
-				store.send(.didTapToggleListButton(index))
+				store.send(.didTapToggleListButton(rowId))
 			case .delete:
-				store.send(.didTapDeleteListButton(index))
+				store.send(.didTapDeleteListButton(rowId))
 			case .share:
-				store.send(.didTapShareListButton(index))
+				store.send(.didTapShareListButton(rowId))
 			case .edit:
-				store.send(.didTapEditListButton(index))
+				store.send(.didTapEditListButton(rowId))
 			}
 		}
 	}
 
 	fileprivate func moveList(fromOffset: IndexSet, toOffset: Int) {
+        guard !isSearchFocused else { return }
 		store.send(.didSortLists(fromOffset, toOffset))
 	}
 

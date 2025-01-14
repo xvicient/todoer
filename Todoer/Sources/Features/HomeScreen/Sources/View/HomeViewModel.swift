@@ -39,3 +39,9 @@ extension Home.Reducer {
 		case destructive
 	}
 }
+
+extension Array where Element == Home.Reducer.ListRow {
+    func index(for id: UUID) -> Int? {
+        self.firstIndex(where: { $0.id == id })
+    }
+}

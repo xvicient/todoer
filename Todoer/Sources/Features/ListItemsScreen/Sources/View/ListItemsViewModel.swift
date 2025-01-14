@@ -34,3 +34,9 @@ extension ListItems.Reducer {
 		}
 	}
 }
+
+extension Array where Element == ListItems.Reducer.ItemRow {
+    func index(for id: UUID) -> Int? {
+        self.firstIndex(where: { $0.id == id })
+    }
+}

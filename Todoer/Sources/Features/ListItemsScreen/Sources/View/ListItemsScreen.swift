@@ -2,6 +2,7 @@ import SwiftUI
 import Entities
 import Application
 import ThemeComponents
+import Common
 import ListItemsScreenContract
 
 // MARK: - ListItemsScreen
@@ -10,6 +11,7 @@ struct ListItemsScreen: View {
 	@ObservedObject private var store: Store<ListItems.Reducer>
 	private var listName: String
     @State private var searchText = ""
+    @State private var isSearchFocused = false
     
     private var filteredItems: [ListItems.Reducer.ItemRow] {
         searchText.isEmpty ? store.state.viewModel.items : store.state.viewModel.items.filter {
@@ -55,48 +57,75 @@ extension ListItemsScreen {
 	fileprivate var itemsList: some View {
         List {
             Section(header: Text(listName).listRowHeaderStyle()) {
-                HStack {
-                    TDActionButton(title: Constants.Text.newRowButtonTitle, icon: Image.plusCircleFill) {
-                        store.send(.didTapAddRowButton)
-                    }
-                    TDActionButton(title: Constants.Text.sortButtonTitle, icon: Image.arrowUpArrowDownCircleFill) {
-                        store.send(.didTapAutoSortItems)
-                    }
-                }
-                .disabled(store.state.viewState == .addingItem || store.state.viewState == .editingItem)
-                .padding(.bottom, 12)
-                ForEach(
-                    Array(filteredItems.enumerated()),
-                    id: \.element.id
-                ) { index, row in
-                    if row.isEditing {
-                        TDNewRowView(
-                            row: row.tdRow,
-                            onSubmit: { store.send(.didTapSubmitItemButton($0)) },
-                            onUpdate: {
-                                store.send(.didTapUpdateItemButton(index, $0))
-                            },
-                            onCancelAdd: { store.send(.didTapCancelAddItemButton) },
-                            onCancelEdit: {
-                                store.send(.didTapCancelEditItemButton(index))
-                            }
-                        )
-                        .id(index)
-                    }
-                    else {
-                        TDRowView(
-                            row: row.tdRow,
-                            onSwipe: { swipeActions(index, $0) }
-                        )
-                        .id(index)
-                    }
-                }.onMove(perform: moveItem)
+                itemListsHeader
+                itemListsContent
             }
         }
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
         .scrollContentBackground(.hidden)
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(
+            text: $searchText,
+            isPresented: $isSearchFocused,
+            placement: .navigationBarDrawer(displayMode: .always)
+        )
+    }
+    
+    @ViewBuilder
+    fileprivate var itemListsHeader: some View {
+        HStack {
+            TDActionButton(
+                title: Constants.Text.newRowButtonTitle,
+                icon: Image.plusCircleFill
+            ) {
+                store.send(.didTapAddRowButton)
+            }
+            TDActionButton(
+                title: Constants.Text.sortButtonTitle,
+                icon: Image.arrowUpArrowDownCircleFill
+            ) {
+                store.send(.didTapAutoSortItems)
+            }
+        }
+        .disabled(
+            store.state.viewState == .addingItem ||
+            store.state.viewState == .editingItem ||
+            isSearchFocused
+        )
+        .padding(.bottom, 12)
+    }
+    
+    @ViewBuilder
+    fileprivate var itemListsContent: some View {
+        ForEach(
+            Array(filteredItems.enumerated()),
+            id: \.element.id
+        ) { index, row in
+            if row.isEditing {
+                TDNewRowView(
+                    row: row.tdRow,
+                    onSubmit: { store.send(.didTapSubmitItemButton($0)) },
+                    onUpdate: {
+                        store.send(.didTapUpdateItemButton(row.id, $0))
+                    },
+                    onCancelAdd: { store.send(.didTapCancelAddItemButton) },
+                    onCancelEdit: {
+                        store.send(.didTapCancelEditItemButton(row.id))
+                    }
+                )
+                .id(index)
+            }
+            else {
+                TDRowView(
+                    row: row.tdRow,
+                    onSwipe: { swipeActions(row.id, $0) }
+                )
+                .id(index)
+            }
+        }
+        .if(!isSearchFocused) {
+            $0.onMove(perform: moveItem)
+        }
     }
 
 	@ViewBuilder
@@ -117,22 +146,23 @@ extension ListItemsScreen {
 // MARK: - Private
 
 extension ListItemsScreen {
-	fileprivate var swipeActions: (Int, TDSwipeAction) -> Void {
-		{ index, option in
+	fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
+		{ rowId, option in
 			switch option {
 			case .done, .undone:
-				store.send(.didTapToggleItemButton(index))
+				store.send(.didTapToggleItemButton(rowId))
 			case .delete:
-				store.send(.didTapDeleteItemButton(index))
+				store.send(.didTapDeleteItemButton(rowId))
 			case .share:
 				break
 			case .edit:
-				store.send(.didTapEditItemButton(index))
+				store.send(.didTapEditItemButton(rowId))
 			}
 		}
 	}
 
 	fileprivate func moveItem(fromOffset: IndexSet, toOffset: Int) {
+        guard !isSearchFocused else { return }
 		store.send(.didSortItems(fromOffset, toOffset))
 	}
 

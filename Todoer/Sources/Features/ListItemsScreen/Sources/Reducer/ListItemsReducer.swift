@@ -32,14 +32,14 @@ extension ListItems {
 
 			// MARK: - User actions
 			/// ListItemsReducer+UserActions
-			case didTapToggleItemButton(Int)
-			case didTapDeleteItemButton(Int)
+			case didTapToggleItemButton(UUID)
+			case didTapDeleteItemButton(UUID)
 			case didTapAddRowButton
 			case didTapCancelAddItemButton
 			case didTapSubmitItemButton(String)
-			case didTapEditItemButton(Int)
-			case didTapUpdateItemButton(Int, String)
-			case didTapCancelEditItemButton(Int)
+			case didTapEditItemButton(UUID)
+			case didTapUpdateItemButton(UUID, String)
+			case didTapCancelEditItemButton(UUID)
 			case didSortItems(IndexSet, Int)
 			case didTapDismissError
 			case didTapAutoSortItems
@@ -90,16 +90,16 @@ extension ListItems {
 					state: &state
 				)
 
-			case (.idle, .didTapToggleItemButton(let index)):
+			case (.idle, .didTapToggleItemButton(let rowId)):
 				return onDidTapToggleItemButton(
 					state: &state,
-					index: index
+					uid: rowId
 				)
 
-			case (.idle, .didTapDeleteItemButton(let index)):
+			case (.idle, .didTapDeleteItemButton(let rowId)):
 				return onDidTapDeleteItemButton(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
 			case (.idle, .didTapAddRowButton):
@@ -141,22 +141,22 @@ extension ListItems {
 					result: result
 				)
 
-			case (.idle, .didTapEditItemButton(let index)):
+			case (.idle, .didTapEditItemButton(let rowId)):
 				return onDidTapEditItemButton(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
-			case (.editingItem, .didTapCancelEditItemButton(let index)):
+			case (.editingItem, .didTapCancelEditItemButton(let rowId)):
 				return onDidTapCancelEditItemButton(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
-			case (.editingItem, .didTapUpdateItemButton(let index, let name)):
+			case (.editingItem, .didTapUpdateItemButton(let rowId, let name)):
 				return onDidTapUpdateItemButton(
 					state: &state,
-					index: index,
+                    uid: rowId,
 					name: name
 				)
 

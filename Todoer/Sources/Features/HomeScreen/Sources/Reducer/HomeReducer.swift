@@ -37,13 +37,13 @@ extension Home {
 			/// HomeReducer+UserActions
 			case didTapAcceptInvitation(String, String)
 			case didTapDeclineInvitation(String)
-			case didTapList(Int)
-			case didTapToggleListButton(Int)
-			case didTapDeleteListButton(Int)
-			case didTapShareListButton(Int)
-			case didTapEditListButton(Int)
-			case didTapUpdateListButton(Int, String)
-			case didTapCancelEditListButton(Int)
+			case didTapList(UUID)
+			case didTapToggleListButton(UUID)
+			case didTapDeleteListButton(UUID)
+			case didTapShareListButton(UUID)
+			case didTapEditListButton(UUID)
+			case didTapUpdateListButton(UUID, String)
+			case didTapCancelEditListButton(UUID)
 			case didTapAddRowButton
 			case didTapCancelAddListButton
 			case didTapSubmitListButton(String)
@@ -124,46 +124,46 @@ extension Home {
 					invitationId: invitationId
 				)
 
-			case (.idle, .didTapList(let index)):
+			case (.idle, .didTapList(let rowId)):
 				return onDidTapList(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
-			case (.idle, .didTapToggleListButton(let index)):
+			case (.idle, .didTapToggleListButton(let rowId)):
 				return onDidTapToggleListButton(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
-			case (.idle, .didTapDeleteListButton(let index)):
+			case (.idle, .didTapDeleteListButton(let rowId)):
 				return onDidTapDeleteListButton(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
-			case (.idle, .didTapShareListButton(let index)):
+			case (.idle, .didTapShareListButton(let rowId)):
 				return onDidTapShareListButton(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
-			case (.idle, .didTapEditListButton(let index)):
+			case (.idle, .didTapEditListButton(let rowId)):
 				return onDidTapEditListButton(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
-			case (.editingList, .didTapCancelEditListButton(let index)):
+			case (.editingList, .didTapCancelEditListButton(let rowId)):
 				return onDidTapCancelEditListButton(
 					state: &state,
-					index: index
+                    uid: rowId
 				)
 
-			case (.editingList, .didTapUpdateListButton(let index, let name)):
+			case (.editingList, .didTapUpdateListButton(let uid, let name)):
 				return onDidTapUpdateListButton(
 					state: &state,
-					index: index,
+                    uid: uid,
 					name: name
 				)
 
