@@ -7,13 +7,17 @@ import ShareListScreenContract
 public struct ShareList {
     public struct Builder {@MainActor
         public static func makeShareList(
-			dependencies: ShareListScreenDependencies
-		) -> some View {
-			let reducer = Reducer(
-				dependencies: dependencies
-			)
-			let store = Store(initialState: .init(), reducer: reducer)
-			return ShareListScreen(store: store)
-		}
-	}
+            dependencies: ShareListScreenDependencies
+        ) -> some View {
+            ShareListScreen(
+                store: Store(
+                    initialState: .init(),
+                    reducer: Reducer(
+                        dependencies: dependencies,
+                        useCase: UseCase()
+                    )
+                )
+            )
+        }
+    }
 }

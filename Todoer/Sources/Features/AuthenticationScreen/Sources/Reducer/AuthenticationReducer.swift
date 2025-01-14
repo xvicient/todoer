@@ -32,12 +32,14 @@ extension Authentication {
 		}
 
 		internal let dependencies: AuthenticationScreenDependencies
-        internal let useCase: AuthenticationUseCaseApi = UseCase()
+        internal let useCase: AuthenticationUseCaseApi
 
 		init(
-			dependencies: AuthenticationScreenDependencies
+			dependencies: AuthenticationScreenDependencies,
+            useCase: AuthenticationUseCaseApi
 		) {
 			self.dependencies = dependencies
+            self.useCase = useCase
 		}
 
 		@MainActor

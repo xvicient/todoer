@@ -13,7 +13,8 @@ public struct Authentication {
 				store: Store(
 					initialState: .init(),
 					reducer: Authentication.Reducer(
-						dependencies: dependencies
+                        dependencies: dependencies,
+                        useCase: UseCase()
 					)
 				)
 			)

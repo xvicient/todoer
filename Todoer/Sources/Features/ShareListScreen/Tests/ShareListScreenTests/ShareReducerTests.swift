@@ -4,6 +4,8 @@ import ApplicationTests
 import Data
 import Entities
 import Mocks
+import ShareListScreenContract
+import CoordinatorContract
 
 @testable import ShareListScreen
 
@@ -12,8 +14,8 @@ final class ShareReducerTests: XCTestCase {
 	private typealias ShareStore<R: Reducer> = TestStore<R.State, R.Action>
 	private typealias UseCaseError = ShareListUseCaseMock.UseCaseError
 
-	struct Dependencies: ShareListDependencies {
-		var useCase: ShareListUseCaseApi
+    struct Dependencies: ShareListScreenDependencies {
+        var coordinator: CoordinatorApi
 		var list: UserList
 	}
 
@@ -21,16 +23,16 @@ final class ShareReducerTests: XCTestCase {
         TestStore(
             initialState: .init(),
             reducer: ShareList.Reducer(
-                coordinator: coordinator,
                 dependencies: Dependencies(
-                    useCase: useCaseMock,
+                    coordinator: coordinatorMock,
                     list: ListMock.list
-                )
+                ),
+                useCase: useCaseMock
             )
         )
     }()
 	private var useCaseMock = ShareListUseCaseMock()
-	private var coordinator = CoordinatorMock()
+	private var coordinatorMock = CoordinatorMock()
 
 	func testDidViewAppearAndFetchUsers_Success() async {
 		givenASuccessUsersFetch()
@@ -39,7 +41,7 @@ final class ShareReducerTests: XCTestCase {
 			$0.viewState == .idle
 		}
 
-		await store.receive(.fetchUsersResult(useCaseMock.fetchUsersResult)) {
+		await store.receive(.fetchDataResult(useCaseMock.fetchDataResult)) {
 			$0.viewState == .idle
 		}
 	}
@@ -51,7 +53,7 @@ final class ShareReducerTests: XCTestCase {
 			$0.viewState == .idle
 		}
 
-		await store.receive(.fetchUsersResult(useCaseMock.fetchUsersResult)) {
+		await store.receive(.fetchDataResult(useCaseMock.fetchDataResult)) {
 			$0.viewState == .idle
 		}
 	}
@@ -59,7 +61,7 @@ final class ShareReducerTests: XCTestCase {
 	func testDidTapShareList_Success() async {
 		givenASuccessShareList()
 
-		await store.send(.didTapShareListButton("test@todoer.com")) {
+		await store.send(.didTapShareListButton("test@todoer.com", "Hunter King")) {
 			$0.viewState == .idle
 		}
 
@@ -67,13 +69,13 @@ final class ShareReducerTests: XCTestCase {
 			$0.viewState == .idle
 		}
 
-		XCTAssert(coordinator.isDismissSheetCalled)
+		XCTAssert(coordinatorMock.isDismissSheetCalled)
 	}
 
 	func testDidTapShareList_Failure() async {
 		givenAFailureShareList()
 
-		await store.send(.didTapShareListButton("test@todoer.com")) {
+		await store.send(.didTapShareListButton("test@todoer.com", "Hunter King")) {
 			$0.viewState == .idle
 		}
 
@@ -89,11 +91,16 @@ final class ShareReducerTests: XCTestCase {
 
 extension ShareReducerTests {
 	fileprivate func givenASuccessUsersFetch() {
-		useCaseMock.fetchUsersResult = .success(UserMock.users(1))
+        useCaseMock.fetchDataResult = .success(
+            ShareData(
+                users: UserMock.users(1),
+                selfName: "Hunter King"
+            )
+        )
 	}
 
 	fileprivate func givenAFailureUsersFetch() {
-		useCaseMock.fetchUsersResult = .failure(UseCaseError.error)
+		useCaseMock.fetchDataResult = .failure(UseCaseError.error)
 	}
 
 	fileprivate func givenASuccessShareList() {
