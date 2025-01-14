@@ -1,9 +1,5 @@
 import SwiftUI
 import Data
-import AuthenticationScreen
-import AboutScreen
-import ShareListScreen
-import ListItemsScreen
 import CoordinatorContract
 import FeatureProviderContract
 
