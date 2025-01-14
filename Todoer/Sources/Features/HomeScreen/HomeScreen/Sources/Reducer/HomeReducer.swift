@@ -90,10 +90,10 @@ extension Home {
 			case alert(AlertStyle)
 		}
 
-		internal let dependencies: HomeDependencies
+		internal let dependencies: HomeScreenDependencies
         internal let useCase = UseCase()
 
-		init(dependencies: HomeDependencies) {
+		init(dependencies: HomeScreenDependencies) {
 			self.dependencies = dependencies
 		}
 
