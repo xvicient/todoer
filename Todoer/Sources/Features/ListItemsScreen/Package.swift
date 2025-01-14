@@ -35,7 +35,7 @@ let package = Package(
             dependencies: [
                 "Entities"
             ],
-            path: "ListItemsScreenContract/Sources"
+            path: "Contract"
         ),
         .target(
             name: "ListItemsScreen",
@@ -47,7 +47,7 @@ let package = Package(
                 "Data",
                 "Entities"
             ],
-            path: "ListItemsScreen/Sources"
+            path: "Sources"
         ),
         .testTarget(
             name: "ListItemsScreenTests",

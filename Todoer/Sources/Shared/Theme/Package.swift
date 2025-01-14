@@ -40,7 +40,7 @@ let package = Package(
                 "ThemeAssets",
                 .product(name: "Common", package: "Common")
             ],
-            path: "ThemeComponents/Sources"
+            path: "ThemeComponents"
         )
     ]
 )

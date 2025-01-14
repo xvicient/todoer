@@ -36,7 +36,7 @@ let package = Package(
                 "Data",
                 "Entities"
             ],
-            path: "CoordinatorContract/Sources"
+            path: "Contract"
         ),
         .target(
             name: "Coordinator",
@@ -48,7 +48,7 @@ let package = Package(
                 "ShareListScreen",
                 "ListItemsScreen"
             ],
-            path: "Coordinator/Sources"
+            path: "Sources"
         ),
     ]
 )

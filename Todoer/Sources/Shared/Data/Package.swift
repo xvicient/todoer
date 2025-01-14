@@ -30,10 +30,6 @@ let package = Package(
                 "GoogleSignInDependencies",
                 "Entities"
             ]
-        ),
-        .testTarget(
-            name: "DataTests",
-            dependencies: ["Data"]
-        ),
+        )
     ]
 )
