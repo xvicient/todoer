@@ -9,6 +9,8 @@ import ListItemsScreen
 import AboutScreen
 import ShareListScreen
 import ShareListScreenContract
+import AuthenticationScreenContract
+import AuthenticationScreen
 
 struct FeatureProvider: FeatureProviderAPI {
     
@@ -60,6 +62,21 @@ struct FeatureProvider: FeatureProviderAPI {
             dependencies: Dependencies(
                 coordinator: coordinator,
                 list: list
+            )
+        )
+    }
+    
+    @MainActor
+    func makeAuthenticationScreen(
+        coordinator: CoordinatorApi
+    ) -> any View {
+        struct Dependencies: AuthenticationScreenDependencies {
+            let coordinator: CoordinatorApi
+        }
+        
+        return Authentication.Builder.makeAuthentication(
+            dependencies: Dependencies(
+                coordinator: coordinator
             )
         )
     }

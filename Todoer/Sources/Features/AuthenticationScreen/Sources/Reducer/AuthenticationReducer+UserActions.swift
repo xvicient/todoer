@@ -12,7 +12,7 @@ extension Authentication.Reducer {
 		return .task { send in
 			await send(
 				.signInResult(
-					dependencies.useCase.singIn(
+					useCase.singIn(
 						provider: .google
 					)
 				)
@@ -30,7 +30,7 @@ extension Authentication.Reducer {
 			return .task { send in
 				await send(
 					.signInResult(
-						dependencies.useCase.singIn(
+						useCase.singIn(
 							provider: .apple(authorization)
 						)
 					)

@@ -97,9 +97,7 @@ extension Coordinator {
 	fileprivate func _build(page: Page) -> some View {
 		switch page {
 		case .authentication:
-			Authentication.Builder.makeAuthentication(
-				coordinator: self
-			)
+            AnyView(featureProvider.makeAuthenticationScreen(coordinator: self))
 		case .home:
             AnyView(featureProvider.makeHomeScreen(coordinator: self))
 		case let .listItems(list):

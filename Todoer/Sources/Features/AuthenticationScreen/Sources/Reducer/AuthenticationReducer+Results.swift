@@ -13,7 +13,7 @@ extension Authentication.Reducer {
 		switch result {
 		case .success:
 			state.viewState = .idle
-			coordinator.loggIn()
+            dependencies.coordinator.loggIn()
 		case .failure(let error):
 			if error.code == -5 {
 				state.viewState = .idle

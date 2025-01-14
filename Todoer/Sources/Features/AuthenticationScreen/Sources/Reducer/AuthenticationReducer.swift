@@ -2,10 +2,7 @@ import AuthenticationServices
 import Common
 import Application
 import CoordinatorContract
-
-protocol AuthenticationDependencies {
-	var useCase: AuthenticationUseCaseApi { get }
-}
+import AuthenticationScreenContract
 
 extension Authentication {
 	struct Reducer: Application.Reducer {
@@ -34,14 +31,12 @@ extension Authentication {
 			case error(String)
 		}
 
-		internal let coordinator: any CoordinatorApi
-		internal let dependencies: AuthenticationDependencies
+		internal let dependencies: AuthenticationScreenDependencies
+        internal let useCase: AuthenticationUseCaseApi = UseCase()
 
 		init(
-			coordinator: any CoordinatorApi,
-			dependencies: AuthenticationDependencies
+			dependencies: AuthenticationScreenDependencies
 		) {
-			self.coordinator = coordinator
 			self.dependencies = dependencies
 		}
 
