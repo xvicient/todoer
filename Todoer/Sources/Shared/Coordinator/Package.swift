@@ -14,8 +14,8 @@ let package = Package(
             name: "CoordinatorContract",
             targets: ["CoordinatorContract"]),
         .library(
-            name: "CoordinatorImpl",
-            targets: ["CoordinatorImpl"])
+            name: "Coordinator",
+            targets: ["Coordinator"])
     ],
     dependencies: [
         .package(path: "../Data"),
@@ -39,7 +39,7 @@ let package = Package(
             path: "CoordinatorContract/Sources"
         ),
         .target(
-            name: "CoordinatorImpl",
+            name: "Coordinator",
             dependencies: [
                 "CoordinatorContract",
                 "AuthenticationScreen",
@@ -48,7 +48,7 @@ let package = Package(
                 "ShareListScreen",
                 "ListItemsScreen"
             ],
-            path: "CoordinatorImpl/Sources"
+            path: "Coordinator/Sources"
         ),
     ]
 )
