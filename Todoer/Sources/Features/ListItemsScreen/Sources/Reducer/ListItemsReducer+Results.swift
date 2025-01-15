@@ -12,7 +12,8 @@ extension ListItems.Reducer {
 		switch result {
 		case .success(let items):
 			state.viewState = .idle
-			state.viewModel.items = items.map { $0.toItemRow }
+            state.viewModel.items = items.map { $0.toItemRow }
+            state.viewModel.listName = dependencies.list.name
 		case .failure(let error):
 			state.viewState = .error(error.localizedDescription)
 		}

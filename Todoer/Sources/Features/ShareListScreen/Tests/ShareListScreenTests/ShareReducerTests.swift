@@ -14,7 +14,7 @@ final class ShareReducerTests: XCTestCase {
 	private typealias ShareStore<R: Reducer> = TestStore<R.State, R.Action>
 	private typealias UseCaseError = ShareListUseCaseMock.UseCaseError
 
-    struct Dependencies: ShareListScreenDependencies {
+    private struct Dependencies: ShareListScreenDependencies {
         var coordinator: CoordinatorApi
 		var list: UserList
 	}

@@ -5,16 +5,26 @@ import ListItemsScreenContract
 
 public struct ListItems {
     public struct Builder {
+        private struct ReducerDependencies: ListItemsReducerDependencies {
+            let list: UserList
+            let useCase: ListItemsUseCaseApi
+        }
+        
 		@MainActor
         public static func makeItemsList(
-            dependencies: ListItemsDependencies
-		) -> some View {
-			let reducer = Reducer(dependencies: dependencies)
-			let store = Store(initialState: .init(), reducer: reducer)
-			return ListItemsScreen(
-				store: store,
-                listName: dependencies.list.name
-			)
-		}
-	}
+            dependencies: ListItemsScreenDependencies
+        ) -> some View {
+            ListItemsScreen(
+                store: Store(
+                    initialState: .init(),
+                    reducer: Reducer(
+                        dependencies: ReducerDependencies(
+                            list: dependencies.list,
+                            useCase: UseCase()
+                        )
+                    )
+                )
+            )
+        }
+    }
 }

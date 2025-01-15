@@ -7,7 +7,12 @@ public struct Item: Identifiable, Equatable, Hashable, Sendable {
     public var done: Bool
     public let index: Int
     
-    public init(documentId: String, name: String, done: Bool, index: Int) {
+    public init(
+        documentId: String,
+        name: String,
+        done: Bool,
+        index: Int
+    ) {
         self.documentId = documentId
         self.name = name
         self.done = done

@@ -1,5 +1,5 @@
 import Entities
 
-public protocol ListItemsDependencies {
+public protocol ListItemsScreenDependencies {
     var list: UserList { get }
 }

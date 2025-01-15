@@ -12,6 +12,7 @@ extension ListItems.Reducer {
 	@MainActor
 	struct ViewModel {
 		var items = [ItemRow]()
+        var listName: String = ""
 	}
 
 	struct ItemRow: Identifiable {
