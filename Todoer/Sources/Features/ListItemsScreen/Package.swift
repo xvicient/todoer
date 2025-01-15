@@ -36,7 +36,7 @@ let package = Package(
             name: "ListItemsScreen",
             dependencies: [
                 "ListItemsScreenContract",
-                "Application",
+                .product(name: "Application", package: "Application"),
                 .product(name: "Common", package: "Common"),
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",
@@ -46,7 +46,13 @@ let package = Package(
         ),
         .testTarget(
             name: "ListItemsScreenTests",
-            dependencies: ["ListItemsScreen"]
+            dependencies: [
+                "ListItemsScreen",
+                .product(name: "Application", package: "Application"),
+                .product(name: "ApplicationTests", package: "Application"),
+                "Entities",
+                .product(name: "Mocks", package: "Common")
+            ]
         ),
     ]
 )

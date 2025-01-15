@@ -9,7 +9,6 @@ import ListItemsScreenContract
 
 struct ListItemsScreen: View {
 	@ObservedObject private var store: Store<ListItems.Reducer>
-	private var listName: String
     @State private var searchText = ""
     @State private var isSearchFocused = false
     
@@ -20,11 +19,9 @@ struct ListItemsScreen: View {
     }
 
 	init(
-		store: Store<ListItems.Reducer>,
-		listName: String
+		store: Store<ListItems.Reducer>
 	) {
 		self.store = store
-		self.listName = listName
 	}
 
 	var body: some View {
@@ -56,7 +53,7 @@ extension ListItemsScreen {
 	@ViewBuilder
 	fileprivate var itemsList: some View {
         List {
-            Section(header: Text(listName).listRowHeaderStyle()) {
+            Section(header: Text(store.state.viewModel.listName).listRowHeaderStyle()) {
                 itemListsHeader
                 itemListsContent
             }
@@ -210,7 +207,7 @@ extension ListItemsScreen {
 }
 
 struct Home_Previews: PreviewProvider {
-    struct Dependencies: ListItemsDependencies {
+    struct Dependencies: ListItemsScreenDependencies {
         var list: UserList
     }
     

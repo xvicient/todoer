@@ -7,6 +7,11 @@ import ListItemsScreenContract
 
 // MARK: - ListItemsReducer
 
+protocol ListItemsReducerDependencies {
+    var list: UserList { get }
+    var useCase: ListItemsUseCaseApi { get }
+}
+
 extension ListItems {
 	struct Reducer: Application.Reducer {
 
@@ -69,10 +74,9 @@ extension ListItems {
 			case error(String)
 		}
 
-		internal let dependencies: ListItemsDependencies
-        internal let useCase: ListItemsUseCaseApi = UseCase()
+		internal let dependencies: ListItemsReducerDependencies
 
-		init(dependencies: ListItemsDependencies) {
+		init(dependencies: ListItemsReducerDependencies) {
 			self.dependencies = dependencies
 		}
 

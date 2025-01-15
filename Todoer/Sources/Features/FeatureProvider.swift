@@ -30,7 +30,7 @@ struct FeatureProvider: FeatureProviderAPI {
     func makeListItemsScreen(
         list: UserList
     ) -> any View {
-        struct Dependencies: ListItemsDependencies {
+        struct Dependencies: ListItemsScreenDependencies {
             let list: UserList
         }
         

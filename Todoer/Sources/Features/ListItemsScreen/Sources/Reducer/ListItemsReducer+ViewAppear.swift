@@ -10,7 +10,7 @@ extension ListItems.Reducer {
 	) -> Effect<Action> {
 		state.viewState = .loading
 		return .publish(
-			useCase.fetchItems(
+            dependencies.useCase.fetchItems(
 				listId: dependencies.list.documentId
 			)
 			.map { .fetchItemsResult(.success($0)) }
