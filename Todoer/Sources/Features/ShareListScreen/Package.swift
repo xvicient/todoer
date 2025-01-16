@@ -40,8 +40,7 @@ let package = Package(
             dependencies: [
                 "ShareListScreenContract",
                 .product(name: "Application", package: "Application"),
-                .product(name: "Common", package: "Common"),
-                .product(name: "Mocks", package: "Common"),
+                "Common",
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",
@@ -56,8 +55,7 @@ let package = Package(
                 "ShareListScreen",
                 .product(name: "ApplicationTests", package: "Application"),
                 "Entities",
-                "Data",
-                .product(name: "Mocks", package: "Common")
+                "Data"
             ]
         ),
     ]

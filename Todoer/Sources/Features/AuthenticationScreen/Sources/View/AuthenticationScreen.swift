@@ -1,4 +1,5 @@
 import AuthenticationServices
+import CoordinatorMocks
 import GoogleSignIn
 import GoogleSignInSwift
 import SwiftUI
@@ -6,7 +7,7 @@ import Common
 import Application
 import ThemeAssets
 import CoordinatorContract
-import Mocks
+import Entities
 import AuthenticationScreenContract
 
 // MARK: - AuthenticationScreen

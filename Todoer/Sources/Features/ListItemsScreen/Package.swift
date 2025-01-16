@@ -21,7 +21,8 @@ let package = Package(
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Data"),
-        .package(path: "../Entities")
+        .package(path: "../Entities"),
+        .package(path: "../Coordinator")
         
     ],
     targets: [
@@ -29,7 +30,7 @@ let package = Package(
             name: "ListItemsScreenContract",
             dependencies: [
                 "Entities",
-                .product(name: "Common", package: "Common")
+                "Common"
             ],
             path: "Contract"
         ),
@@ -38,10 +39,11 @@ let package = Package(
             dependencies: [
                 "ListItemsScreenContract",
                 .product(name: "Application", package: "Application"),
-                .product(name: "Common", package: "Common"),
+                "Common",
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",
-                "Entities"
+                "Entities",
+                .product(name: "CoordinatorMocks", package: "Coordinator")
             ],
             path: "Sources"
         ),
@@ -51,8 +53,7 @@ let package = Package(
                 "ListItemsScreen",
                 .product(name: "Application", package: "Application"),
                 .product(name: "ApplicationTests", package: "Application"),
-                "Entities",
-                .product(name: "Mocks", package: "Common")
+                "Entities"
             ]
         ),
     ]

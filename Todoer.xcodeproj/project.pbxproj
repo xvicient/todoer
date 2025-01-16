@@ -76,7 +76,6 @@
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
 		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		D6B61D9E2D398ABC0060058F /* HomeScreenTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = HomeScreenTestPlan.xctestplan; path = Todoer/Sources/Features/HomeScreen/Tests/HomeScreenTestPlan.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,7 +197,6 @@
 		D6A29BEA2B09706100FA7F84 = {
 			isa = PBXGroup;
 			children = (
-				D6B61D9E2D398ABC0060058F /* HomeScreenTestPlan.xctestplan */,
 				D6A29BF52B09706100FA7F84 /* Todoer */,
 				D6A29C102B09706200FA7F84 /* TodoerUITests */,
 				C7B3359A2D31D30500C36D7B /* Packages */,

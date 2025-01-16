@@ -1,8 +1,9 @@
 import SwiftUI
+import CoordinatorMocks
 import Application
 import CoordinatorContract
 import ThemeComponents
-import Mocks
+import Entities
 import Common
 import HomeScreenContract
 

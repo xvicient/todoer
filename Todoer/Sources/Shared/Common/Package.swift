@@ -10,28 +10,13 @@ let package = Package(
         .library(
             name: "Common",
             targets: ["Common"]
-        ),
-        .library(
-            name: "Mocks",
-            targets: ["Mocks"]
         )
     ],
-    dependencies: [
-        .package(path: "../Entities"),
-        .package(path: "../Coordinator")
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "Common",
             path: "Sources/Common"
-        ),
-        .target(
-            name: "Mocks",
-            dependencies: [
-                "Entities",
-                .product(name: "CoordinatorContract", package: "Coordinator")
-            ],
-            path: "Sources/Mocks"
         )
     ]
 )

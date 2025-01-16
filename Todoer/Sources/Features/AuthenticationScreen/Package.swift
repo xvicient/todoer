@@ -21,6 +21,7 @@ let package = Package(
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
+        .package(path: "../Entities"),
         .package(path: "../../../../Packages/External/GoogleSignInDependencies")
         
     ],
@@ -37,10 +38,11 @@ let package = Package(
             dependencies: [
                 "AuthenticationScreenContract",
                 .product(name: "Application", package: "Application"),
-                .product(name: "Common", package: "Common"),
-                .product(name: "Mocks", package: "Common"),
+                "Common",
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "CoordinatorContract", package: "Coordinator"),
+                .product(name: "CoordinatorMocks", package: "Coordinator"),
+                "Entities",
                 "GoogleSignInDependencies"
             ],
             path: "Sources"
@@ -50,7 +52,7 @@ let package = Package(
             dependencies: [
                 "AuthenticationScreen",
                 .product(name: "ApplicationTests", package: "Application"),
-                .product(name: "Mocks", package: "Common")
+                "Entities"
             ]
         ),
     ]

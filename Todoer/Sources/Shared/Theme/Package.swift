@@ -33,7 +33,7 @@ let package = Package(
             name: "ThemeComponents",
             dependencies: [
                 "ThemeAssets",
-                .product(name: "Common", package: "Common")
+                "Common"
             ],
             path: "ThemeComponents"
         )

@@ -3,7 +3,6 @@ import Application
 import ApplicationTests
 import Data
 import Entities
-import Mocks
 import ShareListScreenContract
 import CoordinatorContract
 
