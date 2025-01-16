@@ -12,6 +12,10 @@ struct HomeScreen: View {
 	@ObservedObject private var store: Store<Home.Reducer>
     @State private var searchText = ""
     @State private var isSearchFocused = false
+    private var isEditing: Bool {
+        store.state.viewState == .addingList ||
+        store.state.viewState == .editingList
+    }
     
     private var filteredLists: [Home.Reducer.ListRow] {
         searchText.isEmpty ? store.state.viewModel.lists : store.state.viewModel.lists.filter {
@@ -66,11 +70,15 @@ extension HomeScreen {
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
         .scrollContentBackground(.hidden)
-        .searchable(
-            text: $searchText,
-            isPresented: $isSearchFocused,
-            placement: .navigationBarDrawer(displayMode: .always)
-        )
+        .if(!isEditing) { content in
+            withAnimation {
+                content.searchable(
+                    text: $searchText,
+                    isPresented: $isSearchFocused,
+                    placement: .navigationBarDrawer(displayMode: .always)
+                )
+            }
+        }
 	}
 
 	@ViewBuilder
@@ -109,8 +117,7 @@ extension HomeScreen {
             }
         }
         .disabled(
-            store.state.viewState == .addingList ||
-            store.state.viewState == .editingList ||
+            isEditing ||
             isSearchFocused
         )
         .padding(.bottom, 12)
