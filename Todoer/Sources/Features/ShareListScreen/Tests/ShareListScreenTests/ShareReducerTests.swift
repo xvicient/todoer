@@ -3,8 +3,10 @@ import Application
 import ApplicationTests
 import Data
 import Entities
+import EntitiesMocks
 import ShareListScreenContract
 import CoordinatorContract
+import CoordinatorMocks
 
 @testable import ShareListScreen
 

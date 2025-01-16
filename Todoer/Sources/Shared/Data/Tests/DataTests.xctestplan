@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "43E1F31F-E14A-4B4E-B354-1832A484ED37",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DataTests",
+        "name" : "DataTests"
+      }
+    }
+  ],
+  "version" : 1
+}
