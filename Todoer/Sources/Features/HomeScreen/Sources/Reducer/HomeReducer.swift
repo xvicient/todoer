@@ -224,9 +224,11 @@ extension Home {
 				return onDidTapAutoSortLists(
 					state: &state
 				)
-
+            
+            // sortingList uses firestore batch that triggers the collection listener so the fetch is being triggered as well
 			case (.idle, .fetchDataResult(let result)),
-				(.loading, .fetchDataResult(let result)):
+                (.loading, .fetchDataResult(let result)),
+                (.sortingList, .fetchDataResult(let result)):
 				return onFetchDataResult(
 					state: &state,
 					result: result
@@ -269,7 +271,9 @@ extension Home {
 					result: result
 				)
 
-			case (.sortingList, .sortListsResult(let result)):
+            // As fetchDataResult can be triggered by sortListsResult first it will set the idle viewState
+			case (.idle, .sortListsResult(let result)),
+                (.sortingList, .sortListsResult(let result)):
 				return onSortListsResult(
 					state: &state,
 					result: result

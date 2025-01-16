@@ -122,8 +122,10 @@ extension ListItems {
 					newItemName: newItemName
 				)
 
+            // sortingItems uses firestore batch that triggers the collection listener so the fetch is being triggered as well
 			case (.loading, .fetchItemsResult(let result)),
-				(.idle, .fetchItemsResult(let result)):
+                (.idle, .fetchItemsResult(let result)),
+                (.sortingItems, .fetchItemsResult(let result)):
 				return onFetchItemsResult(
 					state: &state,
 					result: result
@@ -176,7 +178,9 @@ extension ListItems {
 					state: &state
 				)
 
-			case (.sortingItems, .sortItemsResult(let result)):
+            // As fetchItemsResult can be triggered by sortItemsResult first it will set the idle viewState
+			case (.idle, .sortItemsResult(let result)),
+                (.sortingItems, .sortItemsResult(let result)):
 				return onSortItemsResult(
 					state: &state,
 					result: result
