@@ -29,7 +29,8 @@ let package = Package(
         .target(
             name: "HomeScreenContract",
             dependencies: [
-                .product(name: "CoordinatorContract", package: "Coordinator")
+                .product(name: "CoordinatorContract", package: "Coordinator"),
+                .product(name: "Common", package: "Common")
             ],
             path: "Contract"
         ),

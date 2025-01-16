@@ -34,9 +34,13 @@ public protocol ItemsRepositoryApi {
 }
 
 public final class ItemsRepository: ItemsRepositoryApi {
-	private let itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
+	private let itemsDataSource: ItemsDataSourceApi
 
-    public init() {}
+    public init(
+        itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
+    ) {
+        self.itemsDataSource = itemsDataSource
+    }
 
     public func fetchItems(
 		listId: String
@@ -114,7 +118,7 @@ extension ItemDTO {
 }
 
 extension Item {
-	fileprivate var toDTO: ItemDTO {
+	var toDTO: ItemDTO {
 		ItemDTO(
 			id: documentId,
 			name: name,
