@@ -200,8 +200,9 @@ extension ListItems {
 extension Item {
 	var toItemRow: ListItems.Reducer.ItemRow {
 		ListItems.Reducer.ItemRow(
+            id: id,
 			item: self,
-			leadingActions: [self.done ? .undone : .done],
+			leadingActions: [done ? .undone : .done],
 			trailingActions: [.delete, .edit]
 		)
 	}

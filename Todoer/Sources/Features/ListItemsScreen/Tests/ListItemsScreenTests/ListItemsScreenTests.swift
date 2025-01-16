@@ -23,7 +23,7 @@ struct ListItemsScreenTests {
             initialState: .init(),
             reducer: ListItems.Reducer(
                 dependencies: ReducerDependencies(
-                    list: ListMock.list,
+                    list: listMock,
                     useCase: useCaseMock
                 )
             )
@@ -32,6 +32,7 @@ struct ListItemsScreenTests {
     private var useCaseMock = ListItemsUseCaseMock()
     private var coordinatorMock = CoordinatorMock()
     private var itemMock = ItemMock.item
+    private var listMock = ListMock.list
     
     @Test("Fetch users success after view appears")
     mutating func testDidViewAppearAndFetchUsers_Success() async {
@@ -41,8 +42,10 @@ struct ListItemsScreenTests {
             $0.viewState == .loading
         }
         
-        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) { [listMock, itemMock] in
+            $0.viewState == .idle &&
+            $0.viewModel.listName == listMock.name &&
+            $0.viewModel.items == [itemMock].map { $0.toItemRow }
         }
     }
     
@@ -55,7 +58,9 @@ struct ListItemsScreenTests {
         }
         
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription)
+            $0.viewState == .error(UseCaseError.error.localizedDescription) &&
+            $0.viewModel.listName.isEmpty &&
+            $0.viewModel.items.count == 0
         }
     }
     
@@ -64,7 +69,8 @@ struct ListItemsScreenTests {
         givenASuccessItemSubmit()
         
         await store.send(.didTapAddRowButton) {
-            $0.viewState == .addingItem
+            $0.viewState == .addingItem &&
+            $0.viewModel.items.first?.isEditing == true
         }
         
         await store.send(.didTapSubmitItemButton(itemMock.name)) {
@@ -72,7 +78,8 @@ struct ListItemsScreenTests {
         }
         
         await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .idle
+            $0.viewState == .idle &&
+            !$0.viewModel.items.contains { $0.isEditing }
         }
     }
     
@@ -81,7 +88,8 @@ struct ListItemsScreenTests {
         givenAFailureItemSubmit()
         
         await store.send(.didTapAddRowButton) {
-            $0.viewState == .addingItem
+            $0.viewState == .addingItem &&
+            $0.viewModel.items.first?.isEditing == true
         }
         
         await store.send(.didTapSubmitItemButton(itemMock.name)) {
@@ -89,7 +97,21 @@ struct ListItemsScreenTests {
         }
         
         await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription)
+            $0.viewState == .error(UseCaseError.error.localizedDescription) &&
+            $0.viewModel.items.first?.isEditing == true
+        }
+    }
+    
+    @Test("Add new item and cancel it successfully")
+    mutating func testDidTapAddRowButtonAndDidTapCancelAddRowButton_Success() async {
+        await store.send(.didTapAddRowButton) {
+            $0.viewState == .addingItem &&
+            $0.viewModel.items.first?.isEditing == true
+        }
+        
+        await store.send(.didTapCancelAddItemButton) {
+            $0.viewState == .idle &&
+            !$0.viewModel.items.contains { $0.isEditing }
         }
     }
     
@@ -98,7 +120,7 @@ struct ListItemsScreenTests {
 extension ListItemsScreenTests {
     fileprivate func givenASuccessItemsFetch() {
         useCaseMock.fetchItemsResult = .success(
-            ItemMock.items(1)
+            [itemMock]
         )
     }
     
