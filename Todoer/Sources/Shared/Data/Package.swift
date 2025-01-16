@@ -33,7 +33,7 @@ let package = Package(
             dependencies: [
                 "FirebaseDependencies",
                 "GoogleSignInDependencies",
-                "Entities",
+                .product(name: "Entities", package: "Entities"),
                 "Common"
             ],
             path: "Sources"
@@ -49,7 +49,11 @@ let package = Package(
         .testTarget(
             name: "DataTests",
             dependencies: [
-                "Entities"
+                "DataMocks",
+                "FirebaseDependencies",
+                "GoogleSignInDependencies",
+                .product(name: "Entities", package: "Entities"),
+                .product(name: "EntitiesMocks", package: "Entities")
             ],
             path: "Tests"
         )

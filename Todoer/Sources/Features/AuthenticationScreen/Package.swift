@@ -52,6 +52,7 @@ let package = Package(
             dependencies: [
                 "AuthenticationScreen",
                 .product(name: "ApplicationTests", package: "Application"),
+                .product(name: "CoordinatorMocks", package: "Coordinator"),
                 "Entities"
             ]
         ),

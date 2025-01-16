@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "12135763-0F42-43A9-ACBA-11D3D83A4F02",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ListItemsScreenTests",
+        "name" : "ListItemsScreenTests"
+      }
+    }
+  ],
+  "version" : 1
+}

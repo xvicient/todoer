@@ -54,6 +54,8 @@ let package = Package(
             dependencies: [
                 "ShareListScreen",
                 .product(name: "ApplicationTests", package: "Application"),
+                .product(name: "CoordinatorMocks", package: "Coordinator"),
+                .product(name: "EntitiesMocks", package: "Entities"),
                 "Entities",
                 "Data"
             ]

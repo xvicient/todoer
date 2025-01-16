@@ -53,6 +53,8 @@ let package = Package(
                 "ListItemsScreen",
                 .product(name: "Application", package: "Application"),
                 .product(name: "ApplicationTests", package: "Application"),
+                .product(name: "CoordinatorMocks", package: "Coordinator"),
+                .product(name: "EntitiesMocks", package: "Entities"),
                 "Entities"
             ]
         ),

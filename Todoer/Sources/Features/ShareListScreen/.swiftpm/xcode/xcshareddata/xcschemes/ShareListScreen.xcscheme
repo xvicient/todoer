@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DataTests"
-               BuildableName = "DataTests"
-               BlueprintName = "DataTests"
+               BlueprintIdentifier = "ShareListScreen"
+               BuildableName = "ShareListScreen"
+               BlueprintName = "ShareListScreen"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,7 +30,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:Tests/TestPlan.xctestplan"
+            reference = "container:Tests/ShareListScreen.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -39,9 +39,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DataTests"
-               BuildableName = "DataTests"
-               BlueprintName = "DataTests"
+               BlueprintIdentifier = "ShareListScreenTests"
+               BuildableName = "ShareListScreenTests"
+               BlueprintName = "ShareListScreenTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
@@ -67,9 +67,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DataTests"
-            BuildableName = "DataTests"
-            BlueprintName = "DataTests"
+            BlueprintIdentifier = "ShareListScreen"
+            BuildableName = "ShareListScreen"
+            BlueprintName = "ShareListScreen"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

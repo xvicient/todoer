@@ -4,6 +4,7 @@ import ApplicationTests
 import Entities
 import AuthenticationScreenContract
 import CoordinatorContract
+import CoordinatorMocks
 
 @testable import AuthenticationScreen
 
