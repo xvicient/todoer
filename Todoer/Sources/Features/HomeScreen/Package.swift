@@ -30,7 +30,7 @@ let package = Package(
             name: "HomeScreenContract",
             dependencies: [
                 .product(name: "CoordinatorContract", package: "Coordinator"),
-                .product(name: "Common", package: "Common")
+                "Common"
             ],
             path: "Contract"
         ),
@@ -39,12 +39,12 @@ let package = Package(
             dependencies: [
                 "HomeScreenContract",
                 "Application",
-                .product(name: "Common", package: "Common"),
-                .product(name: "Mocks", package: "Common"),
+                "Common",
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",
                 .product(name: "CoordinatorContract", package: "Coordinator"),
+                .product(name: "CoordinatorMocks", package: "Coordinator"),
                 "Entities"
             ],
             path: "Sources"

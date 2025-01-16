@@ -30,7 +30,7 @@ let package = Package(
         .target(
             name: "AboutScreen",
             dependencies: [
-                .product(name: "Common", package: "Common"),
+                "Common",
                 .product(name: "ThemeAssets", package: "Theme")
             ],
             path: "Sources"

@@ -1,7 +1,7 @@
 import XCTest
 import Application
 import ApplicationTests
-import Mocks
+import Entities
 import AuthenticationScreenContract
 import CoordinatorContract
 

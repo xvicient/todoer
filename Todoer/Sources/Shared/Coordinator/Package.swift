@@ -9,10 +9,16 @@ let package = Package(
     products: [
         .library(
             name: "CoordinatorContract",
-            targets: ["CoordinatorContract"]),
+            targets: ["CoordinatorContract"]
+        ),
         .library(
             name: "Coordinator",
-            targets: ["Coordinator"])
+            targets: ["Coordinator"]
+        ),
+        .library(
+            name: "CoordinatorMocks",
+            targets: ["CoordinatorMocks"]
+        )
     ],
     dependencies: [
         .package(path: "../Data"),
@@ -35,5 +41,12 @@ let package = Package(
             ],
             path: "Sources"
         ),
+        .target(
+            name: "CoordinatorMocks",
+            dependencies: [
+                "CoordinatorContract"
+            ],
+            path: "Mocks"
+        )
     ]
 )

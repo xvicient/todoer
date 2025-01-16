@@ -9,11 +9,32 @@ let package = Package(
     products: [
         .library(
             name: "Entities",
-            targets: ["Entities"]),
+            targets: [
+                "Entities"
+            ]
+        ),
+        .library(
+            name: "EntitiesMocks",
+            targets: [
+                "EntitiesMocks"
+            ]
+        )
+    ],
+    dependencies: [
+        .package(path: "../Common")
+        
     ],
     targets: [
         .target(
-            name: "Entities"),
-
+            name: "Entities",
+            path: "Sources"
+        ),
+        .target(
+            name: "EntitiesMocks",
+            dependencies: [
+                "Common"
+            ],
+            path: "Mocks"
+        )
     ]
 )

@@ -1,10 +1,11 @@
 import SwiftUI
+import CoordinatorMocks
 import Entities
 import Application
 import ThemeAssets
 import ThemeComponents
 import CoordinatorContract
-import Mocks
+import Entities
 import ShareListScreenContract
 
 // MARK: - ShareListView

@@ -9,7 +9,16 @@ let package = Package(
     products: [
         .library(
             name: "Data",
-            targets: ["Data"]),
+            targets: [
+                "Data"
+            ]
+        ),
+        .library(
+            name: "DataMocks",
+            targets: [
+                "DataMocks"
+            ]
+        )
     ],
     dependencies: [
         .package(path: "../../../../Packages/External/FirebaseDependencies"),
@@ -25,13 +34,21 @@ let package = Package(
                 "FirebaseDependencies",
                 "GoogleSignInDependencies",
                 "Entities",
-                .product(name: "Common", package: "Common")
-            ]
+                "Common"
+            ],
+            path: "Sources"
+        ),
+        .target(
+            name: "DataMocks",
+            dependencies: [
+                "Entities",
+                "Data"
+            ],
+            path: "Mocks"
         ),
         .testTarget(
             name: "DataTests",
             dependencies: [
-                .product(name: "Mocks", package: "Common"),
                 "Entities"
             ],
             path: "Tests"
