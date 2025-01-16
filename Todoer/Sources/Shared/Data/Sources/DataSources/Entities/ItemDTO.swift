@@ -1,7 +1,7 @@
 import FirebaseFirestore
 
-struct ItemDTO: Identifiable, Codable, Hashable {
-	@DocumentID var id: String?
+public struct ItemDTO: Identifiable, Codable, Hashable {
+	@DocumentID public var id: String?
 	let name: String
 	var done: Bool
 	var index: Int

@@ -28,7 +28,8 @@ let package = Package(
         .target(
             name: "ListItemsScreenContract",
             dependencies: [
-                "Entities"
+                "Entities",
+                .product(name: "Common", package: "Common")
             ],
             path: "Contract"
         ),

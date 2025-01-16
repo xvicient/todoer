@@ -2,7 +2,7 @@ import Combine
 import FirebaseFirestore
 import Common
 
-protocol ItemsDataSourceApi {
+public protocol ItemsDataSourceApi {
 	func fetchItems(
 		listId: String
 	) -> AnyPublisher<[ItemDTO], Error>
@@ -33,7 +33,7 @@ protocol ItemsDataSourceApi {
 	) async throws
 }
 
-final class ItemsDataSource: ItemsDataSourceApi {
+public final class ItemsDataSource: ItemsDataSourceApi {
 	private enum Errors: Error {
 		case invalidDTO
 		case encodingError
@@ -42,6 +42,8 @@ final class ItemsDataSource: ItemsDataSourceApi {
 	private var snapshotListener: ListenerRegistration?
 	private var listenerSubject: PassthroughSubject<[ItemDTO], Error>?
 
+    public init() {}
+    
 	deinit {
 		snapshotListener?.remove()
 		listenerSubject = nil
@@ -51,7 +53,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
 		Firestore.firestore().collection("lists").document(listId).collection("items")
 	}
 
-	func fetchItems(
+    public func fetchItems(
 		listId: String
 	) -> AnyPublisher<[ItemDTO], Error> {
 		let subject = PassthroughSubject<[ItemDTO], Error>()
@@ -79,7 +81,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
 
 	}
 
-	func addItem(
+    public func addItem(
 		with name: String,
 		listId: String
 	) async throws -> ItemDTO {
@@ -99,14 +101,14 @@ final class ItemsDataSource: ItemsDataSourceApi {
 		}
 	}
 
-	func deleteItem(
+    public func deleteItem(
 		itemId: String,
 		listId: String
 	) async throws {
 		try await itemsCollection(listId: listId).document(itemId).delete()
 	}
 
-	func updateItem(
+    public func updateItem(
 		item: ItemDTO,
 		listId: String
 	) async throws -> ItemDTO {
@@ -122,7 +124,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
 		return item
 	}
 
-	func toogleAllItems(
+    public func toogleAllItems(
 		listId: String?,
 		done: Bool
 	) async throws {
@@ -150,7 +152,7 @@ final class ItemsDataSource: ItemsDataSourceApi {
 		try await productsBatch.commit()
 	}
 
-	func sortItems(
+    public func sortItems(
 		items: [ItemDTO],
 		listId: String
 	) async throws {
