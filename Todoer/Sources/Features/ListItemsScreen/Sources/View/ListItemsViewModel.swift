@@ -15,19 +15,21 @@ extension ListItems.Reducer {
         var listName: String = ""
 	}
 
-	struct ItemRow: Identifiable {
-		let id = UUID()
+    struct ItemRow: Identifiable, Equatable {
+        let id: UUID
 		var item: Item
 		let leadingActions: [TDSwipeAction]
 		let trailingActions: [TDSwipeAction]
 		var isEditing: Bool
 
 		init(
+            id: UUID = UUID(),
 			item: Item,
 			leadingActions: [TDSwipeAction] = [],
 			trailingActions: [TDSwipeAction] = [],
 			isEditing: Bool = false
 		) {
+            self.id = id
 			self.item = item
 			self.leadingActions = leadingActions
 			self.trailingActions = trailingActions

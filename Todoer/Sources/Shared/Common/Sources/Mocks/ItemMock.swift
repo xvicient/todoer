@@ -1,3 +1,4 @@
+import Foundation
 import Entities
 
 public struct ItemMock {
@@ -8,6 +9,7 @@ public struct ItemMock {
     public static func items(_ count: Int) -> [Item] {
         (0..<count).map {
             Item(
+                id: $0.uuid,
                 documentId: String($0),
                 name: "Item \($0)",
                 done: false,
