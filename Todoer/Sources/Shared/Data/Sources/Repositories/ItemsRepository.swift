@@ -23,7 +23,7 @@ public protocol ItemsRepositoryApi {
 	) async throws -> Item
 
 	func toogleAllItems(
-		listId: String?,
+		listId: String,
 		done: Bool
 	) async throws
 
@@ -86,7 +86,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
 	}
 
     public func toogleAllItems(
-		listId: String?,
+		listId: String,
 		done: Bool
 	) async throws {
 		try await itemsDataSource.toogleAllItems(
