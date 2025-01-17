@@ -1,0 +1,18 @@
+{
+  "configurations" : [
+    {
+      "id" : "5317E290-250D-463F-AAF5-CBE1E1307657",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+
+  ],
+  "version" : 1
+}

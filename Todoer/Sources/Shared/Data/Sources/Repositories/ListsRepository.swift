@@ -1,10 +1,10 @@
 import Combine
 import Foundation
 import Entities
-import FirebaseFirestore
 
 public protocol ListsRepositoryApi {
-	func fetchLists() -> AnyPublisher<[UserList], Error>
+	func fetchLists(
+    ) -> AnyPublisher<[UserList], Error>
 
 	func addList(
 		with name: String
@@ -26,16 +26,17 @@ public protocol ListsRepositoryApi {
 		lists: [UserList]
 	) async throws
 
-	func deleteSelfUserLists() async throws
+	func deleteSelfUserLists(
+    ) async throws
 }
 
 public final class ListsRepository: ListsRepositoryApi {
 
 	typealias SearchField = ListsDataSource.SearchField
 
-	let listsDataSource: ListsDataSourceApi = ListsDataSource()
-	let usersDataSource: UsersDataSourceApi = UsersDataSource()
-	let itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
+	private let listsDataSource: ListsDataSourceApi = ListsDataSource()
+    private let usersDataSource: UsersDataSourceApi = UsersDataSource()
+    private let itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
 
     public init() {}
 

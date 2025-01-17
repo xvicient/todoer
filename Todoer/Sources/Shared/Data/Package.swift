@@ -42,6 +42,7 @@ let package = Package(
             name: "DataMocks",
             dependencies: [
                 "Entities",
+                "FirebaseDependencies",
                 "Data"
             ],
             path: "Mocks"
