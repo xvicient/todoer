@@ -28,13 +28,16 @@ extension Authentication {
 		private enum Errors: Error, LocalizedError {
 			case emailInUse
 			case emptyAuthEmail
+            case emptyUid
 
 			var errorDescription: String? {
 				switch self {
 				case .emailInUse:
 					return "Email already in use with another provider."
-				case .emptyAuthEmail:
-					return "Invalid email."
+                case .emptyAuthEmail:
+                    return "Invalid email."
+                case .emptyUid:
+                    return "Empty uid."
 				}
 			}
 		}
@@ -58,10 +61,14 @@ extension Authentication {
 		) async -> ActionResult<EquatableVoid> {
 			do {
 				let authData = try await getAuthData(for: provider)
-
-				guard let email = authData.email else {
-					throw Errors.emptyAuthEmail
-				}
+                
+                guard !authData.uid.isEmpty else {
+                    throw Errors.emptyUid
+                }
+                
+                guard let email = authData.email else {
+                    throw Errors.emptyAuthEmail
+                }
 
 				if let notSelfUser = try await usersRepository.getNotSelfUser(
 					email: email,
@@ -95,9 +102,13 @@ extension Authentication {
 		) async throws -> AuthData {
 			switch provider {
 			case .apple(let authorization):
-				return try await singInService.appleSignIn(authorization: authorization)
+				return try await singInService.appleSignIn(
+                    authorization: authorization
+                )
 			case .google:
-                return try await singInService.googleSignIn(presentingVC: Utils.topViewController())
+                return try await singInService.googleSignIn(
+                    presentingVC: Utils.topViewController()
+                )
 			}
 		}
 	}

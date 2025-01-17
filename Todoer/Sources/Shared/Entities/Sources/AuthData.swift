@@ -4,12 +4,13 @@ public struct AuthData {
     public let displayName: String?
     public let photoUrl: String?
     public let isAnonymous: Bool
-
-    public init(uid: String,
-         email: String?,
-         displayName: String?,
-         photoUrl: String?,
-         isAnonymous: Bool
+    
+    public init(
+        uid: String,
+        email: String?,
+        displayName: String?,
+        photoUrl: String?,
+        isAnonymous: Bool
     ) {
         self.uid = uid
         self.email = email
