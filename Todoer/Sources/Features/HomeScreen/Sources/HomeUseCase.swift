@@ -59,20 +59,20 @@ extension Home {
 		}
 
 		private let listsRepository: ListsRepositoryApi
-		private let productsRepository: ItemsRepositoryApi
+		private let itemsRepository: ItemsRepositoryApi
 		private let invitationsRepository: InvitationsRepositoryApi
 		private let usersRepository: UsersRepositoryApi
 		private let authenticationService: AuthenticationService
 
 		init(
 			listsRepository: ListsRepositoryApi = ListsRepository(),
-			productsRepository: ItemsRepositoryApi = ItemsRepository(),
+            itemsRepository: ItemsRepositoryApi = ItemsRepository(),
 			invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
 			usersRepository: UsersRepositoryApi = UsersRepository(),
 			authenticationService: AuthenticationService = AuthenticationService()
 		) {
 			self.listsRepository = listsRepository
-			self.productsRepository = productsRepository
+			self.itemsRepository = itemsRepository
 			self.invitationsRepository = invitationsRepository
 			self.usersRepository = usersRepository
 			self.authenticationService = authenticationService
@@ -139,7 +139,7 @@ extension Home {
 		) async -> ActionResult<UserList> {
 			do {
 				let updatedList = try await listsRepository.updateList(list)
-				try await productsRepository.toogleAllItems(
+				try await itemsRepository.toogleAllItems(
 					listId: list.documentId,
 					done: list.done
 				)

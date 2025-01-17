@@ -3,6 +3,10 @@ import FirebaseFirestore
 import Common
 
 public protocol ItemsDataSourceApi {
+    func documents(
+        listId: String
+    ) async throws -> [QueryDocumentSnapshot]
+    
 	func fetchItems(
 		listId: String
 	) -> AnyPublisher<[ItemDTO], Error>
@@ -23,7 +27,7 @@ public protocol ItemsDataSourceApi {
 	) async throws -> ItemDTO
 
 	func toogleAllItems(
-		listId: String?,
+		listId: String,
 		done: Bool
 	) async throws
 
@@ -49,9 +53,17 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 		listenerSubject = nil
 	}
 
-	private func itemsCollection(listId: String) -> CollectionReference {
+	private func itemsCollection(
+        listId: String
+    ) -> CollectionReference {
 		Firestore.firestore().collection("lists").document(listId).collection("items")
 	}
+    
+    public func documents(
+        listId: String
+    ) async throws -> [QueryDocumentSnapshot] {
+        try await itemsCollection(listId: listId).getDocuments().documents
+    }
 
     public func fetchItems(
 		listId: String
@@ -125,38 +137,34 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 	}
 
     public func toogleAllItems(
-		listId: String?,
+		listId: String,
 		done: Bool
 	) async throws {
-		guard let id = listId else {
-			throw Errors.invalidDTO
-		}
-
-		let collection = itemsCollection(listId: id)
-		let productsBatch = Firestore.firestore().batch()
+		let collection = itemsCollection(listId: listId)
+		let batch = Firestore.firestore().batch()
 
 		try await collection.getDocuments().documents.forEach {
 			guard var dto = try? $0.data(as: ItemDTO.self) else {
-				return
+                throw Errors.invalidDTO
 			}
 
 			dto.done = done
 
 			let encodedData = try Firestore.Encoder().encode(dto)
-			productsBatch.updateData(
+            batch.updateData(
 				encodedData,
 				forDocument: collection.document($0.documentID)
 			)
 		}
 
-		try await productsBatch.commit()
+		try await batch.commit()
 	}
 
     public func sortItems(
 		items: [ItemDTO],
 		listId: String
 	) async throws {
-		let productsBatch = Firestore.firestore().batch()
+		let batch = Firestore.firestore().batch()
 
 		try items.enumerated().forEach { index, item in
 			guard let id = item.id else {
@@ -166,12 +174,12 @@ public final class ItemsDataSource: ItemsDataSourceApi {
 			mutableItem.index = index
 
 			let encodedData = try Firestore.Encoder().encode(mutableItem)
-			productsBatch.updateData(
+            batch.updateData(
 				encodedData,
 				forDocument: itemsCollection(listId: listId).document(id)
 			)
 		}
 
-		try await productsBatch.commit()
+		try await batch.commit()
 	}
 }

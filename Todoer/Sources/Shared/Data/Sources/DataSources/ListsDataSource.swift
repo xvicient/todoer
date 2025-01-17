@@ -3,7 +3,7 @@ import FirebaseFirestore
 import Common
 
 protocol ListsDataSourceApi {
-	func fetchLists(
+    func fetchLists(
 		uid: String
 	) -> AnyPublisher<[ListDTO], Error>
 
@@ -32,6 +32,11 @@ protocol ListsDataSourceApi {
 	func deleteLists(
 		with fields: [ListsDataSource.SearchField]
 	) async throws
+    
+    func deleteListAndAllItems(
+        listId: String,
+        itemsDocuments: [QueryDocumentSnapshot]
+    ) async throws
 }
 
 final class ListsDataSource: ListsDataSourceApi {
@@ -179,6 +184,22 @@ final class ListsDataSource: ListsDataSourceApi {
 				listsCollection.document($0.documentID).delete()
 			}
 	}
+    
+    func deleteListAndAllItems(
+        listId: String,
+        itemsDocuments: [QueryDocumentSnapshot]
+    ) async throws {
+        let listDocument = listsCollection.document(listId)
+        
+        let _ = try await Firestore.firestore().runTransaction { (transaction, errorPointer) -> Any? in
+            itemsDocuments.forEach {
+                transaction.deleteDocument($0.reference)
+            }
+            
+            transaction.deleteDocument(listDocument)
+            return nil
+        }
+    }
 
 	private func listsQuery(
 		with fields: [SearchField]

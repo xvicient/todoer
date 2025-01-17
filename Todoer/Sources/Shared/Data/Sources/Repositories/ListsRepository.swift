@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import Entities
+import FirebaseFirestore
 
 public protocol ListsRepositoryApi {
 	func fetchLists() -> AnyPublisher<[UserList], Error>
@@ -61,7 +62,11 @@ public final class ListsRepository: ListsRepositoryApi {
     public func deleteList(
 		_ documentId: String
 	) async throws {
-		try await listsDataSource.deleteList(documentId)
+        let itemsDocuments = try await itemsDataSource.documents(listId: documentId)
+        try await listsDataSource.deleteListAndAllItems(
+            listId: documentId,
+            itemsDocuments: itemsDocuments
+        )
 	}
 
     public func importList(
