@@ -19,10 +19,6 @@
 		C7B335932D31CF2700C36D7B /* GoogleSignInDependencies in Frameworks */ = {isa = PBXBuildFile; productRef = C7B335922D31CF2700C36D7B /* GoogleSignInDependencies */; };
 		C7B3359F2D31D3E700C36D7B /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = C7B3359E2D31D3E700C36D7B /* Common */; };
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
-		C7DE26232D3411920090FF66 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = C7DE26222D3411920090FF66 /* Application */; };
-		C7DE26262D3411A00090FF66 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = C7DE26252D3411A00090FF66 /* Entities */; };
-		C7EA2F382D340E4300B63DDC /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F372D340E4300B63DDC /* CoordinatorContract */; };
-		C7EA2F402D340E7B00B63DDC /* Mocks in Frameworks */ = {isa = PBXBuildFile; productRef = C7EA2F3F2D340E7B00B63DDC /* Mocks */; };
 		C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = C7F305892D32CCA5004C322D /* ThemeAssets */; };
 		C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */ = {isa = PBXBuildFile; productRef = C7F3058B2D32CCA5004C322D /* ThemeComponents */; };
 		D62464D12D36B3010097F7DE /* AboutScreen in Frameworks */ = {isa = PBXBuildFile; productRef = D62464D02D36B3010097F7DE /* AboutScreen */; };
@@ -83,10 +79,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7DE26232D3411920090FF66 /* Application in Frameworks */,
-				C7DE26262D3411A00090FF66 /* Entities in Frameworks */,
-				C7EA2F402D340E7B00B63DDC /* Mocks in Frameworks */,
-				C7EA2F382D340E4300B63DDC /* CoordinatorContract in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,22 +757,6 @@
 		C7B3359E2D31D3E700C36D7B /* Common */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Common;
-		};
-		C7DE26222D3411920090FF66 /* Application */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Application;
-		};
-		C7DE26252D3411A00090FF66 /* Entities */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Entities;
-		};
-		C7EA2F372D340E4300B63DDC /* CoordinatorContract */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoordinatorContract;
-		};
-		C7EA2F3F2D340E7B00B63DDC /* Mocks */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Mocks;
 		};
 		C7F305892D32CCA5004C322D /* ThemeAssets */ = {
 			isa = XCSwiftPackageProductDependency;

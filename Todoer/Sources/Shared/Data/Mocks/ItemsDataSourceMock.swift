@@ -1,9 +1,11 @@
 import Entities
 import Combine
+import FirebaseFirestore
 
 @testable import Data
 
 public class ItemsDataSourceMock: ItemsDataSourceApi {
+    
     public var fetchItemsResult: [ItemDTO]!
     public var addItemResult: Result<ItemDTO, Error>!
     public var deleteItemResult: Result<Void, Error>!
@@ -15,6 +17,10 @@ public class ItemsDataSourceMock: ItemsDataSourceApi {
     
     public enum DataSourceError: Error {
         case error
+    }
+    
+    public func documents(listId: String) async throws -> [QueryDocumentSnapshot] {
+        [QueryDocumentSnapshot]()
     }
     
     public func fetchItems(listId: String) -> AnyPublisher<[ItemDTO], any Error> {
@@ -65,7 +71,7 @@ public class ItemsDataSourceMock: ItemsDataSourceApi {
         }
     }
     
-    public func toogleAllItems(listId: String?, done: Bool) async throws {
+    public func toogleAllItems(listId: String, done: Bool) async throws {
         switch toogleAllItemsResult {
         case .success: break
         case .failure(let error):
