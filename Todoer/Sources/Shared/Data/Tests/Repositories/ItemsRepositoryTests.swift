@@ -2,6 +2,7 @@ import Testing
 import Entities
 import DataMocks
 import EntitiesMocks
+import Application
 
 @testable import Data
 
@@ -80,5 +81,9 @@ private extension ItemsRepositoryTests {
     
     func givenAFailureUpdateItem() {
         dataSourceMock.updateItemResult = .failure(DataSourceError.error)
+    }
+    
+    func givenASuccessSortItems() {
+        dataSourceMock.sortItemsResult = .success()
     }
 }

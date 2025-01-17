@@ -24,7 +24,8 @@ let package = Package(
         .package(path: "../../../../Packages/External/FirebaseDependencies"),
         .package(path: "../../../../Packages/External/GoogleSignInDependencies"),
         .package(path: "../Entities"),
-        .package(path: "../Common")
+        .package(path: "../Common"),
+        .package(path: "../Application")
         
     ],
     targets: [
@@ -43,7 +44,8 @@ let package = Package(
             dependencies: [
                 "Entities",
                 "FirebaseDependencies",
-                "Data"
+                "Data",
+                .product(name: "Application", package: "Application")
             ],
             path: "Mocks"
         ),
@@ -54,7 +56,8 @@ let package = Package(
                 "FirebaseDependencies",
                 "GoogleSignInDependencies",
                 .product(name: "Entities", package: "Entities"),
-                .product(name: "EntitiesMocks", package: "Entities")
+                .product(name: "EntitiesMocks", package: "Entities"),
+                .product(name: "Application", package: "Application")
             ],
             path: "Tests"
         )

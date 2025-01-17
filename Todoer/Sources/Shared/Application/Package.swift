@@ -16,16 +16,11 @@ let package = Package(
             targets: ["ApplicationTests"]
         )
     ],
-    dependencies: [
-        .package(path: "../Data")
-        
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "Application",
-            dependencies: [
-                "Data"
-            ],
+            dependencies: [],
             path: "Sources/Redux"
         ),
         .target(

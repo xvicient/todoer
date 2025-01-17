@@ -1,6 +1,7 @@
 import Entities
 import Combine
 import FirebaseFirestore
+import Application
 
 @testable import Data
 
@@ -11,7 +12,7 @@ public class ItemsDataSourceMock: ItemsDataSourceApi {
     public var deleteItemResult: Result<Void, Error>!
     public var updateItemResult: Result<ItemDTO, Error>!
     public var toogleAllItemsResult: Result<Void, Error>!
-    public var sortItemsResult: Result<Void, Error>!
+    public var sortItemsResult: ActionResult<EquatableVoid>!
     
     public init() {}
     
