@@ -80,7 +80,8 @@ extension ShareList {
 					return .success()
 				}
 
-				guard let selfUser = try? await usersRepository.getSelfUser(),
+				guard
+                    let selfUser = try? await usersRepository.getSelfUser(),
 					let ownerEmail = selfUser.email
 				else {
 					return .failure(Errors.unexpectedError)

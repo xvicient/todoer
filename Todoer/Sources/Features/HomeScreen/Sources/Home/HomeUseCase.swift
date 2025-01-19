@@ -11,15 +11,6 @@ protocol HomeUseCaseApi {
 
 	func signOut() -> ActionResult<EquatableVoid>
 
-	func acceptInvitation(
-		listId: String,
-		invitationId: String
-	) async -> ActionResult<EquatableVoid>
-
-	func declineInvitation(
-		invitationId: String
-	) async -> ActionResult<EquatableVoid>
-
 	func updateList(
 		list: UserList
 	) async -> ActionResult<UserList>
@@ -101,32 +92,6 @@ extension Home {
 			do {
 				try authenticationService.signOut()
 				usersRepository.setUid("")
-				return .success()
-			}
-			catch {
-				return .failure(error)
-			}
-		}
-
-		func acceptInvitation(
-			listId: String,
-			invitationId: String
-		) async -> ActionResult<EquatableVoid> {
-			do {
-				try await listsRepository.importList(id: listId)
-				try await invitationsRepository.deleteInvitation(invitationId)
-				return .success()
-			}
-			catch {
-				return .failure(error)
-			}
-		}
-
-		func declineInvitation(
-			invitationId: String
-		) async -> ActionResult<EquatableVoid> {
-			do {
-				try await invitationsRepository.deleteInvitation(invitationId)
 				return .success()
 			}
 			catch {

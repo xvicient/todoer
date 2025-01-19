@@ -60,32 +60,6 @@ extension Home.Reducer {
 		return .none
 	}
 
-	func onAcceptInvitationResult(
-		state: inout State,
-		result: ActionResult<EquatableVoid>
-	) -> Effect<Action> {
-		switch result {
-		case .success:
-			state.viewState = .idle
-		case .failure:
-			state.viewState = .alert(.error(Errors.default))
-		}
-		return .none
-	}
-
-	func onDeclineInvitationResult(
-		state: inout State,
-		result: ActionResult<EquatableVoid>
-	) -> Effect<Action> {
-		switch result {
-		case .success:
-			state.viewState = .idle
-		case .failure:
-			state.viewState = .alert(.error(Errors.default))
-		}
-		return .none
-	}
-
 	func onAddListResult(
 		state: inout State,
 		result: ActionResult<UserList>

@@ -32,12 +32,6 @@ extension Home.Reducer {
 			self.isEditing = isEditing
 		}
 	}
-
-	enum AlertStyle: Equatable, Identifiable {
-		var id: UUID { UUID() }
-		case error(String)
-		case destructive
-	}
 }
 
 extension Array where Element == Home.Reducer.ListRow {

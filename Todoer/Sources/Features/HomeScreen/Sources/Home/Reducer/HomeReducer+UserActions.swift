@@ -5,37 +5,6 @@ import Application
 // MARK: - Reducer user actions
 
 extension Home.Reducer {
-	func onDidTapAcceptInvitation(
-		state: inout State,
-		listId: String,
-		invitationId: String
-	) -> Effect<Action> {
-		return .task { send in
-			await send(
-				.acceptInvitationResult(
-					useCase.acceptInvitation(
-						listId: listId,
-						invitationId: invitationId
-					)
-				)
-			)
-		}
-	}
-
-	func onDidTapDeclineInvitation(
-		state: inout State,
-		invitationId: String
-	) -> Effect<Action> {
-		return .task { send in
-			await send(
-				.declineInvitationResult(
-					useCase.declineInvitation(
-						invitationId: invitationId
-					)
-				)
-			)
-		}
-	}
 
     @MainActor
     func onDidTapList(

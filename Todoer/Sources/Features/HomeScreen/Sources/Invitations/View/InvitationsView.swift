@@ -1,28 +1,20 @@
 import SwiftUI
-import Entities
 import ThemeAssets
 import ThemeComponents
+import Application
 
-// MARK: - HomeInvitationsView
+// MARK: - InvitationsView
 
-struct HomeInvitationsView: View {
-	private let invitations: [Invitation]
-	private let onAccept: (String, String) -> Void
-	private let onDecline: (String) -> Void
+struct InvitationsView: View {
+    @ObservedObject private var store: Store<Invitations.Reducer>
 
-	init(
-		invitations: [Invitation],
-		onAccept: @escaping (String, String) -> Void,
-		onDecline: @escaping (String) -> Void
-	) {
-		self.invitations = invitations
-		self.onAccept = onAccept
-		self.onDecline = onDecline
-	}
+    init(store: Store<Invitations.Reducer>) {
+        self.store = store
+    }
 
 	var body: some View {
 		Section(header: Text(Constants.Text.invitations).listRowHeaderStyle()) {
-			ForEach(invitations) { invitation in
+            ForEach(store.state.viewModel.invitations) { invitation in
 				HStack {
 					VStack(alignment: .leading) {
 						Text("\(invitation.ownerName)")
@@ -46,28 +38,38 @@ struct HomeInvitationsView: View {
 							style: .primary,
 							size: .custom(with: 100, height: 32)
 						) {
-							onAccept(
-								invitation.listId,
-								invitation.documentId
-							)
+                            store.send(
+                                .didTapAcceptInvitation(
+                                    invitation.listId,
+                                    invitation.documentId
+                                )
+                            )
 						}
 						TDBasicButton(
 							title: "\(Constants.Text.decline)",
 							style: .destructive,
 							size: .custom(with: 100, height: 32)
 						) {
-							onDecline(invitation.documentId)
+                            store.send(
+                                .didTapDeclineInvitation(
+                                    invitation.listId,
+                                    invitation.documentId
+                                )
+                            )
 						}
 					}
 				}
 			}
 		}
+        .onAppear {
+            store.send(.onViewAppear)
+        }
 	}
 }
 
 // MARK: - Constants
 
-extension HomeInvitationsView {
+extension InvitationsView {
 	fileprivate struct Constants {
 		struct Text {
 			static let invitations = "Invitations"
