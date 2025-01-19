@@ -4,6 +4,7 @@ import Application
 import ThemeComponents
 import Common
 import ListItemsScreenContract
+import Foundation
 
 // MARK: - ListItemsScreen
 
@@ -16,7 +17,7 @@ struct ListItemsScreen: View {
         store.state.viewState == .editingItem
     }
     
-    private var filteredItems: [ListItems.Reducer.ItemRow] {
+    private var filteredItems: [ListItems.Reducer.WrappedItem] {
         searchText.isEmpty ? store.state.viewModel.items : store.state.viewModel.items.filter {
             $0.item.name.lowercased().hasPrefix(searchText.lowercased())
         }
@@ -57,10 +58,15 @@ extension ListItemsScreen {
 	@ViewBuilder
 	fileprivate var itemsList: some View {
         List {
-            Section(header: Text(store.state.viewModel.listName).listRowHeaderStyle()) {
-                itemListsHeader
-                itemListsContent
-            }
+            TDListSection(
+                content: itemsContent,
+                title: store.state.viewModel.listName,
+                addButtonTitle: Constants.Text.newRowButtonTitle,
+                isDisabled: store.state.viewModel.items.isEmpty,
+                isEditMode: isEditing,
+                onAddRow: { store.send(.didTapAddRowButton) },
+                onSortRows: { store.send(.didTapAutoSortItems) }
+            )
         }
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
@@ -77,59 +83,19 @@ extension ListItemsScreen {
     }
     
     @ViewBuilder
-    fileprivate var itemListsHeader: some View {
-        HStack {
-            TDActionButton(
-                title: Constants.Text.newRowButtonTitle,
-                icon: Image.plusCircleFill
-            ) {
-                store.send(.didTapAddRowButton)
-            }
-            TDActionButton(
-                title: Constants.Text.sortButtonTitle,
-                icon: Image.arrowUpArrowDownCircleFill
-            ) {
-                store.send(.didTapAutoSortItems)
-            }
-        }
-        .disabled(
-            isEditing ||
-            isSearchFocused
+    fileprivate func itemsContent() -> AnyView {
+        AnyView(
+            TDListContent(
+                rows: filteredItems.map { $0.tdListRow },
+                isMoveAllowed: !isSearchFocused,
+                onSubmit: { store.send(.didTapSubmitItemButton($0)) },
+                onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
+                onCancelAdd: { store.send(.didTapCancelAddItemButton) },
+                onCancelEdit: { store.send(.didTapCancelEditItemButton($0)) },
+                onSwipe: swipeActions,
+                onMove: moveItem
+            )
         )
-        .padding(.bottom, 12)
-    }
-    
-    @ViewBuilder
-    fileprivate var itemListsContent: some View {
-        ForEach(
-            Array(filteredItems.enumerated()),
-            id: \.element.id
-        ) { index, row in
-            if row.isEditing {
-                TDNewRowView(
-                    row: row.tdRow,
-                    onSubmit: { store.send(.didTapSubmitItemButton($0)) },
-                    onUpdate: {
-                        store.send(.didTapUpdateItemButton(row.id, $0))
-                    },
-                    onCancelAdd: { store.send(.didTapCancelAddItemButton) },
-                    onCancelEdit: {
-                        store.send(.didTapCancelEditItemButton(row.id))
-                    }
-                )
-                .id(index)
-            }
-            else {
-                TDRowView(
-                    row: row.tdRow,
-                    onSwipe: { swipeActions(row.id, $0) }
-                )
-                .id(index)
-            }
-        }
-        .if(!isSearchFocused) {
-            $0.onMove(perform: moveItem)
-        }
     }
 
 	@ViewBuilder
@@ -187,10 +153,11 @@ extension ListItemsScreen {
 
 // MARK: - ItemRow to TDRow
 
-extension ListItems.Reducer.ItemRow {
-	fileprivate var tdRow: TDRow {
-		TDRow(
-			name: item.name,
+extension ListItems.Reducer.WrappedItem {
+	fileprivate var tdListRow: TDListRow {
+		TDListRow(
+            id: item.id,
+            name: item.name,
 			image: item.done ? Image.largecircleFillCircle : Image.circle,
 			strikethrough: item.done,
 			leadingActions: leadingActions,
@@ -222,6 +189,7 @@ struct Home_Previews: PreviewProvider {
         ListItems.Builder.makeItemsList(
             dependencies: Dependencies(
                 list: UserList(
+                    id: UUID(),
                     documentId: "1",
                     name: "Test",
                     done: false,

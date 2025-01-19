@@ -1,4 +1,5 @@
 import Entities
+import Foundation
 
 public struct ListMock {
     public static var list: UserList {
@@ -8,6 +9,7 @@ public struct ListMock {
 	static func lists(_ count: Int) -> [UserList] {
 		(0..<count).map {
 			UserList(
+                id: UUID(),
 				documentId: String($0),
 				name: String($0),
 				done: false,

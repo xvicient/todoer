@@ -8,24 +8,26 @@ extension Home.Reducer {
 
 	@MainActor
 	struct ViewModel {
-		var lists = [ListRow]()
+		var lists = [WrappedUserList]()
 		var invitations = [Invitation]()
 		var photoUrl = ""
 	}
 
-    struct ListRow: Identifiable, Sendable {
-		let id = UUID()
+    struct WrappedUserList: Identifiable, Sendable {
+        let id: UUID
 		var list: UserList
 		let leadingActions: [TDSwipeAction]
 		let trailingActions: [TDSwipeAction]
 		var isEditing: Bool
 
 		init(
+            id: UUID,
 			list: UserList,
 			leadingActions: [TDSwipeAction] = [],
 			trailingActions: [TDSwipeAction] = [],
 			isEditing: Bool = false
 		) {
+            self.id = id
 			self.list = list
 			self.leadingActions = leadingActions
 			self.trailingActions = trailingActions
@@ -34,7 +36,7 @@ extension Home.Reducer {
 	}
 }
 
-extension Array where Element == Home.Reducer.ListRow {
+extension Array where Element == Home.Reducer.WrappedUserList {
     func index(for id: UUID) -> Int? {
         self.firstIndex(where: { $0.id == id })
     }
