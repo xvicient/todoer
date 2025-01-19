@@ -11,11 +11,11 @@ extension ListItems.Reducer {
 
 	@MainActor
 	struct ViewModel {
-		var items = [ItemRow]()
+		var items = [WrappedItem]()
         var listName: String = ""
 	}
 
-    struct ItemRow: Identifiable, Equatable {
+    struct WrappedItem: Identifiable, Equatable {
         let id: UUID
 		var item: Item
 		let leadingActions: [TDSwipeAction]
@@ -23,7 +23,7 @@ extension ListItems.Reducer {
 		var isEditing: Bool
 
 		init(
-            id: UUID = UUID(),
+            id: UUID,
 			item: Item,
 			leadingActions: [TDSwipeAction] = [],
 			trailingActions: [TDSwipeAction] = [],
@@ -38,7 +38,7 @@ extension ListItems.Reducer {
 	}
 }
 
-extension Array where Element == ListItems.Reducer.ItemRow {
+extension Array where Element == ListItems.Reducer.WrappedItem {
     func index(for id: UUID) -> Int? {
         self.firstIndex(where: { $0.id == id })
     }

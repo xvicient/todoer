@@ -8,7 +8,7 @@ public struct Item: Identifiable, Equatable, Hashable, Sendable {
     public let index: Int
     
     public init(
-        id: UUID = UUID(),
+        id: UUID,
         documentId: String,
         name: String,
         done: Bool,

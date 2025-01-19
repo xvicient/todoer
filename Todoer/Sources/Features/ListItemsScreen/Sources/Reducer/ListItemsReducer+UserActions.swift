@@ -208,8 +208,11 @@ extension ListItems.Reducer {
 // MARK: - Private
 
 extension ListItems.Reducer {
-	fileprivate func newItemRow(item: Item = Item.emptyItem) -> ItemRow {
-		ItemRow(
+	fileprivate func newItemRow(
+        item: Item = Item.emptyItem
+    ) -> WrappedItem {
+		WrappedItem(
+            id: item.id,
 			item: item,
 			isEditing: true
 		)
@@ -221,10 +224,11 @@ extension ListItems.Reducer {
 extension Item {
 	fileprivate static var emptyItem: Item {
 		Item(
+            id: UUID(),
 			documentId: "",
 			name: "",
 			done: false,
-			index: Date().milliseconds
+			index: -Date().milliseconds
 		)
 	}
 }

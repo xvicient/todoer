@@ -22,7 +22,7 @@ struct HomeScreen: View {
         store.state.viewState == .editingList
     }
     
-    private var filteredLists: [Home.Reducer.ListRow] {
+    private var filteredLists: [Home.Reducer.WrappedUserList] {
         searchText.isEmpty ? store.state.viewModel.lists : store.state.viewModel.lists.filter {
             $0.list.name.lowercased().hasPrefix(searchText.lowercased())
         }
@@ -64,8 +64,16 @@ extension HomeScreen {
 	@ViewBuilder
 	fileprivate var contentView: some View {
         List {
-            invitations
-            lists
+            invitationsSection
+            TDListSection(
+                content: listContent,
+                title: Constants.Text.todos,
+                addButtonTitle: Constants.Text.newRowButtonTitle,
+                isDisabled: store.state.viewModel.lists.isEmpty,
+                isEditMode: isEditing,
+                onAddRow: { store.send(.didTapAddRowButton) },
+                onSortRows: { store.send(.didTapAutoSortLists) }
+            )
         }
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
@@ -82,74 +90,29 @@ extension HomeScreen {
 	}
 
 	@ViewBuilder
-	fileprivate var invitations: some View {
+	fileprivate var invitationsSection: some View {
 		if !store.state.viewModel.invitations.isEmpty {
             invitationsView(store.state.viewModel.invitations)
 		}
 	}
 
-	@ViewBuilder
-    fileprivate var lists: some View {
-        Section(header: Text(Constants.Text.todos).listRowHeaderStyle()) {
-            listsHeader
-            listsContent
-        }
-	}
-    
     @ViewBuilder
-    fileprivate var listsHeader: some View {
-        HStack {
-            TDActionButton(
-                title: Constants.Text.newRowButtonTitle,
-                icon: Image.plusCircleFill
-            ) {
-                store.send(.didTapAddRowButton)
-            }
-            TDActionButton(
-                title: Constants.Text.sortButtonTitle,
-                icon: Image.arrowUpArrowDownCircleFill
-            ) {
-                store.send(.didTapAutoSortLists)
-            }
-            .disabled(
-                store.state.viewModel.lists.isEmpty
+    fileprivate func listContent() -> AnyView {
+        AnyView(
+            TDListContent(
+                rows: filteredLists.map { $0.tdListRow },
+                isMoveAllowed: !isSearchFocused,
+                onSubmit: { store.send(.didTapSubmitListButton($0)) },
+                onUpdate: {
+                    store.send(.didTapUpdateListButton($0, $1))
+                },
+                onCancelAdd: { store.send(.didTapCancelAddListButton) },
+                onCancelEdit: { store.send(.didTapCancelEditListButton($0)) },
+                onTap: { store.send(.didTapList($0)) },
+                onSwipe: swipeActions,
+                onMove: moveList
             )
-        }
-        .disabled(
-            isEditing ||
-            isSearchFocused
         )
-        .padding(.bottom, 12)
-    }
-
-    @ViewBuilder
-    fileprivate var listsContent: some View {
-        ForEach(
-            Array(filteredLists.enumerated()),
-            id: \.element.id
-        ) { index, row in
-            if row.isEditing {
-                TDNewRowView(
-                    row: row.tdRow,
-                    onSubmit: { store.send(.didTapSubmitListButton($0)) },
-                    onUpdate: { store.send(.didTapUpdateListButton(row.id, $0)) },
-                    onCancelAdd: { store.send(.didTapCancelAddListButton) },
-                    onCancelEdit: { store.send(.didTapCancelEditListButton(row.id)) }
-                )
-                .id(index)
-            }
-            else {
-                TDRowView(
-                    row: row.tdRow,
-                    onTap: { store.send(.didTapList(row.id)) },
-                    onSwipe: { swipeActions(row.id, $0) }
-                )
-                .id(index)
-            }
-        }
-        .if(!isSearchFocused) {
-            $0.onMove(perform: moveList)
-        }
     }
 
 	@ViewBuilder
@@ -212,9 +175,10 @@ extension HomeScreen {
 
 // MARK: - ListRow to TDRow
 
-extension Home.Reducer.ListRow {
-	fileprivate var tdRow: TDRow {
-		TDRow(
+extension Home.Reducer.WrappedUserList {
+	fileprivate var tdListRow: TDListRow {
+		TDListRow(
+            id: list.id,
 			name: list.name,
 			image: list.done ? Image.largecircleFillCircle : Image.circle,
 			strikethrough: list.done,

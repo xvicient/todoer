@@ -100,6 +100,7 @@ public final class ListsRepository: ListsRepositoryApi {
 extension ListDTO {
 	fileprivate var toDomain: UserList {
 		UserList(
+            id: UUID(),
 			documentId: id ?? "",
 			name: name,
 			done: done,

@@ -89,7 +89,9 @@ extension Home.Reducer {
 		}
 		state.viewState = .editingList
 		state.viewModel.lists.remove(at: index)
-		state.viewModel.lists.insert(newListRow(list: list), at: index)
+		state.viewModel.lists.insert(newListRow(
+            list: list
+        ), at: index)
 
 		return .none
 	}
@@ -228,8 +230,11 @@ extension Home.Reducer {
 // MARK: - Private
 
 extension Home.Reducer {
-	fileprivate func newListRow(list: UserList = UserList.emptyList) -> ListRow {
-		ListRow(
+	fileprivate func newListRow(
+        list: UserList = UserList.emptyList
+    ) -> WrappedUserList {
+		WrappedUserList(
+            id: list.id,
 			list: list,
 			isEditing: true
 		)
@@ -241,11 +246,12 @@ extension Home.Reducer {
 extension UserList {
 	fileprivate static var emptyList: UserList {
 		UserList(
+            id: UUID(),
 			documentId: "",
 			name: "",
 			done: false,
 			uid: [],
-			index: Date().milliseconds
+			index: -Date().milliseconds
 		)
 	}
 }

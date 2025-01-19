@@ -1,7 +1,7 @@
 import SwiftUI
 
-public struct TDRow: Identifiable {
-    public let id = UUID()
+public struct TDListRow: Identifiable {
+    public let id: UUID
 	var name: String
 	var image: Image
 	var strikethrough: Bool
@@ -10,6 +10,7 @@ public struct TDRow: Identifiable {
 	var isEditing: Bool
 
     public init(
+        id: UUID,
 		name: String,
 		image: Image,
 		strikethrough: Bool,
@@ -17,6 +18,7 @@ public struct TDRow: Identifiable {
 		trailingActions: [TDSwipeAction] = [],
 		isEditing: Bool = false
 	) {
+        self.id = id
 		self.name = name
 		self.image = image
 		self.strikethrough = strikethrough

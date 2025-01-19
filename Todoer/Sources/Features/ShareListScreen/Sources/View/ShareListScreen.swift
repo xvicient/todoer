@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 import CoordinatorMocks
 import Entities
@@ -172,6 +173,7 @@ struct ShareView_Previews: PreviewProvider {
             dependencies: Dependencies(
                 coordinator: CoordinatorMock(),
                 list: UserList(
+                    id: UUID(),
                     documentId: "",
                     name: "",
                     done: true,

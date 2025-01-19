@@ -224,8 +224,9 @@ extension Home {
 // MARK: - UserList to ListRow
 
 extension UserList {
-	var toListRow: Home.Reducer.ListRow {
-		Home.Reducer.ListRow(
+	var toListRow: Home.Reducer.WrappedUserList {
+		Home.Reducer.WrappedUserList(
+            id: id,
 			list: self,
 			leadingActions: [self.done ? .undone : .done],
 			trailingActions: [.delete, .share, .edit]

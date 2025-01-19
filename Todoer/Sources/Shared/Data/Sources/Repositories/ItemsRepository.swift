@@ -109,7 +109,8 @@ public final class ItemsRepository: ItemsRepositoryApi {
 extension ItemDTO {
 	fileprivate var toDomain: Item {
 		Item(
-			documentId: id ?? "",
+            id: UUID(),
+            documentId: id ?? "",
 			name: name,
 			done: done,
 			index: index

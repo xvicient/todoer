@@ -202,8 +202,8 @@ extension ListItems {
 // MARK: - Item to ItemRow
 
 extension Item {
-	var toItemRow: ListItems.Reducer.ItemRow {
-		ListItems.Reducer.ItemRow(
+	var toItemRow: ListItems.Reducer.WrappedItem {
+		ListItems.Reducer.WrappedItem(
             id: id,
 			item: self,
 			leadingActions: [done ? .undone : .done],
