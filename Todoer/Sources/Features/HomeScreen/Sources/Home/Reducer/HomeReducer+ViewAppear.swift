@@ -15,16 +15,4 @@ extension Home.Reducer {
 				.eraseToAnyPublisher()
 		)
 	}
-
-	func onProfilePhotoAppear(
-		state: inout State
-	) -> Effect<Action> {
-		return .task { send in
-			await send(
-				.getPhotoUrlResult(
-					useCase.getPhotoUrl()
-				)
-			)
-		}
-	}
 }

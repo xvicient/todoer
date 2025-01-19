@@ -14,6 +14,7 @@ struct HomeScreen: View {
     @State private var searchText = ""
     @State private var isSearchFocused = false
     private var invitationsView: Home.MakeInvitationsView
+    private var appMenuView: Home.MakeAppMenuView
     
     private var isEditing: Bool {
         store.state.viewState == .addingList ||
@@ -28,10 +29,12 @@ struct HomeScreen: View {
 
 	init(
         store: Store<Home.Reducer>,
-        @ViewBuilder invitationsView: @escaping Home.MakeInvitationsView
+        @ViewBuilder invitationsView: @escaping Home.MakeInvitationsView,
+        @ViewBuilder appMenuView: @escaping Home.MakeAppMenuView
     ) {
 		self.store = store
         self.invitationsView = invitationsView
+        self.appMenuView = appMenuView
 	}
 
 	var body: some View {
@@ -46,7 +49,7 @@ struct HomeScreen: View {
 			store.state.viewState == .loading
 		)
 		.navigationBarItems(
-			leading: navigationBarLeadingItems
+			leading: appMenuView()
 		)
 		.alert(item: alertBinding) {
 			alert(for: $0)
@@ -57,17 +60,6 @@ struct HomeScreen: View {
 // MARK: - ViewBuilders
 
 extension HomeScreen {
-	@ViewBuilder
-	fileprivate var navigationBarLeadingItems: some View {
-		HomeAccountMenuView(
-			profilePhotoUrl: store.state.viewModel.photoUrl,
-			onAboutTap: { store.send(.didTapAboutButton) },
-			onDelteAccountTap: { store.send(.didTapDeleteAccountButton) },
-			onSignoupTap: { store.send(.didTapSignoutButton) },
-			onProfilePhotoAppear: { store.send(.onProfilePhotoAppear) }
-		)
-	}
-
 	@ViewBuilder
 	fileprivate var contentView: some View {
         List {
@@ -212,17 +204,7 @@ extension HomeScreen {
 					store.send(.didTapDismissError)
 				}
 			)
-		case .destructive:
-			Alert(
-				title: Text(""),
-				message: Text(Constants.Text.deleteAccountConfirmation),
-				primaryButton: .destructive(Text(Constants.Text.deleteButton)) {
-					store.send(.didTapConfirmDeleteAccount)
-				},
-				secondaryButton: .default(Text(Constants.Text.cancelButton)) {
-					store.send(.didTapDismissDeleteAccount)
-				}
-			)
+        case .destructive: Alert(title: Text(""))
 		}
 	}
 }
@@ -248,7 +230,6 @@ extension HomeScreen {
 	fileprivate struct Constants {
 		struct Text {
 			static let todos = "To-dos"
-			static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
 			static let errorTitle = "Error"
 			static let okButton = "Ok"
 			static let deleteButton = "Delete"

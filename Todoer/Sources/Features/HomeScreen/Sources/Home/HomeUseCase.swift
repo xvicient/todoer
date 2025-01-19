@@ -7,10 +7,6 @@ import Entities
 protocol HomeUseCaseApi {
 	func fetchData() -> AnyPublisher<HomeData, Error>
 
-	func getPhotoUrl() async -> ActionResult<String>
-
-	func signOut() -> ActionResult<EquatableVoid>
-
 	func updateList(
 		list: UserList
 	) async -> ActionResult<UserList>
@@ -26,8 +22,6 @@ protocol HomeUseCaseApi {
 	func sortLists(
 		lists: [UserList]
 	) async -> ActionResult<EquatableVoid>
-
-	func deleteAccount() async -> ActionResult<EquatableVoid>
 }
 
 extension Home {
@@ -52,21 +46,15 @@ extension Home {
 		private let listsRepository: ListsRepositoryApi
 		private let itemsRepository: ItemsRepositoryApi
 		private let invitationsRepository: InvitationsRepositoryApi
-		private let usersRepository: UsersRepositoryApi
-		private let authenticationService: AuthenticationService
 
 		init(
 			listsRepository: ListsRepositoryApi = ListsRepository(),
             itemsRepository: ItemsRepositoryApi = ItemsRepository(),
-			invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
-			usersRepository: UsersRepositoryApi = UsersRepository(),
-			authenticationService: AuthenticationService = AuthenticationService()
+			invitationsRepository: InvitationsRepositoryApi = InvitationsRepository()
 		) {
 			self.listsRepository = listsRepository
 			self.itemsRepository = itemsRepository
 			self.invitationsRepository = invitationsRepository
-			self.usersRepository = usersRepository
-			self.authenticationService = authenticationService
 		}
 
 		func fetchData() -> AnyPublisher<HomeData, Error> {
@@ -76,27 +64,6 @@ extension Home {
 			)
 			.map { HomeData(lists: $0, invitations: $1) }
 			.eraseToAnyPublisher()
-		}
-
-		func getPhotoUrl() async -> ActionResult<String> {
-			do {
-				let photoUrl = try await usersRepository.getSelfUser()?.photoUrl
-				return .success(photoUrl ?? "")
-			}
-			catch {
-				return .failure(error)
-			}
-		}
-
-		func signOut() -> ActionResult<EquatableVoid> {
-			do {
-				try authenticationService.signOut()
-				usersRepository.setUid("")
-				return .success()
-			}
-			catch {
-				return .failure(error)
-			}
 		}
 
 		func updateList(
@@ -148,17 +115,6 @@ extension Home {
 		) async -> ActionResult<EquatableVoid> {
 			do {
 				try await listsRepository.sortLists(lists: lists)
-				return .success()
-			}
-			catch {
-				return .failure(error)
-			}
-		}
-
-		func deleteAccount() async -> ActionResult<EquatableVoid> {
-			do {
-				try await usersRepository.deleteUser()
-				try await listsRepository.deleteSelfUserLists()
 				return .success()
 			}
 			catch {

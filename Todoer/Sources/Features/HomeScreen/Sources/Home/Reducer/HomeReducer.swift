@@ -31,7 +31,6 @@ extension Home {
 			// MARK: - View appear
 			/// HomeReducer+ViewAppear
 			case onViewAppear
-			case onProfilePhotoAppear
 
 			// MARK: - User actions
 			/// HomeReducer+UserActions
@@ -45,19 +44,13 @@ extension Home {
 			case didTapAddRowButton
 			case didTapCancelAddListButton
 			case didTapSubmitListButton(String)
-			case didTapSignoutButton
-			case didTapAboutButton
 			case didSortLists(IndexSet, Int)
 			case didTapDismissError
-			case didTapConfirmDeleteAccount
-			case didTapDismissDeleteAccount
-			case didTapDeleteAccountButton
 			case didTapAutoSortLists
 
 			// MARK: - Results
 			/// HomeReducer+Results
 			case fetchDataResult(ActionResult<HomeData>)
-			case getPhotoUrlResult(ActionResult<String>)
 			case toggleListResult(ActionResult<UserList>)
 			case deleteListResult(ActionResult<EquatableVoid>)
 			case addListResult(ActionResult<UserList>)
@@ -99,11 +92,6 @@ extension Home {
 			switch (state.viewState, action) {
 			case (.idle, .onViewAppear):
 				return onAppear(
-					state: &state
-				)
-
-			case (_, .onProfilePhotoAppear):
-				return onProfilePhotoAppear(
 					state: &state
 				)
 
@@ -166,36 +154,11 @@ extension Home {
 					newListName: name
 				)
 
-			case (.idle, .didTapSignoutButton):
-				return onDidTapSignoutButton(
-					state: &state
-				)
-
-			case (.idle, .didTapAboutButton):
-				return onDidTapAboutButton(
-					state: &state
-				)
-
 			case (.idle, .didSortLists(let fromIndex, let toIndex)):
 				return onDidSortLists(
 					state: &state,
 					fromIndex: fromIndex,
 					toIndex: toIndex
-				)
-
-			case (.idle, .didTapDeleteAccountButton):
-				return onDidTapDeleteAccountButton(
-					state: &state
-				)
-
-			case (.alert, .didTapConfirmDeleteAccount):
-				return onDidTapConfirmDeleteAccount(
-					state: &state
-				)
-
-			case (.alert, .didTapDismissDeleteAccount):
-				return onDidTapDismissDeleteAccount(
-					state: &state
 				)
 
 			case (.alert, .didTapDismissError):
@@ -213,12 +176,6 @@ extension Home {
                 (.loading, .fetchDataResult(let result)),
                 (.sortingList, .fetchDataResult(let result)):
 				return onFetchDataResult(
-					state: &state,
-					result: result
-				)
-
-			case (_, .getPhotoUrlResult(let result)):
-				return onPhotoUrlResult(
 					state: &state,
 					result: result
 				)
