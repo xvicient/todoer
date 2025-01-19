@@ -35,8 +35,6 @@ extension Home {
 
 			// MARK: - User actions
 			/// HomeReducer+UserActions
-			case didTapAcceptInvitation(String, String)
-			case didTapDeclineInvitation(String)
 			case didTapList(UUID)
 			case didTapToggleListButton(UUID)
 			case didTapDeleteListButton(UUID)
@@ -62,8 +60,6 @@ extension Home {
 			case getPhotoUrlResult(ActionResult<String>)
 			case toggleListResult(ActionResult<UserList>)
 			case deleteListResult(ActionResult<EquatableVoid>)
-			case acceptInvitationResult(ActionResult<EquatableVoid>)
-			case declineInvitationResult(ActionResult<EquatableVoid>)
 			case addListResult(ActionResult<UserList>)
 			case sortListsResult(ActionResult<EquatableVoid>)
 			case deleteAccountResult(ActionResult<EquatableVoid>)
@@ -109,19 +105,6 @@ extension Home {
 			case (_, .onProfilePhotoAppear):
 				return onProfilePhotoAppear(
 					state: &state
-				)
-
-			case (.idle, .didTapAcceptInvitation(let listId, let invitationId)):
-				return onDidTapAcceptInvitation(
-					state: &state,
-					listId: listId,
-					invitationId: invitationId
-				)
-
-			case (.idle, .didTapDeclineInvitation(let invitationId)):
-				return onDidTapDeclineInvitation(
-					state: &state,
-					invitationId: invitationId
 				)
 
 			case (.idle, .didTapList(let rowId)):
@@ -248,18 +231,6 @@ extension Home {
 
 			case (.updatingList, .deleteListResult(let result)):
 				return onDeleteListResult(
-					state: &state,
-					result: result
-				)
-
-			case (_, .acceptInvitationResult(let result)):
-				return onAcceptInvitationResult(
-					state: &state,
-					result: result
-				)
-
-			case (_, .declineInvitationResult(let result)):
-				return onDeclineInvitationResult(
 					state: &state,
 					result: result
 				)
