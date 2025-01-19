@@ -20,20 +20,6 @@ extension Home.Reducer {
 		return .none
 	}
 
-	func onPhotoUrlResult(
-		state: inout State,
-		result: ActionResult<String>
-	) -> Effect<Action> {
-		state.viewState = .idle
-		switch result {
-		case .success(let photoUrl):
-			state.viewModel.photoUrl = photoUrl
-		case .failure:
-			break
-		}
-		return .none
-	}
-
 	func onToggleListResult(
 		state: inout State,
 		result: ActionResult<UserList>
