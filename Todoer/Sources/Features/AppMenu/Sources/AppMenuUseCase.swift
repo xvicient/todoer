@@ -1,6 +1,7 @@
 import Combine
 import Data
 import Application
+import AppMenuContract
 
 protocol MenuUseCaseApi {
     func getPhotoUrl() async -> ActionResult<String>

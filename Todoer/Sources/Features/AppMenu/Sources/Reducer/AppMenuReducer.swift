@@ -1,15 +1,10 @@
 import Foundation
-import Entities
 import Common
 import Application
 import CoordinatorContract
-import HomeScreenContract
+import AppMenuContract
 
 // MARK: - MenuReducer
-
-public protocol AppMenuDependencies {
-    var coordinator: CoordinatorApi { get }
-}
 
 extension AppMenu {
 	struct Reducer: Application.Reducer {

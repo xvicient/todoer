@@ -68,6 +68,7 @@
 		C7C42E1D2D332CCD006B8C53 /* ShareListScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ShareListScreen; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
+		D611566D2D3D551200DD2DA6 /* AppMenu */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppMenu; sourceTree = "<group>"; };
 		D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureProvider.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
@@ -117,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */,
+				D611566D2D3D551200DD2DA6 /* AppMenu */,
 				C7C42E192D332CCD006B8C53 /* AboutScreen */,
 				C7C42E1A2D332CCD006B8C53 /* AuthenticationScreen */,
 				C7C42E1B2D332CCD006B8C53 /* HomeScreen */,

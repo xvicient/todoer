@@ -6,6 +6,7 @@ import ThemeComponents
 import Entities
 import Common
 import HomeScreenContract
+import AppMenuContract
 
 // MARK: - HomeScreen
 
@@ -14,7 +15,7 @@ struct HomeScreen: View {
     @State private var searchText = ""
     @State private var isSearchFocused = false
     private var invitationsView: Home.MakeInvitationsView
-    private var appMenuView: Home.MakeAppMenuView
+    private var appMenuView: AppMenu.MakeAppMenuView
     
     private var isEditing: Bool {
         store.state.viewState == .addingList ||
@@ -30,7 +31,7 @@ struct HomeScreen: View {
 	init(
         store: Store<Home.Reducer>,
         @ViewBuilder invitationsView: @escaping Home.MakeInvitationsView,
-        @ViewBuilder appMenuView: @escaping Home.MakeAppMenuView
+        @ViewBuilder appMenuView: @escaping AppMenu.MakeAppMenuView
     ) {
 		self.store = store
         self.invitationsView = invitationsView
@@ -247,7 +248,8 @@ struct Home_Previews: PreviewProvider {
     
     static var previews: some View {
         Home.Builder.makeHome(
-            dependencies: Dependencies(coordinator: CoordinatorMock())
+            dependencies: Dependencies(coordinator: CoordinatorMock()),
+            appMenuView: { AnyView(EmptyView()) }
         )
     }
 }

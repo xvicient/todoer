@@ -22,7 +22,8 @@ let package = Package(
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
         .package(path: "../Data"),
-        .package(path: "../Entities")
+        .package(path: "../Entities"),
+        .package(path: "../AppMenu")
         
     ],
     targets: [
@@ -45,7 +46,8 @@ let package = Package(
                 "Data",
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
-                "Entities"
+                "Entities",
+                "AppMenu"
             ],
             path: "Sources"
         ),

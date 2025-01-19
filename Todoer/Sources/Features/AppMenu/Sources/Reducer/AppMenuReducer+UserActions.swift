@@ -1,6 +1,6 @@
 import Foundation
-import Entities
 import Application
+import AppMenuContract
 
 // MARK: - Reducer user actions
 

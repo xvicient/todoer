@@ -1,7 +1,8 @@
 import SwiftUI
 import Application
+import AppMenuContract
 
-public struct AppMenu {
+extension AppMenu {
     
     public struct Builder {
         @MainActor

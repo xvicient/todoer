@@ -1,6 +1,8 @@
 import SwiftUI
 import Application
 import Common
+import ThemeAssets
+import AppMenuContract
 
 // MARK: - MenuView
 
