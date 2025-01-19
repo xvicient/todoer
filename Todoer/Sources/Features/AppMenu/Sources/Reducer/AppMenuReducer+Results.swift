@@ -1,5 +1,5 @@
-import Entities
 import Application
+import AppMenuContract
 
 // MARK: - Reducer results
 

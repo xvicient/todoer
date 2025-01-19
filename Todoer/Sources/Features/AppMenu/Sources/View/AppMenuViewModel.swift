@@ -1,3 +1,5 @@
+import AppMenuContract
+
 extension AppMenu.Reducer {
 
 	// MARK: - ViewModel

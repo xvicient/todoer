@@ -1,5 +1,6 @@
 import Combine
 import Application
+import AppMenuContract
 
 // MARK: - View appear
 

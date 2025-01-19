@@ -10,6 +10,8 @@ import ShareListScreen
 import ShareListScreenContract
 import AuthenticationScreenContract
 import AuthenticationScreen
+import AppMenuContract
+import AppMenu
 
 @MainActor
 struct FeatureProvider: FeatureProviderAPI {
@@ -22,6 +24,9 @@ struct FeatureProvider: FeatureProviderAPI {
         }
         return Home.Builder.makeHome(
             dependencies: Dependencies(
+                coordinator: coordinator
+            ),
+            appMenuView: makeAppMenuView(
                 coordinator: coordinator
             )
         )
@@ -74,5 +79,24 @@ struct FeatureProvider: FeatureProviderAPI {
                 coordinator: coordinator
             )
         )
+    }
+}
+
+private extension FeatureProvider {
+    func makeAppMenuView(
+        coordinator: CoordinatorApi
+    ) -> AppMenu.MakeAppMenuView {
+        {
+            struct Dependencies: AppMenuDependencies {
+                var coordinator: CoordinatorApi
+            }
+            
+            return AnyView(
+                AppMenu.Builder.makeAppMenu(
+                    dependencies: Dependencies(coordinator: coordinator)
+                )
+                .id(UUID())
+            )
+        }
     }
 }
