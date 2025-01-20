@@ -6,6 +6,21 @@ import AuthenticationScreenContract
 
 extension Authentication {
 	struct Reducer: Application.Reducer {
+        
+        enum Errors: Error, LocalizedError {
+            case unexpectedError
+
+            var errorDescription: String? {
+                switch self {
+                case .unexpectedError:
+                    return "Unexpected error."
+                }
+            }
+
+            static var `default`: String {
+                Self.unexpectedError.localizedDescription
+            }
+        }
 
 		enum Action: Equatable {
 			// MARK: - User actions
@@ -20,15 +35,35 @@ extension Authentication {
 		}
 
 		@MainActor
-		struct State {
+		struct State: AppAlertState {
 			var viewState = ViewState.idle
 			var viewModel = ViewModel()
+            
+            var alert: AppAlert<Action>? {
+                guard case .alert(let data) = viewState else {
+                    return nil
+                    
+                }
+                return data
+            }
 		}
 
 		enum ViewState: Equatable {
 			case idle
 			case loading
-			case error(String)
+            case alert(AppAlert<Action>)
+            
+            static func error(
+                _ message: String = Errors.default
+            ) -> ViewState {
+                .alert(
+                    .init(
+                        title: Strings.errorTitle,
+                        message: message,
+                        primaryAction: (.didTapDismissError, Strings.errorOkButton)
+                    )
+                )
+            }
 		}
 
 		internal let dependencies: AuthenticationScreenDependencies
