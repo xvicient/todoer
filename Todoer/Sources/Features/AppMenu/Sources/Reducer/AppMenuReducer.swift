@@ -47,26 +47,22 @@ extension AppMenu {
 		}
 
 		@MainActor
-		struct State {
+        struct State: AppAlertState {
 			var viewState = ViewState.idle
 			var viewModel = ViewModel()
+            
+            var alert: AppAlert<Action>? {
+                guard case .alert(let data) = viewState else {
+                    return nil
+                    
+                }
+                return data
+            }
 		}
 
-		enum ViewState: AppAlertState {
+		enum ViewState {
 			case idle
 			case alert(AppAlert<Action>)
-            
-            var alertBinding: Binding<AppAlert<Action>?> {
-                Binding(
-                    get: {
-                        guard case .alert(let data) = self else {
-                            return nil
-                        }
-                        return data
-                    },
-                    set: { _ in }
-                )
-            }
 		}
 
         internal let dependencies: AppMenuDependencies

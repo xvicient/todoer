@@ -1,9 +1,11 @@
 import Foundation
 import SwiftUI
+import Application
 
-public protocol AppAlertState<Action>: Equatable {
+@MainActor
+public protocol AppAlertState<Action>: Sendable {
     associatedtype Action: Sendable
-    var alertBinding: Binding<AppAlert<Action>?> { get }
+    var alert: AppAlert<Action>? { get }
 }
 
 public struct AppAlert<Action: Sendable>: Equatable, Sendable, Identifiable {
@@ -60,5 +62,15 @@ public struct AppAlert<Action: Sendable>: Equatable, Sendable, Identifiable {
 
     public static func == (lhs: AppAlert<Action>, rhs: AppAlert<Action>) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+@MainActor
+public extension Store where R.State: AppAlertState {
+    var alertBinding: Binding<AppAlert<R.State.Action>?> {
+        Binding(
+            get: { [weak self] in self?.state.alert },
+            set: { _ in }
+        )
     }
 }

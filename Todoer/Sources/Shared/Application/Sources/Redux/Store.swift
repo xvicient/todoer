@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import SwiftUI
 
 public final class Store<R: Reducer>: ObservableObject {
 	@Published private(set) public var state: R.State
