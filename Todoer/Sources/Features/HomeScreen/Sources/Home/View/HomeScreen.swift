@@ -61,18 +61,31 @@ struct HomeScreen: View {
 // MARK: - ViewBuilders
 
 extension HomeScreen {
+    
+    private var listSectionConfiguration: TDListSection.Configuration {
+        .init(
+            title: Constants.Text.todos,
+            addButtonTitle: Constants.Text.newRowButtonTitle,
+            isDisabled: store.state.viewModel.lists.isEmpty,
+            isEditMode: isEditing
+        )
+    }
+    
+    private var listSectionActions: TDListSection.Actions {
+        .init(
+            onAddRow: { store.send(.didTapAddRowButton) },
+            onSortRows: { store.send(.didTapAutoSortLists) }
+        )
+    }
+    
 	@ViewBuilder
 	fileprivate var contentView: some View {
         List {
             invitationsSection
             TDListSection(
                 content: listContent,
-                title: Constants.Text.todos,
-                addButtonTitle: Constants.Text.newRowButtonTitle,
-                isDisabled: store.state.viewModel.lists.isEmpty,
-                isEditMode: isEditing,
-                onAddRow: { store.send(.didTapAddRowButton) },
-                onSortRows: { store.send(.didTapAutoSortLists) }
+                configuration: listSectionConfiguration,
+                actions: listSectionActions
             )
         }
         .scrollIndicators(.hidden)
@@ -95,22 +108,32 @@ extension HomeScreen {
             invitationsView(store.state.viewModel.invitations)
 		}
 	}
+    
+    private var listContentConfiguration: TDListContent.Configuration {
+        .init(
+            rows: filteredLists.map { $0.tdListRow },
+            isMoveAllowed: !isSearchFocused
+        )
+    }
+    
+    private var listContentActions: TDListContent.Actions {
+        .init(
+            onSubmit: { store.send(.didTapSubmitListButton($0)) },
+            onUpdate: { store.send(.didTapUpdateListButton($0, $1)) },
+            onCancelAdd: { store.send(.didTapCancelAddListButton) },
+            onCancelEdit: { store.send(.didTapCancelEditListButton($0)) },
+            onTap: { store.send(.didTapList($0)) },
+            onSwipe: swipeActions,
+            onMove: moveList
+        )
+    }
 
     @ViewBuilder
     fileprivate func listContent() -> AnyView {
         AnyView(
             TDListContent(
-                rows: filteredLists.map { $0.tdListRow },
-                isMoveAllowed: !isSearchFocused,
-                onSubmit: { store.send(.didTapSubmitListButton($0)) },
-                onUpdate: {
-                    store.send(.didTapUpdateListButton($0, $1))
-                },
-                onCancelAdd: { store.send(.didTapCancelAddListButton) },
-                onCancelEdit: { store.send(.didTapCancelEditListButton($0)) },
-                onTap: { store.send(.didTapList($0)) },
-                onSwipe: swipeActions,
-                onMove: moveList
+                configuration: listContentConfiguration,
+                actions: listContentActions
             )
         )
     }
