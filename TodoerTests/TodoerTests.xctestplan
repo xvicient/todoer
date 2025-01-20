@@ -12,7 +12,62 @@
 
   },
   "testTargets" : [
-
+    {
+      "target" : {
+        "containerPath" : "container:Todoer\/Sources\/Features\/ListItemsScreen",
+        "identifier" : "ListItemsScreenTests",
+        "name" : "ListItemsScreenTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Todoer\/Sources\/Features\/AppMenu",
+        "identifier" : "AppMenuTests",
+        "name" : "AppMenuTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Todoer\/Sources\/Features\/HomeScreen",
+        "identifier" : "HomeScreenTests",
+        "name" : "HomeScreenTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Todoer\/Sources\/Features\/AuthenticationScreen",
+        "identifier" : "AuthenticationScreenTests",
+        "name" : "AuthenticationScreenTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Todoer.xcodeproj",
+        "identifier" : "C74515162B750F3D00C6D08E",
+        "name" : "TodoerTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Todoer\/Sources\/Features\/ShareListScreen",
+        "identifier" : "ShareListScreenTests",
+        "name" : "ShareListScreenTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Todoer\/Sources\/Features\/AboutScreen",
+        "identifier" : "AboutScreenTests",
+        "name" : "AboutScreenTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Todoer\/Sources\/Shared\/Data",
+        "identifier" : "DataTests",
+        "name" : "DataTests"
+      }
+    }
   ],
   "version" : 1
 }
