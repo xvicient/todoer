@@ -73,6 +73,12 @@ extension Home {
 			case editingList
 			case alert(AlertStyle)
 		}
+        
+        public enum AlertStyle: Equatable, Identifiable, Sendable {
+            public var id: UUID { UUID() }
+            case error(String)
+            case destructive
+        }
 
 		internal let dependencies: HomeScreenDependencies
         internal let useCase: HomeUseCaseApi = UseCase()

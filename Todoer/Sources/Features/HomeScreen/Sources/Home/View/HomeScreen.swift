@@ -169,7 +169,7 @@ extension HomeScreen {
 		store.send(.didSortLists(fromOffset, toOffset))
 	}
 
-	fileprivate var alertBinding: Binding<AlertStyle?> {
+    fileprivate var alertBinding: Binding<Home.Reducer.AlertStyle?> {
 		Binding(
 			get: {
 				guard case .alert(let data) = store.state.viewState else {
@@ -181,7 +181,7 @@ extension HomeScreen {
 		)
 	}
 
-	fileprivate func alert(for style: AlertStyle) -> Alert {
+    fileprivate func alert(for style: Home.Reducer.AlertStyle) -> Alert {
 		switch style {
 		case let .error(message):
 			Alert(
@@ -220,8 +220,6 @@ extension HomeScreen {
 			static let todos = "To-dos"
 			static let errorTitle = "Error"
 			static let okButton = "Ok"
-			static let deleteButton = "Delete"
-			static let cancelButton = "Cancel"
             static let newRowButtonTitle = "New To-do"
             static let sortButtonTitle = "Sort"
 		}

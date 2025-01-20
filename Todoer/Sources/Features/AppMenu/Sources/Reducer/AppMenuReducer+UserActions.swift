@@ -1,6 +1,7 @@
 import Foundation
 import Application
 import AppMenuContract
+import Common
 
 // MARK: - Reducer user actions
 
@@ -14,7 +15,12 @@ extension AppMenu.Reducer {
 		case .success:
 			dependencies.coordinator.loggOut()
 		case .failure:
-			state.viewState = .alert(.error(Errors.default))
+            state.viewState = .alert(
+                .init(
+                    message: Errors.default,
+                    primaryAction: (.didTapDismissError, Constants.Text.errorTitle)
+                )
+            )
 		}
 		return .none
 	}
@@ -26,12 +32,18 @@ extension AppMenu.Reducer {
 		dependencies.coordinator.push(.about)
 		return .none
 	}
-
-	func onDidTapDeleteAccountButton(
-		state: inout State
-	) -> Effect<Action> {
-		state.viewState = .alert(.destructive)
-		return .none
+    
+    func onDidTapDeleteAccountButton(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .alert(
+            .init(
+                message: Constants.Text.deleteAccountConfirmation,
+                primaryAction: (.didTapConfirmDeleteAccount, Constants.Text.deleteButton),
+                secondaryAction: (.didTapDismissDeleteAccount, Constants.Text.cancelButton)
+            )
+        )
+        return .none
 	}
 
 	func onDidTapConfirmDeleteAccount(
