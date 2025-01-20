@@ -34,18 +34,12 @@ struct AuthenticationScreen: View {
 			appInfoView
 		}
 		.background(Color.backgroundWhite)
-		.alert(isPresented: alertBinding) {
-			Alert(
-				title: Text(Constants.Text.errorTitle),
-				message: alertErrorMessage,
-				dismissButton: .default(Text(Constants.Text.errorOkButton)) {
-					store.send(.didTapDismissError)
-				}
-			)
-		}
 		.disabled(
 			store.state.viewState == .loading
 		)
+        .alert(item: store.alertBinding) {
+            $0.alert { store.send($0) }
+        }
 	}
 }
 
@@ -100,7 +94,7 @@ extension AuthenticationScreen {
 			.padding(30)
 			.ignoresSafeArea()
 			.onAppear {
-				typeWriter(at: Constants.Text.getThingsDone.startIndex)
+				typeWriter(at: Authentication.Strings.getThingsDone.startIndex)
 			}
 		}
 	}
@@ -126,7 +120,7 @@ extension AuthenticationScreen {
 							Image.googleLogo
 								.resizable()
 								.frame(width: 36, height: 36)
-							Text(Constants.Text.signInWithGoogle)
+                            Text(Authentication.Strings.signInWithGoogle)
 								.foregroundColor(Color.textWhite)
 								.frame(height: 44)
 								.font(.system(size: 17, weight: .semibold))
@@ -167,57 +161,22 @@ extension AuthenticationScreen {
 			}
 		}
 	}
-
-	@ViewBuilder
-	fileprivate var alertErrorMessage: Text? {
-		if case let .error(error) = store.state.viewState {
-			Text(error)
-		}
-	}
 }
 
 // MARK: - Private
 
 extension AuthenticationScreen {
 	fileprivate func typeWriter(at position: String.Index) {
-		if position == Constants.Text.getThingsDone.startIndex {
+		if position == Authentication.Strings.getThingsDone.startIndex {
 			caption = ""
 		}
 
-		if position < Constants.Text.getThingsDone.endIndex {
+		if position < Authentication.Strings.getThingsDone.endIndex {
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.04) {
-				let char = Constants.Text.getThingsDone[position]
+				let char = Authentication.Strings.getThingsDone[position]
 				caption.append(char)
-				typeWriter(at: Constants.Text.getThingsDone.index(after: position))
+				typeWriter(at: Authentication.Strings.getThingsDone.index(after: position))
 			}
-		}
-	}
-
-	fileprivate var alertBinding: Binding<Bool> {
-		Binding(
-			get: {
-				if case .error = store.state.viewState {
-					return true
-				}
-				else {
-					return false
-				}
-			},
-			set: { _ in }
-		)
-	}
-}
-
-// MARK: - Constants
-
-extension AuthenticationScreen {
-	struct Constants {
-		struct Text {
-			static let login = "Login"
-			static let signInWithGoogle = "Sign in with Google"
-			static let errorTitle = "Error"
-			static let errorOkButton = "Ok"
-			static let getThingsDone = "Get things done!"
 		}
 	}
 }
