@@ -44,7 +44,7 @@ struct AppMenuView: View {
 		.onAppear {
             store.send(.onViewAppear)
 		}
-        .alert(item: store.state.viewState.alertBinding) {
+        .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
         }
 	}
