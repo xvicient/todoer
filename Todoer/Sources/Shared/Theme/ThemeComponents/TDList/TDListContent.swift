@@ -2,44 +2,64 @@ import SwiftUI
 import Common
 
 public struct TDListContent: View {
-    private let rows: [TDListRow]
-    private let isMoveAllowed: Bool
-    private let onSubmit: (String) -> Void
-    private let onUpdate: (UUID, String) -> Void
-    private let onCancelAdd: () -> Void
-    private let onCancelEdit: (UUID) -> Void
-    private let onTap: ((UUID) -> Void)?
-    private let onSwipe: (UUID, TDSwipeAction) -> Void
-    private let onMove: (IndexSet, Int) -> Void
+    public struct Configuration {
+        let rows: [TDListRow]
+        let isMoveAllowed: Bool
+        
+        public init(
+            rows: [TDListRow],
+            isMoveAllowed: Bool
+        ) {
+            self.rows = rows
+            self.isMoveAllowed = isMoveAllowed
+        }
+    }
+    
+    public struct Actions {
+        let onSubmit: (String) -> Void
+        let onUpdate: (UUID, String) -> Void
+        let onCancelAdd: () -> Void
+        let onCancelEdit: (UUID) -> Void
+        let onTap: ((UUID) -> Void)?
+        let onSwipe: (UUID, TDSwipeAction) -> Void
+        let onMove: (IndexSet, Int) -> Void
+        
+        public init(
+            onSubmit: @escaping (String) -> Void,
+            onUpdate: @escaping (UUID, String) -> Void,
+            onCancelAdd: @escaping () -> Void,
+            onCancelEdit: @escaping (UUID) -> Void,
+            onTap: ((UUID) -> Void)? = nil,
+            onSwipe: @escaping (UUID, TDSwipeAction) -> Void,
+            onMove: @escaping (IndexSet, Int) -> Void
+        ) {
+            self.onSubmit = onSubmit
+            self.onUpdate = onUpdate
+            self.onCancelAdd = onCancelAdd
+            self.onCancelEdit = onCancelEdit
+            self.onTap = onTap
+            self.onSwipe = onSwipe
+            self.onMove = onMove
+        }
+    }
+    
+    private let configuration: Configuration
+    private let actions: Actions
     
     @FocusState private var isEmptyRowFocused: Bool
     @State private var emptyRowText = ""
     
     public init(
-        rows: [TDListRow],
-        isMoveAllowed: Bool,
-        onSubmit: @escaping (String) -> Void,
-        onUpdate: @escaping (UUID, String) -> Void,
-        onCancelAdd: @escaping () -> Void,
-        onCancelEdit: @escaping (UUID) -> Void,
-        onTap: ((UUID) -> Void)? = nil,
-        onSwipe: @escaping (UUID, TDSwipeAction) -> Void,
-        onMove: @escaping (IndexSet, Int) -> Void
+        configuration: Configuration,
+        actions: Actions
     ) {
-        self.rows = rows
-        self.isMoveAllowed = isMoveAllowed
-        self.onSubmit = onSubmit
-        self.onUpdate = onUpdate
-        self.onCancelAdd = onCancelAdd
-        self.onCancelEdit = onCancelEdit
-        self.onTap = onTap
-        self.onSwipe = onSwipe
-        self.onMove = onMove
+        self.configuration = configuration
+        self.actions = actions
     }
     
     public var body: some View {
         ForEach(
-            Array(rows.enumerated()),
+            Array(configuration.rows.enumerated()),
             id: \.element.id
         ) { index, row in
             if row.isEditing {
@@ -50,8 +70,8 @@ public struct TDListContent: View {
                 .id(index)
             }
         }
-        .if(isMoveAllowed) {
-            $0.onMove(perform: onMove)
+        .if(configuration.isMoveAllowed) {
+            $0.onMove(perform: actions.onMove)
         }
     }
 }
@@ -75,20 +95,20 @@ private extension TDListContent {
                 .onSubmit {
                     hideKeyboard()
                     if row.name.isEmpty {
-                        onSubmit($emptyRowText.wrappedValue)
+                        actions.onSubmit($emptyRowText.wrappedValue)
                     }
                     else {
-                        onUpdate(row.id, $emptyRowText.wrappedValue)
+                        actions.onUpdate(row.id, $emptyRowText.wrappedValue)
                     }
                 }
                 .submitLabel(.done)
             Button(action: {
                 hideKeyboard()
                 if row.name.isEmpty {
-                    onCancelAdd()
+                    actions.onCancelAdd()
                 }
                 else {
-                    onCancelEdit(row.id)
+                    actions.onCancelEdit(row.id)
                 }
             }) {
                 Image.xmark
@@ -125,7 +145,7 @@ private extension TDListContent {
                 row.image
                     .foregroundColor(Color.buttonBlack)
                 Button(action: {
-                    onTap?(row.id)
+                    actions.onTap?(row.id)
                 }) {
                     Text(row.name)
                         .lineLimit(nil)
@@ -167,15 +187,15 @@ private extension TDListContent {
     @ViewBuilder
     func swipeActions(
         _ rowID: UUID,
-        _ actions: [TDSwipeAction]
+        _ swipeActions: [TDSwipeAction]
     ) -> some View {
         ForEach(
-            actions,
+            swipeActions,
             id: \.id
         ) { action in
             Button {
                 withAnimation {
-                    onSwipe(rowID, action)
+                    actions.onSwipe(rowID, action)
                 }
             } label: {
                 action.icon

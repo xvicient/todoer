@@ -55,17 +55,30 @@ struct ListItemsScreen: View {
 // MARK: - Private
 
 extension ListItemsScreen {
+    
+    private var itemsSectionConfiguration: TDListSection.Configuration {
+        .init(
+            title: store.state.viewModel.listName,
+            addButtonTitle: Constants.Text.newRowButtonTitle,
+            isDisabled: store.state.viewModel.items.isEmpty,
+            isEditMode: isEditing
+        )
+    }
+    
+    private var itemsSectionActions: TDListSection.Actions {
+        .init(
+            onAddRow: { store.send(.didTapAddRowButton) },
+            onSortRows: { store.send(.didTapAutoSortItems) }
+        )
+    }
+    
 	@ViewBuilder
 	fileprivate var itemsList: some View {
         List {
             TDListSection(
                 content: itemsContent,
-                title: store.state.viewModel.listName,
-                addButtonTitle: Constants.Text.newRowButtonTitle,
-                isDisabled: store.state.viewModel.items.isEmpty,
-                isEditMode: isEditing,
-                onAddRow: { store.send(.didTapAddRowButton) },
-                onSortRows: { store.send(.didTapAutoSortItems) }
+                configuration: itemsSectionConfiguration,
+                actions: itemsSectionActions
             )
         }
         .scrollIndicators(.hidden)
@@ -82,18 +95,30 @@ extension ListItemsScreen {
         }
     }
     
+    private var itemsContentConfiguration: TDListContent.Configuration {
+        .init(
+            rows: filteredItems.map { $0.tdListRow },
+            isMoveAllowed: !isSearchFocused
+        )
+    }
+    
+    private var itemsContentActions: TDListContent.Actions {
+        .init(
+            onSubmit: { store.send(.didTapSubmitItemButton($0)) },
+            onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
+            onCancelAdd: { store.send(.didTapCancelAddItemButton) },
+            onCancelEdit: { store.send(.didTapCancelEditItemButton($0)) },
+            onSwipe: swipeActions,
+            onMove: moveItem
+        )
+    }
+    
     @ViewBuilder
     fileprivate func itemsContent() -> AnyView {
         AnyView(
             TDListContent(
-                rows: filteredItems.map { $0.tdListRow },
-                isMoveAllowed: !isSearchFocused,
-                onSubmit: { store.send(.didTapSubmitItemButton($0)) },
-                onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
-                onCancelAdd: { store.send(.didTapCancelAddItemButton) },
-                onCancelEdit: { store.send(.didTapCancelEditItemButton($0)) },
-                onSwipe: swipeActions,
-                onMove: moveItem
+                configuration: itemsContentConfiguration,
+                actions: itemsContentActions
             )
         )
     }
