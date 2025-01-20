@@ -13,7 +13,7 @@ extension Home.Reducer {
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.index(for: uid),
               let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 			return .none
 		}
 		dependencies.coordinator.push(.listItems(list))
@@ -26,7 +26,7 @@ extension Home.Reducer {
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.index(for: uid),
               state.viewModel.lists[safe: index] != nil else {
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 			return .none
 		}
 		state.viewState = .updatingList
@@ -49,7 +49,7 @@ extension Home.Reducer {
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.index(for: uid),
               let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 			return .none
 		}
 		state.viewState = .updatingList
@@ -70,7 +70,7 @@ extension Home.Reducer {
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.index(for: uid),
               let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 			return .none
 		}
 		dependencies.coordinator.present(sheet: .shareList(list))
@@ -84,7 +84,7 @@ extension Home.Reducer {
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.index(for: uid),
               let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 			return .none
 		}
 		state.viewState = .editingList
@@ -103,7 +103,7 @@ extension Home.Reducer {
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.index(for: uid),
               var list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 			return .none
 		}
 		list.name = name
@@ -124,7 +124,7 @@ extension Home.Reducer {
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.index(for: uid),
               let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 			return .none
 		}
 		state.viewState = .idle

@@ -52,9 +52,9 @@ struct HomeScreen: View {
 		.navigationBarItems(
 			leading: appMenuView()
 		)
-		.alert(item: alertBinding) {
-			alert(for: $0)
-		}
+        .alert(item: store.alertBinding) {
+            $0.alert { store.send($0) }
+        }
 	}
 }
 
@@ -64,8 +64,8 @@ extension HomeScreen {
     
     private var listSectionConfiguration: TDListSection.Configuration {
         .init(
-            title: Constants.Text.todos,
-            addButtonTitle: Constants.Text.newRowButtonTitle,
+            title: Home.Strings.todos,
+            addButtonTitle: Home.Strings.newRowButtonTitle,
             isDisabled: store.state.viewModel.lists.isEmpty,
             isEditMode: isEditing
         )
@@ -168,32 +168,6 @@ extension HomeScreen {
         guard !isSearchFocused else { return }
 		store.send(.didSortLists(fromOffset, toOffset))
 	}
-
-    fileprivate var alertBinding: Binding<Home.Reducer.AlertStyle?> {
-		Binding(
-			get: {
-				guard case .alert(let data) = store.state.viewState else {
-					return nil
-				}
-				return data
-			},
-			set: { _ in }
-		)
-	}
-
-    fileprivate func alert(for style: Home.Reducer.AlertStyle) -> Alert {
-		switch style {
-		case let .error(message):
-			Alert(
-				title: Text(Constants.Text.errorTitle),
-				message: Text(message),
-				dismissButton: .default(Text(Constants.Text.okButton)) {
-					store.send(.didTapDismissError)
-				}
-			)
-        case .destructive: Alert(title: Text(""))
-		}
-	}
 }
 
 // MARK: - ListRow to TDRow
@@ -209,20 +183,6 @@ extension Home.Reducer.WrappedUserList {
 			trailingActions: trailingActions,
 			isEditing: isEditing
 		)
-	}
-}
-
-// MARK: - Constants
-
-extension HomeScreen {
-	fileprivate struct Constants {
-		struct Text {
-			static let todos = "To-dos"
-			static let errorTitle = "Error"
-			static let okButton = "Ok"
-            static let newRowButtonTitle = "New To-do"
-            static let sortButtonTitle = "Sort"
-		}
 	}
 }
 

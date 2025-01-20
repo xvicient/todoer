@@ -15,12 +15,7 @@ extension AppMenu.Reducer {
 		case .success:
 			dependencies.coordinator.loggOut()
 		case .failure:
-            state.viewState = .alert(
-                .init(
-                    message: Errors.default,
-                    primaryAction: (.didTapDismissError, Constants.Text.errorTitle)
-                )
-            )
+            state.viewState = .error()
 		}
 		return .none
 	}
@@ -38,9 +33,9 @@ extension AppMenu.Reducer {
     ) -> Effect<Action> {
         state.viewState = .alert(
             .init(
-                message: Constants.Text.deleteAccountConfirmation,
-                primaryAction: (.didTapConfirmDeleteAccount, Constants.Text.deleteButton),
-                secondaryAction: (.didTapDismissDeleteAccount, Constants.Text.cancelButton)
+                message: Strings.deleteAccountConfirmation,
+                primaryAction: (.didTapConfirmDeleteAccount, Strings.deleteButton),
+                secondaryAction: (.didTapDismissDeleteAccount, Strings.cancelButton)
             )
         )
         return .none

@@ -28,12 +28,7 @@ extension AppMenu.Reducer {
 			state.viewState = .idle
 			dependencies.coordinator.loggOut()
 		case .failure:
-            state.viewState = .alert(
-                .init(
-                    message: Errors.default,
-                    primaryAction: (.didTapDismissError, Constants.Text.errorTitle)
-                )
-            )
+            state.viewState = .error()
 		}
 		return .none
 	}

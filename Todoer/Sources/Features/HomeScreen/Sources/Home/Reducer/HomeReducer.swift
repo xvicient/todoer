@@ -11,6 +11,8 @@ typealias HomeData = Home.HomeData
 
 extension Home {
 	struct Reducer: Application.Reducer {
+        
+        typealias Strings = Home.Strings
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError
@@ -59,9 +61,17 @@ extension Home {
 		}
 
 		@MainActor
-		struct State {
+        struct State: AppAlertState {
 			var viewState = ViewState.idle
 			var viewModel = ViewModel()
+            
+            var alert: AppAlert<Action>? {
+                guard case .alert(let data) = viewState else {
+                    return nil
+                    
+                }
+                return data
+            }
 		}
 
 		enum ViewState: Equatable {
@@ -71,14 +81,20 @@ extension Home {
 			case sortingList
 			case updatingList
 			case editingList
-			case alert(AlertStyle)
+            case alert(AppAlert<Action>)
+            
+            static func error(
+                _ message: String = Errors.default
+            ) -> ViewState {
+                .alert(
+                    .init(
+                        title: Strings.errorTitle,
+                        message: message,
+                        primaryAction: (.didTapDismissError, Strings.okButton)
+                    )
+                )
+            }
 		}
-        
-        public enum AlertStyle: Equatable, Identifiable, Sendable {
-            public var id: UUID { UUID() }
-            case error(String)
-            case destructive
-        }
 
 		internal let dependencies: HomeScreenDependencies
         internal let useCase: HomeUseCaseApi = UseCase()

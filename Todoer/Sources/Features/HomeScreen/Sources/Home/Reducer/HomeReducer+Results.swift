@@ -15,7 +15,7 @@ extension Home.Reducer {
 			state.viewModel.lists = data.lists.map { $0.toListRow }
 			state.viewModel.invitations = data.invitations
 		case .failure:
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 		}
 		return .none
 	}
@@ -28,7 +28,7 @@ extension Home.Reducer {
 		case .success:
 			state.viewState = .idle
 		case .failure:
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 		}
 		return .none
 	}
@@ -41,7 +41,7 @@ extension Home.Reducer {
 		case .success:
 			state.viewState = .idle
 		case .failure:
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 		}
 		return .none
 	}
@@ -51,7 +51,7 @@ extension Home.Reducer {
 		result: ActionResult<UserList>
 	) -> Effect<Action> {
 		guard let index = state.viewModel.lists.firstIndex(where: { $0.isEditing }) else {
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 			return .none
 		}
 		state.viewModel.lists.remove(at: index)
@@ -61,7 +61,7 @@ extension Home.Reducer {
 			state.viewModel.lists.insert(list.toListRow, at: index)
 			state.viewState = .idle
 		case .failure(let error):
-			state.viewState = .alert(.error(error.localizedDescription))
+            state.viewState = .error(error.localizedDescription)
 		}
 		return .none
 	}
@@ -74,7 +74,7 @@ extension Home.Reducer {
 		case .success:
 			state.viewState = .idle
 		case .failure:
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 		}
 		return .none
 	}
@@ -88,7 +88,7 @@ extension Home.Reducer {
 			state.viewState = .idle
 			dependencies.coordinator.loggOut()
 		case .failure:
-			state.viewState = .alert(.error(Errors.default))
+			state.viewState = .error()
 		}
 		return .none
 	}
