@@ -228,7 +228,7 @@ extension UserList {
 		Home.Reducer.WrappedUserList(
             id: id,
 			list: self,
-			leadingActions: [self.done ? .undone : .done],
+			leadingActions: [done ? .undone : .done],
 			trailingActions: [.delete, .share, .edit]
 		)
 	}
