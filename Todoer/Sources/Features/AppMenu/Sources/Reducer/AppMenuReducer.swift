@@ -3,6 +3,7 @@ import Common
 import Application
 import CoordinatorContract
 import AppMenuContract
+import SwiftUI
 
 // MARK: - MenuReducer
 
@@ -51,9 +52,21 @@ extension AppMenu {
 			var viewModel = ViewModel()
 		}
 
-		enum ViewState: Equatable {
+		enum ViewState: AppAlertState {
 			case idle
-			case alert(AlertStyle)
+			case alert(AppAlert<Action>)
+            
+            var alertBinding: Binding<AppAlert<Action>?> {
+                Binding(
+                    get: {
+                        guard case .alert(let data) = self else {
+                            return nil
+                        }
+                        return data
+                    },
+                    set: { _ in }
+                )
+            }
 		}
 
         internal let dependencies: AppMenuDependencies
@@ -129,4 +142,16 @@ extension AppMenu {
 			}
 		}
 	}
+}
+
+extension AppMenu.Reducer {
+    struct Constants {
+        struct Text {
+            static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
+            static let deleteButton = "Delete"
+            static let cancelButton = "Cancel"
+            static let errorTitle = "Error"
+            static let okButton = "Ok"
+        }
+    }
 }
