@@ -10,6 +10,8 @@ import SwiftUI
 extension AppMenu {
 	struct Reducer: Application.Reducer {
         
+        typealias Strings = AppMenu.Strings
+        
         enum Errors: Error, LocalizedError {
             case unexpectedError
 
@@ -63,6 +65,18 @@ extension AppMenu {
 		enum ViewState {
 			case idle
 			case alert(AppAlert<Action>)
+            
+            static func error(
+                _ message: String = Errors.default
+            ) -> ViewState {
+                .alert(
+                    .init(
+                        title: Strings.errorTitle,
+                        message: message,
+                        primaryAction: (.didTapDismissError, Strings.okButton)
+                    )
+                )
+            }
 		}
 
         internal let dependencies: AppMenuDependencies
@@ -138,16 +152,4 @@ extension AppMenu {
 			}
 		}
 	}
-}
-
-extension AppMenu.Reducer {
-    struct Constants {
-        struct Text {
-            static let deleteAccountConfirmation = "This action will delete your account and data. Are you sure?"
-            static let deleteButton = "Delete"
-            static let cancelButton = "Cancel"
-            static let errorTitle = "Error"
-            static let okButton = "Ok"
-        }
-    }
 }
