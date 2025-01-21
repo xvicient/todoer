@@ -5,6 +5,7 @@ import ThemeComponents
 import Common
 import ListItemsScreenContract
 import Foundation
+import Strings
 
 // MARK: - ListItemsScreen
 
@@ -93,7 +94,7 @@ private extension ListItemsScreen {
     var sectionConfiguration: TDListSection.Configuration {
         .init(
             title: store.state.viewModel.listName,
-            addButtonTitle: ListItems.Strings.newRowButtonTitle,
+            addButtonTitle: Strings.ListItems.newItemButtonTitle,
             isDisabled: store.state.viewModel.items.isEmpty,
             isEditMode: isEditing
         )

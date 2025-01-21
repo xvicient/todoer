@@ -3,6 +3,7 @@ import Common
 import Application
 import CoordinatorContract
 import AuthenticationScreenContract
+import Strings
 
 extension Authentication {
 	struct Reducer: Application.Reducer {
@@ -58,9 +59,9 @@ extension Authentication {
             ) -> ViewState {
                 .alert(
                     .init(
-                        title: Strings.errorTitle,
+                        title: Strings.Errors.errorTitle,
                         message: message,
-                        primaryAction: (.didTapDismissError, Strings.errorOkButton)
+                        primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
                     )
                 )
             }

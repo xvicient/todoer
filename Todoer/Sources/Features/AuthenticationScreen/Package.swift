@@ -22,6 +22,7 @@ let package = Package(
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
         .package(path: "../Entities"),
+        .package(path: "../Strings"),
         .package(path: "../../../../Packages/External/GoogleSignInDependencies")
         
     ],
@@ -43,6 +44,7 @@ let package = Package(
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 "Entities",
+                "Strings",
                 "GoogleSignInDependencies"
             ],
             path: "Sources"

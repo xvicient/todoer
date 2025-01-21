@@ -2,6 +2,7 @@ import SwiftUI
 import ThemeAssets
 import ThemeComponents
 import Application
+import Strings
 
 // MARK: - InvitationsView
 
@@ -13,7 +14,7 @@ struct InvitationsView: View {
     }
 
 	var body: some View {
-		Section(header: Text(Constants.Text.invitations).listRowHeaderStyle()) {
+        Section(header: Text(Strings.Invitations.invitationsText).listRowHeaderStyle()) {
             ForEach(store.state.viewModel.invitations) { invitation in
 				HStack {
 					VStack(alignment: .leading) {
@@ -25,7 +26,7 @@ struct InvitationsView: View {
 								.font(.system(size: 14, weight: .light))
 								.padding(.bottom, 8)
 						}
-						Text("\(Constants.Text.wantsToShare)")
+                        Text("\(Strings.Invitations.wantsToShareText)")
 							.font(.system(size: 14))
 						Text("\(invitation.listName)")
 							.font(.system(size: 14, weight: .bold))
@@ -34,7 +35,7 @@ struct InvitationsView: View {
 					Spacer()
 					VStack {
 						TDBasicButton(
-							title: "\(Constants.Text.accept)",
+                            title: "\(Strings.Invitations.acceptButtonTitle)",
 							style: .primary,
 							size: .custom(with: 100, height: 32)
 						) {
@@ -46,7 +47,7 @@ struct InvitationsView: View {
                             )
 						}
 						TDBasicButton(
-							title: "\(Constants.Text.decline)",
+							title: "\(Strings.Invitations.declineButtonTitle)",
 							style: .destructive,
 							size: .custom(with: 100, height: 32)
 						) {
@@ -64,18 +65,5 @@ struct InvitationsView: View {
         .onAppear {
             store.send(.onViewAppear)
         }
-	}
-}
-
-// MARK: - Constants
-
-extension InvitationsView {
-	fileprivate struct Constants {
-		struct Text {
-			static let invitations = "Invitations"
-			static let wantsToShare = "Wants to share: "
-			static let accept = "Accept"
-			static let decline = "Decline"
-		}
 	}
 }

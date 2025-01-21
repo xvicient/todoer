@@ -1,5 +1,6 @@
 import SwiftUI
 import Common
+import Strings
 
 public struct TDListContent: View {
     public struct Configuration {
@@ -86,7 +87,7 @@ private extension TDListContent {
         HStack {
             row.image
                 .foregroundColor(Color.buttonBlack)
-            TextField(Constants.Text.list, text: $emptyRowText)
+            TextField(Strings.List.newItemPlaceholder, text: $emptyRowText)
                 .foregroundColor(Color.textBlack)
                 .focused($isEmptyRowFocused)
                 .onAppear {
@@ -201,14 +202,6 @@ private extension TDListContent {
                 action.icon
             }
             .tint(action.tint)
-        }
-    }
-}
-
-private extension TDListContent {
-    struct Constants {
-        struct Text {
-            static let list = "Name..."
         }
     }
 }
