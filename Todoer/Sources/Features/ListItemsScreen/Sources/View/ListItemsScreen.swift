@@ -84,14 +84,12 @@ extension ListItemsScreen {
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)
         .scrollContentBackground(.hidden)
-        .if(!isEditing) { content in
-            withAnimation {
-                content.searchable(
-                    text: $searchText,
-                    isPresented: $isSearchFocused,
-                    placement: .navigationBarDrawer(displayMode: .always)
-                )
-            }
+        .if(!isEditing) {
+            $0.searchable(
+                text: $searchText,
+                isPresented: $isSearchFocused,
+                placement: .navigationBarDrawer(displayMode: .always)
+            )
         }
     }
     
