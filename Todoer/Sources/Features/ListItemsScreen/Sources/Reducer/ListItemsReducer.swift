@@ -14,6 +14,8 @@ protocol ListItemsReducerDependencies {
 
 extension ListItems {
 	struct Reducer: Application.Reducer {
+        
+        typealias Strings = ListItems.Strings
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError
@@ -59,9 +61,17 @@ extension ListItems {
 		}
 
 		@MainActor
-		struct State {
+		struct State: AppAlertState {
 			var viewState = ViewState.idle
 			var viewModel = ViewModel()
+            
+            var alert: AppAlert<Action>? {
+                guard case .alert(let data) = viewState else {
+                    return nil
+                    
+                }
+                return data
+            }
 		}
 
 		enum ViewState: Equatable {
@@ -71,7 +81,19 @@ extension ListItems {
 			case updatingItem
 			case editingItem
 			case sortingItems
-			case error(String)
+            case alert(AppAlert<Action>)
+            
+            static func error(
+                _ message: String = Errors.default
+            ) -> ViewState {
+                .alert(
+                    .init(
+                        title: Strings.errorTitle,
+                        message: message,
+                        primaryAction: (.didTapDismissError, Strings.errorOkButton)
+                    )
+                )
+            }
 		}
 
 		internal let dependencies: ListItemsReducerDependencies
@@ -186,7 +208,7 @@ extension ListItems {
 					result: result
 				)
 
-			case (.error, .didTapDismissError):
+			case (.alert, .didTapDismissError):
 				return onDidTapDismissError(
 					state: &state
 				)

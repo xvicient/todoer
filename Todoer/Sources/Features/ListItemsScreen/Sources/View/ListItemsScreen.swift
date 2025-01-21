@@ -40,15 +40,9 @@ struct ListItemsScreen: View {
 		.disabled(
 			store.state.viewState == .loading
 		)
-		.alert(isPresented: alertBinding) {
-			Alert(
-				title: Text(Constants.Text.errorTitle),
-				message: alertErrorMessage,
-				dismissButton: .default(Text(Constants.Text.errorOkButton)) {
-					store.send(.didTapDismissError)
-				}
-			)
-		}
+        .alert(item: store.alertBinding) {
+            $0.alert { store.send($0) }
+        }
 	}
 }
 
@@ -59,7 +53,7 @@ extension ListItemsScreen {
     private var itemsSectionConfiguration: TDListSection.Configuration {
         .init(
             title: store.state.viewModel.listName,
-            addButtonTitle: Constants.Text.newRowButtonTitle,
+            addButtonTitle: ListItems.Strings.newRowButtonTitle,
             isDisabled: store.state.viewModel.items.isEmpty,
             isEditMode: isEditing
         )
@@ -127,13 +121,6 @@ extension ListItemsScreen {
 			ProgressView()
 		}
 	}
-
-	@ViewBuilder
-	fileprivate var alertErrorMessage: Text? {
-		if case let .error(error) = store.state.viewState {
-			Text(error)
-		}
-	}
 }
 
 // MARK: - Private
@@ -158,20 +145,6 @@ extension ListItemsScreen {
         guard !isSearchFocused else { return }
 		store.send(.didSortItems(fromOffset, toOffset))
 	}
-
-	fileprivate var alertBinding: Binding<Bool> {
-		Binding(
-			get: {
-				if case .error = store.state.viewState {
-					return true
-				}
-				else {
-					return false
-				}
-			},
-			set: { _ in }
-		)
-	}
 }
 
 // MARK: - ItemRow to TDRow
@@ -187,19 +160,6 @@ extension ListItems.Reducer.WrappedItem {
 			trailingActions: trailingActions,
 			isEditing: isEditing
 		)
-	}
-}
-
-// MARK: - Constants
-
-extension ListItemsScreen {
-	fileprivate struct Constants {
-		struct Text {
-			static let errorTitle = "Error"
-			static let errorOkButton = "Ok"
-            static let newRowButtonTitle = "New Item"
-            static let sortButtonTitle = "Sort"
-		}
 	}
 }
 
