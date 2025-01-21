@@ -31,7 +31,12 @@ struct ListItemsScreen: View {
 
 	var body: some View {
 		ZStack {
-			itemsList
+            TDList(
+                sections: sections,
+                isEditing: isEditing,
+                searchText: $searchText,
+                isSearchFocused: $isSearchFocused
+            )
 			loadingView
 		}
 		.onAppear {
@@ -46,11 +51,46 @@ struct ListItemsScreen: View {
 	}
 }
 
-// MARK: - Private
+// MARK: - ViewBuilders
 
-extension ListItemsScreen {
+private extension ListItemsScreen {
     
-    private var itemsSectionConfiguration: TDListSection.Configuration {
+    @ViewBuilder
+    func sections() -> AnyView {
+        AnyView(
+            Group{
+                TDListSection(
+                    content: itemsContent,
+                    configuration: sectionConfiguration,
+                    actions: sectionActions
+                )
+            }
+        )
+    }
+    
+    @ViewBuilder
+    func itemsContent() -> AnyView {
+        AnyView(
+            TDListContent(
+                configuration: contentConfiguration,
+                actions: contentActions
+            )
+        )
+    }
+
+    @ViewBuilder
+    var loadingView: some View {
+        if store.state.viewState == .loading {
+            ProgressView()
+        }
+    }
+}
+
+// MARK: - List comfigurations
+
+private extension ListItemsScreen {
+    
+    var sectionConfiguration: TDListSection.Configuration {
         .init(
             title: store.state.viewModel.listName,
             addButtonTitle: ListItems.Strings.newRowButtonTitle,
@@ -59,42 +99,21 @@ extension ListItemsScreen {
         )
     }
     
-    private var itemsSectionActions: TDListSection.Actions {
+    var sectionActions: TDListSection.Actions {
         .init(
             onAddRow: { store.send(.didTapAddRowButton) },
             onSortRows: { store.send(.didTapAutoSortItems) }
         )
     }
     
-	@ViewBuilder
-	fileprivate var itemsList: some View {
-        List {
-            TDListSection(
-                content: itemsContent,
-                configuration: itemsSectionConfiguration,
-                actions: itemsSectionActions
-            )
-        }
-        .scrollIndicators(.hidden)
-        .scrollBounceBehavior(.basedOnSize)
-        .scrollContentBackground(.hidden)
-        .if(!isEditing) {
-            $0.searchable(
-                text: $searchText,
-                isPresented: $isSearchFocused,
-                placement: .navigationBarDrawer(displayMode: .always)
-            )
-        }
-    }
-    
-    private var itemsContentConfiguration: TDListContent.Configuration {
+    var contentConfiguration: TDListContent.Configuration {
         .init(
             rows: filteredItems.map { $0.tdListRow },
             isMoveAllowed: !isSearchFocused
         )
     }
     
-    private var itemsContentActions: TDListContent.Actions {
+    var contentActions: TDListContent.Actions {
         .init(
             onSubmit: { store.send(.didTapSubmitItemButton($0)) },
             onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
@@ -104,23 +123,6 @@ extension ListItemsScreen {
             onMove: moveItem
         )
     }
-    
-    @ViewBuilder
-    fileprivate func itemsContent() -> AnyView {
-        AnyView(
-            TDListContent(
-                configuration: itemsContentConfiguration,
-                actions: itemsContentActions
-            )
-        )
-    }
-
-	@ViewBuilder
-	fileprivate var loadingView: some View {
-		if store.state.viewState == .loading {
-			ProgressView()
-		}
-	}
 }
 
 // MARK: - Private
