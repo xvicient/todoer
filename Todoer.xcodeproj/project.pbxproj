@@ -75,6 +75,7 @@
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
 		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D6AF86092D3FE33C006C55F7 /* Strings */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +141,7 @@
 		C78AF05E2D332BBF009244AF /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D6AF86092D3FE33C006C55F7 /* Strings */,
 				C7C42E0C2D332C8B006B8C53 /* Application */,
 				C7C42E0D2D332C8B006B8C53 /* Common */,
 				C7C42E0E2D332C8B006B8C53 /* Coordinator */,

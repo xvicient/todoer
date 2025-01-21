@@ -17,7 +17,8 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../Common")
+        .package(path: "../Common"),
+        .package(path: "../Strings")
         
     ],
     targets: [
@@ -33,7 +34,8 @@ let package = Package(
             name: "ThemeComponents",
             dependencies: [
                 "ThemeAssets",
-                "Common"
+                "Common",
+                "Strings"
             ],
             path: "ThemeComponents"
         )

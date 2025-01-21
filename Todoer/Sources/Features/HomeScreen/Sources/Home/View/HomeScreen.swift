@@ -7,6 +7,7 @@ import Entities
 import Common
 import HomeScreenContract
 import AppMenuContract
+import Strings
 
 // MARK: - HomeScreen
 
@@ -107,8 +108,8 @@ private extension HomeScreen {
     
     var sectionConfiguration: TDListSection.Configuration {
         .init(
-            title: Home.Strings.todos,
-            addButtonTitle: Home.Strings.newRowButtonTitle,
+            title: Strings.Home.todosText,
+            addButtonTitle: Strings.Home.newTodoButtonTitle,
             isDisabled: store.state.viewModel.lists.isEmpty,
             isEditMode: isEditing
         )

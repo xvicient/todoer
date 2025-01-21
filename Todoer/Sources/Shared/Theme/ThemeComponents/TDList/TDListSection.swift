@@ -1,5 +1,6 @@
 import SwiftUI
 import Common
+import Strings
 
 public struct TDListSection: View {
     public typealias Content = () -> AnyView
@@ -70,7 +71,7 @@ public struct TDListSection: View {
                 actions.onAddRow()
             }
             TDActionButton(
-                title: Constants.Text.sortButtonTitle,
+                title: Strings.List.sortButtonTitle,
                 icon: Image.arrowUpArrowDownCircleFill
             ) {
                 actions.onSortRows()
@@ -82,14 +83,5 @@ public struct TDListSection: View {
             isSearchFocused
         )
         .padding(.bottom, 12)
-    }
-}
-
-
-private extension TDListSection {
-    struct Constants {
-        struct Text {
-            static let sortButtonTitle = "Sort"
-        }
     }
 }

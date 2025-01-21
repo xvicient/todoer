@@ -4,6 +4,7 @@ import Common
 import Application
 import CoordinatorContract
 import ShareListScreenContract
+import Strings
 
 // MARK: - ShareListReducer
 
@@ -14,12 +15,19 @@ extension ShareList {
         
         internal enum Errors: Error, LocalizedError {
             case missingUserName
+            case unexpectedError
 
             var errorDescription: String? {
                 switch self {
                 case .missingUserName:
                     return "User name not found."
+                case .unexpectedError:
+                    return "Unexpected error."
                 }
+            }
+            
+            static var `default`: String {
+                Self.unexpectedError.localizedDescription
             }
         }
 
@@ -40,14 +48,34 @@ extension ShareList {
 		}
 
 		@MainActor
-		struct State {
+		struct State: AppAlertState {
 			var viewState = ViewState.idle
 			var viewModel = ViewModel()
+            
+            var alert: AppAlert<Action>? {
+                guard case .alert(let data) = viewState else {
+                    return nil
+                    
+                }
+                return data
+            }
 		}
 
 		enum ViewState: Equatable {
 			case idle
-			case error(String)
+            case alert(AppAlert<Action>)
+            
+            static func error(
+                _ message: String = Errors.default
+            ) -> ViewState {
+                .alert(
+                    .init(
+                        title: Strings.Errors.errorTitle,
+                        message: message,
+                        primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
+                    )
+                )
+            }
 		}
 
 		internal let dependencies: ShareListScreenDependencies

@@ -3,6 +3,7 @@ import Application
 import Common
 import ThemeAssets
 import AppMenuContract
+import Strings
 
 // MARK: - MenuView
 
@@ -17,13 +18,13 @@ struct AppMenuView: View {
 		HStack {
 			Spacer()
 			Menu {
-				Button(Constants.Text.about) {
+                Button(Strings.AppMenu.aboutOptionTitle) {
                     store.send(.didTapAboutButton)
 				}
-				Button(Constants.Text.deleteAccount, role: .destructive) {
+                Button(Strings.AppMenu.deleteAccountOptionTitle, role: .destructive) {
                     store.send(.didTapDeleteAccountButton)
 				}
-				Button(Constants.Text.logout) {
+                Button(Strings.AppMenu.logoutOptionTitle) {
                     store.send(.didTapSignoutButton)
 				}
 			} label: {
@@ -47,17 +48,5 @@ struct AppMenuView: View {
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
         }
-	}
-}
-
-// MARK: - Constants
-
-extension AppMenuView {
-	fileprivate struct Constants {
-		struct Text {
-			static let logout = "Logout"
-			static let about = "About"
-			static let deleteAccount = "Delete account"
-		}
 	}
 }

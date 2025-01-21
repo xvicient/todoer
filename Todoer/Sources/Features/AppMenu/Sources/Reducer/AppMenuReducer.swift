@@ -4,13 +4,12 @@ import Application
 import CoordinatorContract
 import AppMenuContract
 import SwiftUI
+import Strings
 
 // MARK: - MenuReducer
 
 extension AppMenu {
 	struct Reducer: Application.Reducer {
-        
-        typealias Strings = AppMenu.Strings
         
         enum Errors: Error, LocalizedError {
             case unexpectedError
@@ -71,9 +70,9 @@ extension AppMenu {
             ) -> ViewState {
                 .alert(
                     .init(
-                        title: Strings.errorTitle,
+                        title: Strings.Errors.errorTitle,
                         message: message,
-                        primaryAction: (.didTapDismissError, Strings.okButton)
+                        primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
                     )
                 )
             }

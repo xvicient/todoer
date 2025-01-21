@@ -4,6 +4,7 @@ import Common
 import Application
 import Entities
 import ListItemsScreenContract
+import Strings
 
 // MARK: - ListItemsReducer
 
@@ -14,8 +15,6 @@ protocol ListItemsReducerDependencies {
 
 extension ListItems {
 	struct Reducer: Application.Reducer {
-        
-        typealias Strings = ListItems.Strings
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError
@@ -88,9 +87,9 @@ extension ListItems {
             ) -> ViewState {
                 .alert(
                     .init(
-                        title: Strings.errorTitle,
+                        title: Strings.Errors.errorTitle,
                         message: message,
-                        primaryAction: (.didTapDismissError, Strings.errorOkButton)
+                        primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
                     )
                 )
             }

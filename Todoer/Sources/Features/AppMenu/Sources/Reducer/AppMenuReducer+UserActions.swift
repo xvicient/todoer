@@ -2,6 +2,7 @@ import Foundation
 import Application
 import AppMenuContract
 import Common
+import Strings
 
 // MARK: - Reducer user actions
 
@@ -33,9 +34,9 @@ extension AppMenu.Reducer {
     ) -> Effect<Action> {
         state.viewState = .alert(
             .init(
-                message: Strings.deleteAccountConfirmation,
-                primaryAction: (.didTapConfirmDeleteAccount, Strings.deleteButton),
-                secondaryAction: (.didTapDismissDeleteAccount, Strings.cancelButton)
+                message: Strings.AppMenu.deleteAccountConfirmationText,
+                primaryAction: (.didTapConfirmDeleteAccount, Strings.AppMenu.deleteButtonTitle),
+                secondaryAction: (.didTapDismissDeleteAccount, Strings.AppMenu.cancelButtonTitle)
             )
         )
         return .none

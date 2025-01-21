@@ -8,6 +8,7 @@ import ThemeComponents
 import CoordinatorContract
 import Entities
 import ShareListScreenContract
+import Strings
 
 // MARK: - ShareListView
 
@@ -32,24 +33,24 @@ struct ShareListScreen: View {
             if store.state.viewModel.selfName == nil {
                 TDTextField(
                     text: $shareOwnerNameText,
-                    placeholder: Constants.Text.shareOwnerNamePlaceholder
+                    placeholder: Strings.ShareList.shareOwnerNamePlaceholder
                 )
             }
             TDTextField(
                 text: $shareEmailText,
-                placeholder: Constants.Text.shareEmailPlaceholder
+                placeholder: Strings.ShareList.shareEmailPlaceholder
             )
-			TDBasicButton(title: Constants.Text.shareButtonTitle) {
+			TDBasicButton(title: Strings.ShareList.shareButtonTitle) {
                 store.send(.didTapShareListButton($shareEmailText.wrappedValue, $shareOwnerNameText.wrappedValue))
             }
             .disabled(isShareButtonDisabled)
-			Text(Constants.Text.sharingWithTitle)
+			Text(Strings.ShareList.sharingWithText)
 				.foregroundColor(Color.textBlack)
 				.fontWeight(.medium)
 				.padding(.top, 24)
 				.padding(.bottom, 8)
 			if store.state.viewModel.users.isEmpty {
-				Text(Constants.Text.notSharedYet)
+                Text(Strings.ShareList.notSharedYetText)
 					.foregroundColor(Color.textBlack)
 					.font(.system(size: 14))
 			}
@@ -89,15 +90,9 @@ struct ShareListScreen: View {
 		.onAppear {
 			store.send(.onAppear)
 		}
-		.alert(isPresented: alertBinding) {
-			Alert(
-				title: Text(Constants.Text.errorTitle),
-				message: alertErrorMessage,
-				dismissButton: .default(Text(Constants.Text.errorOkButton)) {
-					store.send(.didTapDismissError)
-				}
-			)
-		}
+        .alert(item: store.alertBinding) {
+            $0.alert { store.send($0) }
+        }
 	}
 }
 
@@ -105,60 +100,18 @@ struct ShareListScreen: View {
 
 extension ShareListScreen {
 	@ViewBuilder
-	fileprivate var alertErrorMessage: Text? {
-		if case let .error(error) = store.state.viewState {
-			Text(error)
-		}
-	}
-
-	@ViewBuilder
 	fileprivate var title: some View {
 		HStack {
 			Image.squareAndArrowUp
 				.foregroundColor(Color.backgroundBlack)
 				.fontWeight(.medium)
-			Text(Constants.Text.shareTitle)
+            Text(Strings.ShareList.shareText)
 				.foregroundColor(Color.textBlack)
 				.fontWeight(.medium)
 			Spacer()
 		}
 		.padding(.top, 24)
 		.padding(.bottom, 8)
-	}
-}
-
-// MARK: - Private
-
-extension ShareListScreen {
-	fileprivate var alertBinding: Binding<Bool> {
-		Binding(
-			get: {
-				if case .error = store.state.viewState {
-					return true
-				}
-				else {
-					return false
-				}
-			},
-			set: { _ in }
-		)
-	}
-}
-
-// MARK: - Constants
-
-extension ShareListScreen {
-	fileprivate struct Constants {
-		struct Text {
-			static let shareTitle = "Share"
-			static let sharingWithTitle = "Sharing with"
-			static let shareButtonTitle = "Share"
-            static let shareOwnerNamePlaceholder = "Your name..."
-			static let shareEmailPlaceholder = "Email to share with..."
-			static let notSharedYet = "Not shared yet"
-			static let errorTitle = "Error"
-			static let errorOkButton = "Ok"
-		}
 	}
 }
 

@@ -4,6 +4,7 @@ import Common
 import Application
 import CoordinatorContract
 import HomeScreenContract
+import Strings
 
 // MARK: - HomeReducer
 
@@ -11,8 +12,6 @@ typealias HomeData = Home.HomeData
 
 extension Home {
 	struct Reducer: Application.Reducer {
-        
-        typealias Strings = Home.Strings
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError
@@ -88,9 +87,9 @@ extension Home {
             ) -> ViewState {
                 .alert(
                     .init(
-                        title: Strings.errorTitle,
+                        title: Strings.Errors.errorTitle,
                         message: message,
-                        primaryAction: (.didTapDismissError, Strings.okButton)
+                        primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
                     )
                 )
             }
