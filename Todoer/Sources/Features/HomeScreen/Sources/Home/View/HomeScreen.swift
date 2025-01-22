@@ -104,8 +104,8 @@ private extension HomeScreen {
         .init(
             title: Strings.Home.todosText,
             addButtonTitle: Strings.Home.newTodoButtonTitle,
-            isDisabled: store.state.viewModel.lists.isEmpty,
-            isEditMode: isEditing
+            isSortEnabled: !store.state.viewModel.lists.isEmpty,
+            isHeaderEnabled: !isEditing && !isSearchFocused
         )
     }
     
