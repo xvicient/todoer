@@ -21,7 +21,8 @@ let package = Package(
         .package(path: "../Coordinator"),
         .package(path: "../Application"),
         .package(path: "../Common"),
-        .package(path: "../Theme")
+        .package(path: "../Theme"),
+        .package(path: "../Strings")
         
     ],
     targets: [
@@ -38,7 +39,8 @@ let package = Package(
                 "AppMenuContract",
                 "Application",
                 "Common",
-                .product(name: "ThemeAssets", package: "Theme")
+                .product(name: "ThemeAssets", package: "Theme"),
+                "Strings"
             ],
             path: "Sources"
         ),
