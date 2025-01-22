@@ -12,15 +12,13 @@ public struct Home {
     public struct Builder {
         
         public static func makeHome(
-            dependencies: HomeScreenDependencies,
-            appMenuView: @escaping AppMenu.MakeAppMenuView
+            dependencies: HomeScreenDependencies
         ) -> some View {
             let reducer = Reducer(dependencies: dependencies)
             let store = Store(initialState: .init(), reducer: reducer)
             return HomeScreen(
                 store: store,
-                invitationsView: makeInvitationsView(),
-                appMenuView: appMenuView
+                invitationsView: makeInvitationsView()
             )
         }
         

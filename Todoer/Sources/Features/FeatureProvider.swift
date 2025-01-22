@@ -25,9 +25,6 @@ struct FeatureProvider: FeatureProviderAPI {
         return Home.Builder.makeHome(
             dependencies: Dependencies(
                 coordinator: coordinator
-            ),
-            appMenuView: makeAppMenuView(
-                coordinator: coordinator
             )
         )
     }
@@ -80,23 +77,16 @@ struct FeatureProvider: FeatureProviderAPI {
             )
         )
     }
-}
-
-private extension FeatureProvider {
+    
     func makeAppMenuView(
         coordinator: CoordinatorApi
-    ) -> AppMenu.MakeAppMenuView {
-        {
-            struct Dependencies: AppMenuDependencies {
-                var coordinator: CoordinatorApi
-            }
-            
-            return AnyView(
-                AppMenu.Builder.makeAppMenu(
-                    dependencies: Dependencies(coordinator: coordinator)
-                )
-                .id(UUID())
-            )
+    ) -> any View {
+        struct Dependencies: AppMenuDependencies {
+            var coordinator: CoordinatorApi
         }
+        
+        return AppMenu.Builder.makeAppMenu(
+            dependencies: Dependencies(coordinator: coordinator)
+        )
     }
 }

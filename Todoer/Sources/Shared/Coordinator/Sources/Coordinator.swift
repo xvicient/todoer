@@ -10,12 +10,17 @@ final class Coordinator: CoordinatorApi, ObservableObject {
 	@Published var fullScreenCover: FullScreenCover?
 	@Published var landingView: AnyView?
 	@Published var landingPage: Page
+    private let authenticationService: AuthenticationService
     private let featureProvider: FeatureProviderAPI
+    public var isUserLogged: Bool {
+        authenticationService.isUserLogged
+    }
 
     init(
         authenticationService: AuthenticationService = AuthenticationService(),
         featureProvider: FeatureProviderAPI
     ) {
+        self.authenticationService = authenticationService
         self.featureProvider = featureProvider
         landingPage = authenticationService.isUserLogged ? .home : .authentication
         landingView = build(page: landingPage)
@@ -99,6 +104,8 @@ extension Coordinator {
             AnyView(featureProvider.makeListItemsScreen(list: list))
 		case .about:
             AnyView(featureProvider.makeAboutScreen())
+        case .menu:
+            AnyView(featureProvider.makeAppMenuView(coordinator: self))
 		}
 	}
 }

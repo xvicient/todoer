@@ -121,11 +121,11 @@ extension AuthenticationScreen {
                         HStack {
                             Image.googleLogo
                                 .resizable()
-                                .frame(width: 36, height: 36)
+                                .frame(width: 24, height: 24)
                             Text(Strings.Authentication.signInWithGoogleButtonTitle)
                                 .foregroundColor(Color.textWhite)
                                 .frame(height: 44)
-                                .font(.system(size: 17, weight: .semibold))
+                                .font(.system(size: 16, weight: .medium))
                         }
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())

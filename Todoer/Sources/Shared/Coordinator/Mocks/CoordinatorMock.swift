@@ -1,6 +1,7 @@
 import CoordinatorContract
 
 public final class CoordinatorMock: CoordinatorApi {
+    public var isUserLogged: Bool = false    
     
     public init() {}
 
