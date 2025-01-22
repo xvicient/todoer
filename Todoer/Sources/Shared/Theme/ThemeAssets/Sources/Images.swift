@@ -20,5 +20,4 @@ public extension Image {
 	static let squareAndPencil = Image(systemName: "square.and.pencil")
     static let ellipsis = Image(systemName: "ellipsis")
     static let arrowUpArrowDownCircleFill = Image(systemName: "arrow.up.arrow.down.circle.fill")
-    static let checklistUnchecked = Image(systemName: "checklist.unchecked")
 }

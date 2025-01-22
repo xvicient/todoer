@@ -177,17 +177,13 @@ extension ListItems.Reducer {
 		state: inout State
 	) -> Effect<Action> {
 		state.viewState = .sortingItems
-		state.viewModel.items
-			.filter { !$0.item.done }
-			.enumerated()
-			.forEach { index, item in
-				if let fromOffset = state.viewModel.items.firstIndex(where: { $0.id == item.id }) {
-					state.viewModel.items.move(
-						fromOffsets: IndexSet(integer: fromOffset),
-						toOffset: index
-					)
-				}
-			}
+        state.viewModel.items.sort {
+            if $0.item.done != $1.item.done {
+                return !$0.item.done && $1.item.done
+            } else {
+                return $0.item.name.localizedCompare($1.item.name) == .orderedAscending
+            }
+        }
 		let items = state.viewModel.items
 			.map { $0.item }
 		let listId = dependencies.list.documentId

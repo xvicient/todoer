@@ -95,8 +95,8 @@ private extension ListItemsScreen {
         .init(
             title: store.state.viewModel.listName,
             addButtonTitle: Strings.ListItems.newItemButtonTitle,
-            isDisabled: store.state.viewModel.items.isEmpty,
-            isEditMode: isEditing
+            isSortEnabled: !store.state.viewModel.items.isEmpty,
+            isHeaderEnabled: !isEditing && !isSearchFocused
         )
     }
     

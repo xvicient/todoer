@@ -202,17 +202,13 @@ extension Home.Reducer {
 		state: inout State
 	) -> Effect<Action> {
 		state.viewState = .sortingList
-		state.viewModel.lists
-			.filter { !$0.list.done }
-			.enumerated()
-			.forEach { index, item in
-				if let fromOffset = state.viewModel.lists.firstIndex(where: { $0.id == item.id }) {
-					state.viewModel.lists.move(
-						fromOffsets: IndexSet(integer: fromOffset),
-						toOffset: index
-					)
-				}
-			}
+        state.viewModel.lists.sort {
+            if $0.list.done != $1.list.done {
+                return !$0.list.done && $1.list.done
+            } else {
+                return $0.list.name.localizedCompare($1.list.name) == .orderedAscending
+            }
+        }
 		let lists = state.viewModel.lists
 			.map { $0.list }
 		return .task { send in

@@ -8,19 +8,19 @@ public struct TDListSection: View {
     public struct Configuration {
         let title: String
         let addButtonTitle: String
-        let isDisabled: Bool
-        let isEditMode: Bool
+        let isSortEnabled: Bool
+        let isHeaderEnabled: Bool
         
         public init(
             title: String,
             addButtonTitle: String,
-            isDisabled: Bool,
-            isEditMode: Bool
+            isSortEnabled: Bool,
+            isHeaderEnabled: Bool
         ) {
             self.title = title
             self.addButtonTitle = addButtonTitle
-            self.isDisabled = isDisabled
-            self.isEditMode = isEditMode
+            self.isSortEnabled = isSortEnabled
+            self.isHeaderEnabled = isHeaderEnabled
         }
     }
     
@@ -40,9 +40,6 @@ public struct TDListSection: View {
     private var content: Content
     private let configuration: Configuration
     private let actions: Actions
-    
-    @State private var searchText = ""
-    @State private var isSearchFocused = false
     
     public init(
         @ViewBuilder content: @escaping Content,
@@ -64,24 +61,21 @@ public struct TDListSection: View {
     @ViewBuilder
     private func header() -> some View {
         HStack {
-            TDActionButton(
+            TDListSectionButton(
                 title: configuration.addButtonTitle,
                 icon: Image.plusCircleFill
             ) {
                 actions.onAddRow()
             }
-            TDActionButton(
+            TDListSectionButton(
                 title: Strings.List.sortButtonTitle,
                 icon: Image.arrowUpArrowDownCircleFill
             ) {
                 actions.onSortRows()
             }
-            .disabled(configuration.isDisabled)
+            .disabled(!configuration.isSortEnabled)
         }
-        .disabled(
-            configuration.isEditMode ||
-            isSearchFocused
-        )
+        .disabled(!configuration.isHeaderEnabled)
         .padding(.bottom, 12)
     }
 }
