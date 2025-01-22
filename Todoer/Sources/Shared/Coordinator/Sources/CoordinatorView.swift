@@ -4,15 +4,23 @@ import CoordinatorContract
 
 public struct CoordinatorView: View {
     @StateObject private var coordinator: Coordinator
+    private let menuView: AnyView
     
     public init(featureProvider: FeatureProviderAPI) {
-        _coordinator = StateObject(wrappedValue: Coordinator(featureProvider: featureProvider))
+        let coordinator = Coordinator(featureProvider: featureProvider)
+        _coordinator = StateObject(wrappedValue: coordinator)
+        menuView = coordinator.build(page: .menu)
     }
 
 	public var body: some View {
 		NavigationStack(path: $coordinator.path) {
 			coordinator.landingView
 				.setupNavigationBar(page: coordinator.landingPage)
+                .if(coordinator.isUserLogged) {
+                    $0.navigationBarItems(
+                        leading: menuView
+                    )
+                }
 				.navigationDestination(for: Page.self) { page in
 					coordinator.build(page: page)
 						.setupNavigationBar(page: page)

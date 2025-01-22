@@ -16,7 +16,6 @@ struct HomeScreen: View {
     @State private var searchText = ""
     @State private var isSearchFocused = false
     private var invitationsView: Home.MakeInvitationsView
-    private var appMenuView: AppMenu.MakeAppMenuView
     
     private var isEditing: Bool {
         store.state.viewState == .addingList ||
@@ -31,12 +30,10 @@ struct HomeScreen: View {
 
     init(
         store: Store<Home.Reducer>,
-        @ViewBuilder invitationsView: @escaping Home.MakeInvitationsView,
-        @ViewBuilder appMenuView: @escaping AppMenu.MakeAppMenuView
+        @ViewBuilder invitationsView: @escaping Home.MakeInvitationsView
     ) {
         self.store = store
         self.invitationsView = invitationsView
-        self.appMenuView = appMenuView
     }
 
     var body: some View {
@@ -54,9 +51,6 @@ struct HomeScreen: View {
         }
         .disabled(
             store.state.viewState == .loading
-        )
-        .navigationBarItems(
-            leading: appMenuView()
         )
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
@@ -189,8 +183,7 @@ struct Home_Previews: PreviewProvider {
     
     static var previews: some View {
         Home.Builder.makeHome(
-            dependencies: Dependencies(coordinator: CoordinatorMock()),
-            appMenuView: { AnyView(EmptyView()) }
+            dependencies: Dependencies(coordinator: CoordinatorMock())
         )
     }
 }

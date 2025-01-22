@@ -7,6 +7,7 @@ public enum Page: Hashable, Identifiable {
     case home
     case listItems(UserList)
     case about
+    case menu
 
     public var id: Self { self }
 }
@@ -25,6 +26,7 @@ public enum FullScreenCover: Hashable, Identifiable {
 
 @MainActor
 public protocol CoordinatorApi {
+    var isUserLogged: Bool { get }
     func loggOut()
     func loggIn()
     func push(_ page: Page)
@@ -49,6 +51,9 @@ public protocol FeatureProviderAPI {
         list: UserList
     ) -> any View
     func makeAuthenticationScreen(
+        coordinator: CoordinatorApi
+    ) -> any View
+    func makeAppMenuView(
         coordinator: CoordinatorApi
     ) -> any View
 }

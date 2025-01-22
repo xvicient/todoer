@@ -146,7 +146,9 @@ extension ListItems {
             // sortingItems uses firestore batch that triggers the collection listener so the fetch is being triggered as well
 			case (.loading, .fetchItemsResult(let result)),
                 (.idle, .fetchItemsResult(let result)),
-                (.sortingItems, .fetchItemsResult(let result)):
+                (.sortingItems, .fetchItemsResult(let result)),
+                (.addingItem, .fetchItemsResult(let result)),
+                (.editingItem, .fetchItemsResult(let result)):
 				return onFetchItemsResult(
 					state: &state,
 					result: result
