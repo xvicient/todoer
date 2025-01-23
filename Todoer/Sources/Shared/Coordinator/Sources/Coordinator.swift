@@ -9,7 +9,7 @@ final class Coordinator: CoordinatorApi, ObservableObject {
 	@Published var sheet: Sheet?
 	@Published var fullScreenCover: FullScreenCover?
 	@Published var landingView: AnyView?
-	@Published var landingPage: Page
+	@Published var landingScreen: Screen
     private let authenticationService: AuthenticationService
     private let featureProvider: FeatureProviderAPI
     public var isUserLogged: Bool {
@@ -22,24 +22,24 @@ final class Coordinator: CoordinatorApi, ObservableObject {
     ) {
         self.authenticationService = authenticationService
         self.featureProvider = featureProvider
-        landingPage = authenticationService.isUserLogged ? .home : .authentication
-        landingView = build(page: landingPage)
+        landingScreen = authenticationService.isUserLogged ? .home : .authentication
+        landingView = build(screen: landingScreen)
     }
 
 	@MainActor
 	func loggOut() {
-		landingPage = .authentication
-		landingView = build(page: .authentication)
+        landingScreen = .authentication
+		landingView = build(screen: .authentication)
 	}
 
 	@MainActor
 	func loggIn() {
-		landingPage = .home
-		landingView = build(page: .home)
+        landingScreen = .home
+		landingView = build(screen: .home)
 	}
 
-	func push(_ page: Page) {
-		path.append(page)
+	func push(_ screen: Screen) {
+		path.append(screen)
 	}
 
 	func present(sheet: Sheet) {
@@ -67,8 +67,8 @@ final class Coordinator: CoordinatorApi, ObservableObject {
 	}
 
 	@MainActor @ViewBuilder
-	func build(page: Page) -> AnyView {
-		AnyView(_build(page: page))
+	func build(screen: Screen) -> AnyView {
+		AnyView(_build(screen: screen))
 	}
 
 	@MainActor @ViewBuilder
@@ -94,8 +94,8 @@ final class Coordinator: CoordinatorApi, ObservableObject {
 
 extension Coordinator {
 	@MainActor @ViewBuilder
-	fileprivate func _build(page: Page) -> some View {
-		switch page {
+	fileprivate func _build(screen: Screen) -> some View {
+		switch screen {
 		case .authentication:
             AnyView(featureProvider.makeAuthenticationScreen(coordinator: self))
 		case .home:

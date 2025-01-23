@@ -15,7 +15,7 @@ public final class CoordinatorMock: CoordinatorApi {
 		isLoggInCalled = true
 	}
 
-    public func push(_ page: Page) {}
+    public func push(_ screen: Screen) {}
 
     public func present(sheet: Sheet) {}
 
