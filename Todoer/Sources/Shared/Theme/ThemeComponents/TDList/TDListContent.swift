@@ -65,10 +65,10 @@ public struct TDListContent: View {
         ) { index, row in
             if row.isEditing {
                 emptyRow(row)
-                .id(index)
+                    .id(row.id)
             } else {
                 filledRow(row)
-                .id(index)
+                    .id(row.id)
             }
         }
         .if(configuration.isMoveAllowed) {
