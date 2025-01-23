@@ -7,179 +7,154 @@ public protocol ItemsDataSourceApi {
         listId: String
     ) async throws -> [QueryDocumentSnapshot]
     
-	func fetchItems(
-		listId: String
-	) -> AnyPublisher<[ItemDTO], Error>
+    func fetchItems(
+        listId: String
+    ) -> AnyPublisher<[ItemDTO], Error>
 
-	func addItem(
-		with name: String,
-		listId: String
-	) async throws -> ItemDTO
+    func addItem(
+        with name: String,
+        listId: String
+    ) async throws -> ItemDTO
 
-	func deleteItem(
-		itemId: String,
-		listId: String
-	) async throws
+    func deleteItem(
+        itemId: String,
+        listId: String
+    ) async throws
 
-	func updateItem(
-		item: ItemDTO,
-		listId: String
-	) async throws -> ItemDTO
+    func updateItem(
+        item: ItemDTO,
+        listId: String
+    ) async throws -> ItemDTO
 
-	func toogleAllItems(
-		listId: String,
-		done: Bool
-	) async throws
+    func toogleAllItems(
+        listId: String,
+        done: Bool
+    ) async throws
 
-	func sortItems(
-		items: [ItemDTO],
-		listId: String
-	) async throws
+    func sortItems(
+        items: [ItemDTO],
+        listId: String
+    ) async throws
 }
 
 public final class ItemsDataSource: ItemsDataSourceApi {
-	private enum Errors: Error {
-		case invalidDTO
-		case encodingError
-	}
-
-	private var snapshotListener: ListenerRegistration?
-	private var listenerSubject: PassthroughSubject<[ItemDTO], Error>?
-
-    public init() {}
+    private enum Errors: Error {
+        case invalidDTO
+        case encodingError
+    }
     
-	deinit {
-		snapshotListener?.remove()
-		listenerSubject = nil
-	}
+    public init() {}
 
-	private func itemsCollection(
+    private func itemsCollection(
         listId: String
     ) -> CollectionReference {
-		Firestore.firestore().collection("lists").document(listId).collection("items")
-	}
+        Firestore.firestore().collection("lists").document(listId).collection("items")
+    }
     
     public func documents(
         listId: String
     ) async throws -> [QueryDocumentSnapshot] {
         try await itemsCollection(listId: listId).getDocuments().documents
     }
-
+    
     public func fetchItems(
-		listId: String
-	) -> AnyPublisher<[ItemDTO], Error> {
-		let subject = PassthroughSubject<[ItemDTO], Error>()
-		listenerSubject = subject
-
-		snapshotListener = itemsCollection(listId: listId)
-			.addSnapshotListener { query, error in
-				if let error = error {
-					subject.send(completion: .failure(error))
-					return
-				}
-
-				let products =
-					query?.documents
-					.compactMap { try? $0.data(as: ItemDTO.self) }
-					?? []
-
-				subject.send(products)
-			}
-
-		return
-			subject
-			.removeDuplicates()
-			.eraseToAnyPublisher()
-
-	}
-
+        listId: String
+    ) -> AnyPublisher<[ItemDTO], Error> {
+        itemsCollection(listId: listId)
+            .snapshotPublisher()
+            .map { snapshot in
+                snapshot.documents.compactMap { try? $0.data(as: ItemDTO.self) }
+            }
+            .eraseToAnyPublisher()
+    }
+    
     public func addItem(
-		with name: String,
-		listId: String
-	) async throws -> ItemDTO {
-		do {
-			let dto = ItemDTO(
-				name: name,
-				done: false,
-				index: -Date().milliseconds
-			)
-			return try await itemsCollection(listId: listId)
-				.addDocument(from: dto)
-				.getDocument()
-				.data(as: ItemDTO.self)
-		}
-		catch {
-			throw (error)
-		}
-	}
+        with name: String,
+        listId: String
+    ) async throws -> ItemDTO {
+        do {
+            let dto = ItemDTO(
+                name: name,
+                done: false,
+                index: -Date().milliseconds
+            )
+            return try await itemsCollection(listId: listId)
+                .addDocument(from: dto)
+                .getDocument()
+                .data(as: ItemDTO.self)
+        }
+        catch {
+            throw (error)
+        }
+    }
 
     public func deleteItem(
-		itemId: String,
-		listId: String
-	) async throws {
-		try await itemsCollection(listId: listId).document(itemId).delete()
-	}
+        itemId: String,
+        listId: String
+    ) async throws {
+        try await itemsCollection(listId: listId).document(itemId).delete()
+    }
 
     public func updateItem(
-		item: ItemDTO,
-		listId: String
-	) async throws -> ItemDTO {
-		guard let id = item.id else {
-			throw Errors.invalidDTO
-		}
+        item: ItemDTO,
+        listId: String
+    ) async throws -> ItemDTO {
+        guard let id = item.id else {
+            throw Errors.invalidDTO
+        }
 
-		guard let encodedData = try? Firestore.Encoder().encode(item) else {
-			throw Errors.encodingError
-		}
+        guard let encodedData = try? Firestore.Encoder().encode(item) else {
+            throw Errors.encodingError
+        }
 
-		try await itemsCollection(listId: listId).document(id).updateData(encodedData)
-		return item
-	}
+        try await itemsCollection(listId: listId).document(id).updateData(encodedData)
+        return item
+    }
 
     public func toogleAllItems(
-		listId: String,
-		done: Bool
-	) async throws {
-		let collection = itemsCollection(listId: listId)
-		let batch = Firestore.firestore().batch()
+        listId: String,
+        done: Bool
+    ) async throws {
+        let collection = itemsCollection(listId: listId)
+        let batch = Firestore.firestore().batch()
 
-		try await collection.getDocuments().documents.forEach {
-			guard var dto = try? $0.data(as: ItemDTO.self) else {
+        try await collection.getDocuments().documents.forEach {
+            guard var dto = try? $0.data(as: ItemDTO.self) else {
                 throw Errors.invalidDTO
-			}
+            }
 
-			dto.done = done
+            dto.done = done
 
-			let encodedData = try Firestore.Encoder().encode(dto)
+            let encodedData = try Firestore.Encoder().encode(dto)
             batch.updateData(
-				encodedData,
-				forDocument: collection.document($0.documentID)
-			)
-		}
+                encodedData,
+                forDocument: collection.document($0.documentID)
+            )
+        }
 
-		try await batch.commit()
-	}
+        try await batch.commit()
+    }
 
     public func sortItems(
-		items: [ItemDTO],
-		listId: String
-	) async throws {
-		let batch = Firestore.firestore().batch()
+        items: [ItemDTO],
+        listId: String
+    ) async throws {
+        let batch = Firestore.firestore().batch()
 
-		try items.enumerated().forEach { index, item in
-			guard let id = item.id else {
-				return
-			}
-			var mutableItem = item
-			mutableItem.index = index
+        try items.enumerated().forEach { index, item in
+            guard let id = item.id else {
+                return
+            }
+            var mutableItem = item
+            mutableItem.index = index
 
-			let encodedData = try Firestore.Encoder().encode(mutableItem)
+            let encodedData = try Firestore.Encoder().encode(mutableItem)
             batch.updateData(
-				encodedData,
-				forDocument: itemsCollection(listId: listId).document(id)
-			)
-		}
+                encodedData,
+                forDocument: itemsCollection(listId: listId).document(id)
+            )
+        }
 
-		try await batch.commit()
-	}
+        try await batch.commit()
+    }
 }

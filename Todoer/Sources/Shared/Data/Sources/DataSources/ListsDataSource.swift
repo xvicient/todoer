@@ -62,43 +62,19 @@ final class ListsDataSource: ListsDataSourceApi {
 		case encodingError
 	}
 
-	private var snapshotListener: ListenerRegistration?
-	private var listenerSubject: PassthroughSubject<[ListDTO], Error>?
-	deinit {
-		snapshotListener?.remove()
-		listenerSubject = nil
-	}
+    private let listsCollection = Firestore.firestore().collection("lists")
 
-	private let listsCollection = Firestore.firestore().collection("lists")
-
-	func fetchLists(
-		uid: String
-	) -> AnyPublisher<[ListDTO], Error> {
-		let subject = PassthroughSubject<[ListDTO], Error>()
-		listenerSubject = subject
-
-		snapshotListener =
-			listsCollection
-			.whereField("uid", arrayContains: uid)
-			.addSnapshotListener { query, error in
-				if let error = error {
-					subject.send(completion: .failure(error))
-					return
-				}
-
-				let lists =
-					query?.documents
-					.compactMap { try? $0.data(as: ListDTO.self) }
-					?? []
-
-				subject.send(lists)
-			}
-
-		return
-			subject
-			.removeDuplicates()
-			.eraseToAnyPublisher()
-	}
+    func fetchLists(
+        uid: String
+    ) -> AnyPublisher<[ListDTO], Error> {
+        listsCollection
+            .whereField("uid", arrayContains: uid)
+            .snapshotPublisher()
+            .map { snapshot in
+                snapshot.documents.compactMap { try? $0.data(as: ListDTO.self) }
+            }
+            .eraseToAnyPublisher()
+    }
 
 	func addList(
 		with name: String,
