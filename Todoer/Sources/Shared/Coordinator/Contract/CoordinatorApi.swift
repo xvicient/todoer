@@ -2,7 +2,7 @@ import SwiftUI
 import Data
 import Entities
 
-public enum Page: Hashable, Identifiable {
+public enum Screen: Hashable, Identifiable {
     case authentication
     case home
     case listItems(UserList)
@@ -29,7 +29,7 @@ public protocol CoordinatorApi {
     var isUserLogged: Bool { get }
     func loggOut()
     func loggIn()
-    func push(_ page: Page)
+    func push(_ screen: Screen)
     func present(sheet: Sheet)
     func present(fullScreenCover: FullScreenCover)
     func pop()

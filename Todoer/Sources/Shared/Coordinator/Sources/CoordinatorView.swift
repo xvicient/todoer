@@ -9,21 +9,21 @@ public struct CoordinatorView: View {
     public init(featureProvider: FeatureProviderAPI) {
         let coordinator = Coordinator(featureProvider: featureProvider)
         _coordinator = StateObject(wrappedValue: coordinator)
-        menuView = coordinator.build(page: .menu)
+        menuView = coordinator.build(screen: .menu)
     }
 
 	public var body: some View {
 		NavigationStack(path: $coordinator.path) {
 			coordinator.landingView
-				.setupNavigationBar(page: coordinator.landingPage)
+				.setupNavigationBar(screen: coordinator.landingScreen)
                 .if(coordinator.isUserLogged) {
                     $0.navigationBarItems(
                         leading: menuView
                     )
                 }
-				.navigationDestination(for: Page.self) { page in
-					coordinator.build(page: page)
-						.setupNavigationBar(page: page)
+				.navigationDestination(for: Screen.self) { screen in
+					coordinator.build(screen: screen)
+						.setupNavigationBar(screen: screen)
 				}
 				.sheet(item: $coordinator.sheet) { sheet in
 					switch sheet {
@@ -45,10 +45,10 @@ public struct CoordinatorView: View {
 // MARK: - NavigationBarModifier
 
 struct NavigationBarModifier: ViewModifier {
-	var page: Page
+	var screen: Screen
 
 	func body(content: Content) -> some View {
-		if page == .authentication {
+		if screen == .authentication {
 			content
 		}
 		else {
@@ -68,8 +68,8 @@ struct NavigationBarModifier: ViewModifier {
 }
 
 extension View {
-	fileprivate func setupNavigationBar(page: Page) -> some View {
-		modifier(NavigationBarModifier(page: page))
+	fileprivate func setupNavigationBar(screen: Screen) -> some View {
+		modifier(NavigationBarModifier(screen: screen))
 	}
 }
 
