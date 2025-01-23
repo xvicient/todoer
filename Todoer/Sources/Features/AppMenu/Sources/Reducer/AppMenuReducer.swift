@@ -6,11 +6,12 @@ import AppMenuContract
 import SwiftUI
 import Strings
 
-// MARK: - MenuReducer
-
 extension AppMenu {
+    
+    /// Reducer for handling app menu state and actions
 	struct Reducer: Application.Reducer {
         
+        /// Enumeration of possible errors in the app menu
         enum Errors: Error, LocalizedError {
             case unexpectedError
 
@@ -26,12 +27,11 @@ extension AppMenu {
             }
         }
 
+        /// Actions that can be performed in the app menu
 		enum Action: Equatable {
-			// MARK: - View appear
 			/// MenuReducer+ViewAppear
 			case onViewAppear
             
-            // MARK: - User actions
             /// MenuReducer+UserActions
             case didTapSignoutButton
             case didTapAboutButton
@@ -40,13 +40,12 @@ extension AppMenu {
             case didTapDeleteAccountButton
             case didTapDismissError
             
-
-			// MARK: - Results
 			/// MenuReducer+Results
 			case getPhotoUrlResult(ActionResult<String>)
             case deleteAccountResult(ActionResult<EquatableVoid>)
 		}
 
+        /// State of the app menu
 		@MainActor
         struct State: AppAlertState {
 			var viewState = ViewState.idle
@@ -81,6 +80,10 @@ extension AppMenu {
         internal let dependencies: AppMenuDependencies
         internal let useCase: MenuUseCaseApi
 
+        /// Initializes the reducer with required dependencies
+        /// - Parameters:
+        ///   - dependencies: Menu dependencies
+        ///   - useCase: Menu use case
         init(
             dependencies: AppMenuDependencies,
             useCase: MenuUseCaseApi
@@ -89,8 +92,11 @@ extension AppMenu {
             self.useCase = useCase
         }
 
-		// MARK: - Reduce
-
+        /// Reduces the current state and action to produce a new state and side effects
+        /// - Parameters:
+        ///   - state: Current state of the app menu
+        ///   - action: Action to process
+        /// - Returns: Effect to be executed as a result of the action
 		@MainActor
 		func reduce(
 			_ state: inout State,

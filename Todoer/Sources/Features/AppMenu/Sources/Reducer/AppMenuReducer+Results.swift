@@ -1,10 +1,15 @@
 import Application
 import AppMenuContract
 
-// MARK: - Reducer results
-
+/// Extension containing result handling methods for the App Menu Reducer
 @MainActor
 extension AppMenu.Reducer {
+    
+    /// Handles the result of fetching the user's photo URL
+    /// - Parameters:
+    ///   - state: Current state of the app menu
+    ///   - result: Result containing either the photo URL or an error
+    /// - Returns: Effect to be executed as a result of handling the photo URL result
 	func onPhotoUrlResult(
 		state: inout State,
 		result: ActionResult<String>
@@ -19,6 +24,11 @@ extension AppMenu.Reducer {
 		return .none
 	}
 
+    /// Handles the result of deleting the user's account
+    /// - Parameters:
+    ///   - state: Current state of the app menu
+    ///   - result: Result indicating success or failure of the account deletion
+    /// - Returns: Effect to be executed as a result of handling the account deletion
 	func onDeleteAccountResult(
 		state: inout State,
 		result: ActionResult<EquatableVoid>

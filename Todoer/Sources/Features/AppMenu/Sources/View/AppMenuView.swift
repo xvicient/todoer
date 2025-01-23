@@ -5,11 +5,14 @@ import ThemeAssets
 import AppMenuContract
 import Strings
 
-// MARK: - MenuView
-
+/// A view that displays the application menu with user profile and options
 struct AppMenuView: View {
+    
+    /// Store that manages the menu state and action
     @ObservedObject private var store: Store<AppMenu.Reducer>
 
+    /// Initializes the menu view with a store
+    /// - Parameter store: The store that manages the menu state
     init(store: Store<AppMenu.Reducer>) {
         self.store = store
     }
