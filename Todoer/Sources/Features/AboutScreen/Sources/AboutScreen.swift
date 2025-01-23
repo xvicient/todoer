@@ -2,8 +2,7 @@ import SwiftUI
 import Common
 import ThemeAssets
 
-// MARK: - AboutScreen
-
+/// A view that displays information about the app, including privacy policy, terms of service, and app details
 struct AboutScreen: View {
 	var body: some View {
 		VStack {
@@ -19,11 +18,11 @@ struct AboutScreen: View {
 	}
 }
 
-// MARK: - ViewBuilders
-
-extension AboutScreen {
+private extension AboutScreen {
+    
+    /// Section displaying the privacy policy information
 	@ViewBuilder
-	fileprivate var privacyPolicySection: some View {
+	var privacyPolicySection: some View {
 		Section(
 			header:
 				Text(Constants.Text.privacyPolicyTitle)
@@ -68,8 +67,9 @@ extension AboutScreen {
 		}
 	}
 
+    /// Section displaying the terms of service information
 	@ViewBuilder
-	fileprivate var termsOfServiceSection: some View {
+	var termsOfServiceSection: some View {
 		Section(
 			header:
 				VStack(alignment: .leading) {
@@ -126,8 +126,10 @@ extension AboutScreen {
 				.listRowInsets(EdgeInsets())
 		}
 	}
+    
+    /// Section displaying information about the app version and copyright
 	@ViewBuilder
-	fileprivate var aboutTodoerSection: some View {
+	var aboutTodoerSection: some View {
 		Section(
 			header:
 				Divider().padding(.bottom, 16)
@@ -142,10 +144,9 @@ extension AboutScreen {
 	}
 }
 
-// MARK: - Constants
-
-extension AboutScreen {
-	fileprivate struct Constants {
+/// Constants used throughout the about screen
+private extension AboutScreen {
+	struct Constants {
 		struct Text {
 			static let aboutTodoer = "About Todoer"
 			static let copyright = "© 2024 Todoer. All rights reserved."
