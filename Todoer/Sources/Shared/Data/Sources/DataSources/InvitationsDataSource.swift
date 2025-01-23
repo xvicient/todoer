@@ -43,42 +43,18 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
 		}
 	}
 
-	private var snapshotListener: ListenerRegistration?
-	private var listenerSubject: PassthroughSubject<[InvitationDTO], Error>?
-
 	private let invitationsCollection = Firestore.firestore().collection("invitations")
-
-	deinit {
-		snapshotListener?.remove()
-		listenerSubject = nil
-	}
-
-	func getInvitations(
-		with fields: [SearchField]
-	) -> AnyPublisher<[InvitationDTO], Error> {
-		let subject = PassthroughSubject<[InvitationDTO], Error>()
-		listenerSubject = subject
-
-		invitationsQuery(with: fields)
-			.addSnapshotListener { query, error in
-				if let error = error {
-					subject.send(completion: .failure(error))
-					return
-				}
-
-				let invitations =
-					query?.documents
-					.compactMap { try? $0.data(as: InvitationDTO.self) }
-					?? []
-
-				subject.send(invitations)
-			}
-
-		return
-			subject
-			.removeDuplicates()
-			.eraseToAnyPublisher()
-	}
+    
+    func getInvitations(
+        with fields: [SearchField]
+    ) -> AnyPublisher<[InvitationDTO], Error> {
+        invitationsQuery(with: fields)
+            .snapshotPublisher()
+            .map { snapshot in
+                snapshot.documents.compactMap { try? $0.data(as: InvitationDTO.self) }
+            }
+            .eraseToAnyPublisher()
+    }
 
 	func getInvitations(
 		with fields: [SearchField]
