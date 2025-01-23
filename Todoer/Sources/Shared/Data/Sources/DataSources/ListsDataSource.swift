@@ -70,6 +70,7 @@ final class ListsDataSource: ListsDataSourceApi {
         listsCollection
             .whereField("uid", arrayContains: uid)
             .snapshotPublisher()
+            .filter { !$0.metadata.hasPendingWrites } 
             .map { snapshot in
                 snapshot.documents.compactMap { try? $0.data(as: ListDTO.self) }
             }
