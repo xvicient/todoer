@@ -12,7 +12,7 @@ public struct TDURLText: View {
         
         text.split(separator: " ").forEach {
             if $0.hasPrefix("www.") || $0.hasPrefix("http://") || $0.hasPrefix("https://") {
-                highlightedText = highlightedText + Text(.init(" \($0)"))
+                highlightedText = highlightedText + Text(" ") + Text(.init("\($0)"))
                     .underline()
             } else {
                 highlightedText = highlightedText + Text(" \($0)")
