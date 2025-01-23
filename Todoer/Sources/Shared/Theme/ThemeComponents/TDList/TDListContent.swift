@@ -148,7 +148,7 @@ private extension TDListContent {
                 Button(action: {
                     actions.onTap?(row.id)
                 }) {
-                    Text(row.name)
+                    TDURLText(text: row.name)
                         .lineLimit(nil)
                         .multilineTextAlignment(.leading)
                         .strikethrough(row.strikethrough)
