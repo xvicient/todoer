@@ -192,12 +192,8 @@ extension Home {
 					state: &state
 				)
             
-            // sortingList uses firestore batch that triggers the collection listener so the fetch is being triggered as well
 			case (.idle, .fetchDataResult(let result)),
-                (.loading, .fetchDataResult(let result)),
-                (.addingList, .fetchDataResult(let result)),
-                (.editingList, .fetchDataResult(let result)),
-                (.sortingList, .fetchDataResult(let result)):
+                (.loading, .fetchDataResult(let result)):
 				return onFetchDataResult(
 					state: &state,
 					result: result
