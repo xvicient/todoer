@@ -50,6 +50,7 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
     ) -> AnyPublisher<[InvitationDTO], Error> {
         invitationsQuery(with: fields)
             .snapshotPublisher()
+            .filter { !$0.metadata.hasPendingWrites } 
             .map { snapshot in
                 snapshot.documents.compactMap { try? $0.data(as: InvitationDTO.self) }
             }
