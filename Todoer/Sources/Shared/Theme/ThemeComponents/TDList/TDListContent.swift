@@ -5,14 +5,17 @@ import Strings
 public struct TDListContent: View {
     public struct Configuration {
         let rows: [TDListRow]
-        let isMoveAllowed: Bool
+        let isMoveEnabled: Bool
+        let isSwipeEnabled: Bool
         
         public init(
             rows: [TDListRow],
-            isMoveAllowed: Bool
+            isMoveEnabled: Bool,
+            isSwipeEnabled: Bool
         ) {
             self.rows = rows
-            self.isMoveAllowed = isMoveAllowed
+            self.isMoveEnabled = isMoveEnabled
+            self.isSwipeEnabled = isSwipeEnabled
         }
     }
     
@@ -71,7 +74,7 @@ public struct TDListContent: View {
                     .id(row.id)
             }
         }
-        .if(configuration.isMoveAllowed) {
+        .if(configuration.isMoveEnabled) {
             $0.onMove(perform: actions.onMove)
         }
     }
@@ -163,17 +166,21 @@ private extension TDListContent {
             }
             .frame(minHeight: 40)
         }
-        .swipeActions(edge: .leading) {
-            swipeActions(
-                row.id,
-                row.leadingActions
-            )
+        .if(configuration.isSwipeEnabled) {
+            $0.swipeActions(edge: .leading) {
+                swipeActions(
+                    row.id,
+                    row.leadingActions
+                )
+            }
         }
-        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-            swipeActions(
-                row.id,
-                row.trailingActions
-            )
+        .if(configuration.isSwipeEnabled) {
+            $0.swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                swipeActions(
+                    row.id,
+                    row.trailingActions
+                )
+            }
         }
         .listRowInsets(
             .init(

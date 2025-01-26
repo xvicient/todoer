@@ -105,7 +105,7 @@ extension ListItems.Reducer {
 			state.viewState = .error(Errors.default)
 			return .none
 		}
-		state.viewState = .editingItem
+		state.viewState = .editingItem(uid)
 		state.viewModel.items.remove(at: index)
 		state.viewModel.items.insert(newItemRow(item: item), at: index)
 

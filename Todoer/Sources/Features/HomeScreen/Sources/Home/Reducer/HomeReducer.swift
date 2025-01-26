@@ -79,7 +79,7 @@ extension Home {
 			case addingList
 			case sortingList
 			case updatingList
-			case editingList
+			case editingList(UUID)
             case alert(AppAlert<Action>)
             
             static func error(

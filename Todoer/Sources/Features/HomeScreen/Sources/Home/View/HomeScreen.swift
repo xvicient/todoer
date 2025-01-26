@@ -18,8 +18,12 @@ struct HomeScreen: View {
     private var invitationsView: Home.MakeInvitationsView
     
     private var isEditing: Bool {
-        store.state.viewState == .addingList ||
-        store.state.viewState == .editingList
+        switch store.state.viewState {
+        case .addingList, .editingList:
+            true
+        default:
+            false
+        }
     }
     
     private var filteredLists: [Home.Reducer.WrappedUserList] {
@@ -40,10 +44,17 @@ struct HomeScreen: View {
         ZStack {
             TDList(
                 sections: sections,
-                isEditing: isEditing,
                 searchText: $searchText,
                 isSearchFocused: $isSearchFocused
             )
+            .onChange(of: isSearchFocused) {
+                guard isSearchFocused else { return }
+                if store.state.viewState == .addingList {
+                    store.send(.didTapCancelAddListButton)
+                } else if case let .editingList(uid) = store.state.viewState {
+                    store.send(.didTapCancelEditListButton(uid))
+                }
+            }
             loadingView
         }
         .onAppear {
@@ -104,14 +115,16 @@ private extension HomeScreen {
         .init(
             title: Strings.Home.todosText,
             addButtonTitle: Strings.Home.newTodoButtonTitle,
-            isSortEnabled: !store.state.viewModel.lists.isEmpty,
-            isHeaderEnabled: !isEditing && !isSearchFocused
+            isSortEnabled: store.state.viewModel.lists.filter { !$0.isEditing }.count > 1
         )
     }
     
     var sectionActions: TDListSection.Actions {
         .init(
-            onAddRow: { store.send(.didTapAddRowButton) },
+            onAddRow: {
+                isSearchFocused = false
+                store.send(.didTapAddRowButton)
+            },
             onSortRows: { store.send(.didTapAutoSortLists) }
         )
     }
@@ -119,7 +132,8 @@ private extension HomeScreen {
     var contentConfiguration: TDListContent.Configuration {
         .init(
             rows: filteredLists.map { $0.tdListRow },
-            isMoveAllowed: !isSearchFocused && !isEditing
+            isMoveEnabled: !isSearchFocused && !isEditing,
+            isSwipeEnabled: !isEditing
         )
     }
     

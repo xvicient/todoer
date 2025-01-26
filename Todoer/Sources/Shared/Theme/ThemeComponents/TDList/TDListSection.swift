@@ -9,18 +9,15 @@ public struct TDListSection: View {
         let title: String
         let addButtonTitle: String
         let isSortEnabled: Bool
-        let isHeaderEnabled: Bool
         
         public init(
             title: String,
             addButtonTitle: String,
-            isSortEnabled: Bool,
-            isHeaderEnabled: Bool
+            isSortEnabled: Bool
         ) {
             self.title = title
             self.addButtonTitle = addButtonTitle
             self.isSortEnabled = isSortEnabled
-            self.isHeaderEnabled = isHeaderEnabled
         }
     }
     
@@ -73,9 +70,10 @@ public struct TDListSection: View {
             ) {
                 actions.onSortRows()
             }
-            .disabled(!configuration.isSortEnabled)
+            .if(!configuration.isSortEnabled) {
+                $0.hidden()
+            }
         }
-        .disabled(!configuration.isHeaderEnabled)
         .padding(.bottom, 12)
     }
 }
