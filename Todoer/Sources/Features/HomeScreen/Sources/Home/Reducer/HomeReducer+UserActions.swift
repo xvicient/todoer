@@ -87,7 +87,7 @@ extension Home.Reducer {
 			state.viewState = .error()
 			return .none
 		}
-		state.viewState = .editingList
+		state.viewState = .editingList(uid)
 		state.viewModel.lists.remove(at: index)
 		state.viewModel.lists.insert(newListRow(
             list: list

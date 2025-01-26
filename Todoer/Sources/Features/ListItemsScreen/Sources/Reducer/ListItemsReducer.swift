@@ -78,7 +78,7 @@ extension ListItems {
 			case loading
 			case addingItem
 			case updatingItem
-			case editingItem
+			case editingItem(UUID)
 			case sortingItems
             case alert(AppAlert<Action>)
             

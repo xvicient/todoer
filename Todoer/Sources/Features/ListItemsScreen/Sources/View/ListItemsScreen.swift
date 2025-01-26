@@ -14,8 +14,12 @@ struct ListItemsScreen: View {
     @State private var searchText = ""
     @State private var isSearchFocused = false
     private var isEditing: Bool {
-        store.state.viewState == .addingItem ||
-        store.state.viewState == .editingItem
+        switch store.state.viewState {
+        case .addingItem, .editingItem:
+            true
+        default:
+            false
+        }
     }
     
     private var filteredItems: [ListItems.Reducer.WrappedItem] {
@@ -34,10 +38,17 @@ struct ListItemsScreen: View {
 		ZStack {
             TDList(
                 sections: sections,
-                isEditing: isEditing,
                 searchText: $searchText,
                 isSearchFocused: $isSearchFocused
             )
+            .onChange(of: isSearchFocused) {
+                guard isSearchFocused else { return }
+                if store.state.viewState == .addingItem {
+                    store.send(.didTapCancelAddItemButton)
+                } else if case let .editingItem(uid) = store.state.viewState {
+                    store.send(.didTapCancelEditItemButton(uid))
+                }
+            }
 			loadingView
 		}
 		.onAppear {
@@ -95,14 +106,16 @@ private extension ListItemsScreen {
         .init(
             title: store.state.viewModel.listName,
             addButtonTitle: Strings.ListItems.newItemButtonTitle,
-            isSortEnabled: !store.state.viewModel.items.isEmpty,
-            isHeaderEnabled: !isEditing && !isSearchFocused
+            isSortEnabled: store.state.viewModel.items.filter { !$0.isEditing }.count > 1
         )
     }
     
     var sectionActions: TDListSection.Actions {
         .init(
-            onAddRow: { store.send(.didTapAddRowButton) },
+            onAddRow: {
+                isSearchFocused = false
+                store.send(.didTapAddRowButton)
+            },
             onSortRows: { store.send(.didTapAutoSortItems) }
         )
     }
@@ -110,7 +123,8 @@ private extension ListItemsScreen {
     var contentConfiguration: TDListContent.Configuration {
         .init(
             rows: filteredItems.map { $0.tdListRow },
-            isMoveAllowed: !isSearchFocused
+            isMoveEnabled: !isSearchFocused,
+            isSwipeEnabled: !isEditing
         )
     }
     
