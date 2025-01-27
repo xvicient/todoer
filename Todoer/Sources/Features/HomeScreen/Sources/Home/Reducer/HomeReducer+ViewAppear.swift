@@ -4,6 +4,8 @@ import Application
 // MARK: - View appear
 
 extension Home.Reducer {
+    
+    @MainActor
 	func onAppear(
 		state: inout State
 	) -> Effect<Action> {

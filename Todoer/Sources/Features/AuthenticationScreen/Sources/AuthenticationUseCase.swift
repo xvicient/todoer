@@ -93,6 +93,7 @@ extension Authentication {
 			}
 			catch {
 				try? authenticationService.signOut()
+                usersRepository.setUid("")
 				return .failure(error)
 			}
 		}

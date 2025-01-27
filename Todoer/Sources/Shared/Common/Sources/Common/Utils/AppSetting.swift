@@ -1,17 +1,31 @@
 import UIKit
 
-@propertyWrapper public struct AppSetting<Value> {
-	let key: String
-	let defaultValue: Value
-	var container: UserDefaults = .standard
-    
-    public init(key: String, defaultValue: Value) {
+@propertyWrapper
+public class AppSetting<Value: Codable> {
+    private let key: String
+    private let defaultValue: Value
+    private let container: UserDefaults = .default
+
+    public init(
+        key: String,
+        defaultValue: Value
+    ) {
         self.key = key
         self.defaultValue = defaultValue
     }
 
     public var wrappedValue: Value {
-		get { container.value(forKey: key) as? Value ?? defaultValue }
-		set { container.setValue(newValue, forKey: key) }
-	}
+        get {
+            if let data = container.data(forKey: key),
+               let value = try? JSONDecoder().decode(Value.self, from: data) {
+                return value
+            }
+            return defaultValue
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                container.set(encoded, forKey: key)
+            }
+        }
+    }
 }

@@ -3,9 +3,12 @@ import Foundation
 import Data
 import Application
 import Entities
+import Common
 
 protocol HomeUseCaseApi {
-	func fetchData() -> AnyPublisher<HomeData, Error>
+    @MainActor
+    func fetchData(
+    ) -> AnyPublisher<HomeData, Error>
 
 	func updateList(
 		list: UserList
@@ -46,6 +49,8 @@ extension Home {
 		private let listsRepository: ListsRepositoryApi
 		private let itemsRepository: ItemsRepositoryApi
 		private let invitationsRepository: InvitationsRepositoryApi
+        
+        @AppSetting(key: "sharedLists", defaultValue: [""]) private var sharedLists: [String]
 
 		init(
 			listsRepository: ListsRepositoryApi = ListsRepository(),
@@ -56,15 +61,22 @@ extension Home {
 			self.itemsRepository = itemsRepository
 			self.invitationsRepository = invitationsRepository
 		}
-
-		func fetchData() -> AnyPublisher<HomeData, Error> {
-			Publishers.CombineLatest(
-				fetchLists(),
-				fetchInvitations()
-			)
-			.map { HomeData(lists: $0, invitations: $1) }
-			.eraseToAnyPublisher()
-		}
+        
+        @MainActor
+        func fetchData() -> AnyPublisher<HomeData, Error> {
+            let addSharedListsPublisher = Future<Void, Error> { promise in
+                Task { @MainActor in
+                    await self.addSharedLists()
+                    promise(.success(()))
+                }
+            }
+            
+            return addSharedListsPublisher
+                .flatMap { _ in
+                    self.fetchListsAndInvitations()
+                }
+                .eraseToAnyPublisher()
+        }
 
 		func updateList(
 			list: UserList
@@ -124,8 +136,28 @@ extension Home {
 	}
 }
 
-extension Home.UseCase {
-	fileprivate func fetchLists() -> AnyPublisher<[UserList], Error> {
+private extension Home.UseCase {
+    
+    func fetchListsAndInvitations() -> AnyPublisher<HomeData, Error> {
+        Publishers.CombineLatest(
+            fetchLists(),
+            fetchInvitations()
+        )
+        .map {
+            HomeData(lists: $0, invitations: $1)
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    func addSharedLists(
+    ) async {
+        while !sharedLists.isEmpty {
+            let name = sharedLists.removeFirst()
+            _ = await addList(name: name)
+        }
+    }
+    
+	func fetchLists() -> AnyPublisher<[UserList], Error> {
 		listsRepository.fetchLists()
 			.map { lists in
 				lists.sorted { $0.index < $1.index }
@@ -134,7 +166,7 @@ extension Home.UseCase {
 			.eraseToAnyPublisher()
 	}
 
-	fileprivate func fetchInvitations() -> AnyPublisher<[Invitation], Error> {
+	func fetchInvitations() -> AnyPublisher<[Invitation], Error> {
 		invitationsRepository.getInvitations()
 			.map { invitations in
 				invitations.sorted { $0.index < $1.index }
