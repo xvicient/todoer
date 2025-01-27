@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,6 +21,7 @@
 		C7C535582B545BB000DB4B65 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */; };
 		C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = C7F305892D32CCA5004C322D /* ThemeAssets */; };
 		C7F3058C2D32CCA5004C322D /* ThemeComponents in Frameworks */ = {isa = PBXBuildFile; productRef = C7F3058B2D32CCA5004C322D /* ThemeComponents */; };
+		D60E13A72D43FE1D008AB16A /* TodoerShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D60E139C2D43FE1D008AB16A /* TodoerShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D6104E112D3E5E72004A2A0A /* TodoerTests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = D6104E0F2D3E5E72004A2A0A /* TodoerTests.xctestplan */; };
 		D62464D12D36B3010097F7DE /* AboutScreen in Frameworks */ = {isa = PBXBuildFile; productRef = D62464D02D36B3010097F7DE /* AboutScreen */; };
 		D62464D42D36B30F0097F7DE /* AuthenticationScreen in Frameworks */ = {isa = PBXBuildFile; productRef = D62464D32D36B30F0097F7DE /* AuthenticationScreen */; };
@@ -35,6 +36,10 @@
 		D6422B642D3652820090F163 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = D6422B632D3652820090F163 /* Coordinator */; };
 		D650873A2D35B8570056F8F3 /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = D65087392D35B8570056F8F3 /* CoordinatorContract */; };
 		D650873E2D35BEDE0056F8F3 /* FeatureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */; };
+		D65D30932D43FEF900A9A5B6 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30922D43FEF900A9A5B6 /* Entities */; };
+		D65D30962D43FF0100A9A5B6 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30952D43FF0100A9A5B6 /* Application */; };
+		D65D30A32D47757500A9A5B6 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A22D47757500A9A5B6 /* Common */; };
+		D65D30A62D47758600A9A5B6 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A52D47758600A9A5B6 /* Data */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,7 +50,28 @@
 			remoteGlobalIDString = D6A29BF22B09706100FA7F84;
 			remoteInfo = Todoer;
 		};
+		D60E13A42D43FE1D008AB16A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6A29BEB2B09706100FA7F84 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D60E139B2D43FE1D008AB16A;
+			remoteInfo = TodoerShare;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D60E13A62D43FE1D008AB16A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D60E13A72D43FE1D008AB16A /* TodoerShare.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C74372D02D32AAF9002E1F1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -69,6 +95,7 @@
 		C7C42E1D2D332CCD006B8C53 /* ShareListScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ShareListScreen; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
+		D60E139C2D43FE1D008AB16A /* TodoerShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodoerShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6104E0F2D3E5E72004A2A0A /* TodoerTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TodoerTests.xctestplan; sourceTree = "<group>"; };
 		D611566D2D3D551200DD2DA6 /* AppMenu */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppMenu; sourceTree = "<group>"; };
 		D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureProvider.swift; sourceTree = "<group>"; };
@@ -78,11 +105,36 @@
 		D6AF86092D3FE33C006C55F7 /* Strings */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D60E13AA2D43FE1D008AB16A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Info.plist,
+			);
+			target = D60E139B2D43FE1D008AB16A /* TodoerShare */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		D60E139D2D43FE1D008AB16A /* TodoerShare */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (D60E13AA2D43FE1D008AB16A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = TodoerShare; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		C74515142B750F3D00C6D08E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D60E13992D43FE1D008AB16A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D65D30932D43FEF900A9A5B6 /* Entities in Frameworks */,
+				D65D30962D43FF0100A9A5B6 /* Application in Frameworks */,
+				D65D30A62D47758600A9A5B6 /* Data in Frameworks */,
+				D65D30A32D47757500A9A5B6 /* Common in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +259,7 @@
 				D6104E102D3E5E72004A2A0A /* TodoerTests */,
 				D6A29C102B09706200FA7F84 /* TodoerUITests */,
 				C7B3359A2D31D30500C36D7B /* Packages */,
+				D60E139D2D43FE1D008AB16A /* TodoerShare */,
 				C770BF6C2D313EF100B455B5 /* Frameworks */,
 				D6A29BF42B09706100FA7F84 /* Products */,
 			);
@@ -217,6 +270,7 @@
 			children = (
 				D6A29BF32B09706100FA7F84 /* Todoer.app */,
 				C74515172B750F3D00C6D08E /* TodoerTests.xctest */,
+				D60E139C2D43FE1D008AB16A /* TodoerShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -260,6 +314,32 @@
 			productReference = C74515172B750F3D00C6D08E /* TodoerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D60E139B2D43FE1D008AB16A /* TodoerShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D60E13AB2D43FE1D008AB16A /* Build configuration list for PBXNativeTarget "TodoerShare" */;
+			buildPhases = (
+				D60E13982D43FE1D008AB16A /* Sources */,
+				D60E13992D43FE1D008AB16A /* Frameworks */,
+				D60E139A2D43FE1D008AB16A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D60E139D2D43FE1D008AB16A /* TodoerShare */,
+			);
+			name = TodoerShare;
+			packageProductDependencies = (
+				D65D30922D43FEF900A9A5B6 /* Entities */,
+				D65D30952D43FF0100A9A5B6 /* Application */,
+				D65D30A22D47757500A9A5B6 /* Common */,
+				D65D30A52D47758600A9A5B6 /* Data */,
+			);
+			productName = TodoerShare;
+			productReference = D60E139C2D43FE1D008AB16A /* TodoerShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		D6A29BF22B09706100FA7F84 /* Todoer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D6A29C172B09706200FA7F84 /* Build configuration list for PBXNativeTarget "Todoer" */;
@@ -267,11 +347,13 @@
 				D6A29BEF2B09706100FA7F84 /* Sources */,
 				D6A29BF02B09706100FA7F84 /* Frameworks */,
 				D6A29BF12B09706100FA7F84 /* Resources */,
+				D60E13A62D43FE1D008AB16A /* Embed Foundation Extensions */,
 				C79A2EF92B6650C500F52FB2 /* Crashlytics */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D60E13A52D43FE1D008AB16A /* PBXTargetDependency */,
 			);
 			name = Todoer;
 			packageProductDependencies = (
@@ -308,12 +390,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					C74515162B750F3D00C6D08E = {
 						CreatedOnToolsVersion = 15.0;
 						TestTargetID = D6A29BF22B09706100FA7F84;
+					};
+					D60E139B2D43FE1D008AB16A = {
+						CreatedOnToolsVersion = 16.1;
 					};
 					D6A29BF22B09706100FA7F84 = {
 						CreatedOnToolsVersion = 15.0;
@@ -340,6 +425,9 @@
 				D62464DC2D36B32D0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ListItemsScreen" */,
 				D62464E12D36B33C0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ShareListScreen" */,
 				D62464E62D36B3730097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Entities" */,
+				D65D30942D43FF0100A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Application" */,
+				D65D30A12D47757500A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Common" */,
+				D65D30A42D47758600A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Data" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -347,6 +435,7 @@
 			targets = (
 				D6A29BF22B09706100FA7F84 /* Todoer */,
 				C74515162B750F3D00C6D08E /* TodoerTests */,
+				D60E139B2D43FE1D008AB16A /* TodoerShare */,
 			);
 		};
 /* End PBXProject section */
@@ -357,6 +446,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6104E112D3E5E72004A2A0A /* TodoerTests.xctestplan in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D60E139A2D43FE1D008AB16A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +504,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D60E13982D43FE1D008AB16A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D6A29BEF2B09706100FA7F84 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -424,6 +527,11 @@
 			isa = PBXTargetDependency;
 			target = D6A29BF22B09706100FA7F84 /* Todoer */;
 			targetProxy = C745151B2B750F3D00C6D08E /* PBXContainerItemProxy */;
+		};
+		D60E13A52D43FE1D008AB16A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D60E139B2D43FE1D008AB16A /* TodoerShare */;
+			targetProxy = D60E13A42D43FE1D008AB16A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -461,6 +569,60 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Todoer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Todoer";
+			};
+			name = Release;
+		};
+		D60E13A82D43FE1D008AB16A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TodoerShare/Resources/TodoerShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JPMAMPZRCV;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TodoerShare/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TodoerShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xvicient.todoer.TodoerShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D60E13A92D43FE1D008AB16A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TodoerShare/Resources/TodoerShare.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JPMAMPZRCV;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TodoerShare/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TodoerShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xvicient.todoer.TodoerShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -675,6 +837,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		D60E13AB2D43FE1D008AB16A /* Build configuration list for PBXNativeTarget "TodoerShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D60E13A82D43FE1D008AB16A /* Debug */,
+				D60E13A92D43FE1D008AB16A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D6A29BEE2B09706100FA7F84 /* Build configuration list for PBXProject "Todoer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -731,6 +902,18 @@
 		D6422B622D3652820090F163 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Coordinator" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/Coordinator;
+		};
+		D65D30942D43FF0100A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Application" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Shared/Application;
+		};
+		D65D30A12D47757500A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Common" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Shared/Common;
+		};
+		D65D30A42D47758600A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Data" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Shared/Data;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -829,6 +1012,22 @@
 		D65087392D35B8570056F8F3 /* CoordinatorContract */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoordinatorContract;
+		};
+		D65D30922D43FEF900A9A5B6 /* Entities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Entities;
+		};
+		D65D30952D43FF0100A9A5B6 /* Application */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Application;
+		};
+		D65D30A22D47757500A9A5B6 /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Common;
+		};
+		D65D30A52D47758600A9A5B6 /* Data */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Data;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

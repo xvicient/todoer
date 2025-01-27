@@ -4,6 +4,7 @@ import Foundation
 import GoogleSignIn
 import GoogleSignInSwift
 import Entities
+import Common
 
 public protocol SignInServiceApi {
 	func googleSignIn(presentingVC: UIViewController?) async throws -> AuthData
@@ -11,6 +12,8 @@ public protocol SignInServiceApi {
 	func appleSignIn(
 		authorization: ASAuthorization
 	) async throws -> AuthData
+    
+    func shareAppGroup()
 }
 
 public final class SignInService: SignInServiceApi {
@@ -40,6 +43,8 @@ public final class SignInService: SignInServiceApi {
 			accessToken: accessToken
 		)
         
+//        shareAppGroup()
+        
 		return try await signIn(authCredential: authCredential)
 	}
 
@@ -58,7 +63,9 @@ public final class SignInService: SignInServiceApi {
             providerID: .apple,
             idToken: token
 		)
-
+        
+//        shareAppGroup()
+        
 		return try await signIn(
             authCredential: authCredential,
             email: appleIDCredential.email,
@@ -80,6 +87,15 @@ public final class SignInService: SignInServiceApi {
             isAnonymous: user.isAnonymous
         )
 	}
+    
+    public func shareAppGroup() {
+        do {
+            Auth.auth().shareAuthStateAcrossDevices = true
+            try Auth.auth().useUserAccessGroup(UserDefaults.appGroup)
+        } catch let error as NSError {
+            Logger.log("Unable to share app group: \(error).")
+        }
+    }
 }
 
 private extension ASAuthorizationAppleIDCredential {
