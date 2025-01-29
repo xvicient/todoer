@@ -39,6 +39,19 @@ extension ListItems.Reducer {
 		}
 		return .none
 	}
+    
+    func onDeleteItemResult(
+        state: inout State,
+        result: ActionResult<EquatableVoid>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
+        case .failure:
+            state.viewState = .error()
+        }
+        return .none
+    }
 
 	func onDidTapDismissError(
 		state: inout State
