@@ -116,7 +116,7 @@ public final class UsersRepository: UsersRepositoryApi {
 			return try await usersDataSource.getUsers(
 				with: [SearchField(.uid, .in(notSelfUids))]
 			)
-			.map { $0.toDomain }
+            .map(\.toDomain)
 		}
 	}
 

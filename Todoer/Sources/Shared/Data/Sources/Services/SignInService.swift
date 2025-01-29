@@ -4,7 +4,6 @@ import Foundation
 import GoogleSignIn
 import GoogleSignInSwift
 import Entities
-import Common
 
 public protocol SignInServiceApi {
 	func googleSignIn(presentingVC: UIViewController?) async throws -> AuthData

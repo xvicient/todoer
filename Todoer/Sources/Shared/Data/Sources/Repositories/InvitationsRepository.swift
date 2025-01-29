@@ -37,9 +37,7 @@ public final class InvitationsRepository: InvitationsRepositoryApi {
 			with: [SearchField(.invitedId, .equal(usersDataSource.uid))]
 		)
 		.tryMap { invitations in
-			invitations.map {
-				$0.toDomain
-			}
+			invitations.map(\.toDomain)
 		}
 		.receive(on: DispatchQueue.main)
 		.eraseToAnyPublisher()
@@ -55,7 +53,7 @@ public final class InvitationsRepository: InvitationsRepositoryApi {
 				SearchField(.listId, .equal(listId)),
 			]
 		)
-		.map { $0.toDomain }
+        .map(\.toDomain)
 		.first
 	}
 

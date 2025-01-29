@@ -138,6 +138,7 @@ private extension HomeScreen {
     var contentConfiguration: TDListContent.Configuration {
         .init(
             rows: filteredLists.map { $0.tdListRow },
+            lineLimit: 2,
             isMoveEnabled: !isSearchFocused && !isEditing,
             isSwipeEnabled: !isEditing
         )
