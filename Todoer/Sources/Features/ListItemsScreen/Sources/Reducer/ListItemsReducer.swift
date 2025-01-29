@@ -108,7 +108,6 @@ extension ListItems {
 			_ state: inout State,
 			_ action: Action
 		) -> Effect<Action> {
-
 			switch (state.viewState, action) {
 			case (.idle, .onAppear):
 				return onAppear(
@@ -157,8 +156,11 @@ extension ListItems {
 					result: result
 				)
 
-			case (.idle, .deleteItemResult):
-				return .none
+            case (.updatingItem, .deleteItemResult(let result)):
+                return onDeleteItemResult(
+                    state: &state,
+                    result: result
+                )
 
 			case (.updatingItem, .toggleItemResult(let result)):
 				return onToggleItemResult(
@@ -211,7 +213,7 @@ extension ListItems {
 				)
 
 			default:
-				Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
+                Logger.log("No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)")
 				return .none
 			}
 		}
@@ -229,4 +231,16 @@ extension Item {
 			trailingActions: [.delete, .edit]
 		)
 	}
+}
+
+extension ListItems.Reducer.Action {
+    var rawValue: String {
+        String(describing: self).components(separatedBy: "(").first ?? String(describing: self)
+    }
+}
+
+extension ListItems.Reducer.ViewState {
+    var rawValue: String {
+        String(describing: self).components(separatedBy: "(").first ?? String(describing: self)
+    }
 }

@@ -142,8 +142,20 @@ extension Home.Reducer {
             )
 
         default:
-            Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
+            Logger.log("No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)")
             return .none
         }
+    }
+}
+
+extension Home.Reducer.Action {
+    var rawValue: String {
+        String(describing: self).components(separatedBy: "(").first ?? String(describing: self)
+    }
+}
+
+extension Home.Reducer.ViewState {
+    var rawValue: String {
+        String(describing: self).components(separatedBy: "(").first ?? String(describing: self)
     }
 }
