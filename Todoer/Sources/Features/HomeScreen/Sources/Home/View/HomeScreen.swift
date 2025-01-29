@@ -18,15 +18,6 @@ struct HomeScreen: View {
     @State private var isSearchFocused = false
     private var invitationsView: Home.MakeInvitationsView
     
-    private var isEditing: Bool {
-        switch store.state.viewState {
-        case .addingList, .editingList:
-            true
-        default:
-            false
-        }
-    }
-    
     private var filteredLists: [Home.Reducer.WrappedUserList] {
         searchText.isEmpty ? store.state.viewModel.lists : store.state.viewModel.lists.filter {
             $0.list.name.lowercased().hasPrefix(searchText.lowercased())
@@ -63,7 +54,7 @@ struct HomeScreen: View {
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
-                store.send(.onActive)
+                store.send(.onSceneActive)
             }
         }
         .disabled(
@@ -139,8 +130,8 @@ private extension HomeScreen {
         .init(
             rows: filteredLists.map { $0.tdListRow },
             lineLimit: 2,
-            isMoveEnabled: !isSearchFocused && !isEditing,
-            isSwipeEnabled: !isEditing
+            isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
+            isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
     
