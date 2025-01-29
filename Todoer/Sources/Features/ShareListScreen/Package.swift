@@ -46,6 +46,7 @@ let package = Package(
                 .product(name: "ThemeComponents", package: "Theme"),
                 "Data",
                 .product(name: "CoordinatorContract", package: "Coordinator"),
+                .product(name: "CoordinatorMocks", package: "Coordinator"),
                 "Entities",
                 "Strings"
             ],
