@@ -6,7 +6,6 @@ import Foundation
 
 extension Home.Reducer {
     
-    @MainActor
 	func onAppear(
 		state: inout State
 	) -> Effect<Action> {
@@ -19,9 +18,17 @@ extension Home.Reducer {
 		)
 	}
     
-    func onActive(
+    func onSceneActive(
         state: inout State
     ) -> Effect<Action> {
+        if state.viewState == .addingList {
+            _ = onDidTapCancelAddListButton(state: &state)
+        }
+        
+        if case let .editingList(uid) = state.viewState {
+            _ = onDidTapCancelEditListButton(state: &state, uid: uid)
+        }
+        
         state.viewState = .loading
         
         return .task { send in
