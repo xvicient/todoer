@@ -15,8 +15,6 @@ class ShareViewController: UIViewController {
             FirebaseApp.configure()
         }
         
-        SignInService().shareAppGroup()
-        
         view.backgroundColor = .clear
         
         guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem] else {

@@ -1,24 +1,39 @@
 import Entities
 import Application
+import Combine
 
 // MARK: - Reducer results
 
-@MainActor
 extension Home.Reducer {
-	func onFetchDataResult(
-		state: inout State,
-		result: ActionResult<HomeData>
-	) -> Effect<Action> {
-		switch result {
-		case .success(let data):
-			state.viewState = .idle
-			state.viewModel.lists = data.lists.map { $0.toListRow }
-			state.viewModel.invitations = data.invitations
-		case .failure:
-			state.viewState = .error()
-		}
-		return .none
-	}
+    
+    func onFetchDataResult(
+        state: inout State,
+        result: ActionResult<HomeData>
+    ) -> Effect<Action> {
+        switch result {
+        case .success(let data):
+            state.viewState = .idle
+            state.viewModel.lists = data.lists.map { $0.toListRow }
+            state.viewModel.invitations = data.invitations
+        case .failure:
+            state.viewState = .error()
+        }
+        return .none
+    }
+    
+    func onAddSharedListsResult(
+        state: inout State,
+        result: ActionResult<[UserList]>
+    ) -> Effect<Action> {
+        state.viewState = .idle
+        switch result {
+        case .success(let lists):
+            state.viewModel.lists.insert(contentsOf: lists.map { $0.toListRow }, at: 0)
+        case .failure:
+            break
+        }
+        return .none
+    }
 
 	func onToggleListResult(
 		state: inout State,
@@ -79,6 +94,7 @@ extension Home.Reducer {
 		return .none
 	}
 
+    @MainActor
 	func onDeleteAccountResult(
 		state: inout State,
 		result: ActionResult<EquatableVoid>

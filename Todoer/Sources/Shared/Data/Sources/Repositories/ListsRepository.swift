@@ -3,12 +3,17 @@ import Foundation
 import Entities
 
 public protocol ListsRepositoryApi {
+    func setSharedList(_ name: String)
+    
 	func fetchLists(
     ) -> AnyPublisher<[UserList], Error>
 
 	func addList(
 		with name: String
 	) async throws -> UserList
+    
+    func addSharedLists(
+    ) async throws -> [UserList]
 
 	func deleteList(
 		_ documentId: String
@@ -31,34 +36,45 @@ public protocol ListsRepositoryApi {
 }
 
 public final class ListsRepository: ListsRepositoryApi {
-
-	typealias SearchField = ListsDataSource.SearchField
-
-	private let listsDataSource: ListsDataSourceApi = ListsDataSource()
+    
+    typealias SearchField = ListsDataSource.SearchField
+    
+    private let listsDataSource: ListsDataSourceApi = ListsDataSource()
     private let usersDataSource: UsersDataSourceApi = UsersDataSource()
     private let itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
-
+    private let sharedListsDataSource: SharedListsDataSourceApi = SharedListsDataSource()
+    
     public init() {}
-
+    
+    public func setSharedList(_ name: String) {
+        sharedListsDataSource.sharedLists.append(name)
+    }
+    
     public func fetchLists() -> AnyPublisher<[UserList], Error> {
-		listsDataSource.fetchLists(uid: usersDataSource.uid)
-			.tryMap { lists in
-				lists.map {
-					$0.toDomain
-				}
-			}
-			.receive(on: DispatchQueue.main)
-			.eraseToAnyPublisher()
-	}
-
+        listsDataSource.fetchLists(uid: usersDataSource.uid)
+            .tryMap { $0.map(\.toDomain) }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
     public func addList(
-		with name: String
-	) async throws -> UserList {
-		try await listsDataSource.addList(
-			with: name,
-			uid: usersDataSource.uid
-		).toDomain
-	}
+        with name: String
+    ) async throws -> UserList {
+        try await listsDataSource.addList(
+            with: name,
+            uid: usersDataSource.uid
+        ).toDomain
+    }
+    
+    public func addSharedLists(
+    ) async throws -> [UserList] {
+        let result = try await listsDataSource.addLists(
+            names: sharedListsDataSource.sharedLists,
+            uid: usersDataSource.uid
+        ).map(\.toDomain)
+        sharedListsDataSource.sharedLists.removeAll()
+        return result
+    }
 
     public func deleteList(
 		_ documentId: String

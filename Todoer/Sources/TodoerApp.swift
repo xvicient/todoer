@@ -1,10 +1,8 @@
 import SwiftUI
 import FirebaseCore
-import FirebaseAuth
 import GoogleSignIn
 import Coordinator
 import CoordinatorContract
-import Common
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 	func application(

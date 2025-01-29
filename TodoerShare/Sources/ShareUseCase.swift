@@ -10,7 +10,7 @@ protocol ShareUseCaseApi {
     
     func addList(
         name: String
-    ) async -> ActionResult<EquatableVoid>
+    ) -> ActionResult<EquatableVoid>
 }
 
 extension Share {
@@ -20,7 +20,6 @@ extension Share {
             case invalidItemType
             case noDataFound
             case emptyListName
-            case userNotLogged
 
             var errorDescription: String? {
                 switch self {
@@ -30,22 +29,14 @@ extension Share {
                     return "No data found."
                 case .emptyListName:
                     return "UserList can't be empty."
-                case .userNotLogged:
-                    return "User not logged."
                 }
             }
         }
 
-        private let listsRepository: ListsRepositoryApi
-        private let authenticationService: AuthenticationServiceApi
-        @AppSetting(key: "sharedLists", defaultValue: [""]) private var sharedLists: [String]
-
-        init(
-            listsRepository: ListsRepositoryApi = ListsRepository(),
-            authenticationService: AuthenticationServiceApi = AuthenticationService()
-        ) {
+        private var listsRepository: ListsRepositoryApi
+        
+        init(listsRepository: ListsRepositoryApi = ListsRepository()) {
             self.listsRepository = listsRepository
-            self.authenticationService = authenticationService
         }
         
         func share(
@@ -95,23 +86,12 @@ extension Share {
         
         func addList(
             name: String
-        ) async -> ActionResult<EquatableVoid> {
+        ) -> ActionResult<EquatableVoid> {
             guard !name.isEmpty else {
                 return .failure(Errors.emptyListName)
             }
-            
-            guard authenticationService.isUserLogged else {
-                sharedLists.append(name)
-                return .failure(Errors.userNotLogged)
-            }
-
-            do {
-                _ = try await listsRepository.addList(with: name)
-                return .success()
-            }
-            catch {
-                return .failure(error)
-            }
+            listsRepository.setSharedList(name)
+            return .success()
         }
     }
 }
