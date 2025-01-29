@@ -6,8 +6,10 @@ import Entities
 import Common
 
 protocol HomeUseCaseApi {
-    @MainActor
-    func fetchData(
+    func addSharedLists(
+    ) async -> ActionResult<[UserList]>
+    
+    func fetchHomeData(
     ) -> AnyPublisher<HomeData, Error>
 
 	func updateList(
@@ -49,8 +51,6 @@ extension Home {
 		private let listsRepository: ListsRepositoryApi
 		private let itemsRepository: ItemsRepositoryApi
 		private let invitationsRepository: InvitationsRepositoryApi
-        
-        @AppSetting(key: "sharedLists", defaultValue: [""]) private var sharedLists: [String]
 
 		init(
 			listsRepository: ListsRepositoryApi = ListsRepository(),
@@ -62,20 +62,26 @@ extension Home {
 			self.invitationsRepository = invitationsRepository
 		}
         
-        @MainActor
-        func fetchData() -> AnyPublisher<HomeData, Error> {
-            let addSharedListsPublisher = Future<Void, Error> { promise in
-                Task { @MainActor in
-                    await self.addSharedLists()
-                    promise(.success(()))
-                }
+        public func addSharedLists(
+        ) async -> ActionResult<[UserList]> {
+            do {
+                let result = try await listsRepository.addSharedLists()
+                return .success(result)
             }
-            
-            return addSharedListsPublisher
-                .flatMap { _ in
-                    self.fetchListsAndInvitations()
-                }
-                .eraseToAnyPublisher()
+            catch {
+                return .failure(error)
+            }
+        }
+        
+        func fetchHomeData(
+        ) -> AnyPublisher<HomeData, Error> {
+            Publishers.CombineLatest(
+                fetchLists(),
+                fetchInvitations()
+            )
+            .map { HomeData(lists: $0, invitations: $1) }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
         }
 
 		func updateList(
@@ -137,25 +143,6 @@ extension Home {
 }
 
 private extension Home.UseCase {
-    
-    func fetchListsAndInvitations() -> AnyPublisher<HomeData, Error> {
-        Publishers.CombineLatest(
-            fetchLists(),
-            fetchInvitations()
-        )
-        .map {
-            HomeData(lists: $0, invitations: $1)
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    func addSharedLists(
-    ) async {
-        while !sharedLists.isEmpty {
-            let name = sharedLists.removeFirst()
-            _ = await addList(name: name)
-        }
-    }
     
 	func fetchLists() -> AnyPublisher<[UserList], Error> {
 		listsRepository.fetchLists()

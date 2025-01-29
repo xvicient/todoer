@@ -32,6 +32,7 @@ extension Home {
 			// MARK: - View appear
 			/// HomeReducer+ViewAppear
 			case onViewAppear
+            case onActive
 
 			// MARK: - User actions
 			/// HomeReducer+UserActions
@@ -52,6 +53,7 @@ extension Home {
 			// MARK: - Results
 			/// HomeReducer+Results
 			case fetchDataResult(ActionResult<HomeData>)
+            case addSharedListsResult(ActionResult<[UserList]>)
 			case toggleListResult(ActionResult<UserList>)
 			case deleteListResult(ActionResult<EquatableVoid>)
 			case addListResult(ActionResult<UserList>)
@@ -109,12 +111,17 @@ extension Home {
 			_ state: inout State,
 			_ action: Action
 		) -> Effect<Action> {
-
-			switch (state.viewState, action) {
-			case (.idle, .onViewAppear):
-				return onAppear(
-					state: &state
-				)
+            
+            switch (state.viewState, action) {
+            case (.idle, .onViewAppear):
+                return onAppear(
+                    state: &state
+                )
+                
+            case (.idle, .onActive):
+                return onActive(
+                    state: &state
+                )
 
 			case (.idle, .didTapList(let rowId)):
 				return onDidTapList(
@@ -191,6 +198,12 @@ extension Home {
 				return onDidTapAutoSortLists(
 					state: &state
 				)
+                
+            case (.loading, .addSharedListsResult(let result)):
+                return onAddSharedListsResult(
+                    state: &state,
+                    result: result
+                )
             
 			case (.idle, .fetchDataResult(let result)),
                 (.loading, .fetchDataResult(let result)):

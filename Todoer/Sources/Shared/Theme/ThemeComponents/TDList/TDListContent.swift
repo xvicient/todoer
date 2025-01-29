@@ -152,7 +152,7 @@ private extension TDListContent {
                     actions.onTap?(row.id)
                 }) {
                     TDURLText(text: row.name)
-                        .lineLimit(nil)
+                        .lineLimit(2)
                         .multilineTextAlignment(.leading)
                         .strikethrough(row.strikethrough)
                         .frame(

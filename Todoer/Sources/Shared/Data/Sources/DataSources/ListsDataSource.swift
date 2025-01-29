@@ -11,6 +11,11 @@ protocol ListsDataSourceApi {
 		with name: String,
 		uid: String
 	) async throws -> ListDTO
+    
+    func addLists(
+        names: [String],
+        uid: String
+    ) async throws -> [ListDTO]
 
 	func deleteList(
 		_ documentId: String
@@ -60,6 +65,7 @@ final class ListsDataSource: ListsDataSourceApi {
 	private enum Errors: Error {
 		case invalidDTO
 		case encodingError
+        case addListError
 	}
 
     private let listsCollection = Firestore.firestore().collection("lists")
@@ -81,18 +87,31 @@ final class ListsDataSource: ListsDataSourceApi {
 		with name: String,
 		uid: String
 	) async throws -> ListDTO {
-		let dto = ListDTO(
-			name: name,
-			done: false,
-			uid: [uid],
-			index: -Date().milliseconds
-		)
-		return
-			try await listsCollection
-			.addDocument(from: dto)
-			.getDocument()
-			.data(as: ListDTO.self)
+        try await listsCollection
+            .addDocument(from: name.toListDTO(uid))
+            .getDocument()
+            .data(as: ListDTO.self)
 	}
+    
+    func addLists(
+        names: [String],
+        uid: String
+    ) async throws -> [ListDTO] {
+        let batch = Firestore.firestore().batch()
+        
+        let lists = try names
+            .map {
+                var list = $0.toListDTO(uid)
+                let document = self.listsCollection.document()
+                try batch.setData(from: list, forDocument: document)
+                list.id = document.documentID
+                return list
+            }
+        
+        try await batch.commit()
+        
+        return lists
+    }
 
 	func deleteList(
 		_ documentId: String
@@ -192,4 +211,15 @@ final class ListsDataSource: ListsDataSourceApi {
 
 		return query
 	}
+}
+
+private extension String {
+    func toListDTO(_ uid: String) -> ListDTO {
+        ListDTO(
+            name: self,
+            done: false,
+            uid: [uid],
+            index: -Date().milliseconds
+        )
+    }
 }

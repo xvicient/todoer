@@ -13,6 +13,7 @@ import Strings
 
 struct HomeScreen: View {
     @ObservedObject private var store: Store<Home.Reducer>
+    @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
     @State private var isSearchFocused = false
     private var invitationsView: Home.MakeInvitationsView
@@ -59,6 +60,11 @@ struct HomeScreen: View {
         }
         .onAppear {
             store.send(.onViewAppear)
+        }
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
+                store.send(.onActive)
+            }
         }
         .disabled(
             store.state.viewState == .loading

@@ -27,7 +27,7 @@ public final class AuthenticationService: AuthenticationServiceApi {
     public init() {}
     
     public var isUserLogged: Bool {
-        authUser != nil && !uid.isEmpty
+        Auth.auth().currentUser != nil && !uid.isEmpty
     }
 
     public func signOut() throws {
@@ -35,14 +35,10 @@ public final class AuthenticationService: AuthenticationServiceApi {
 	}
 
     public func delete() async throws {
-		guard let user = authUser else {
+		guard let user = Auth.auth().currentUser else {
             throw Errors.noAuthUser
 		}
 
 		try await user.delete()
 	}
-    
-    private var authUser: User? {
-        Auth.auth().currentUser ?? (try? Auth.auth().getStoredUser(forAccessGroup: UserDefaults.appGroup))
-    }
 }
