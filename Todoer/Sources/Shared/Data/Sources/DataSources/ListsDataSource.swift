@@ -16,10 +16,15 @@ protocol ListsDataSourceApi {
         names: [String],
         uid: String
     ) async throws -> [ListDTO]
-
-	func deleteList(
-		_ documentId: String
-	) async throws
+    
+    func deleteLists(
+        with fields: [ListsDataSource.SearchField]
+    ) async throws
+    
+    func deleteListAndAllItems(
+        listId: String,
+        itemsDocuments: [QueryDocumentSnapshot]
+    ) async throws
 
 	func importList(
 		id: String,
@@ -33,15 +38,6 @@ protocol ListsDataSourceApi {
 	func sortLists(
 		lists: [ListDTO]
 	) async throws
-
-	func deleteLists(
-		with fields: [ListsDataSource.SearchField]
-	) async throws
-    
-    func deleteListAndAllItems(
-        listId: String,
-        itemsDocuments: [QueryDocumentSnapshot]
-    ) async throws
 }
 
 final class ListsDataSource: ListsDataSourceApi {
@@ -88,7 +84,7 @@ final class ListsDataSource: ListsDataSourceApi {
 		uid: String
 	) async throws -> ListDTO {
         try await listsCollection
-            .addDocument(from: name.toListDTO(uid))
+            .addDocument(from: name.toDTO(uid))
             .getDocument()
             .data(as: ListDTO.self)
 	}
@@ -101,7 +97,7 @@ final class ListsDataSource: ListsDataSourceApi {
         
         let lists = try names
             .map {
-                var list = $0.toListDTO(uid)
+                var list = $0.toDTO(uid)
                 let document = self.listsCollection.document()
                 try batch.setData(from: list, forDocument: document)
                 list.id = document.documentID
@@ -112,12 +108,6 @@ final class ListsDataSource: ListsDataSourceApi {
         
         return lists
     }
-
-	func deleteList(
-		_ documentId: String
-	) async throws {
-		try await listsCollection.document(documentId).delete()
-	}
 
 	func importList(
 		id: String,
@@ -214,7 +204,7 @@ final class ListsDataSource: ListsDataSourceApi {
 }
 
 private extension String {
-    func toListDTO(_ uid: String) -> ListDTO {
+    func toDTO(_ uid: String) -> ListDTO {
         ListDTO(
             name: self,
             done: false,

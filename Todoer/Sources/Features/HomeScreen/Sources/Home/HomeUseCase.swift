@@ -62,7 +62,7 @@ extension Home {
 			self.invitationsRepository = invitationsRepository
 		}
         
-        public func addSharedLists(
+        func addSharedLists(
         ) async -> ActionResult<[UserList]> {
             do {
                 let result = try await listsRepository.addSharedLists()
@@ -80,7 +80,6 @@ extension Home {
                 fetchInvitations()
             )
             .map { HomeData(lists: $0, invitations: $1) }
-            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
         }
 

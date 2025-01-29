@@ -46,11 +46,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
 		listId: String
 	) -> AnyPublisher<[Item], Error> {
 		itemsDataSource.fetchItems(listId: listId)
-			.tryMap { items in
-				items.map {
-					$0.toDomain
-				}
-			}
+			.tryMap { $0.map(\.toDomain) }
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
 	}
@@ -100,7 +96,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
 		listId: String
 	) async throws {
 		try await itemsDataSource.sortItems(
-			items: items.map { $0.toDTO },
+            items: items.map(\.toDTO),
 			listId: listId
 		)
 	}

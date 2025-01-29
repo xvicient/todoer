@@ -102,7 +102,7 @@ public final class ListsRepository: ListsRepositoryApi {
 		lists: [UserList]
 	) async throws {
 		try await listsDataSource.sortLists(
-			lists: lists.map { $0.toDTO }
+			lists: lists.map(\.toDTO)
 		)
 	}
 

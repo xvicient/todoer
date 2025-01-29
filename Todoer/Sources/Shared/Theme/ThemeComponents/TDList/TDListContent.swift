@@ -5,15 +5,18 @@ import Strings
 public struct TDListContent: View {
     public struct Configuration {
         let rows: [TDListRow]
+        let lineLimit: Int?
         let isMoveEnabled: Bool
         let isSwipeEnabled: Bool
         
         public init(
             rows: [TDListRow],
+            lineLimit: Int? = nil,
             isMoveEnabled: Bool,
             isSwipeEnabled: Bool
         ) {
             self.rows = rows
+            self.lineLimit = lineLimit
             self.isMoveEnabled = isMoveEnabled
             self.isSwipeEnabled = isSwipeEnabled
         }
@@ -152,7 +155,7 @@ private extension TDListContent {
                     actions.onTap?(row.id)
                 }) {
                     TDURLText(text: row.name)
-                        .lineLimit(2)
+                        .lineLimit(configuration.lineLimit)
                         .multilineTextAlignment(.leading)
                         .strikethrough(row.strikethrough)
                         .frame(
