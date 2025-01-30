@@ -199,9 +199,7 @@ extension ListItems {
 					state: &state
 				)
 
-            // As fetchItemsResult can be triggered by sortItemsResult first it will set the idle viewState
-			case (.idle, .sortItemsResult(let result)),
-                (.sortingItems, .sortItemsResult(let result)):
+            case (.sortingItems, .sortItemsResult(let result)):
 				return onSortItemsResult(
 					state: &state,
 					result: result

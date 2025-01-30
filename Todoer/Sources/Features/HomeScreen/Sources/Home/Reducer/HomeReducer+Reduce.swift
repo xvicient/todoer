@@ -95,7 +95,8 @@ extension Home.Reducer {
                 state: &state
             )
             
-        case (.loading, .addSharedListsResult(let result)):
+        case (.loading, .addSharedListsResult(let result)),
+            (.idle, .addSharedListsResult(let result)):
             return onAddSharedListsResult(
                 state: &state,
                 result: result
@@ -127,9 +128,7 @@ extension Home.Reducer {
                 result: result
             )
 
-        // As fetchDataResult can be triggered by sortListsResult first it will set the idle viewState
-        case (.idle, .sortListsResult(let result)),
-            (.sortingList, .sortListsResult(let result)):
+        case (.sortingList, .sortListsResult(let result)):
             return onSortListsResult(
                 state: &state,
                 result: result
