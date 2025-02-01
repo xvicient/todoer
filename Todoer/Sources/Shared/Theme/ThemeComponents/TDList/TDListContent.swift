@@ -71,10 +71,10 @@ public struct TDListContent: View {
         ) { index, row in
             if row.isEditing {
                 emptyRow(row)
-                    .id(index)
+                    .id(row.id)
             } else {
                 filledRow(row)
-                    .id(index)
+                    .id(row.id)
             }
         }
         .if(configuration.isMoveEnabled) {
@@ -205,9 +205,7 @@ private extension TDListContent {
             id: \.id
         ) { action in
             Button {
-                withAnimation {
-                    actions.onSwipe(rowID, action)
-                }
+                actions.onSwipe(rowID, action)
             } label: {
                 action.icon
             }

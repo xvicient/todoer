@@ -62,7 +62,7 @@ extension ListItems.Reducer {
 
 	func onToggleItemResult(
 		state: inout State,
-		result: ActionResult<Item>
+		result: ActionResult<EquatableVoid>
 	) -> Effect<Action> {
 		switch result {
 		case .success:

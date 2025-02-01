@@ -13,14 +13,6 @@ struct ListItemsScreen: View {
 	@ObservedObject private var store: Store<ListItems.Reducer>
     @State private var searchText = ""
     @State private var isSearchFocused = false
-    private var isEditing: Bool {
-        switch store.state.viewState {
-        case .addingItem, .editingItem:
-            true
-        default:
-            false
-        }
-    }
     
     private var filteredItems: [ListItems.Reducer.WrappedItem] {
         searchText.isEmpty ? store.state.viewModel.items : store.state.viewModel.items.filter {
@@ -124,7 +116,7 @@ private extension ListItemsScreen {
         .init(
             rows: filteredItems.map { $0.tdListRow },
             isMoveEnabled: !isSearchFocused,
-            isSwipeEnabled: !isEditing
+            isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
     
@@ -159,7 +151,7 @@ extension ListItemsScreen {
 	}
 
 	fileprivate func moveItem(fromOffset: IndexSet, toOffset: Int) {
-        guard !isSearchFocused else { return }
+        guard !isSearchFocused, !store.state.viewState.isEditing else { return }
 		store.send(.didSortItems(fromOffset, toOffset))
 	}
 }

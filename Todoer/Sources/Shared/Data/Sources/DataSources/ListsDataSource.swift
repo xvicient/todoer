@@ -143,14 +143,12 @@ final class ListsDataSource: ListsDataSourceApi {
 	) async throws {
 		let productsBatch = Firestore.firestore().batch()
 
-		try lists.enumerated().forEach { index, list in
-			guard let id = list.id else {
+        try lists.forEach {
+			guard let id = $0.id else {
 				return
 			}
-			var mutableList = list
-			mutableList.index = index
 
-			let encodedData = try Firestore.Encoder().encode(mutableList)
+			let encodedData = try Firestore.Encoder().encode($0)
 			productsBatch.updateData(
 				encodedData,
 				forDocument: listsCollection.document(id)
@@ -164,7 +162,7 @@ final class ListsDataSource: ListsDataSourceApi {
 		with fields: [SearchField]
 	) async throws {
 		try await listsQuery(with: fields)
-			.getDocuments()
+			.getDocuments(source: .server)
 			.documents
 			.forEach {
 				listsCollection.document($0.documentID).delete()

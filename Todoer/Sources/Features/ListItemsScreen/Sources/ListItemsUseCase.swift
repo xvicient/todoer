@@ -27,7 +27,7 @@ protocol ListItemsUseCaseApi {
 	func updateItemDone(
 		item: Item,
 		list: UserList
-	) async -> ActionResult<Item>
+	) async -> ActionResult<EquatableVoid>
 
 	func sortItems(
 		items: [Item],
@@ -129,16 +129,16 @@ extension ListItems {
 		func updateItemDone(
 			item: Item,
 			list: UserList
-		) async -> ActionResult<Item> {
+        ) async -> ActionResult<EquatableVoid> {
 			do {
-				let updatedItem = try await itemsRepository.updateItem(
+				_ = try await itemsRepository.updateItem(
 					item: item,
 					listId: list.documentId
 				)
 
 				_ = try await listsRepository.updateList(list)
 
-				return .success(updatedItem)
+				return .success()
 			}
 			catch {
 				return .failure(error)

@@ -55,7 +55,7 @@ extension ListItems {
 			case fetchItemsResult(ActionResult<[Item]>)
 			case addItemResult(ActionResult<Item>)
 			case deleteItemResult(ActionResult<EquatableVoid>)
-			case toggleItemResult(ActionResult<Item>)
+			case toggleItemResult(ActionResult<EquatableVoid>)
 			case sortItemsResult(ActionResult<EquatableVoid>)
 		}
 
@@ -92,6 +92,15 @@ extension ListItems {
                         primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
                     )
                 )
+            }
+            
+            var isEditing: Bool {
+                switch self {
+                case .addingItem, .editingItem:
+                    true
+                default:
+                    false
+                }
             }
 		}
 

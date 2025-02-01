@@ -167,7 +167,7 @@ extension HomeScreen {
     }
 
     fileprivate func moveList(fromOffset: IndexSet, toOffset: Int) {
-        guard !isSearchFocused else { return }
+        guard !isSearchFocused, !store.state.viewState.isEditing else { return }
         store.send(.didSortLists(fromOffset, toOffset))
     }
 }

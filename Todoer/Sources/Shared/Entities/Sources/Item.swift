@@ -5,7 +5,7 @@ public struct Item: Identifiable, Equatable, Hashable, Sendable {
     public let documentId: String
     public var name: String
     public var done: Bool
-    public let index: Int
+    public var index: Int
     
     public init(
         id: UUID,

@@ -6,7 +6,7 @@ public struct UserList: Identifiable, Equatable, Hashable, Sendable {
     public var name: String
     public var done: Bool
     public var uid: [String]
-    public let index: Int
+    public var index: Int
     
     public init(
         id: UUID,

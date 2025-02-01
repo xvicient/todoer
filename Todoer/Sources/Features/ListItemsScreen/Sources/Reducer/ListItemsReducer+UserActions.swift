@@ -19,7 +19,7 @@ extension ListItems.Reducer {
 		state.viewModel.items[index].item.done.toggle()
 		let item = state.viewModel.items[index].item
 		var list = dependencies.list
-		list.done = state.viewModel.items.allSatisfy({ $0.item.done })
+		list.done = state.viewModel.items.allSatisfy { $0.item.done }
 		return .task { send in
 			await send(
 				.toggleItemResult(
@@ -177,13 +177,7 @@ extension ListItems.Reducer {
 		state: inout State
 	) -> Effect<Action> {
 		state.viewState = .sortingItems
-        state.viewModel.items.sort {
-            if $0.item.done != $1.item.done {
-                return !$0.item.done && $1.item.done
-            } else {
-                return $0.item.name.localizedCompare($1.item.name) == .orderedAscending
-            }
-        }
+        state.viewModel.items.sorted()
 		let items = state.viewModel.items
 			.map { $0.item }
 		let listId = dependencies.list.documentId

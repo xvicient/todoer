@@ -61,7 +61,7 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
 		with fields: [SearchField]
 	) async throws -> [InvitationDTO] {
 		try await invitationsQuery(with: fields)
-			.getDocuments()
+			.getDocuments(source: .server)
 			.documents
 			.map { try $0.data(as: InvitationDTO.self) }
 	}

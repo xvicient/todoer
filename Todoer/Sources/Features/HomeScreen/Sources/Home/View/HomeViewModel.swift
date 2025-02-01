@@ -1,6 +1,7 @@
 import Foundation
 import Entities
 import ThemeComponents
+import Common
 
 extension Home.Reducer {
 
@@ -13,12 +14,23 @@ extension Home.Reducer {
 		var photoUrl = ""
 	}
 
-    struct WrappedUserList: Identifiable, Sendable {
+    struct WrappedUserList: Identifiable, Sendable, ElementSortable {
         let id: UUID
 		var list: UserList
 		let leadingActions: [TDSwipeAction]
 		let trailingActions: [TDSwipeAction]
 		var isEditing: Bool
+        
+        var done: Bool { list.done }
+        var name: String { list.name }
+        var index: Int {
+            get {
+                list.index
+            }
+            set {
+                list.index = newValue
+            }
+        }
 
 		init(
             id: UUID,
