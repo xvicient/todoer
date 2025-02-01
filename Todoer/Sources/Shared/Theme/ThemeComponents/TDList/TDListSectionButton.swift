@@ -18,9 +18,7 @@ public struct TDListSectionButton: View {
     
     public var body: some View {
         Button(action: {
-            withAnimation {
-                onTap()
-            }
+            onTap()
         }) {
             HStack(spacing: 8) {
                 icon

@@ -2,6 +2,7 @@ import Foundation
 import Entities
 import ThemeComponents
 import Entities
+import Common
 
 // MARK: - ListItemsViewModel
 
@@ -15,12 +16,23 @@ extension ListItems.Reducer {
         var listName: String = ""
 	}
 
-    struct WrappedItem: Identifiable, Equatable {
+    struct WrappedItem: Identifiable, Equatable, ElementSortable {
         let id: UUID
 		var item: Item
 		let leadingActions: [TDSwipeAction]
 		let trailingActions: [TDSwipeAction]
 		var isEditing: Bool
+        
+        var done: Bool { item.done }
+        var name: String { item.name }
+        var index: Int {
+            get {
+                item.index
+            }
+            set {
+                item.index = newValue
+            }
+        }
 
 		init(
             id: UUID,

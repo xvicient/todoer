@@ -54,7 +54,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
     public func documents(
         listId: String
     ) async throws -> [QueryDocumentSnapshot] {
-        try await itemsCollection(listId: listId).getDocuments().documents
+        try await itemsCollection(listId: listId).getDocuments(source: .server).documents
     }
     
     public func fetchItems(
@@ -107,7 +107,8 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         guard let encodedData = try? Firestore.Encoder().encode(item) else {
             throw Errors.encodingError
         }
-
+        
+        
         try await itemsCollection(listId: listId).document(id).updateData(encodedData)
         return item
     }
@@ -119,7 +120,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         let collection = itemsCollection(listId: listId)
         let batch = Firestore.firestore().batch()
 
-        try await collection.getDocuments().documents.forEach {
+        try await collection.getDocuments(source: .server).documents.forEach {
             guard var dto = try? $0.data(as: ItemDTO.self) else {
                 throw Errors.invalidDTO
             }
@@ -140,16 +141,15 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         items: [ItemDTO],
         listId: String
     ) async throws {
+        
         let batch = Firestore.firestore().batch()
 
-        try items.enumerated().forEach { index, item in
-            guard let id = item.id else {
+        try items.forEach {
+            guard let id = $0.id else {
                 return
             }
-            var mutableItem = item
-            mutableItem.index = index
 
-            let encodedData = try Firestore.Encoder().encode(mutableItem)
+            let encodedData = try Firestore.Encoder().encode($0)
             batch.updateData(
                 encodedData,
                 forDocument: itemsCollection(listId: listId).document(id)
