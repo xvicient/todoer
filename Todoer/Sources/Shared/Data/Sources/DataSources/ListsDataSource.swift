@@ -162,7 +162,7 @@ final class ListsDataSource: ListsDataSourceApi {
 		with fields: [SearchField]
 	) async throws {
 		try await listsQuery(with: fields)
-			.getDocuments(source: .server)
+			.getDocuments()
 			.documents
 			.forEach {
 				listsCollection.document($0.documentID).delete()
