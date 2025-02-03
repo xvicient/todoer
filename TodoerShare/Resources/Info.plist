@@ -23,9 +23,5 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
 	</dict>
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>fetch</string>
-    </array>
 </dict>
 </plist>
