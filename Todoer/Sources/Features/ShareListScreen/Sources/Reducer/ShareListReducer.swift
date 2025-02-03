@@ -31,7 +31,7 @@ extension ShareList {
             }
         }
 
-		enum Action: Equatable {
+		enum Action: Equatable, StringRepresentable {
 			// MARK: - View appear
 			/// ShareListReducer+ViewAppear
 			case onAppear
@@ -61,7 +61,7 @@ extension ShareList {
             }
 		}
 
-		enum ViewState: Equatable {
+		enum ViewState: Equatable, StringRepresentable {
 			case idle
             case alert(AppAlert<Action>)
             
@@ -126,7 +126,7 @@ extension ShareList {
 				)
 
 			default:
-				Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
+                Logger.log("No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)")
 				return .none
 			}
 		}

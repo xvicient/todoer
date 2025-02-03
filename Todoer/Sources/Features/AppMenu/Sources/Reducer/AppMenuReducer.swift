@@ -28,7 +28,7 @@ extension AppMenu {
         }
 
         /// Actions that can be performed in the app menu
-		enum Action: Equatable {
+		enum Action: Equatable, StringRepresentable {
 			/// MenuReducer+ViewAppear
 			case onViewAppear
             
@@ -60,7 +60,7 @@ extension AppMenu {
             }
 		}
 
-		enum ViewState {
+        enum ViewState: StringRepresentable {
 			case idle
 			case alert(AppAlert<Action>)
             
@@ -152,7 +152,7 @@ extension AppMenu {
                 )
 
 			default:
-				Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
+                Logger.log("No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)")
 				return .none
 			}
 		}

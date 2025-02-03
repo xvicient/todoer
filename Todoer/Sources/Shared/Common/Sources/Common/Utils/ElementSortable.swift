@@ -18,4 +18,11 @@ public extension Array where Element: ElementSortable {
             self[$0.offset].index = $0.offset
         }
     }
+    
+    func filter(with searchText: String) -> [Element] {
+        searchText.isEmpty ? self : self.filter {
+            $0.name.lowercased().contains(searchText.lowercased())
+        }
+    }
+    
 }

@@ -23,7 +23,7 @@ extension Authentication {
             }
         }
 
-		enum Action: Equatable {
+		enum Action: Equatable, StringRepresentable {
 			// MARK: - User actions
 			case didTapGoogleSignInButton
 			case didAppleSignIn(ActionResult<ASAuthorization>)
@@ -49,7 +49,7 @@ extension Authentication {
             }
 		}
 
-		enum ViewState: Equatable {
+		enum ViewState: Equatable, StringRepresentable {
 			case idle
 			case loading
             case alert(AppAlert<Action>)
@@ -107,7 +107,7 @@ extension Authentication {
 				)
 
 			default:
-				Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
+                Logger.log("No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)")
 				return .none
 			}
 		}

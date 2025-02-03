@@ -17,12 +17,6 @@ struct HomeScreen: View {
     @State private var searchText = ""
     @State private var isSearchFocused = false
     private var invitationsView: Home.MakeInvitationsView
-    
-    private var filteredLists: [Home.Reducer.WrappedUserList] {
-        searchText.isEmpty ? store.state.viewModel.lists : store.state.viewModel.lists.filter {
-            $0.list.name.lowercased().hasPrefix(searchText.lowercased())
-        }
-    }
 
     init(
         store: Store<Home.Reducer>,
@@ -120,6 +114,7 @@ private extension HomeScreen {
         .init(
             onAddRow: {
                 isSearchFocused = false
+                searchText = ""
                 store.send(.didTapAddRowButton)
             },
             onSortRows: { store.send(.didTapAutoSortLists) }
@@ -128,7 +123,7 @@ private extension HomeScreen {
     
     var contentConfiguration: TDListContent.Configuration {
         .init(
-            rows: filteredLists.map { $0.tdListRow },
+            rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow },
             lineLimit: 2,
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing

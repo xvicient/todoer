@@ -208,7 +208,7 @@ private extension TDListContent {
                 resignFirstResponder()
 
                 withAnimation {
-                    /// Prevents the swipe animation to break waiting to finish bedfore sending any action 
+                    /// Prevents the swipe animation to break waiting to finish before sending any action
                     Task.delayed(seconds: 0.8) {
                         await onSwipe(id: rowID, action: action)
                     }

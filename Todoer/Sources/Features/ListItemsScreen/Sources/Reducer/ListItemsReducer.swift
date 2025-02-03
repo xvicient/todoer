@@ -31,7 +31,7 @@ extension ListItems {
 			}
 		}
 
-		enum Action: Equatable {
+		enum Action: Equatable, StringRepresentable {
 			// MARK: - View appear
 			/// ListItemsReducer+ViewAppear
 			case onAppear
@@ -73,7 +73,7 @@ extension ListItems {
             }
 		}
 
-		enum ViewState: Equatable {
+		enum ViewState: Equatable, StringRepresentable {
 			case idle
 			case loading
 			case addingItem
@@ -238,16 +238,4 @@ extension Item {
 			trailingActions: [.delete, .edit]
 		)
 	}
-}
-
-extension ListItems.Reducer.Action {
-    var rawValue: String {
-        String(describing: self).components(separatedBy: "(").first ?? String(describing: self)
-    }
-}
-
-extension ListItems.Reducer.ViewState {
-    var rawValue: String {
-        String(describing: self).components(separatedBy: "(").first ?? String(describing: self)
-    }
 }

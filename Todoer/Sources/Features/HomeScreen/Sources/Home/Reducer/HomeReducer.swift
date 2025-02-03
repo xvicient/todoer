@@ -28,7 +28,7 @@ extension Home {
 			}
 		}
 
-		enum Action: Equatable {
+		enum Action: Equatable, StringRepresentable {
 			// MARK: - View appear
 			/// HomeReducer+ViewAppear
 			case onViewAppear
@@ -75,7 +75,7 @@ extension Home {
             }
 		}
 
-		enum ViewState: Equatable {
+		enum ViewState: Equatable, StringRepresentable {
 			case idle
 			case loading
 			case addingList

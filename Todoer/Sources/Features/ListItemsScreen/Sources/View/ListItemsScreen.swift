@@ -13,12 +13,6 @@ struct ListItemsScreen: View {
 	@ObservedObject private var store: Store<ListItems.Reducer>
     @State private var searchText = ""
     @State private var isSearchFocused = false
-    
-    private var filteredItems: [ListItems.Reducer.WrappedItem] {
-        searchText.isEmpty ? store.state.viewModel.items : store.state.viewModel.items.filter {
-            $0.item.name.lowercased().hasPrefix(searchText.lowercased())
-        }
-    }
 
 	init(
 		store: Store<ListItems.Reducer>
@@ -106,6 +100,7 @@ private extension ListItemsScreen {
         .init(
             onAddRow: {
                 isSearchFocused = false
+                searchText = ""
                 store.send(.didTapAddRowButton)
             },
             onSortRows: { store.send(.didTapAutoSortItems) }
@@ -114,8 +109,8 @@ private extension ListItemsScreen {
     
     var contentConfiguration: TDListContent.Configuration {
         .init(
-            rows: filteredItems.map { $0.tdListRow },
-            isMoveEnabled: !isSearchFocused,
+            rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow },
+            isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
