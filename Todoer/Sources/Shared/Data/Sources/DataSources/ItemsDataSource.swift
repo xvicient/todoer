@@ -54,7 +54,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
     public func documents(
         listId: String
     ) async throws -> [QueryDocumentSnapshot] {
-        try await itemsCollection(listId: listId).getDocuments(source: .server).documents
+        try await itemsCollection(listId: listId).getDocuments().documents
     }
     
     public func fetchItems(
@@ -120,7 +120,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         let collection = itemsCollection(listId: listId)
         let batch = Firestore.firestore().batch()
 
-        try await collection.getDocuments(source: .server).documents.forEach {
+        try await collection.getDocuments().documents.forEach {
             guard var dto = try? $0.data(as: ItemDTO.self) else {
                 throw Errors.invalidDTO
             }
