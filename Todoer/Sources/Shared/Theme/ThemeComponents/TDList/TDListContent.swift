@@ -66,15 +66,15 @@ public struct TDListContent: View {
     
     public var body: some View {
         ForEach(
-            Array(configuration.rows.enumerated()),
-            id: \.element.id
-        ) { index, row in
-            if row.isEditing {
-                emptyRow(row)
-                    .id(row.id)
+            Array(configuration.rows),
+            id: \.id
+        ) {
+            if $0.isEditing {
+                emptyRow($0)
+                    .id($0.id)
             } else {
-                filledRow(row)
-                    .id(row.id)
+                filledRow($0)
+                    .id($0.id)
             }
         }
         .if(configuration.isMoveEnabled) {
@@ -205,11 +205,22 @@ private extension TDListContent {
             id: \.id
         ) { action in
             Button {
-                actions.onSwipe(rowID, action)
+                resignFirstResponder()
+
+                withAnimation {
+                    /// Prevents the swipe animation to break waiting to finish bedfore sending any action 
+                    Task.delayed(seconds: 0.8) {
+                        await onSwipe(id: rowID, action: action)
+                    }
+                }
             } label: {
                 action.icon
             }
             .tint(action.tint)
         }
+    }
+    
+    private func onSwipe(id: UUID, action: TDSwipeAction) {
+        actions.onSwipe(id, action)
     }
 }
