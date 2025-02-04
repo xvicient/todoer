@@ -204,7 +204,7 @@ private extension TDListContent {
             swipeActions,
             id: \.id
         ) { action in
-            Button {
+            Button(role: action.role) {
                 resignFirstResponder()
 
                 withAnimation {

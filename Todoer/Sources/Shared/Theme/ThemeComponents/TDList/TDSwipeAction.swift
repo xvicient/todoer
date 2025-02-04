@@ -29,4 +29,11 @@ public enum TDSwipeAction: Identifiable, Sendable {
 		case .edit: return Image.squareAndPencil
 		}
 	}
+    
+    var role: ButtonRole? {
+        switch self {
+        case .delete: return .destructive
+        default: return nil
+        }
+    }
 }
