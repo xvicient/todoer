@@ -40,6 +40,7 @@
 		D65D30962D43FF0100A9A5B6 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30952D43FF0100A9A5B6 /* Application */; };
 		D65D30A32D47757500A9A5B6 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A22D47757500A9A5B6 /* Common */; };
 		D65D30A62D47758600A9A5B6 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A52D47758600A9A5B6 /* Data */; };
+		D689D24D2D52683500932CB0 /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = D689D24C2D52683500932CB0 /* ThemeAssets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D689D24D2D52683500932CB0 /* ThemeAssets in Frameworks */,
 				D65D30932D43FEF900A9A5B6 /* Entities in Frameworks */,
 				D65D30962D43FF0100A9A5B6 /* Application in Frameworks */,
 				D65D30A62D47758600A9A5B6 /* Data in Frameworks */,
@@ -335,6 +337,7 @@
 				D65D30952D43FF0100A9A5B6 /* Application */,
 				D65D30A22D47757500A9A5B6 /* Common */,
 				D65D30A52D47758600A9A5B6 /* Data */,
+				D689D24C2D52683500932CB0 /* ThemeAssets */,
 			);
 			productName = TodoerShare;
 			productReference = D60E139C2D43FE1D008AB16A /* TodoerShare.appex */;
@@ -428,6 +431,7 @@
 				D65D30942D43FF0100A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Application" */,
 				D65D30A12D47757500A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Common" */,
 				D65D30A42D47758600A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Data" */,
+				D689D24B2D52683500932CB0 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Theme" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -915,6 +919,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/Data;
 		};
+		D689D24B2D52683500932CB0 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Theme" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Shared/Theme;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1028,6 +1036,10 @@
 		D65D30A52D47758600A9A5B6 /* Data */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Data;
+		};
+		D689D24C2D52683500932CB0 /* ThemeAssets */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ThemeAssets;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

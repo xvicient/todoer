@@ -1,6 +1,7 @@
 import Application
 import SwiftUI
 import SwiftData
+import ThemeAssets
 
 struct ShareScreen: View {
     @ObservedObject private var store: Store<Share.Reducer>
@@ -12,29 +13,38 @@ struct ShareScreen: View {
     }
     
     var body: some View {
-        VStack {
-            Spacer()
-            VStack(spacing: 12) {
-                HStack {
-                    Button("Cancel") {
-                        store.send(.didTapCancel)
+        ScrollView {
+            VStack {
+                Spacer()
+                VStack(spacing: 24) {
+                    HStack {
+                        Button("Cancel", role: .destructive) {
+                            store.send(.didTapCancel)
+                        }
+                        Spacer()
+                        Text("New list")
+                            .foregroundStyle(Color.textBlack)
+                            .fontWeight(.bold)
+                        Spacer()
+                        Button("Save") {
+                            store.send(.didTapSave)
+                        }
                     }
-                    Spacer()
-                    Button("Save") {
-                        store.send(.didTapSave)
-                    }
+                    Text(store.state.viewModel.content)
+                        .foregroundStyle(Color.textBlack)
                 }
-                Text(store.state.viewModel.content)
-                    .foregroundStyle(Color.black)
+                .padding(16)
+                .background(Color.backgroundWhite)
+                Spacer()
             }
-            .padding(16)
-            .background(Color.white)
-            Spacer()
-        }
-        .padding(.horizontal, 32)
-        .onAppear {
-            store.send(.onViewAppear)
+            .frame(minHeight: UIScreen.main.bounds.height - 48)
+            .padding(.horizontal, 32)
+            .onAppear {
+                store.send(.onViewAppear)
+            }
+            .background(Color.clear)
         }
         .background(Color.clear)
+        .safeAreaPadding(.bottom, 48)
     }
 }
