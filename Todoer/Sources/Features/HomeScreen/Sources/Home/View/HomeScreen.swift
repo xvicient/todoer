@@ -85,7 +85,8 @@ private extension HomeScreen {
         AnyView(
             TDListContent(
                 configuration: contentConfiguration,
-                actions: contentActions
+                actions: contentActions,
+                rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
             )
         )
     }
@@ -123,7 +124,6 @@ private extension HomeScreen {
     
     var contentConfiguration: TDListContent.Configuration {
         .init(
-            rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow },
             lineLimit: 2,
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing

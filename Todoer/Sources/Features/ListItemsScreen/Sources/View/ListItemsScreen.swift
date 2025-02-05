@@ -71,7 +71,8 @@ private extension ListItemsScreen {
         AnyView(
             TDListContent(
                 configuration: contentConfiguration,
-                actions: contentActions
+                actions: contentActions,
+                rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }                
             )
         )
     }
@@ -109,7 +110,6 @@ private extension ListItemsScreen {
     
     var contentConfiguration: TDListContent.Configuration {
         .init(
-            rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow },
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing
         )

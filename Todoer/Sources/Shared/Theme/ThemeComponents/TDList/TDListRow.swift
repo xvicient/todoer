@@ -1,10 +1,10 @@
 import SwiftUI
 
-public struct TDListRow: Identifiable {
+public class TDListRow: ObservableObject, Identifiable {
     public let id: UUID
 	var name: String
 	var image: Image
-	var strikethrough: Bool
+    @Published var strikethrough: Bool
 	let leadingActions: [TDSwipeAction]
 	let trailingActions: [TDSwipeAction]
 	var isEditing: Bool
