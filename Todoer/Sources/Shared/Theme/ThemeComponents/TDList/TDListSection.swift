@@ -57,7 +57,8 @@ public struct TDListSection: View {
     
     @ViewBuilder
     private func header() -> some View {
-        HStack {
+        HStack(spacing: 24) {
+            Spacer()
             TDListSectionButton(
                 title: configuration.addButtonTitle,
                 icon: Image.plusCircleFill
@@ -73,6 +74,7 @@ public struct TDListSection: View {
             .if(!configuration.isSortEnabled) {
                 $0.hidden()
             }
+            Spacer()
         }
         .padding(.bottom, 12)
     }
