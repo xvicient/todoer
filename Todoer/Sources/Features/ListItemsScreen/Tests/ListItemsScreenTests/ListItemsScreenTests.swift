@@ -1,6 +1,6 @@
 import Testing
-import Application
-import ApplicationTests
+import xRedux
+import xReduxTest
 import Entities
 import Combine
 import CoordinatorMocks

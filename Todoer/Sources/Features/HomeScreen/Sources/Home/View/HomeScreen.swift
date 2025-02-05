@@ -1,6 +1,6 @@
 import SwiftUI
 import CoordinatorMocks
-import Application
+import xRedux
 import CoordinatorContract
 import ThemeComponents
 import Entities

@@ -1,4 +1,4 @@
-import Application
+import xRedux
 import AppMenuContract
 
 /// Extension containing result handling methods for the App Menu Reducer

@@ -1,6 +1,6 @@
 import XCTest
-import Application
-import ApplicationTests
+import xRedux
+import xReduxTest
 import Data
 import Entities
 import EntitiesMocks

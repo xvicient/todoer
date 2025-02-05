@@ -1,7 +1,7 @@
 import UIKit
 import SwiftUI
 import SwiftData
-import Application
+import xRedux
 import FirebaseCore
 import FirebaseAuth
 import Data

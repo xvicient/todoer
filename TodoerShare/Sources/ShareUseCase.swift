@@ -1,6 +1,6 @@
 import Foundation
 import Data
-import Application
+import xRedux
 import Common
 
 protocol ShareUseCaseApi {

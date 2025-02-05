@@ -1,4 +1,4 @@
-import Application
+import xRedux
 
 @testable import AuthenticationScreen
 

@@ -1,6 +1,6 @@
 import Combine
 import Data
-import Application
+import xRedux
 import AppMenuContract
 
 protocol MenuUseCaseApi {

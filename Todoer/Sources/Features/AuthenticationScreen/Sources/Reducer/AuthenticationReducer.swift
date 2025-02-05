@@ -1,12 +1,12 @@
 import AuthenticationServices
 import Common
-import Application
+import xRedux
 import CoordinatorContract
 import AuthenticationScreenContract
 import Strings
 
 extension Authentication {
-	struct Reducer: Application.Reducer {
+	struct Reducer: xRedux.Reducer {
         
         enum Errors: Error, LocalizedError {
             case unexpectedError

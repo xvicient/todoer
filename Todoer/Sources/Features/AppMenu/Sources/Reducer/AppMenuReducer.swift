@@ -1,6 +1,6 @@
 import Foundation
 import Common
-import Application
+import xRedux
 import CoordinatorContract
 import AppMenuContract
 import SwiftUI
@@ -9,7 +9,7 @@ import Strings
 extension AppMenu {
     
     /// Reducer for handling app menu state and actions
-	struct Reducer: Application.Reducer {
+	struct Reducer: xRedux.Reducer {
         
         /// Enumeration of possible errors in the app menu
         enum Errors: Error, LocalizedError {

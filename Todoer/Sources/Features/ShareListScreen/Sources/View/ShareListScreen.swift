@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 import CoordinatorMocks
 import Entities
-import Application
+import xRedux
 import ThemeAssets
 import ThemeComponents
 import CoordinatorContract

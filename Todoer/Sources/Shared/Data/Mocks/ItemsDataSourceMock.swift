@@ -1,7 +1,7 @@
 import Entities
 import Combine
 import FirebaseFirestore
-import Application
+import xRedux
 
 @testable import Data
 

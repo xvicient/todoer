@@ -17,7 +17,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../Application"),
+        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0"),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
@@ -40,7 +40,7 @@ let package = Package(
             name: "ShareListScreen",
             dependencies: [
                 "ShareListScreenContract",
-                .product(name: "Application", package: "Application"),
+                .product(name: "xRedux", package: "xRedux"),
                 "Common",
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "ThemeComponents", package: "Theme"),
@@ -56,7 +56,7 @@ let package = Package(
             name: "ShareListScreenTests",
             dependencies: [
                 "ShareListScreen",
-                .product(name: "ApplicationTests", package: "Application"),
+                .product(name: "xReduxTest", package: "xRedux"),
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 .product(name: "EntitiesMocks", package: "Entities"),
                 "Entities",

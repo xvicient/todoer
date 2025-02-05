@@ -12,14 +12,13 @@ let package = Package(
             targets: ["Common"]
         )
     ],
-    dependencies: [
-        .package(path: "../Application")
+    dependencies: [        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0")
     ],
     targets: [
         .target(
             name: "Common",
             dependencies: [
-                .product(name: "Application", package: "Application")
+                .product(name: "xRedux", package: "xRedux")
             ],
             path: "Sources/Common"
         )

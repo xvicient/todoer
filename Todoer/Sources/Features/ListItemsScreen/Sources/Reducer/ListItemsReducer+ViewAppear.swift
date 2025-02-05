@@ -1,5 +1,5 @@
 import Combine
-import Application
+import xRedux
 
 // MARK: - Reducer view appear
 

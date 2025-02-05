@@ -1,6 +1,6 @@
 import SwiftUI
 import Entities
-import Application
+import xRedux
 import ThemeComponents
 import Common
 import ListItemsScreenContract

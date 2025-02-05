@@ -1,5 +1,5 @@
 import Entities
-import Application
+import xRedux
 
 // MARK: - Reducer results
 

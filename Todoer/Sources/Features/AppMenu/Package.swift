@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Coordinator"),
-        .package(path: "../Application"),
+        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0"),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Strings")
@@ -37,7 +37,7 @@ let package = Package(
             name: "AppMenu",
             dependencies: [
                 "AppMenuContract",
-                "Application",
+                "xRedux",
                 "Common",
                 .product(name: "ThemeAssets", package: "Theme"),
                 "Strings"

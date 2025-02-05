@@ -1,4 +1,4 @@
-import Application
+import xRedux
 import Entities
 
 @testable import ShareListScreen

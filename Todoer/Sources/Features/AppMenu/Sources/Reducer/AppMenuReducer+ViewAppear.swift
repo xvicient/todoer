@@ -1,5 +1,5 @@
 import Combine
-import Application
+import xRedux
 import AppMenuContract
 
 /// Extension containing view appearance handling for the App Menu Reducer

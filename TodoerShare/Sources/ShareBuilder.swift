@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-import Application
+import xRedux
 
 public struct Share {
     public protocol Dependencies {

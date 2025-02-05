@@ -1,5 +1,5 @@
 import SwiftUI
-import Application
+import xRedux
 import HomeScreenContract
 import Entities
 import CoordinatorContract

@@ -11,7 +11,6 @@
 		C72241DC2D3172630046C0D7 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = C72241DB2D3172630046C0D7 /* Data */; };
 		C74372D12D32AAF9002E1F1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C74372D02D32AAF9002E1F1A /* Assets.xcassets */; };
 		C74372D32D32AB96002E1F1A /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C74372D22D32AB96002E1F1A /* Colors.xcassets */; };
-		C75EB57D2D31DC1300317D07 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB57C2D31DC1300317D07 /* Application */; };
 		C75EB5892D32968B00317D07 /* AuthenticationScreen in Frameworks */ = {isa = PBXBuildFile; productRef = C75EB5882D32968B00317D07 /* AuthenticationScreen */; };
 		C77FFADF2D32C6E100C59A48 /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = C77FFADE2D32C6E100C59A48 /* CoordinatorContract */; };
 		C79CB29B2B0D537A00C2BD18 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C79CB2882B0D537A00C2BD18 /* GoogleService-Info.plist */; };
@@ -36,8 +35,11 @@
 		D6422B642D3652820090F163 /* Coordinator in Frameworks */ = {isa = PBXBuildFile; productRef = D6422B632D3652820090F163 /* Coordinator */; };
 		D650873A2D35B8570056F8F3 /* CoordinatorContract in Frameworks */ = {isa = PBXBuildFile; productRef = D65087392D35B8570056F8F3 /* CoordinatorContract */; };
 		D650873E2D35BEDE0056F8F3 /* FeatureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */; };
+		D658B2692D53B3BD00363541 /* xRedux in Frameworks */ = {isa = PBXBuildFile; productRef = D658B2682D53B3BD00363541 /* xRedux */; };
+		D658B26B2D53B3BD00363541 /* xReduxTest in Frameworks */ = {isa = PBXBuildFile; productRef = D658B26A2D53B3BD00363541 /* xReduxTest */; };
+		D658B26D2D53B3DE00363541 /* xRedux in Frameworks */ = {isa = PBXBuildFile; productRef = D658B26C2D53B3DE00363541 /* xRedux */; };
+		D658B26F2D53B3EA00363541 /* xRedux in Frameworks */ = {isa = PBXBuildFile; productRef = D658B26E2D53B3EA00363541 /* xRedux */; };
 		D65D30932D43FEF900A9A5B6 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30922D43FEF900A9A5B6 /* Entities */; };
-		D65D30962D43FF0100A9A5B6 /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30952D43FF0100A9A5B6 /* Application */; };
 		D65D30A32D47757500A9A5B6 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A22D47757500A9A5B6 /* Common */; };
 		D65D30A62D47758600A9A5B6 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A52D47758600A9A5B6 /* Data */; };
 		D689D24D2D52683500932CB0 /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = D689D24C2D52683500932CB0 /* ThemeAssets */; };
@@ -84,7 +86,6 @@
 		C79CB2C62B13F48C00C2BD18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7B335952D31D30500C36D7B /* FirebaseDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FirebaseDependencies; sourceTree = "<group>"; };
 		C7B335962D31D30500C36D7B /* GoogleSignInDependencies */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = GoogleSignInDependencies; sourceTree = "<group>"; };
-		C7C42E0C2D332C8B006B8C53 /* Application */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Application; sourceTree = "<group>"; };
 		C7C42E0D2D332C8B006B8C53 /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
 		C7C42E0E2D332C8B006B8C53 /* Coordinator */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Coordinator; sourceTree = "<group>"; };
 		C7C42E0F2D332C8B006B8C53 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
@@ -125,6 +126,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D658B26D2D53B3DE00363541 /* xRedux in Frameworks */,
+				D658B26B2D53B3BD00363541 /* xReduxTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,9 +135,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D658B26F2D53B3EA00363541 /* xRedux in Frameworks */,
 				D689D24D2D52683500932CB0 /* ThemeAssets in Frameworks */,
 				D65D30932D43FEF900A9A5B6 /* Entities in Frameworks */,
-				D65D30962D43FF0100A9A5B6 /* Application in Frameworks */,
 				D65D30A62D47758600A9A5B6 /* Data in Frameworks */,
 				D65D30A32D47757500A9A5B6 /* Common in Frameworks */,
 			);
@@ -152,8 +155,8 @@
 				D62464D42D36B30F0097F7DE /* AuthenticationScreen in Frameworks */,
 				C7F3058A2D32CCA5004C322D /* ThemeAssets in Frameworks */,
 				D62464D92D36B31F0097F7DE /* HomeScreen in Frameworks */,
-				C75EB57D2D31DC1300317D07 /* Application in Frameworks */,
 				D62464E32D36B33C0097F7DE /* ShareListScreen in Frameworks */,
+				D658B2692D53B3BD00363541 /* xRedux in Frameworks */,
 				D62464DB2D36B31F0097F7DE /* HomeScreenContract in Frameworks */,
 				D62464DE2D36B32D0097F7DE /* ListItemsScreen in Frameworks */,
 				C72241D82D3170550046C0D7 /* FirebaseDependencies in Frameworks */,
@@ -196,7 +199,6 @@
 			isa = PBXGroup;
 			children = (
 				D6AF86092D3FE33C006C55F7 /* Strings */,
-				C7C42E0C2D332C8B006B8C53 /* Application */,
 				C7C42E0D2D332C8B006B8C53 /* Common */,
 				C7C42E0E2D332C8B006B8C53 /* Coordinator */,
 				C7C42E0F2D332C8B006B8C53 /* Data */,
@@ -334,10 +336,10 @@
 			name = TodoerShare;
 			packageProductDependencies = (
 				D65D30922D43FEF900A9A5B6 /* Entities */,
-				D65D30952D43FF0100A9A5B6 /* Application */,
 				D65D30A22D47757500A9A5B6 /* Common */,
 				D65D30A52D47758600A9A5B6 /* Data */,
 				D689D24C2D52683500932CB0 /* ThemeAssets */,
+				D658B26E2D53B3EA00363541 /* xRedux */,
 			);
 			productName = TodoerShare;
 			productReference = D60E139C2D43FE1D008AB16A /* TodoerShare.appex */;
@@ -364,7 +366,6 @@
 				C72241DB2D3172630046C0D7 /* Data */,
 				C7B335922D31CF2700C36D7B /* GoogleSignInDependencies */,
 				C7B3359E2D31D3E700C36D7B /* Common */,
-				C75EB57C2D31DC1300317D07 /* Application */,
 				C75EB5882D32968B00317D07 /* AuthenticationScreen */,
 				C77FFADE2D32C6E100C59A48 /* CoordinatorContract */,
 				C7F305892D32CCA5004C322D /* ThemeAssets */,
@@ -381,6 +382,7 @@
 				D62464E22D36B33C0097F7DE /* ShareListScreen */,
 				D62464E42D36B33C0097F7DE /* ShareListScreenContract */,
 				D62464E72D36B3730097F7DE /* Entities */,
+				D658B2682D53B3BD00363541 /* xRedux */,
 			);
 			productName = Listio;
 			productReference = D6A29BF32B09706100FA7F84 /* Todoer.app */;
@@ -428,10 +430,10 @@
 				D62464DC2D36B32D0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ListItemsScreen" */,
 				D62464E12D36B33C0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ShareListScreen" */,
 				D62464E62D36B3730097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Entities" */,
-				D65D30942D43FF0100A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Application" */,
 				D65D30A12D47757500A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Common" */,
 				D65D30A42D47758600A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Data" */,
 				D689D24B2D52683500932CB0 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Theme" */,
+				D658B2672D53B3BD00363541 /* XCRemoteSwiftPackageReference "xRedux" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -907,10 +909,6 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/Coordinator;
 		};
-		D65D30942D43FF0100A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Application" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Todoer/Sources/Shared/Application;
-		};
 		D65D30A12D47757500A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Common" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/Common;
@@ -934,6 +932,14 @@
 				minimumVersion = 509.0.0;
 			};
 		};
+		D658B2672D53B3BD00363541 /* XCRemoteSwiftPackageReference "xRedux" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/xvicient/xRedux.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -944,10 +950,6 @@
 		C72241DB2D3172630046C0D7 /* Data */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Data;
-		};
-		C75EB57C2D31DC1300317D07 /* Application */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Application;
 		};
 		C75EB5882D32968B00317D07 /* AuthenticationScreen */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1021,13 +1023,29 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CoordinatorContract;
 		};
+		D658B2682D53B3BD00363541 /* xRedux */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D658B2672D53B3BD00363541 /* XCRemoteSwiftPackageReference "xRedux" */;
+			productName = xRedux;
+		};
+		D658B26A2D53B3BD00363541 /* xReduxTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D658B2672D53B3BD00363541 /* XCRemoteSwiftPackageReference "xRedux" */;
+			productName = xReduxTest;
+		};
+		D658B26C2D53B3DE00363541 /* xRedux */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D658B2672D53B3BD00363541 /* XCRemoteSwiftPackageReference "xRedux" */;
+			productName = xRedux;
+		};
+		D658B26E2D53B3EA00363541 /* xRedux */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D658B2672D53B3BD00363541 /* XCRemoteSwiftPackageReference "xRedux" */;
+			productName = xRedux;
+		};
 		D65D30922D43FEF900A9A5B6 /* Entities */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Entities;
-		};
-		D65D30952D43FF0100A9A5B6 /* Application */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Application;
 		};
 		D65D30A22D47757500A9A5B6 /* Common */ = {
 			isa = XCSwiftPackageProductDependency;

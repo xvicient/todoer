@@ -1,7 +1,7 @@
 import Foundation
 import Entities
 import Common
-import Application
+import xRedux
 import Entities
 import ListItemsScreenContract
 import Strings
@@ -14,7 +14,7 @@ protocol ListItemsReducerDependencies {
 }
 
 extension ListItems {
-	struct Reducer: Application.Reducer {
+	struct Reducer: xRedux.Reducer {
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError

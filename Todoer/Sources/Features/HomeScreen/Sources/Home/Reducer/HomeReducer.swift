@@ -1,7 +1,7 @@
 import Foundation
 import Entities
 import Common
-import Application
+import xRedux
 import CoordinatorContract
 import HomeScreenContract
 import Strings
@@ -11,7 +11,7 @@ import Strings
 typealias HomeData = Home.HomeData
 
 extension Home {
-	struct Reducer: Application.Reducer {
+	struct Reducer: xRedux.Reducer {
 
 		enum Errors: Error, LocalizedError {
 			case unexpectedError

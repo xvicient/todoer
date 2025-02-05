@@ -2,7 +2,7 @@ import Testing
 import Entities
 import DataMocks
 import EntitiesMocks
-import Application
+import xRedux
 
 @testable import Data
 

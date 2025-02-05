@@ -1,6 +1,6 @@
 import AuthenticationServices
 import Common
-import Application
+import xRedux
 
 // MARK: - Reducer results
 

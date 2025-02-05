@@ -17,7 +17,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../Application"),
+        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0"),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
@@ -40,7 +40,7 @@ let package = Package(
             name: "HomeScreen",
             dependencies: [
                 "HomeScreenContract",
-                "Application",
+                "xRedux",
                 "Common",
                 .product(name: "ThemeAssets", package: "Theme"),
                 .product(name: "ThemeComponents", package: "Theme"),

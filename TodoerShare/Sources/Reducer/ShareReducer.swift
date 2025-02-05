@@ -1,10 +1,10 @@
 import SwiftData
-import Application
+import xRedux
 import Entities
 import Foundation
 
 extension Share {
-    struct Reducer: Application.Reducer {
+    struct Reducer: xRedux.Reducer {
         enum Action: Equatable {
             // MARK: - View appear
             /// ShareReducer+ViewAppear

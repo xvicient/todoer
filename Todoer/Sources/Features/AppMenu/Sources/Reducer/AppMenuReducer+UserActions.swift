@@ -1,5 +1,5 @@
 import Foundation
-import Application
+import xRedux
 import AppMenuContract
 import Common
 import Strings

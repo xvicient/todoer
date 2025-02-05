@@ -4,7 +4,7 @@ import GoogleSignIn
 import GoogleSignInSwift
 import SwiftUI
 import Common
-import Application
+import xRedux
 import ThemeAssets
 import CoordinatorContract
 import Entities

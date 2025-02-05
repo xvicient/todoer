@@ -1,6 +1,6 @@
 import SwiftUI
 import Entities
-import Application
+import xRedux
 import CoordinatorContract
 import ShareListScreenContract
 

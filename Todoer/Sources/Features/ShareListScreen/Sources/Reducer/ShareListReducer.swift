@@ -1,7 +1,7 @@
 import Foundation
 import Entities
 import Common
-import Application
+import xRedux
 import CoordinatorContract
 import ShareListScreenContract
 import Strings
@@ -11,7 +11,7 @@ import Strings
 typealias ShareData = ShareList.ShareData
 
 extension ShareList {
-    struct Reducer: Application.Reducer {
+    struct Reducer: xRedux.Reducer {
         
         internal enum Errors: Error, LocalizedError {
             case missingUserName

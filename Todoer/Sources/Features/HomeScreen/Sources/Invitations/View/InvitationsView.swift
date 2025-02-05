@@ -1,7 +1,7 @@
 import SwiftUI
 import ThemeAssets
 import ThemeComponents
-import Application
+import xRedux
 import Strings
 
 // MARK: - InvitationsView

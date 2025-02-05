@@ -1,6 +1,6 @@
 import SwiftUI
 import Entities
-import Application
+import xRedux
 import ListItemsScreenContract
 
 public struct ListItems {
