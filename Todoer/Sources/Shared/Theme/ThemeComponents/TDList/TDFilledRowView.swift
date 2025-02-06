@@ -16,24 +16,30 @@ struct TDFilledRowView: View {
     @State private var isDone: Bool = false
     let actions: TDFilledRowActions
     let configuration: TDFilledRowConfiguration
-
+    
     var body: some View {
-        Group {
-            HStack {
-                row.image
-                    .foregroundColor(Color.buttonBlack)
-                Button(action: { actions.onTap?(row.id) }) {
-                    TDURLText(text: row.name)
-                        .lineLimit(configuration.lineLimit)
-                        .multilineTextAlignment(.leading)
-                        .strikethrough(isDone)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .buttonStyle(.borderless)
-                .foregroundColor(Color.textBlack)
+        HStack {
+            row.image
+                .foregroundColor(Color.buttonBlack)
+            Button(action: { actions.onTap?(row.id) }) {
+                TDURLText(text: row.name)
+                    .lineLimit(configuration.lineLimit)
+                    .multilineTextAlignment(.leading)
+                    .strikethrough(isDone)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(minHeight: 40)
+            .buttonStyle(.borderless)
+            .foregroundColor(Color.textBlack)
         }
+        .frame(minHeight: 40)
+        .listRowInsets(
+            .init(
+                top: 8,
+                leading: 8,
+                bottom: 8,
+                trailing: 8
+            )
+        )
         .onAppear {
             isDone = row.strikethrough
         }
@@ -51,7 +57,7 @@ struct TDFilledRowView: View {
             }
         }
     }
-
+    
     @ViewBuilder
     private func swipeActions(
         _ row: TDListRow,
