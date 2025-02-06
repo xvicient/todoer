@@ -27,7 +27,9 @@ extension Home.Reducer {
         state.viewState = .idle
         switch result {
         case .success(let lists):
-            state.viewModel.lists.insert(contentsOf: lists.map { $0.toListRow }, at: 0)
+            if !lists.isEmpty {
+                state.viewModel.lists.insert(contentsOf: lists.map { $0.toListRow }, at: 0)
+            }
         case .failure:
             break
         }

@@ -3,6 +3,8 @@ import Foundation
 import Entities
 
 public protocol ListsRepositoryApi {
+    var sharedListsCount: Int { get }
+    
     func setSharedList(_ name: String)
     
 	func fetchLists(
@@ -45,6 +47,10 @@ public final class ListsRepository: ListsRepositoryApi {
     private let sharedListsDataSource: SharedListsDataSourceApi = SharedListsDataSource()
     
     public init() {}
+    
+    public var sharedListsCount: Int {
+        sharedListsDataSource.sharedLists.count
+    }
     
     public func setSharedList(_ name: String) {
         sharedListsDataSource.sharedLists.append(name)

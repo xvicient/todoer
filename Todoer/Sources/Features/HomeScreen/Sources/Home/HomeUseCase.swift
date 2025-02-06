@@ -6,6 +6,8 @@ import Entities
 import Common
 
 protocol HomeUseCaseApi {
+    var sharedListsCount: Int { get }
+    
     func addSharedLists(
     ) async -> ActionResult<[UserList]>
     
@@ -61,6 +63,10 @@ extension Home {
 			self.itemsRepository = itemsRepository
 			self.invitationsRepository = invitationsRepository
 		}
+        
+        var sharedListsCount: Int {
+            listsRepository.sharedListsCount
+        }
         
         func addSharedLists(
         ) async -> ActionResult<[UserList]> {

@@ -20,6 +20,10 @@ extension Home.Reducer {
     func onSceneActive(
         state: inout State
     ) -> Effect<Action> {
+        guard useCase.sharedListsCount > 0 else {
+            return .none
+        }
+        
         if state.viewState == .addingList {
             _ = onDidTapCancelAddListButton(state: &state)
         }
