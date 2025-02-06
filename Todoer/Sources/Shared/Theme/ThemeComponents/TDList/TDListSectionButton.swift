@@ -47,36 +47,6 @@ public struct TDListSectionButton: View {
     }
 }
 
-// MARK: - Subviews
-
-private struct HeaderView: View {
-    let icon: Image
-    let title: String
-    
-    var body: some View {
-        HStack {
-            icon
-                .resizable()
-                .frame(width: 21.0, height: 21.0)
-                .foregroundColor(Color.textBlack)
-                .background(
-                    RoundedRectangle(cornerRadius: 24)
-                        .fill(Color.backgroundWhite)
-                )
-            Text(title)
-                .font(.system(size: 18))
-                .foregroundColor(Color.textBlack)
-                .lineLimit(nil)
-                .multilineTextAlignment(.leading)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(height: 50)
-        .padding(.top, 6)
-        .padding(.horizontal, 10)
-    }
-}
-
-
 // MARK: - View Modifiers
 
 private struct ButtonBackground: ViewModifier {
