@@ -583,7 +583,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TodoerShare/Resources/TodoerShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TodoerShare/Resources/Info.plist;
@@ -610,7 +610,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TodoerShare/Resources/TodoerShare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TodoerShare/Resources/Info.plist;
@@ -761,7 +761,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Todoer/Resources/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
@@ -800,7 +800,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Todoer/Resources/Todoer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
 				ENABLE_DEBUG_DYLIB = NO;
