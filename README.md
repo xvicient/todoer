@@ -1,11 +1,10 @@
-[![Swift 6](https://img.shields.io/badge/Swift-6.0-orange.svg?style=flat)](https://swift.org)[![Platform](https://img.shields.io/badge/Platform-iOS_17+-blue.svg)](https://developer.apple.com/ios/)[![License](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](LICENSE)
+[![Swift 6](https://img.shields.io/badge/Swift-6.0-orange.svg?style=flat)](https://swift.org) [![Platform](https://img.shields.io/badge/Platform-iOS_17+-blue.svg)](https://developer.apple.com/ios/) [![License](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](LICENSE)
 # Todoer
 ![Todoer](/docs/media/icon.png)
 
 A modern task management app built with Swift 6 using Redux architecture and Firebase Firestore.
-|||
-|--------------|-----------------|
-| ![Preview1](/docs/media/00.gif) | ![Preview2](/docs/media/01.png) |
+
+![Preview1](/docs/media/00.gif) ![Preview2](/docs/media/01.png) ![Preview2](/docs/media/02.png) ![Preview2](/docs/media/03.png)
 
 ## 🚀 Features
 - Real-time task synchronization with Firebase Firestore
