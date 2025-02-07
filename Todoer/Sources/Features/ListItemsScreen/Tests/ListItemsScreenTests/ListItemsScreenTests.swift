@@ -11,7 +11,7 @@ import EntitiesMocks
 @MainActor
 struct ListItemsScreenTests {
     
-    private typealias ShareStore<R: Reducer> = TestStore<R.State, R.Action>
+    private typealias ListItemsStore<R: Reducer> = TestStore<R.State, R.Action>
     private typealias UseCaseError = ListItemsUseCaseMock.UseCaseError
     
     private struct ReducerDependencies: ListItemsReducerDependencies {
@@ -19,7 +19,7 @@ struct ListItemsScreenTests {
         let useCase: ListItemsUseCaseApi
     }
     
-    private lazy var store: ShareStore<ListItems.Reducer> = {
+    private lazy var store: ListItemsStore<ListItems.Reducer> = {
         TestStore(
             initialState: .init(),
             reducer: ListItems.Reducer(
