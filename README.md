@@ -39,7 +39,6 @@ A modern task management app built with Swift 6 using Redux architecture and Fir
 ## ⚙️ Requirements
 - Xcode 15+ (Swift 6 toolchain)
 - iOS 17+ deployment target
-- CocoaPods (for Firebase dependencies)
 - Active Firebase project configuration
 
 ## 🏗 Architecture
