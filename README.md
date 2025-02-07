@@ -4,12 +4,8 @@
 
 A modern task management app built with Swift 6 using Redux architecture and Firebase Firestore.
 
-<div style="display: flex; justify-content: space-between;">
-  <img src="/docs/media/00.gif" style="flex: 1; max-width: 24%; height: auto; margin-right: 1%;"/>
-  <img src="/docs/media/01.png" style="flex: 1; max-width: 24%; height: auto; margin-right: 1%;"/>
-  <img src="/docs/media/02.png" style="flex: 1; max-width: 24%; height: auto; margin-right: 1%;"/>
-  <img src="/docs/media/03.png" style="flex: 1; max-width: 24%; height: auto;"/>
-</div>
+| ![Image1](/docs/media/00.gif) | ![Image2](/docs/media/01.png) | ![Image3](/docs/media/02.png) | ![Image4](/docs/media/03.png) |
+|:---------------------:|:---------------------:|:---------------------:|:---------------------:|
 
 
 ## 🚀 Features
