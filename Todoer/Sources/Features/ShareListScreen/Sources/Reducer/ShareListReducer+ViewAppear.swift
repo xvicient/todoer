@@ -1,19 +1,14 @@
-import Application
+// MARK: - Reducer view appear
 
-// MARK: - View appear
-
+/// Extension handling view appear actions in the ShareList reducer
 extension ShareList.Reducer {
-	func onAppear(
-		state: inout State
-	) -> Effect<Action> {
-		.task { send in
-			await send(
-				.fetchDataResult(
-					useCase.fetchData(
-						uids: dependencies.list.uid
-					)
-				)
-			)
-		}
-	}
+    /// Handles the view appear event
+    /// - Parameter state: Current state to update
+    /// - Returns: Effect to execute
+    
+    /// Handles the user fetch result
+    /// - Parameters:
+    ///   - state: Current state to update
+    ///   - result: Result containing user data or error
+    /// - Returns: Effect to execute
 }

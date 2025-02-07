@@ -2,6 +2,8 @@ import SwiftUI
 
 // MARK: - TDList
 
+/// A custom list component that supports searching and editing functionality
+/// Used as the main container for displaying lists of items in the app
 public struct TDList: View {    
     @Binding private var searchText: String
     @Binding private var isSearchFocused: Bool
@@ -9,6 +11,12 @@ public struct TDList: View {
     private let isEditing: Bool
     private let sections: () -> AnyView
     
+    /// Creates a new list view
+    /// - Parameters:
+    ///   - sections: ViewBuilder closure that returns the list sections
+    ///   - isEditing: Whether the list is in editing mode
+    ///   - searchText: Binding to the search text
+    ///   - isSearchFocused: Binding to track if search is focused
     public init(
         @ViewBuilder sections: @escaping () -> AnyView,
         isEditing: Bool,

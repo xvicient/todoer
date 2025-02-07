@@ -1,11 +1,18 @@
 import SwiftUI
 import ThemeAssets
 
+/// A custom action button component that displays a title and an icon with a specific visual style.
+/// Used for primary actions in the app like creating new items or sorting.
 public struct TDActionButton: View {
     private let onTap: () -> Void
     private let title: String
     private let icon: Image
     
+    /// Creates a new action button with the specified title and icon
+    /// - Parameters:
+    ///   - title: The text to display in the button
+    ///   - icon: The icon image to show above the title
+    ///   - onTap: The action to perform when the button is tapped
     public init(
         title: String,
         icon: Image,

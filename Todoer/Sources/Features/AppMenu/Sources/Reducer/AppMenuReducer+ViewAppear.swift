@@ -4,16 +4,20 @@ import AppMenuContract
 
 // MARK: - View appear
 
+/// Extension containing view appearance handling for the App Menu Reducer
 extension AppMenu.Reducer {
-	func onAppear(
-		state: inout State
-	) -> Effect<Action> {
-		return .task { send in
-			await send(
-				.getPhotoUrlResult(
-					useCase.getPhotoUrl()
-				)
-			)
-		}
-	}
+    /// Handles the view's appearance by fetching the user's photo URL
+    /// - Parameter state: Current state of the app menu
+    /// - Returns: Effect that initiates fetching the user's photo URL
+    func onAppear(
+        state: inout State
+    ) -> Effect<Action> {
+        return .task { send in
+            await send(
+                .getPhotoUrlResult(
+                    useCase.getPhotoUrl()
+                )
+            )
+        }
+    }
 }

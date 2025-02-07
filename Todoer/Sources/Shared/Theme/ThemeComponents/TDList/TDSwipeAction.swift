@@ -1,6 +1,8 @@
 import SwiftUI
 import ThemeAssets
 
+/// Represents different types of swipe actions available for list rows
+/// Each action has an associated tint color and icon
 public enum TDSwipeAction: Identifiable, Sendable {
 	case share
 	case done
@@ -8,8 +10,10 @@ public enum TDSwipeAction: Identifiable, Sendable {
 	case delete
 	case edit
 
+	/// The unique identifier for the action
 	public var id: UUID { UUID() }
 
+	/// The tint color to use for the action button
 	var tint: Color {
 		switch self {
 		case .share: return Color.buttonBlack
@@ -20,6 +24,7 @@ public enum TDSwipeAction: Identifiable, Sendable {
 		}
 	}
 
+	/// The icon to display for the action button
 	var icon: Image {
 		switch self {
 		case .share: return Image.squareAndArrowUp

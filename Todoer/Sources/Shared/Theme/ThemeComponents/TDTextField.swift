@@ -1,10 +1,16 @@
 import SwiftUI
 import ThemeAssets
 
+/// A custom text field component with a clear button and custom styling
+/// Used for text input throughout the app
 public struct TDTextField: View {
 	@Binding var text: String
 	let placeholder: String
 
+	/// Creates a new text field
+	/// - Parameters:
+	///   - text: Binding to the text value
+	///   - placeholder: Placeholder text to show when the field is empty
 	public init(text: Binding<String>, placeholder: String) {
 		_text = text
 		self.placeholder = placeholder

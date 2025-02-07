@@ -11,77 +11,111 @@ import Strings
 typealias HomeData = Home.HomeData
 
 extension Home {
-	struct Reducer: Application.Reducer {
+    /// Reducer responsible for managing the home screen's state and actions
+    struct Reducer: Application.Reducer {
+        /// Possible errors that can occur in the reducer
+        enum Errors: Error, LocalizedError {
+            /// Generic unexpected error
+            case unexpectedError
 
-		enum Errors: Error, LocalizedError {
-			case unexpectedError
+            var errorDescription: String? {
+                switch self {
+                case .unexpectedError:
+                    return "Unexpected error."
+                }
+            }
 
-			var errorDescription: String? {
-				switch self {
-				case .unexpectedError:
-					return "Unexpected error."
-				}
-			}
+            /// Default error message
+            static var `default`: String {
+                Self.unexpectedError.localizedDescription
+            }
+        }
 
-			static var `default`: String {
-				Self.unexpectedError.localizedDescription
-			}
-		}
+        /// Actions that can be performed in the home screen
+        enum Action: Equatable {
+            // MARK: - View appear
+            /// Action triggered when the view appears
+            case onViewAppear
 
-		enum Action: Equatable {
-			// MARK: - View appear
-			/// HomeReducer+ViewAppear
-			case onViewAppear
+            // MARK: - User actions
+            /// Action when a list is tapped
+            case didTapList(UUID)
+            /// Action when the toggle button of a list is tapped
+            case didTapToggleListButton(UUID)
+            /// Action when the delete button of a list is tapped
+            case didTapDeleteListButton(UUID)
+            /// Action when the share button of a list is tapped
+            case didTapShareListButton(UUID)
+            /// Action when the edit button of a list is tapped
+            case didTapEditListButton(UUID)
+            /// Action when a list is updated with a new name
+            case didTapUpdateListButton(UUID, String)
+            /// Action when list editing is cancelled
+            case didTapCancelEditListButton(UUID)
+            /// Action when the add row button is tapped
+            case didTapAddRowButton
+            /// Action when adding a new list is cancelled
+            case didTapCancelAddListButton
+            /// Action when a new list is submitted
+            case didTapSubmitListButton(String)
+            /// Action when lists are manually sorted
+            case didSortLists(IndexSet, Int)
+            /// Action when an error is dismissed
+            case didTapDismissError
+            /// Action when auto-sort is triggered
+            case didTapAutoSortLists
 
-			// MARK: - User actions
-			/// HomeReducer+UserActions
-			case didTapList(UUID)
-			case didTapToggleListButton(UUID)
-			case didTapDeleteListButton(UUID)
-			case didTapShareListButton(UUID)
-			case didTapEditListButton(UUID)
-			case didTapUpdateListButton(UUID, String)
-			case didTapCancelEditListButton(UUID)
-			case didTapAddRowButton
-			case didTapCancelAddListButton
-			case didTapSubmitListButton(String)
-			case didSortLists(IndexSet, Int)
-			case didTapDismissError
-			case didTapAutoSortLists
+            // MARK: - Results
+            /// Result of fetching home data
+            case fetchDataResult(ActionResult<HomeData>)
+            /// Result of toggling a list's status
+            case toggleListResult(ActionResult<UserList>)
+            /// Result of deleting a list
+            case deleteListResult(ActionResult<EquatableVoid>)
+            /// Result of adding a new list
+            case addListResult(ActionResult<UserList>)
+            /// Result of sorting lists
+            case sortListsResult(ActionResult<EquatableVoid>)
+            /// Result of deleting the account
+            case deleteAccountResult(ActionResult<EquatableVoid>)
+        }
 
-			// MARK: - Results
-			/// HomeReducer+Results
-			case fetchDataResult(ActionResult<HomeData>)
-			case toggleListResult(ActionResult<UserList>)
-			case deleteListResult(ActionResult<EquatableVoid>)
-			case addListResult(ActionResult<UserList>)
-			case sortListsResult(ActionResult<EquatableVoid>)
-			case deleteAccountResult(ActionResult<EquatableVoid>)
-		}
-
-		@MainActor
+        /// State of the home screen
         struct State: AppAlertState {
-			var viewState = ViewState.idle
-			var viewModel = ViewModel()
+            /// Current view state
+            var viewState = ViewState.idle
+            /// View model containing UI data
+            var viewModel = ViewModel()
             
+            /// Current alert being displayed, if any
             var alert: AppAlert<Action>? {
                 guard case .alert(let data) = viewState else {
                     return nil
-                    
                 }
                 return data
             }
-		}
+        }
 
-		enum ViewState: Equatable {
-			case idle
-			case loading
-			case addingList
-			case sortingList
-			case updatingList
-			case editingList
+        /// Different states the view can be in
+        enum ViewState: Equatable {
+            /// Default state
+            case idle
+            /// Loading state
+            case loading
+            /// Adding a new list
+            case addingList
+            /// Sorting lists
+            case sortingList
+            /// Updating an existing list
+            case updatingList
+            /// Editing an existing list
+            case editingList
+            /// Showing an alert
             case alert(AppAlert<Action>)
             
+            /// Creates an error state with a message
+            /// - Parameter message: Error message to display
+            /// - Returns: Alert view state
             static func error(
                 _ message: String = Errors.default
             ) -> ViewState {
@@ -93,166 +127,175 @@ extension Home {
                     )
                 )
             }
-		}
+        }
 
-		internal let dependencies: HomeScreenDependencies
+        /// Dependencies required by the reducer
+        internal let dependencies: HomeScreenDependencies
+        /// Use case for business logic
         internal let useCase: HomeUseCaseApi = UseCase()
 
-		init(dependencies: HomeScreenDependencies) {
-			self.dependencies = dependencies
-		}
+        /// Initializes the reducer with required dependencies
+        /// - Parameter dependencies: Dependencies for the home screen
+        init(dependencies: HomeScreenDependencies) {
+            self.dependencies = dependencies
+        }
 
-		// MARK: - Reduce
+        // MARK: - Reduce
 
-		@MainActor
-		func reduce(
-			_ state: inout State,
-			_ action: Action
-		) -> Effect<Action> {
+        /// Handles state changes based on actions
+        /// - Parameters:
+        ///   - state: Current state to modify
+        ///   - action: Action that triggered the state change
+        /// - Returns: Effect to execute
+        func reduce(
+            _ state: inout State,
+            _ action: Action
+        ) -> Effect<Action> {
 
-			switch (state.viewState, action) {
-			case (.idle, .onViewAppear):
-				return onAppear(
-					state: &state
-				)
+            switch (state.viewState, action) {
+            case (.idle, .onViewAppear):
+                return onAppear(
+                    state: &state
+                )
 
-			case (.idle, .didTapList(let rowId)):
-				return onDidTapList(
-					state: &state,
+            case (.idle, .didTapList(let rowId)):
+                return onDidTapList(
+                    state: &state,
                     uid: rowId
-				)
+                )
 
-			case (.idle, .didTapToggleListButton(let rowId)):
-				return onDidTapToggleListButton(
-					state: &state,
+            case (.idle, .didTapToggleListButton(let rowId)):
+                return onDidTapToggleListButton(
+                    state: &state,
                     uid: rowId
-				)
+                )
 
-			case (.idle, .didTapDeleteListButton(let rowId)):
-				return onDidTapDeleteListButton(
-					state: &state,
+            case (.idle, .didTapDeleteListButton(let rowId)):
+                return onDidTapDeleteListButton(
+                    state: &state,
                     uid: rowId
-				)
+                )
 
-			case (.idle, .didTapShareListButton(let rowId)):
-				return onDidTapShareListButton(
-					state: &state,
+            case (.idle, .didTapShareListButton(let rowId)):
+                return onDidTapShareListButton(
+                    state: &state,
                     uid: rowId
-				)
+                )
 
-			case (.idle, .didTapEditListButton(let rowId)):
-				return onDidTapEditListButton(
-					state: &state,
+            case (.idle, .didTapEditListButton(let rowId)):
+                return onDidTapEditListButton(
+                    state: &state,
                     uid: rowId
-				)
+                )
 
-			case (.editingList, .didTapCancelEditListButton(let rowId)):
-				return onDidTapCancelEditListButton(
-					state: &state,
+            case (.editingList, .didTapCancelEditListButton(let rowId)):
+                return onDidTapCancelEditListButton(
+                    state: &state,
                     uid: rowId
-				)
+                )
 
-			case (.editingList, .didTapUpdateListButton(let uid, let name)):
-				return onDidTapUpdateListButton(
-					state: &state,
+            case (.editingList, .didTapUpdateListButton(let uid, let name)):
+                return onDidTapUpdateListButton(
+                    state: &state,
                     uid: uid,
-					name: name
-				)
+                    name: name
+                )
 
-			case (.idle, .didTapAddRowButton):
-				return onDidTapAddRowButton(
-					state: &state
-				)
+            case (.idle, .didTapAddRowButton):
+                return onDidTapAddRowButton(
+                    state: &state
+                )
 
-			case (.addingList, .didTapCancelAddListButton):
-				return onDidTapCancelAddListButton(
-					state: &state
-				)
+            case (.addingList, .didTapCancelAddListButton):
+                return onDidTapCancelAddListButton(
+                    state: &state
+                )
 
-			case (.addingList, .didTapSubmitListButton(let name)):
-				return onDidTapSubmitListButton(
-					state: &state,
-					newListName: name
-				)
+            case (.addingList, .didTapSubmitListButton(let name)):
+                return onDidTapSubmitListButton(
+                    state: &state,
+                    newListName: name
+                )
 
-			case (.idle, .didSortLists(let fromIndex, let toIndex)):
-				return onDidSortLists(
-					state: &state,
-					fromIndex: fromIndex,
-					toIndex: toIndex
-				)
+            case (.idle, .didSortLists(let fromIndex, let toIndex)):
+                return onDidSortLists(
+                    state: &state,
+                    fromIndex: fromIndex,
+                    toIndex: toIndex
+                )
 
-			case (.alert, .didTapDismissError):
-				return onDidTapDismissError(
-					state: &state
-				)
+            case (.alert, .didTapDismissError):
+                return onDidTapDismissError(
+                    state: &state
+                )
 
-			case (.idle, .didTapAutoSortLists):
-				return onDidTapAutoSortLists(
-					state: &state
-				)
+            case (.idle, .didTapAutoSortLists):
+                return onDidTapAutoSortLists(
+                    state: &state
+                )
             
             // sortingList uses firestore batch that triggers the collection listener so the fetch is being triggered as well
-			case (.idle, .fetchDataResult(let result)),
+            case (.idle, .fetchDataResult(let result)),
                 (.loading, .fetchDataResult(let result)),
                 (.addingList, .fetchDataResult(let result)),
                 (.editingList, .fetchDataResult(let result)),
                 (.sortingList, .fetchDataResult(let result)):
-				return onFetchDataResult(
-					state: &state,
-					result: result
-				)
+                return onFetchDataResult(
+                    state: &state,
+                    result: result
+                )
 
-			case (.updatingList, .toggleListResult(let result)):
-				return onToggleListResult(
-					state: &state,
-					result: result
-				)
+            case (.updatingList, .toggleListResult(let result)):
+                return onToggleListResult(
+                    state: &state,
+                    result: result
+                )
 
-			case (.updatingList, .deleteListResult(let result)):
-				return onDeleteListResult(
-					state: &state,
-					result: result
-				)
+            case (.updatingList, .deleteListResult(let result)):
+                return onDeleteListResult(
+                    state: &state,
+                    result: result
+                )
 
-			case (.addingList, .addListResult(let result)),
-				(.editingList, .addListResult(let result)):
-				return onAddListResult(
-					state: &state,
-					result: result
-				)
+            case (.addingList, .addListResult(let result)),
+                (.editingList, .addListResult(let result)):
+                return onAddListResult(
+                    state: &state,
+                    result: result
+                )
 
             // As fetchDataResult can be triggered by sortListsResult first it will set the idle viewState
-			case (.idle, .sortListsResult(let result)),
+            case (.idle, .sortListsResult(let result)),
                 (.sortingList, .sortListsResult(let result)):
-				return onSortListsResult(
-					state: &state,
-					result: result
-				)
+                return onSortListsResult(
+                    state: &state,
+                    result: result
+                )
 
-			case (.alert, .deleteAccountResult(let result)):
-				return onDeleteAccountResult(
-					state: &state,
-					result: result
-				)
+            case (.alert, .deleteAccountResult(let result)):
+                return onDeleteAccountResult(
+                    state: &state,
+                    result: result
+                )
 
-			default:
-				Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
-				return .none
-			}
-		}
-	}
+            default:
+                Logger.log("No matching ViewState: \(state.viewState) and Action: \(action)")
+                return .none
+            }
+        }
+    }
 }
 
 // MARK: - UserList to ListRow
 
 extension UserList {
-	var toListRow: Home.Reducer.WrappedUserList {
-		Home.Reducer.WrappedUserList(
+    /// Converts a UserList to a list row with appropriate actions
+    var toListRow: Home.Reducer.WrappedUserList {
+        .init(
             id: id,
-			list: self,
-			leadingActions: [done ? .undone : .done],
-			trailingActions: [.delete, .share, .edit]
-		)
-	}
+            list: self,
+            leadingActions: [done ? .undone : .done],
+            trailingActions: [.share, .edit, .delete]
+        )
+    }
 }

@@ -1,10 +1,12 @@
 import SwiftUI
 import ThemeAssets
 
+/// Defines the visual style of a basic button
 public enum TDButtonStyle {
 	case primary
 	case destructive
 
+	/// The background color of the button based on its style
 	var backgroundColor: Color {
 		switch self {
 		case .primary:
@@ -14,6 +16,7 @@ public enum TDButtonStyle {
 		}
 	}
 
+	/// The foreground color of the button based on its style
 	var foregroundColor: Color {
 		switch self {
 		case .primary:
@@ -24,10 +27,12 @@ public enum TDButtonStyle {
 	}
 }
 
+/// Defines the size configuration of a basic button
 public enum TDButtonSize {
 	case `default`
 	case custom(with: CGFloat, height: CGFloat)
 
+	/// The size value of the button based on its configuration
 	var value: (CGFloat, CGFloat) {
 		switch self {
 		case .default:
@@ -38,12 +43,20 @@ public enum TDButtonSize {
 	}
 }
 
+/// A basic button component with customizable style and size
+/// Used for common actions throughout the app
 public struct TDBasicButton: View {
 	let title: String
 	let style: TDButtonStyle
 	let size: TDButtonSize
 	let action: () -> Void
 
+    /// Creates a new basic button
+    /// - Parameters:
+    ///   - title: The text to display in the button
+    ///   - style: The visual style of the button (default: .primary)
+    ///   - size: The size configuration of the button (default: .default)
+    ///   - action: The action to perform when the button is tapped
     public init(
 		title: String,
 		style: TDButtonStyle = .primary,
@@ -75,7 +88,7 @@ public struct TDBasicButton: View {
 	}
 }
 
-struct TOButton_Previews: PreviewProvider {
+struct TDBasicButton_Previews: PreviewProvider {
 	static var previews: some View {
 		TDBasicButton(
 			title: "OK",

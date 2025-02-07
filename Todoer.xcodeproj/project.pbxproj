@@ -141,12 +141,12 @@
 		C78AF05E2D332BBF009244AF /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				D6AF86092D3FE33C006C55F7 /* Strings */,
 				C7C42E0C2D332C8B006B8C53 /* Application */,
-				C7C42E0D2D332C8B006B8C53 /* Common */,
 				C7C42E0E2D332C8B006B8C53 /* Coordinator */,
+				C7C42E0D2D332C8B006B8C53 /* Common */,
 				C7C42E0F2D332C8B006B8C53 /* Data */,
 				C760DF002D3334F20060D496 /* Entities */,
+				D6AF86092D3FE33C006C55F7 /* Strings */,
 				C7C42E182D332C8B006B8C53 /* Theme */,
 			);
 			path = Shared;

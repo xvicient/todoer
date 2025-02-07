@@ -1,24 +1,14 @@
-import Testing
-import Application
-import ApplicationTests
-import Entities
-import Combine
-import CoordinatorMocks
-import EntitiesMocks
-
-@testable import ListItemsScreen
-
+/// Unit tests for the ListItems screen functionality
 @MainActor
 struct ListItemsScreenTests {
     
-    private typealias ShareStore<R: Reducer> = TestStore<R.State, R.Action>
-    private typealias UseCaseError = ListItemsUseCaseMock.UseCaseError
-    
+    /// Dependencies required by the ListItems reducer
     private struct ReducerDependencies: ListItemsReducerDependencies {
         let list: UserList
         let useCase: ListItemsUseCaseApi
     }
     
+    /// Test store instance with mock dependencies
     private lazy var store: ShareStore<ListItems.Reducer> = {
         TestStore(
             initialState: .init(),
@@ -30,11 +20,17 @@ struct ListItemsScreenTests {
             )
         )
     }()
+    /// Mock use case for testing
     private var useCaseMock = ListItemsUseCaseMock()
+    /// Mock coordinator for testing navigation
     private var coordinatorMock = CoordinatorMock()
+    /// Mock item for testing operations
     private var itemMock = ItemMock.item
+    /// Mock list for testing operations
     private var listMock = ListMock.list
     
+    /// Tests successful item fetch when view appears
+    /// Verifies list name and items are properly set
     @Test("Fetch users success after view appears")
     mutating func testDidViewAppearAndFetchUsers_Success() async {
         givenASuccessItemsFetch()
@@ -50,6 +46,8 @@ struct ListItemsScreenTests {
         }
     }
     
+    /// Tests failed item fetch when view appears
+    /// Verifies error state and empty view model
     @Test("Fetch users fails after view appears")
     mutating func testDidViewAppearAndFetchUsers_Failure() async {
         givenAFailureItemsFetch()
@@ -65,6 +63,8 @@ struct ListItemsScreenTests {
         }
     }
     
+    /// Tests successful addition of a new item
+    /// Verifies item editing state transitions
     @Test("Add new item and submit it successfully")
     mutating func testDidTapAddRowButtonAndDidTapSubmitItemButton_Success() async {
         givenASuccessItemSubmit()
@@ -84,6 +84,8 @@ struct ListItemsScreenTests {
         }
     }
     
+    /// Tests failed addition of a new item
+    /// Verifies error state and editing state
     @Test("Add new item but submit fails")
     mutating func testDidTapAddRowButtonAndDidTapSubmitItemButton_Failure() async {
         givenAFailureItemSubmit()
@@ -103,6 +105,8 @@ struct ListItemsScreenTests {
         }
     }
     
+    /// Tests successful cancellation of adding a new item
+    /// Verifies item editing state transitions
     @Test("Add new item and cancel it successfully")
     mutating func testDidTapAddRowButtonAndDidTapCancelAddRowButton_Success() async {
         await store.send(.didTapAddRowButton) {
@@ -118,24 +122,29 @@ struct ListItemsScreenTests {
     
 }
 
-extension ListItemsScreenTests {
-    fileprivate func givenASuccessItemsFetch() {
+/// Test helper methods for configuring mock behavior
+private extension ListItemsScreenTests {
+    /// Configures mock for successful items fetch
+    func givenASuccessItemsFetch() {
         useCaseMock.fetchItemsResult = .success(
             [itemMock]
         )
     }
     
-    fileprivate func givenAFailureItemsFetch() {
+    /// Configures mock for failed items fetch
+    func givenAFailureItemsFetch() {
         useCaseMock.fetchItemsResult = .failure(UseCaseError.error)
     }
     
-    fileprivate func givenASuccessItemSubmit() {
+    /// Configures mock for successful item submission
+    func givenASuccessItemSubmit() {
         useCaseMock.addItemResult = .success(
             itemMock
         )
     }
     
-    fileprivate func givenAFailureItemSubmit() {
+    /// Configures mock for failed item submission
+    func givenAFailureItemSubmit() {
         useCaseMock.addItemResult = .failure(UseCaseError.error)
     }
 }

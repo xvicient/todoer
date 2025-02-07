@@ -12,10 +12,18 @@ import Strings
 
 // MARK: - ShareListView
 
+/// Main view for sharing a list with other users
+/// This view provides a form for entering sharing details and displays current shared users
 struct ShareListScreen: View {
-	@ObservedObject private var store: Store<ShareList.Reducer>
+    /// Store managing the state and actions
+    @ObservedObject private var store: Store<ShareList.Reducer>
+    /// Text field value for the owner's name
     @State private var shareOwnerNameText: String = ""
+    /// Text field value for the recipient's email
     @State private var shareEmailText: String = ""
+    
+    /// Determines if the share button should be disabled
+    /// Returns true if required fields are empty
     private var isShareButtonDisabled: Bool {
         !((!$shareEmailText.wrappedValue.isEmpty &&
            !$shareOwnerNameText.wrappedValue.isEmpty) ||
@@ -23,9 +31,11 @@ struct ShareListScreen: View {
          store.state.viewModel.selfName != nil))
     }
 
-	init(store: Store<ShareList.Reducer>) {
-		self.store = store
-	}
+    /// Initializes a new ShareListScreen
+    /// - Parameter store: Store managing the screen's state and actions
+    init(store: Store<ShareList.Reducer>) {
+        self.store = store
+    }
 
 	var body: some View {
 		VStack(alignment: .leading, spacing: 12) {
@@ -99,8 +109,9 @@ struct ShareListScreen: View {
 // MARK: - ViewBuilders
 
 extension ShareListScreen {
-	@ViewBuilder
-	fileprivate var title: some View {
+    /// Title view for the share screen
+    @ViewBuilder
+    fileprivate var title: some View {
 		HStack {
 			Image.squareAndArrowUp
 				.foregroundColor(Color.backgroundBlack)

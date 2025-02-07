@@ -1,22 +1,12 @@
-import XCTest
-import Application
-import ApplicationTests
-import Entities
-import AuthenticationScreenContract
-import CoordinatorContract
-import CoordinatorMocks
-
-@testable import AuthenticationScreen
-
+/// Unit tests for the Authentication screen functionality
 @MainActor
 final class AuthenticationReducerTests: XCTestCase {
-	private typealias AuthenticationStore<R: Reducer> = TestStore<R.State, R.Action>
-	private typealias UseCaseError = AuthenticationUseCaseMock.UseCaseError
-
-	struct Dependencies: AuthenticationScreenDependencies {
+    /// Dependencies required by the Authentication reducer
+    struct Dependencies: AuthenticationScreenDependencies {
         var coordinator: CoordinatorApi
-	}
+    }
 
+    /// Test store instance with mock dependencies
     private lazy var store: AuthenticationStore<Authentication.Reducer> = {
         TestStore(
             initialState: .init(),
@@ -28,49 +18,59 @@ final class AuthenticationReducerTests: XCTestCase {
             )
         )
     }()
-	private var useCaseMock = AuthenticationUseCaseMock()
-	private var coordinator = CoordinatorMock()
+    /// Mock use case for testing
+    private var useCaseMock = AuthenticationUseCaseMock()
+    /// Mock coordinator for testing navigation
+    private var coordinator = CoordinatorMock()
 
-	/// https://github.com/lukejones1/AppleSignIn/tree/master
-	func testDidTapAppleSignInButton_Success() async {}
+    /// Tests Apple Sign In (pending implementation)
+    /// - Note: See https://github.com/lukejones1/AppleSignIn/tree/master for reference
+    func testDidTapAppleSignInButton_Success() async {}
 
-	func testDidTapGoogleSignInButton_Success() async {
-		givenASuccessfullSingIn()
+    /// Tests successful Google Sign In
+    /// Verifies loading state and navigation after success
+    func testDidTapGoogleSignInButton_Success() async {
+        givenASuccessfullSingIn()
 
-		await store.send(.didTapGoogleSignInButton) {
-			$0.viewState == .loading
-		}
+        await store.send(.didTapGoogleSignInButton) {
+            $0.viewState == .loading
+        }
 
-		await store.receive(.signInResult(useCaseMock.result)) {
-			$0.viewState == .idle
-		}
+        await store.receive(.signInResult(useCaseMock.result)) {
+            $0.viewState == .idle
+        }
 
-		XCTAssert(coordinator.isLoggInCalled)
-	}
+        XCTAssert(coordinator.isLoggInCalled)
+    }
 
-	func testDidTapGoogleSignInButton_Failure() async {
-		givenAFailureSingIn()
+    /// Tests failed Google Sign In
+    /// Verifies error state and error dismissal
+    func testDidTapGoogleSignInButton_Failure() async {
+        givenAFailureSingIn()
 
-		await store.send(.didTapGoogleSignInButton) {
-			$0.viewState == .loading
-		}
+        await store.send(.didTapGoogleSignInButton) {
+            $0.viewState == .loading
+        }
 
-		await store.receive(.signInResult(useCaseMock.result)) {
-			$0.viewState == .error(UseCaseError.error.localizedDescription)
-		}
+        await store.receive(.signInResult(useCaseMock.result)) {
+            $0.viewState == .error(UseCaseError.error.localizedDescription)
+        }
 
-		await store.send(.didTapDismissError) {
-			$0.viewState == .idle
-		}
-	}
+        await store.send(.didTapDismissError) {
+            $0.viewState == .idle
+        }
+    }
 }
 
+/// Test helper methods for configuring mock behavior
 extension AuthenticationReducerTests {
-	fileprivate func givenASuccessfullSingIn() {
-		useCaseMock.result = .success()
-	}
+    /// Configures mock for successful sign in
+    fileprivate func givenASuccessfullSingIn() {
+        useCaseMock.result = .success()
+    }
 
-	fileprivate func givenAFailureSingIn() {
-		useCaseMock.result = .failure(UseCaseError.error)
-	}
+    /// Configures mock for failed sign in
+    fileprivate func givenAFailureSingIn() {
+        useCaseMock.result = .failure(UseCaseError.error)
+    }
 }

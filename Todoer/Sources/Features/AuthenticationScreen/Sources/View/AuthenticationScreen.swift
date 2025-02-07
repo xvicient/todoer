@@ -13,6 +13,8 @@ import Strings
 
 // MARK: - AuthenticationScreen
 
+/// A view that handles user authentication through various providers (Apple, Google)
+/// This screen provides a beautiful animated interface for user login
 struct AuthenticationScreen: View {
     @ObservedObject private var store: Store<Authentication.Reducer>
     @State private var isTopSpacerVisible = true
@@ -23,6 +25,8 @@ struct AuthenticationScreen: View {
     @State var caption: String = ""
     private let getThingsDoneText = Strings.Authentication.getThingsDoneText
 
+    /// Initializes the authentication screen with a store
+    /// - Parameter store: The store that manages the authentication state
     init(store: Store<Authentication.Reducer>) {
         self.store = store
     }
@@ -48,6 +52,7 @@ struct AuthenticationScreen: View {
 // MARK: - ViewBuilders
 
 extension AuthenticationScreen {
+    /// The app logo view with animation
     @ViewBuilder
     fileprivate var logoView: some View {
         VStack {
@@ -80,6 +85,7 @@ extension AuthenticationScreen {
 
     }
 
+    /// The animated slogan view that appears after the logo animation
     @ViewBuilder
     fileprivate var sloganView: some View {
         if didFinishAnimation {
@@ -101,6 +107,7 @@ extension AuthenticationScreen {
         }
     }
 
+    /// The login buttons view containing Apple and Google sign-in options
     @ViewBuilder
     fileprivate var loginButtons: some View {
         if didFinishAnimation {
@@ -142,6 +149,7 @@ extension AuthenticationScreen {
         }
     }
 
+    /// A loading indicator view shown during authentication processes
     @ViewBuilder
     fileprivate var loadingView: some View {
         if store.state.viewState == .loading {
@@ -149,6 +157,7 @@ extension AuthenticationScreen {
         }
     }
 
+    /// The app information view showing version and environment details
     @ViewBuilder
     fileprivate var appInfoView: some View {
         if didFinishAnimation {
@@ -168,6 +177,8 @@ extension AuthenticationScreen {
 // MARK: - Private
 
 extension AuthenticationScreen {
+    /// Implements a typewriter effect for the slogan text
+    /// - Parameter position: The current position in the text to type
     fileprivate func typeWriter(at position: String.Index) {
         if position == getThingsDoneText.startIndex {
             caption = ""
@@ -183,6 +194,7 @@ extension AuthenticationScreen {
     }
 }
 
+/// Extension to convert ASAuthorization Result to ActionResult
 extension Result where Success == ASAuthorization {
     var actionResult: ActionResult<ASAuthorization> {
         switch self {
@@ -194,6 +206,7 @@ extension Result where Success == ASAuthorization {
     }
 }
 
+/// Preview provider for the AuthenticationScreen
 struct AuthenticationScreen_Previews: PreviewProvider {
     struct Dependencies: AuthenticationScreenDependencies {
         let coordinator: CoordinatorApi

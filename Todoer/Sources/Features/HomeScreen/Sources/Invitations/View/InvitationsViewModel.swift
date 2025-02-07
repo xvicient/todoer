@@ -3,10 +3,12 @@ import Entities
 
 extension Invitations.Reducer {
 
-	// MARK: - ViewModel
+    // MARK: - ViewModel
 
-	@MainActor
-	struct ViewModel {
-		var invitations = [Invitation]()
-	}
+    /// View model that holds the UI-related data for invitations
+    @MainActor
+    struct ViewModel {
+        /// Array of pending invitations to be displayed
+        var invitations = [Invitation]()
+    }
 }

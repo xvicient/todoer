@@ -9,26 +9,33 @@ import Strings
 
 // MARK: - ListItemsScreen
 
+/// The main view for displaying and managing a list of items
+/// This screen allows users to view, add, edit, delete, and sort items in a list
 struct ListItemsScreen: View {
 	@ObservedObject private var store: Store<ListItems.Reducer>
     @State private var searchText = ""
     @State private var isSearchFocused = false
+    
+    /// Whether the screen is in editing mode (adding or editing an item)
     private var isEditing: Bool {
         store.state.viewState == .addingItem ||
         store.state.viewState == .editingItem
     }
     
+    /// Filtered items based on search text
     private var filteredItems: [ListItems.Reducer.WrappedItem] {
         searchText.isEmpty ? store.state.viewModel.items : store.state.viewModel.items.filter {
             $0.item.name.lowercased().hasPrefix(searchText.lowercased())
         }
     }
 
-	init(
-		store: Store<ListItems.Reducer>
-	) {
-		self.store = store
-	}
+    /// Creates a new ListItemsScreen
+    /// - Parameter store: The store managing the screen's state and actions
+    init(
+        store: Store<ListItems.Reducer>
+    ) {
+        self.store = store
+    }
 
 	var body: some View {
 		ZStack {
@@ -55,7 +62,7 @@ struct ListItemsScreen: View {
 // MARK: - ViewBuilders
 
 private extension ListItemsScreen {
-    
+    /// Creates the sections of the list
     @ViewBuilder
     func sections() -> AnyView {
         AnyView(
@@ -69,6 +76,7 @@ private extension ListItemsScreen {
         )
     }
     
+    /// Creates the content of the list items
     @ViewBuilder
     func itemsContent() -> AnyView {
         AnyView(
@@ -79,6 +87,7 @@ private extension ListItemsScreen {
         )
     }
 
+    /// Shows a loading indicator when the screen is in loading state
     @ViewBuilder
     var loadingView: some View {
         if store.state.viewState == .loading {
@@ -87,10 +96,10 @@ private extension ListItemsScreen {
     }
 }
 
-// MARK: - List comfigurations
+// MARK: - List configurations
 
 private extension ListItemsScreen {
-    
+    /// Configuration for the list section
     var sectionConfiguration: TDListSection.Configuration {
         .init(
             title: store.state.viewModel.listName,

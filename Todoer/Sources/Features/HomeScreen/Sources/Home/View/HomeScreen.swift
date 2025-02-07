@@ -11,23 +11,34 @@ import Strings
 
 // MARK: - HomeScreen
 
+/// A view that displays the user's todo lists and provides functionality to manage them
 struct HomeScreen: View {
+    /// Store that manages the home screen state and actions
     @ObservedObject private var store: Store<Home.Reducer>
+    /// Text used for searching lists
     @State private var searchText = ""
+    /// Flag indicating if the search field is focused
     @State private var isSearchFocused = false
+    /// View builder for displaying invitations
     private var invitationsView: Home.MakeInvitationsView
     
+    /// Flag indicating if the screen is in editing mode
     private var isEditing: Bool {
         store.state.viewState == .addingList ||
         store.state.viewState == .editingList
     }
     
+    /// Filtered lists based on search text
     private var filteredLists: [Home.Reducer.WrappedUserList] {
         searchText.isEmpty ? store.state.viewModel.lists : store.state.viewModel.lists.filter {
             $0.list.name.lowercased().hasPrefix(searchText.lowercased())
         }
     }
 
+    /// Initializes the home screen
+    /// - Parameters:
+    ///   - store: Store that manages the screen's state
+    ///   - invitationsView: View builder for displaying invitations
     init(
         store: Store<Home.Reducer>,
         @ViewBuilder invitationsView: @escaping Home.MakeInvitationsView
@@ -36,6 +47,7 @@ struct HomeScreen: View {
         self.invitationsView = invitationsView
     }
 
+    /// The body of the view that constructs the home screen interface
     var body: some View {
         ZStack {
             TDList(
@@ -61,7 +73,7 @@ struct HomeScreen: View {
 // MARK: - ViewBuilders
 
 private extension HomeScreen {
-    
+    /// Creates the sections of the list, including invitations if present
     @ViewBuilder
     func sections() -> AnyView {
         AnyView(
@@ -78,6 +90,7 @@ private extension HomeScreen {
         )
     }
 
+    /// Creates the content of the list section
     @ViewBuilder
     func listContent() -> AnyView {
         AnyView(
@@ -88,6 +101,7 @@ private extension HomeScreen {
         )
     }
 
+    /// Loading indicator view
     @ViewBuilder
     var loadingView: some View {
         if store.state.viewState == .loading {
@@ -96,10 +110,10 @@ private extension HomeScreen {
     }
 }
 
-// MARK: - List comfigurations
+// MARK: - List configurations
 
 private extension HomeScreen {
-    
+    /// Configuration for the list section
     var sectionConfiguration: TDListSection.Configuration {
         .init(
             title: Strings.Home.todosText,
@@ -109,6 +123,7 @@ private extension HomeScreen {
         )
     }
     
+    /// Actions available in the list section
     var sectionActions: TDListSection.Actions {
         .init(
             onAddRow: { store.send(.didTapAddRowButton) },
@@ -116,6 +131,7 @@ private extension HomeScreen {
         )
     }
     
+    /// Configuration for the list content
     var contentConfiguration: TDListContent.Configuration {
         .init(
             rows: filteredLists.map { $0.tdListRow },
@@ -123,6 +139,7 @@ private extension HomeScreen {
         )
     }
     
+    /// Actions available in the list content
     var contentActions: TDListContent.Actions {
         .init(
             onSubmit: { store.send(.didTapSubmitListButton($0)) },
@@ -139,6 +156,7 @@ private extension HomeScreen {
 // MARK: - Private
 
 extension HomeScreen {
+    /// Handles swipe actions on list items
     fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
         { rowId, option in
             switch option {
@@ -154,6 +172,7 @@ extension HomeScreen {
         }
     }
 
+    /// Handles reordering of list items
     fileprivate func moveList(fromOffset: IndexSet, toOffset: Int) {
         guard !isSearchFocused else { return }
         store.send(.didSortLists(fromOffset, toOffset))
@@ -163,6 +182,7 @@ extension HomeScreen {
 // MARK: - ListRow to TDRow
 
 extension Home.Reducer.WrappedUserList {
+    /// Converts a wrapped user list to a TDListRow for display
     fileprivate var tdListRow: TDListRow {
         TDListRow(
             id: list.id,
@@ -176,6 +196,7 @@ extension Home.Reducer.WrappedUserList {
     }
 }
 
+/// Preview provider for the home screen
 struct Home_Previews: PreviewProvider {
     struct Dependencies: HomeScreenDependencies {
         let coordinator: CoordinatorApi
