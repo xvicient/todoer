@@ -32,7 +32,7 @@ let package = Package(
             dependencies: [
                 .product(name: "CoordinatorContract", package: "Coordinator")
             ],
-            path: "Contract"
+            path: "Sources/Contract"
         ),
         .target(
             name: "AuthenticationScreen",
@@ -47,7 +47,7 @@ let package = Package(
                 "Strings",
                 "GoogleSignInDependencies"
             ],
-            path: "Sources"
+            path: "Sources/Implementation"
         ),
         .testTarget(
             name: "AuthenticationScreenTests",

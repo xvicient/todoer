@@ -25,7 +25,7 @@ let package = Package(
         .target(
             name: "AboutScreenContract",
             dependencies: [],
-            path: "Contract"
+            path: "Sources/Contract"
         ),
         .target(
             name: "AboutScreen",
@@ -33,7 +33,7 @@ let package = Package(
                 "Common",
                 .product(name: "ThemeAssets", package: "Theme")
             ],
-            path: "Sources"
+            path: "Sources/Implementation"
         ),
         .testTarget(
             name: "AboutScreenTests",

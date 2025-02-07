@@ -34,7 +34,7 @@ let package = Package(
                 "Entities",
                 .product(name: "CoordinatorContract", package: "Coordinator")
             ],
-            path: "Contract"
+            path: "Sources/Contract"
         ),
         .target(
             name: "ShareListScreen",
@@ -50,7 +50,7 @@ let package = Package(
                 "Entities",
                 "Strings"
             ],
-            path: "Sources"
+            path: "Sources/Implementation"
         ),
         .testTarget(
             name: "ShareListScreenTests",

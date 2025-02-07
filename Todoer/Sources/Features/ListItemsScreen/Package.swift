@@ -33,7 +33,7 @@ let package = Package(
                 "Entities",
                 "Common"
             ],
-            path: "Contract"
+            path: "Sources/Contract"
         ),
         .target(
             name: "ListItemsScreen",
@@ -47,7 +47,7 @@ let package = Package(
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 "Strings"
             ],
-            path: "Sources"
+            path: "Sources/Implementation"
         ),
         .testTarget(
             name: "ListItemsScreenTests",

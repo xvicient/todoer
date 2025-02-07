@@ -34,7 +34,7 @@ let package = Package(
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 "Common"
             ],
-            path: "Contract"
+            path: "Sources/Contract"
         ),
         .target(
             name: "HomeScreen",
@@ -51,7 +51,7 @@ let package = Package(
                 "AppMenu",
                 "Strings"
             ],
-            path: "Sources"
+            path: "Sources/Implementation"
         ),
         .testTarget(
             name: "HomeScreenTests",
