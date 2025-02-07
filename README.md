@@ -46,7 +46,7 @@ View → Action → Reducer → State → View
 ##### Dependencies
 | **Package**            | **Version** | **Purpose**                   |
 |-------------------------|------------|--------------------------------|
-| [xRedux](https://github.com/xvicient/xRedux) [![Propietary](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](Propietary) | 1.0+      | Feature state management architecture  |
+| [xRedux](https://github.com/xvicient/xRedux) [![Propietary](https://img.shields.io/badge/Proprietary-lightgrey.svg)](Propietary) | 1.0+      | Feature state management architecture  |
 | [FirebaseFirestore](https://firebase.google.com/docs/firestore) | 10.0+      | Real-time database           |
 | [FirebaseAuth](https://firebase.google.com/docs/auth)         | 10.0+      | User authentication          |
 | [FirebaseCrashlytics](https://firebase.google.com/docs/crashlytics) | 10.0+      | Crash reporting               |
