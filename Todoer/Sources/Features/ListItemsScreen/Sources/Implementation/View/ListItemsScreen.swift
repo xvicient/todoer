@@ -1,27 +1,27 @@
-import SwiftUI
-import Entities
-import xRedux
-import ThemeComponents
 import Common
-import ListItemsScreenContract
+import Entities
 import Foundation
+import ListItemsScreenContract
 import Strings
+import SwiftUI
+import ThemeComponents
+import xRedux
 
 // MARK: - ListItemsScreen
 
 struct ListItemsScreen: View {
-	@ObservedObject private var store: Store<ListItems.Reducer>
+    @ObservedObject private var store: Store<ListItems.Reducer>
     @State private var searchText = ""
     @State private var isSearchFocused = false
 
-	init(
-		store: Store<ListItems.Reducer>
-	) {
-		self.store = store
-	}
+    init(
+        store: Store<ListItems.Reducer>
+    ) {
+        self.store = store
+    }
 
-	var body: some View {
-		ZStack {
+    var body: some View {
+        ZStack {
             TDList(
                 sections: sections,
                 searchText: $searchText,
@@ -31,32 +31,33 @@ struct ListItemsScreen: View {
                 guard isSearchFocused else { return }
                 if store.state.viewState == .addingItem {
                     store.send(.didTapCancelAddItemButton)
-                } else if case let .editingItem(uid) = store.state.viewState {
+                }
+                else if case let .editingItem(uid) = store.state.viewState {
                     store.send(.didTapCancelEditItemButton(uid))
                 }
             }
-			loadingView
-		}
-		.onAppear {
-			store.send(.onAppear)
-		}
-		.disabled(
-			store.state.viewState == .loading
-		)
+            loadingView
+        }
+        .onAppear {
+            store.send(.onAppear)
+        }
+        .disabled(
+            store.state.viewState == .loading
+        )
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
         }
-	}
+    }
 }
 
 // MARK: - ViewBuilders
 
-private extension ListItemsScreen {
-    
+extension ListItemsScreen {
+
     @ViewBuilder
-    func sections() -> AnyView {
+    fileprivate func sections() -> AnyView {
         AnyView(
-            Group{
+            Group {
                 TDListSection(
                     content: itemsContent,
                     configuration: sectionConfiguration,
@@ -65,20 +66,20 @@ private extension ListItemsScreen {
             }
         )
     }
-    
+
     @ViewBuilder
-    func itemsContent() -> AnyView {
+    fileprivate func itemsContent() -> AnyView {
         AnyView(
             TDListContent(
                 configuration: contentConfiguration,
                 actions: contentActions,
-                rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }                
+                rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
             )
         )
     }
 
     @ViewBuilder
-    var loadingView: some View {
+    fileprivate var loadingView: some View {
         if store.state.viewState == .loading {
             ProgressView()
         }
@@ -87,17 +88,17 @@ private extension ListItemsScreen {
 
 // MARK: - List comfigurations
 
-private extension ListItemsScreen {
-    
-    var sectionConfiguration: TDListSection.Configuration {
+extension ListItemsScreen {
+
+    fileprivate var sectionConfiguration: TDListSection.Configuration {
         .init(
             title: store.state.viewModel.listName,
             addButtonTitle: Strings.ListItems.newItemButtonTitle,
             isSortEnabled: store.state.viewModel.items.filter { !$0.isEditing }.count > 1
         )
     }
-    
-    var sectionActions: TDListSection.Actions {
+
+    fileprivate var sectionActions: TDListSection.Actions {
         .init(
             onAddRow: {
                 isSearchFocused = false
@@ -107,15 +108,15 @@ private extension ListItemsScreen {
             onSortRows: { store.send(.didTapAutoSortItems) }
         )
     }
-    
-    var contentConfiguration: TDListContent.Configuration {
+
+    fileprivate var contentConfiguration: TDListContent.Configuration {
         .init(
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
-    
-    var contentActions: TDListContent.Actions {
+
+    fileprivate var contentActions: TDListContent.Actions {
         .init(
             onSubmit: { store.send(.didTapSubmitItemButton($0)) },
             onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
@@ -130,48 +131,48 @@ private extension ListItemsScreen {
 // MARK: - Private
 
 extension ListItemsScreen {
-	fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
-		{ rowId, option in
-			switch option {
-			case .done, .undone:
-				store.send(.didTapToggleItemButton(rowId))
-			case .delete:
-				store.send(.didTapDeleteItemButton(rowId))
-			case .share:
-				break
-			case .edit:
-				store.send(.didTapEditItemButton(rowId))
-			}
-		}
-	}
+    fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
+        { rowId, option in
+            switch option {
+            case .done, .undone:
+                store.send(.didTapToggleItemButton(rowId))
+            case .delete:
+                store.send(.didTapDeleteItemButton(rowId))
+            case .share:
+                break
+            case .edit:
+                store.send(.didTapEditItemButton(rowId))
+            }
+        }
+    }
 
-	fileprivate func moveItem(fromOffset: IndexSet, toOffset: Int) {
+    fileprivate func moveItem(fromOffset: IndexSet, toOffset: Int) {
         guard !isSearchFocused, !store.state.viewState.isEditing else { return }
-		store.send(.didSortItems(fromOffset, toOffset))
-	}
+        store.send(.didSortItems(fromOffset, toOffset))
+    }
 }
 
 // MARK: - ItemRow to TDRow
 
 extension ListItems.Reducer.WrappedItem {
-	fileprivate var tdListRow: TDListRow {
-		TDListRow(
+    fileprivate var tdListRow: TDListRow {
+        TDListRow(
             id: item.id,
             name: item.name,
-			image: item.done ? Image.largecircleFillCircle : Image.circle,
-			strikethrough: item.done,
-			leadingActions: leadingActions,
-			trailingActions: trailingActions,
-			isEditing: isEditing
-		)
-	}
+            image: item.done ? Image.largecircleFillCircle : Image.circle,
+            strikethrough: item.done,
+            leadingActions: leadingActions,
+            trailingActions: trailingActions,
+            isEditing: isEditing
+        )
+    }
 }
 
 struct Home_Previews: PreviewProvider {
     struct Dependencies: ListItemsScreenDependencies {
         var list: UserList
     }
-    
+
     static var previews: some View {
         ListItems.Builder.makeItemsList(
             dependencies: Dependencies(

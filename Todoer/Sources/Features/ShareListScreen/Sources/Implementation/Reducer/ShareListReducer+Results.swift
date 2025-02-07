@@ -5,28 +5,28 @@ import xRedux
 
 @MainActor
 extension ShareList.Reducer {
-	func onFetchDataResult(
-		state: inout State,
+    func onFetchDataResult(
+        state: inout State,
         result: ActionResult<ShareData>
-	) -> Effect<Action> {
-		if case .success(let data) = result {
+    ) -> Effect<Action> {
+        if case .success(let data) = result {
             state.viewModel.users = data.users
             state.viewModel.selfName = data.selfName
-		}
-		return .none
-	}
+        }
+        return .none
+    }
 
-	func onShareListResult(
-		state: inout State,
-		result: ActionResult<EquatableVoid>
-	) -> Effect<Action> {
-		switch result {
-		case .success:
-			state.viewState = .idle
+    func onShareListResult(
+        state: inout State,
+        result: ActionResult<EquatableVoid>
+    ) -> Effect<Action> {
+        switch result {
+        case .success:
+            state.viewState = .idle
             dependencies.coordinator.dismissSheet()
-		case .failure(let error):
-			state.viewState = .error(error.localizedDescription)
-		}
-		return .none
-	}
+        case .failure(let error):
+            state.viewState = .error(error.localizedDescription)
+        }
+        return .none
+    }
 }

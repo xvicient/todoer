@@ -18,11 +18,11 @@ let package = Package(
             targets: [
                 "EntitiesMocks"
             ]
-        )
+        ),
     ],
     dependencies: [
         .package(path: "../Common")
-        
+
     ],
     targets: [
         .target(
@@ -35,6 +35,6 @@ let package = Package(
                 "Common"
             ],
             path: "Sources/Mocks"
-        )
+        ),
     ]
 )

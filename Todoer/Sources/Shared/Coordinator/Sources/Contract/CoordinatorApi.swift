@@ -1,6 +1,6 @@
-import SwiftUI
 import Data
 import Entities
+import SwiftUI
 
 public enum Screen: Hashable, Identifiable {
     case authentication

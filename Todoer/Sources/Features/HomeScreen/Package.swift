@@ -14,25 +14,25 @@ let package = Package(
         .library(
             name: "HomeScreen",
             targets: ["HomeScreen"]
-        )
+        ),
     ],
     dependencies: [
-        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0"),
+        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.1"),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
         .package(path: "../Data"),
         .package(path: "../Entities"),
         .package(path: "../AppMenu"),
-        .package(path: "../Strings")
-        
+        .package(path: "../Strings"),
+
     ],
     targets: [
         .target(
             name: "HomeScreenContract",
             dependencies: [
                 .product(name: "CoordinatorContract", package: "Coordinator"),
-                "Common"
+                "Common",
             ],
             path: "Sources/Contract"
         ),
@@ -49,7 +49,7 @@ let package = Package(
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 "Entities",
                 "AppMenu",
-                "Strings"
+                "Strings",
             ],
             path: "Sources/Implementation"
         ),

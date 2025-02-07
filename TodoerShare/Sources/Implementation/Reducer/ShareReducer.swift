@@ -1,81 +1,81 @@
-import SwiftData
-import xRedux
 import Entities
 import Foundation
+import SwiftData
+import xRedux
 
 extension Share {
-    struct Reducer: xRedux.Reducer {
-        enum Action: Equatable {
-            // MARK: - View appear
-            /// ShareReducer+ViewAppear
-            case onViewAppear
+	struct Reducer: xRedux.Reducer {
+		enum Action: Equatable {
+			// MARK: - View appear
+			/// ShareReducer+ViewAppear
+			case onViewAppear
 
-            // MARK: - User actions
-            /// ShareReducer+UserActions
-            case didTapSave
-            case didTapCancel
+			// MARK: - User actions
+			/// ShareReducer+UserActions
+			case didTapSave
+			case didTapCancel
 
-            // MARK: - Results
-            /// ShareReducer+Results
-            case fetchContentResult(ActionResult<String>)
-            case addListResult(ActionResult<EquatableVoid>)
-        }
+			// MARK: - Results
+			/// ShareReducer+Results
+			case fetchContentResult(ActionResult<String>)
+			case addListResult(ActionResult<EquatableVoid>)
+		}
 
-        @MainActor
-        struct State {
-            var viewState = ViewState.idle
-            var viewModel = ViewModel()
-        }
+		@MainActor
+		struct State {
+			var viewState = ViewState.idle
+			var viewModel = ViewModel()
+		}
 
-        enum ViewState: Equatable {
-            case idle
-        }
-        
-        internal let dependencies: Dependencies
-        internal var useCase: ShareUseCaseApi
-        
-        public init(
-            dependencies: Dependencies,
-            useCase: ShareUseCaseApi
-        ) {
-            self.dependencies = dependencies
-            self.useCase = useCase
-        }
+		enum ViewState: Equatable {
+			case idle
+		}
 
-        // MARK: - Reduce
+		internal let dependencies: Dependencies
+		internal var useCase: ShareUseCaseApi
 
-        @MainActor
-        func reduce(
-            _ state: inout State,
-            _ action: Action
-        ) -> Effect<Action> {
+		public init(
+			dependencies: Dependencies,
+			useCase: ShareUseCaseApi
+		) {
+			self.dependencies = dependencies
+			self.useCase = useCase
+		}
 
-            switch (state.viewState, action) {
-            case (.idle, .onViewAppear):
-                return onAppear(state: &state)
-                
-            case (.idle, .fetchContentResult(let result)):
-                switch result {
-                case .success(let content):
-                    state.viewModel.content = content
-                case .failure:
-                    break
-                }
-                return .none
+		// MARK: - Reduce
 
-            case (.idle, .didTapSave):
-                return onDidTapSave(
-                    state: &state
-                )
-                
-            case (.idle, .didTapCancel):
-                dependencies.context?.completeRequest(returningItems: nil, completionHandler: nil)
-                return .none
+		@MainActor
+		func reduce(
+			_ state: inout State,
+			_ action: Action
+		) -> Effect<Action> {
 
-            case (.idle, .addListResult):
-                dependencies.context?.completeRequest(returningItems: nil, completionHandler: nil)
-                return .none
-            }
-        }
-    }
+			switch (state.viewState, action) {
+			case (.idle, .onViewAppear):
+				return onAppear(state: &state)
+
+			case (.idle, .fetchContentResult(let result)):
+				switch result {
+				case .success(let content):
+					state.viewModel.content = content
+				case .failure:
+					break
+				}
+				return .none
+
+			case (.idle, .didTapSave):
+				return onDidTapSave(
+					state: &state
+				)
+
+			case (.idle, .didTapCancel):
+				dependencies.context?.completeRequest(returningItems: nil, completionHandler: nil)
+				return .none
+
+			case (.idle, .addListResult):
+				dependencies.context?.completeRequest(returningItems: nil, completionHandler: nil)
+				return .none
+			}
+		}
+	}
 }

@@ -14,12 +14,12 @@ let package = Package(
         .library(
             name: "ThemeComponents",
             targets: ["ThemeComponents"]
-        )
+        ),
     ],
     dependencies: [
         .package(path: "../Common"),
-        .package(path: "../Strings")
-        
+        .package(path: "../Strings"),
+
     ],
     targets: [
         .target(
@@ -27,7 +27,7 @@ let package = Package(
             path: "Sources/ThemeAssets",
             resources: [
                 .process("Assets/Assets.xcassets"),
-                .process("Assets/Colors.xcassets")
+                .process("Assets/Colors.xcassets"),
             ]
         ),
         .target(
@@ -35,9 +35,9 @@ let package = Package(
             dependencies: [
                 "ThemeAssets",
                 "Common",
-                "Strings"
+                "Strings",
             ],
             path: "Sources/ThemeComponents"
-        )
+        ),
     ]
 )

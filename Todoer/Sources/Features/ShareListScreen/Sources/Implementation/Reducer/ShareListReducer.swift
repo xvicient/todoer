@@ -1,10 +1,10 @@
-import Foundation
-import Entities
 import Common
-import xRedux
 import CoordinatorContract
+import Entities
+import Foundation
 import ShareListScreenContract
 import Strings
+import xRedux
 
 // MARK: - ShareListReducer
 
@@ -12,7 +12,7 @@ typealias ShareData = ShareList.ShareData
 
 extension ShareList {
     struct Reducer: xRedux.Reducer {
-        
+
         internal enum Errors: Error, LocalizedError {
             case missingUserName
             case unexpectedError
@@ -25,46 +25,46 @@ extension ShareList {
                     return "Unexpected error."
                 }
             }
-            
+
             static var `default`: String {
                 Self.unexpectedError.localizedDescription
             }
         }
 
-		enum Action: Equatable, StringRepresentable {
-			// MARK: - View appear
-			/// ShareListReducer+ViewAppear
-			case onAppear
+        enum Action: Equatable, StringRepresentable {
+            // MARK: - View appear
+            /// ShareListReducer+ViewAppear
+            case onAppear
 
-			// MARK: - User actions
-			/// ShareListReducer+UserActions
-			case didTapShareListButton(String, String)
-			case didTapDismissError
+            // MARK: - User actions
+            /// ShareListReducer+UserActions
+            case didTapShareListButton(String, String)
+            case didTapDismissError
 
-			// MARK: - Results
-			/// ShareListReducer+Results
+            // MARK: - Results
+            /// ShareListReducer+Results
             case fetchDataResult(ActionResult<ShareData>)
-			case shareListResult(ActionResult<EquatableVoid>)
-		}
+            case shareListResult(ActionResult<EquatableVoid>)
+        }
 
-		@MainActor
-		struct State: AppAlertState {
-			var viewState = ViewState.idle
-			var viewModel = ViewModel()
-            
+        @MainActor
+        struct State: AppAlertState {
+            var viewState = ViewState.idle
+            var viewModel = ViewModel()
+
             var alert: AppAlert<Action>? {
                 guard case .alert(let data) = viewState else {
                     return nil
-                    
+
                 }
                 return data
             }
-		}
+        }
 
-		enum ViewState: Equatable, StringRepresentable {
-			case idle
+        enum ViewState: Equatable, StringRepresentable {
+            case idle
             case alert(AppAlert<Action>)
-            
+
             static func error(
                 _ message: String = Errors.default
             ) -> ViewState {
@@ -76,59 +76,61 @@ extension ShareList {
                     )
                 )
             }
-		}
+        }
 
-		internal let dependencies: ShareListScreenDependencies
+        internal let dependencies: ShareListScreenDependencies
         internal let useCase: ShareListUseCaseApi
 
-		init(
-			dependencies: ShareListScreenDependencies,
+        init(
+            dependencies: ShareListScreenDependencies,
             useCase: ShareListUseCaseApi
-		) {
-			self.dependencies = dependencies
+        ) {
+            self.dependencies = dependencies
             self.useCase = useCase
-		}
+        }
 
-		@MainActor
-		func reduce(
-			_ state: inout State,
-			_ action: Action
-		) -> Effect<Action> {
+        @MainActor
+        func reduce(
+            _ state: inout State,
+            _ action: Action
+        ) -> Effect<Action> {
 
-			switch (state.viewState, action) {
-			case (.idle, .onAppear):
-				return onAppear(
-					state: &state
-				)
+            switch (state.viewState, action) {
+            case (.idle, .onAppear):
+                return onAppear(
+                    state: &state
+                )
 
-			case (.idle, .didTapShareListButton(let email, let owner)):
-				return onDidTapShareButton(
-					state: &state,
-					email: email,
+            case (.idle, .didTapShareListButton(let email, let owner)):
+                return onDidTapShareButton(
+                    state: &state,
+                    email: email,
                     owner: owner
-				)
+                )
 
-			case (.idle, .fetchDataResult(let result)):
-				return onFetchDataResult(
-					state: &state,
-					result: result
-				)
+            case (.idle, .fetchDataResult(let result)):
+                return onFetchDataResult(
+                    state: &state,
+                    result: result
+                )
 
-			case (.idle, .shareListResult(let result)):
-				return onShareListResult(
-					state: &state,
-					result: result
-				)
+            case (.idle, .shareListResult(let result)):
+                return onShareListResult(
+                    state: &state,
+                    result: result
+                )
 
-			case (_, .didTapDismissError):
-				return onDidTapDismissError(
-					state: &state
-				)
+            case (_, .didTapDismissError):
+                return onDidTapDismissError(
+                    state: &state
+                )
 
-			default:
-                Logger.log("No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)")
-				return .none
-			}
-		}
-	}
+            default:
+                Logger.log(
+                    "No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)"
+                )
+                return .none
+            }
+        }
+    }
 }

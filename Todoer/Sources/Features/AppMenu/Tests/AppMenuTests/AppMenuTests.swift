@@ -1,4 +1,5 @@
 import Testing
+
 @testable import AppMenu
 
 @Test func example() async throws {

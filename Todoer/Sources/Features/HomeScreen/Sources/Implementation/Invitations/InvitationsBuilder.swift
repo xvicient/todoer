@@ -1,6 +1,6 @@
+import Entities
 import SwiftUI
 import xRedux
-import Entities
 
 public struct Invitations {
     public struct Builder {

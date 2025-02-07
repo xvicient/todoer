@@ -1,12 +1,12 @@
 import Combine
-import FirebaseFirestore
 import Common
+import FirebaseFirestore
 
 public protocol ItemsDataSourceApi {
     func documents(
         listId: String
     ) async throws -> [QueryDocumentSnapshot]
-    
+
     func fetchItems(
         listId: String
     ) -> AnyPublisher<[ItemDTO], Error>
@@ -42,7 +42,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         case invalidDTO
         case encodingError
     }
-    
+
     public init() {}
 
     private func itemsCollection(
@@ -50,25 +50,25 @@ public final class ItemsDataSource: ItemsDataSourceApi {
     ) -> CollectionReference {
         Firestore.firestore().collection("lists").document(listId).collection("items")
     }
-    
+
     public func documents(
         listId: String
     ) async throws -> [QueryDocumentSnapshot] {
         try await itemsCollection(listId: listId).getDocuments().documents
     }
-    
+
     public func fetchItems(
         listId: String
     ) -> AnyPublisher<[ItemDTO], Error> {
         itemsCollection(listId: listId)
             .snapshotPublisher()
-            .filter { !$0.metadata.hasPendingWrites } 
+            .filter { !$0.metadata.hasPendingWrites }
             .map { snapshot in
                 snapshot.documents.compactMap { try? $0.data(as: ItemDTO.self) }
             }
             .eraseToAnyPublisher()
     }
-    
+
     public func addItem(
         with name: String,
         listId: String
@@ -107,8 +107,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         guard let encodedData = try? Firestore.Encoder().encode(item) else {
             throw Errors.encodingError
         }
-        
-        
+
         try await itemsCollection(listId: listId).document(id).updateData(encodedData)
         return item
     }
@@ -141,7 +140,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         items: [ItemDTO],
         listId: String
     ) async throws {
-        
+
         let batch = Firestore.firestore().batch()
 
         try items.forEach {

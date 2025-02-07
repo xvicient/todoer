@@ -1,13 +1,13 @@
+import AuthenticationScreenContract
 import AuthenticationServices
 import Common
-import xRedux
 import CoordinatorContract
-import AuthenticationScreenContract
 import Strings
+import xRedux
 
 extension Authentication {
-	struct Reducer: xRedux.Reducer {
-        
+    struct Reducer: xRedux.Reducer {
+
         enum Errors: Error, LocalizedError {
             case unexpectedError
 
@@ -23,37 +23,37 @@ extension Authentication {
             }
         }
 
-		enum Action: Equatable, StringRepresentable {
-			// MARK: - User actions
-			case didTapGoogleSignInButton
-			case didAppleSignIn(ActionResult<ASAuthorization>)
+        enum Action: Equatable, StringRepresentable {
+            // MARK: - User actions
+            case didTapGoogleSignInButton
+            case didAppleSignIn(ActionResult<ASAuthorization>)
 
-			// MARK: - Results
-			case signInResult(ActionResult<EquatableVoid>)
+            // MARK: - Results
+            case signInResult(ActionResult<EquatableVoid>)
 
-			// MARK: - Errors
-			case didTapDismissError
-		}
+            // MARK: - Errors
+            case didTapDismissError
+        }
 
-		@MainActor
-		struct State: AppAlertState {
-			var viewState = ViewState.idle
-			var viewModel = ViewModel()
-            
+        @MainActor
+        struct State: AppAlertState {
+            var viewState = ViewState.idle
+            var viewModel = ViewModel()
+
             var alert: AppAlert<Action>? {
                 guard case .alert(let data) = viewState else {
                     return nil
-                    
+
                 }
                 return data
             }
-		}
+        }
 
-		enum ViewState: Equatable, StringRepresentable {
-			case idle
-			case loading
+        enum ViewState: Equatable, StringRepresentable {
+            case idle
+            case loading
             case alert(AppAlert<Action>)
-            
+
             static func error(
                 _ message: String = Errors.default
             ) -> ViewState {
@@ -65,51 +65,53 @@ extension Authentication {
                     )
                 )
             }
-		}
+        }
 
-		internal let dependencies: AuthenticationScreenDependencies
+        internal let dependencies: AuthenticationScreenDependencies
         internal let useCase: AuthenticationUseCaseApi
 
-		init(
-			dependencies: AuthenticationScreenDependencies,
+        init(
+            dependencies: AuthenticationScreenDependencies,
             useCase: AuthenticationUseCaseApi
-		) {
-			self.dependencies = dependencies
+        ) {
+            self.dependencies = dependencies
             self.useCase = useCase
-		}
+        }
 
-		@MainActor
-		func reduce(
-			_ state: inout State,
-			_ action: Action
-		) -> Effect<Action> {
-			switch (state.viewState, action) {
-			case (.idle, .didTapGoogleSignInButton):
-				return onDidTapGoogleSignInButton(
-					state: &state
-				)
+        @MainActor
+        func reduce(
+            _ state: inout State,
+            _ action: Action
+        ) -> Effect<Action> {
+            switch (state.viewState, action) {
+            case (.idle, .didTapGoogleSignInButton):
+                return onDidTapGoogleSignInButton(
+                    state: &state
+                )
 
-			case (.idle, .didAppleSignIn(let result)):
-				return onAppleSignIn(
-					state: &state,
-					result: result
-				)
+            case (.idle, .didAppleSignIn(let result)):
+                return onAppleSignIn(
+                    state: &state,
+                    result: result
+                )
 
-			case (.loading, .signInResult(let result)):
-				return onSignInResult(
-					state: &state,
-					result: result
-				)
+            case (.loading, .signInResult(let result)):
+                return onSignInResult(
+                    state: &state,
+                    result: result
+                )
 
-			case (_, .didTapDismissError):
-				return onDidTapDismissError(
-					state: &state
-				)
+            case (_, .didTapDismissError):
+                return onDidTapDismissError(
+                    state: &state
+                )
 
-			default:
-                Logger.log("No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)")
-				return .none
-			}
-		}
-	}
+            default:
+                Logger.log(
+                    "No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)"
+                )
+                return .none
+            }
+        }
+    }
 }

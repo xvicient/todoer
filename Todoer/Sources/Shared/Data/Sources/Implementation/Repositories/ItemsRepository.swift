@@ -1,40 +1,40 @@
 import Combine
-import Foundation
 import Entities
+import Foundation
 
 public protocol ItemsRepositoryApi {
-	func fetchItems(
-		listId: String
-	) -> AnyPublisher<[Item], Error>
+    func fetchItems(
+        listId: String
+    ) -> AnyPublisher<[Item], Error>
 
-	func addItem(
-		with name: String,
-		listId: String
-	) async throws -> Item
+    func addItem(
+        with name: String,
+        listId: String
+    ) async throws -> Item
 
-	func deleteItem(
-		itemId: String,
-		listId: String
-	) async throws
+    func deleteItem(
+        itemId: String,
+        listId: String
+    ) async throws
 
-	func updateItem(
-		item: Item,
-		listId: String
-	) async throws -> Item
+    func updateItem(
+        item: Item,
+        listId: String
+    ) async throws -> Item
 
-	func toogleAllItems(
-		listId: String,
-		done: Bool
-	) async throws
+    func toogleAllItems(
+        listId: String,
+        done: Bool
+    ) async throws
 
-	func sortItems(
-		items: [Item],
-		listId: String
-	) async throws
+    func sortItems(
+        items: [Item],
+        listId: String
+    ) async throws
 }
 
 public final class ItemsRepository: ItemsRepositoryApi {
-	private let itemsDataSource: ItemsDataSourceApi
+    private let itemsDataSource: ItemsDataSourceApi
 
     public init(
         itemsDataSource: ItemsDataSourceApi = ItemsDataSource()
@@ -43,84 +43,84 @@ public final class ItemsRepository: ItemsRepositoryApi {
     }
 
     public func fetchItems(
-		listId: String
-	) -> AnyPublisher<[Item], Error> {
-		itemsDataSource.fetchItems(listId: listId)
-			.tryMap { $0.map(\.toDomain) }
-			.receive(on: DispatchQueue.main)
-			.eraseToAnyPublisher()
-	}
+        listId: String
+    ) -> AnyPublisher<[Item], Error> {
+        itemsDataSource.fetchItems(listId: listId)
+            .tryMap { $0.map(\.toDomain) }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
 
     public func addItem(
-		with name: String,
-		listId: String
-	) async throws -> Item {
-		try await itemsDataSource.addItem(
-			with: name,
-			listId: listId
-		).toDomain
-	}
+        with name: String,
+        listId: String
+    ) async throws -> Item {
+        try await itemsDataSource.addItem(
+            with: name,
+            listId: listId
+        ).toDomain
+    }
 
     public func deleteItem(
-		itemId: String,
-		listId: String
-	) async throws {
-		try await itemsDataSource.deleteItem(
-			itemId: itemId,
-			listId: listId
-		)
-	}
+        itemId: String,
+        listId: String
+    ) async throws {
+        try await itemsDataSource.deleteItem(
+            itemId: itemId,
+            listId: listId
+        )
+    }
 
     public func updateItem(
-		item: Item,
-		listId: String
-	) async throws -> Item {
-		try await itemsDataSource.updateItem(
-			item: item.toDTO,
-			listId: listId
-		).toDomain
-	}
+        item: Item,
+        listId: String
+    ) async throws -> Item {
+        try await itemsDataSource.updateItem(
+            item: item.toDTO,
+            listId: listId
+        ).toDomain
+    }
 
     public func toogleAllItems(
-		listId: String,
-		done: Bool
-	) async throws {
-		try await itemsDataSource.toogleAllItems(
-			listId: listId,
-			done: done
-		)
-	}
+        listId: String,
+        done: Bool
+    ) async throws {
+        try await itemsDataSource.toogleAllItems(
+            listId: listId,
+            done: done
+        )
+    }
 
     public func sortItems(
-		items: [Item],
-		listId: String
-	) async throws {
-		try await itemsDataSource.sortItems(
+        items: [Item],
+        listId: String
+    ) async throws {
+        try await itemsDataSource.sortItems(
             items: items.map(\.toDTO),
-			listId: listId
-		)
-	}
+            listId: listId
+        )
+    }
 }
 
 extension ItemDTO {
-	fileprivate var toDomain: Item {
-		Item(
+    fileprivate var toDomain: Item {
+        Item(
             id: UUID(),
             documentId: id ?? "",
-			name: name,
-			done: done,
-			index: index
-		)
-	}
+            name: name,
+            done: done,
+            index: index
+        )
+    }
 }
 
 extension Item {
-	var toDTO: ItemDTO {
-		ItemDTO(
-			id: documentId,
-			name: name,
-			done: done,
-			index: index
-		)
-	}
+    var toDTO: ItemDTO {
+        ItemDTO(
+            id: documentId,
+            name: name,
+            done: done,
+            index: index
+        )
+    }
 }

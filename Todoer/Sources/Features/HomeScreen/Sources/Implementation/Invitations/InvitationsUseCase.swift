@@ -1,26 +1,26 @@
 import Combine
-import Foundation
 import Data
-import xRedux
 import Entities
+import Foundation
+import xRedux
 
 protocol InvitationsUseCaseApi {
 
-	func acceptInvitation(
-		listId: String,
-		invitationId: String
-	) async -> ActionResult<String>
-
-	func declineInvitation(
+    func acceptInvitation(
         listId: String,
-		invitationId: String
-	) async -> ActionResult<String>
+        invitationId: String
+    ) async -> ActionResult<String>
+
+    func declineInvitation(
+        listId: String,
+        invitationId: String
+    ) async -> ActionResult<String>
 }
 
 extension Invitations {
-    
+
     struct UseCase: InvitationsUseCaseApi {
-        
+
         private let listsRepository: ListsRepositoryApi
         private let invitationsRepository: InvitationsRepositoryApi
         init(
@@ -30,7 +30,7 @@ extension Invitations {
             self.listsRepository = listsRepository
             self.invitationsRepository = invitationsRepository
         }
-        
+
         func acceptInvitation(
             listId: String,
             invitationId: String
@@ -44,7 +44,7 @@ extension Invitations {
                 return .failure(error)
             }
         }
-        
+
         func declineInvitation(
             listId: String,
             invitationId: String

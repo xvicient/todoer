@@ -1,7 +1,7 @@
-import SwiftUI
 import Entities
-import xRedux
 import ListItemsScreenContract
+import SwiftUI
+import xRedux
 
 public struct ListItems {
     public struct Builder {
@@ -9,8 +9,8 @@ public struct ListItems {
             let list: UserList
             let useCase: ListItemsUseCaseApi
         }
-        
-		@MainActor
+
+        @MainActor
         public static func makeItemsList(
             dependencies: ListItemsScreenDependencies
         ) -> some View {

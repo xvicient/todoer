@@ -16,7 +16,7 @@ struct TDFilledRowView: View {
     @State private var isDone: Bool = false
     let actions: TDFilledRowActions
     let configuration: TDFilledRowConfiguration
-    
+
     var body: some View {
         HStack {
             row.image
@@ -57,7 +57,7 @@ struct TDFilledRowView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func swipeActions(
         _ row: TDListRow,

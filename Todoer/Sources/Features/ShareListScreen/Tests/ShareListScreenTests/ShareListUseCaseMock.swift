@@ -1,29 +1,29 @@
-import xRedux
 import Entities
+import xRedux
 
 @testable import ShareListScreen
 
 class ShareListUseCaseMock: ShareListUseCaseApi {
 
-	var fetchDataResult: ActionResult<ShareData>!
-	var shareListResult: ActionResult<EquatableVoid>!
+    var fetchDataResult: ActionResult<ShareData>!
+    var shareListResult: ActionResult<EquatableVoid>!
 
-	enum UseCaseError: Error {
-		case error
-	}
+    enum UseCaseError: Error {
+        case error
+    }
 
-	func fetchData(
-		uids: [String]
-	) async -> ActionResult<ShareData> {
+    func fetchData(
+        uids: [String]
+    ) async -> ActionResult<ShareData> {
         fetchDataResult
-	}
+    }
 
-	func shareList(
+    func shareList(
         shareEmail: String,
         ownerName: String,
         list: UserList
-	) async -> ActionResult<EquatableVoid> {
-		shareListResult
-	}
+    ) async -> ActionResult<EquatableVoid> {
+        shareListResult
+    }
 
 }

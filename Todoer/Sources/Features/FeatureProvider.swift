@@ -1,21 +1,21 @@
-import SwiftUI
+import AboutScreen
+import AppMenu
+import AppMenuContract
+import AuthenticationScreen
+import AuthenticationScreenContract
 import CoordinatorContract
 import Entities
-import HomeScreenContract
 import HomeScreen
-import ListItemsScreenContract
+import HomeScreenContract
 import ListItemsScreen
-import AboutScreen
+import ListItemsScreenContract
 import ShareListScreen
 import ShareListScreenContract
-import AuthenticationScreenContract
-import AuthenticationScreen
-import AppMenuContract
-import AppMenu
+import SwiftUI
 
 @MainActor
 struct FeatureProvider: FeatureProviderAPI {
-    
+
     func makeHomeScreen(
         coordinator: CoordinatorApi
     ) -> any View {
@@ -28,25 +28,25 @@ struct FeatureProvider: FeatureProviderAPI {
             )
         )
     }
-    
+
     func makeListItemsScreen(
         list: UserList
     ) -> any View {
         struct Dependencies: ListItemsScreenDependencies {
             let list: UserList
         }
-        
+
         return ListItems.Builder.makeItemsList(
             dependencies: Dependencies(
                 list: list
             )
         )
     }
-    
+
     func makeAboutScreen() -> any View {
         About.Builder.makeAbout()
     }
-    
+
     func makeShareListScreen(
         coordinator: CoordinatorApi,
         list: UserList
@@ -55,7 +55,7 @@ struct FeatureProvider: FeatureProviderAPI {
             let coordinator: CoordinatorApi
             let list: UserList
         }
-        
+
         return ShareList.Builder.makeShareList(
             dependencies: Dependencies(
                 coordinator: coordinator,
@@ -63,28 +63,28 @@ struct FeatureProvider: FeatureProviderAPI {
             )
         )
     }
-    
+
     func makeAuthenticationScreen(
         coordinator: CoordinatorApi
     ) -> any View {
         struct Dependencies: AuthenticationScreenDependencies {
             let coordinator: CoordinatorApi
         }
-        
+
         return Authentication.Builder.makeAuthentication(
             dependencies: Dependencies(
                 coordinator: coordinator
             )
         )
     }
-    
+
     func makeAppMenuView(
         coordinator: CoordinatorApi
     ) -> any View {
         struct Dependencies: AppMenuDependencies {
             var coordinator: CoordinatorApi
         }
-        
+
         return AppMenu.Builder.makeAppMenu(
             dependencies: Dependencies(coordinator: coordinator)
         )

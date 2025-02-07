@@ -1,24 +1,24 @@
-import XCTest
-import xRedux
-import xReduxTest
+import CoordinatorContract
+import CoordinatorMocks
 import Data
 import Entities
 import EntitiesMocks
 import ShareListScreenContract
-import CoordinatorContract
-import CoordinatorMocks
+import XCTest
+import xRedux
+import xReduxTest
 
 @testable import ShareListScreen
 
 @MainActor
 final class ShareReducerTests: XCTestCase {
-	private typealias ShareStore<R: Reducer> = TestStore<R.State, R.Action>
-	private typealias UseCaseError = ShareListUseCaseMock.UseCaseError
+    private typealias ShareStore<R: Reducer> = TestStore<R.State, R.Action>
+    private typealias UseCaseError = ShareListUseCaseMock.UseCaseError
 
     private struct Dependencies: ShareListScreenDependencies {
         var coordinator: CoordinatorApi
-		var list: UserList
-	}
+        var list: UserList
+    }
 
     private lazy var store: ShareStore<ShareList.Reducer> = {
         TestStore(
@@ -32,83 +32,83 @@ final class ShareReducerTests: XCTestCase {
             )
         )
     }()
-	private var useCaseMock = ShareListUseCaseMock()
-	private var coordinatorMock = CoordinatorMock()
+    private var useCaseMock = ShareListUseCaseMock()
+    private var coordinatorMock = CoordinatorMock()
 
-	func testDidViewAppearAndFetchUsers_Success() async {
-		givenASuccessUsersFetch()
+    func testDidViewAppearAndFetchUsers_Success() async {
+        givenASuccessUsersFetch()
 
-		await store.send(.onAppear) {
-			$0.viewState == .idle
-		}
+        await store.send(.onAppear) {
+            $0.viewState == .idle
+        }
 
-		await store.receive(.fetchDataResult(useCaseMock.fetchDataResult)) {
-			$0.viewState == .idle
-		}
-	}
+        await store.receive(.fetchDataResult(useCaseMock.fetchDataResult)) {
+            $0.viewState == .idle
+        }
+    }
 
-	func testDidViewAppearAndFetchUsers_Failure() async {
-		givenAFailureUsersFetch()
+    func testDidViewAppearAndFetchUsers_Failure() async {
+        givenAFailureUsersFetch()
 
-		await store.send(.onAppear) {
-			$0.viewState == .idle
-		}
+        await store.send(.onAppear) {
+            $0.viewState == .idle
+        }
 
-		await store.receive(.fetchDataResult(useCaseMock.fetchDataResult)) {
-			$0.viewState == .idle
-		}
-	}
+        await store.receive(.fetchDataResult(useCaseMock.fetchDataResult)) {
+            $0.viewState == .idle
+        }
+    }
 
-	func testDidTapShareList_Success() async {
-		givenASuccessShareList()
+    func testDidTapShareList_Success() async {
+        givenASuccessShareList()
 
-		await store.send(.didTapShareListButton("test@todoer.com", "Hunter King")) {
-			$0.viewState == .idle
-		}
+        await store.send(.didTapShareListButton("test@todoer.com", "Hunter King")) {
+            $0.viewState == .idle
+        }
 
-		await store.receive(.shareListResult(useCaseMock.shareListResult)) {
-			$0.viewState == .idle
-		}
+        await store.receive(.shareListResult(useCaseMock.shareListResult)) {
+            $0.viewState == .idle
+        }
 
-		XCTAssert(coordinatorMock.isDismissSheetCalled)
-	}
+        XCTAssert(coordinatorMock.isDismissSheetCalled)
+    }
 
-	func testDidTapShareList_Failure() async {
-		givenAFailureShareList()
+    func testDidTapShareList_Failure() async {
+        givenAFailureShareList()
 
-		await store.send(.didTapShareListButton("test@todoer.com", "Hunter King")) {
-			$0.viewState == .idle
-		}
+        await store.send(.didTapShareListButton("test@todoer.com", "Hunter King")) {
+            $0.viewState == .idle
+        }
 
-		await store.receive(.shareListResult(useCaseMock.shareListResult)) {
-			$0.viewState == .error(UseCaseError.error.localizedDescription)
-		}
+        await store.receive(.shareListResult(useCaseMock.shareListResult)) {
+            $0.viewState == .error(UseCaseError.error.localizedDescription)
+        }
 
-		await store.send(.didTapDismissError) {
-			$0.viewState == .idle
-		}
-	}
+        await store.send(.didTapDismissError) {
+            $0.viewState == .idle
+        }
+    }
 }
 
 extension ShareReducerTests {
-	fileprivate func givenASuccessUsersFetch() {
+    fileprivate func givenASuccessUsersFetch() {
         useCaseMock.fetchDataResult = .success(
             ShareData(
                 users: UserMock.users(1),
                 selfName: "Hunter King"
             )
         )
-	}
+    }
 
-	fileprivate func givenAFailureUsersFetch() {
-		useCaseMock.fetchDataResult = .failure(UseCaseError.error)
-	}
+    fileprivate func givenAFailureUsersFetch() {
+        useCaseMock.fetchDataResult = .failure(UseCaseError.error)
+    }
 
-	fileprivate func givenASuccessShareList() {
-		useCaseMock.shareListResult = .success()
-	}
+    fileprivate func givenASuccessShareList() {
+        useCaseMock.shareListResult = .success()
+    }
 
-	fileprivate func givenAFailureShareList() {
-		useCaseMock.shareListResult = .failure(UseCaseError.error)
-	}
+    fileprivate func givenAFailureShareList() {
+        useCaseMock.shareListResult = .failure(UseCaseError.error)
+    }
 }

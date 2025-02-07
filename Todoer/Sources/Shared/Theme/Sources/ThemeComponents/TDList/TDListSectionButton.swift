@@ -5,7 +5,7 @@ public struct TDListSectionButton: View {
     private let onTap: () -> Void
     private let title: String
     private let icon: Image
-    
+
     public init(
         title: String,
         icon: Image,
@@ -15,7 +15,7 @@ public struct TDListSectionButton: View {
         self.icon = icon
         self.onTap = onTap
     }
-    
+
     public var body: some View {
         Button(action: {
             onTap()

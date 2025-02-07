@@ -1,6 +1,6 @@
-import Foundation
-import Entities
 import Common
+import Entities
+import Foundation
 
 public struct ItemMock {
     public static var item: Item {

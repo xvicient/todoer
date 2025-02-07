@@ -1,12 +1,12 @@
-import SwiftUI
 import Entities
+import SwiftUI
 
 extension Invitations.Reducer {
 
-	// MARK: - ViewModel
+    // MARK: - ViewModel
 
-	@MainActor
-	struct ViewModel {
-		var invitations = [Invitation]()
-	}
+    @MainActor
+    struct ViewModel {
+        var invitations = [Invitation]()
+    }
 }

@@ -1,13 +1,13 @@
-import Foundation
 import Entities
+import Foundation
 
 extension ShareList.Reducer {
 
-	// MARK: - ViewModel
+    // MARK: - ViewModel
 
-	@MainActor
-	struct ViewModel {
-		var users = [User]()
+    @MainActor
+    struct ViewModel {
+        var users = [User]()
         var selfName: String?
-	}
+    }
 }

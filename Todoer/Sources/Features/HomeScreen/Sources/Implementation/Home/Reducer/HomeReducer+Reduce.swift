@@ -1,5 +1,5 @@
-import xRedux
 import Common
+import xRedux
 
 extension Home.Reducer {
     @MainActor
@@ -7,13 +7,13 @@ extension Home.Reducer {
         _ state: inout State,
         _ action: Action
     ) -> Effect<Action> {
-        
+
         switch (state.viewState, action) {
         case (.idle, .onViewAppear):
             return onAppear(
                 state: &state
             )
-            
+
         case (_, .onSceneActive):
             return onSceneActive(
                 state: &state
@@ -94,14 +94,14 @@ extension Home.Reducer {
             return onDidTapAutoSortLists(
                 state: &state
             )
-            
+
         case (.loading, .addSharedListsResult(let result)),
             (.idle, .addSharedListsResult(let result)):
             return onAddSharedListsResult(
                 state: &state,
                 result: result
             )
-        
+
         case (.idle, .fetchDataResult(let result)),
             (.loading, .fetchDataResult(let result)):
             return onFetchDataResult(
@@ -141,7 +141,9 @@ extension Home.Reducer {
             )
 
         default:
-            Logger.log("No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)")
+            Logger.log(
+                "No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)"
+            )
             return .none
         }
     }

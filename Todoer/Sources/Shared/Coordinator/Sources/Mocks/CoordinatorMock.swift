@@ -1,19 +1,19 @@
 import CoordinatorContract
 
 public final class CoordinatorMock: CoordinatorApi {
-    public var isUserLogged: Bool = false    
-    
+    public var isUserLogged: Bool = false
+
     public init() {}
 
-	// MARK: - CoordinatorApi
+    // MARK: - CoordinatorApi
 
     public func loggOut() {
-		isLoggOutCalled = true
-	}
+        isLoggOutCalled = true
+    }
 
     public func loggIn() {
-		isLoggInCalled = true
-	}
+        isLoggInCalled = true
+    }
 
     public func push(_ screen: Screen) {}
 
@@ -26,10 +26,10 @@ public final class CoordinatorMock: CoordinatorApi {
     public func popToRoot() {}
 
     public func dismissSheet() {
-		isDismissSheetCalled = true
-	}
+        isDismissSheetCalled = true
+    }
 
-	// MARK: - TestCoordinator
+    // MARK: - TestCoordinator
 
     public var isLoggOutCalled = false
 

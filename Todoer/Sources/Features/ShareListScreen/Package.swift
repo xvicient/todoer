@@ -14,17 +14,17 @@ let package = Package(
         .library(
             name: "ShareListScreen",
             targets: ["ShareListScreen"]
-        )
+        ),
     ],
     dependencies: [
-        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0"),
+        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.1"),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
         .package(path: "../Data"),
         .package(path: "../Entities"),
-        .package(path: "../Strings")
-        
+        .package(path: "../Strings"),
+
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -32,7 +32,7 @@ let package = Package(
             name: "ShareListScreenContract",
             dependencies: [
                 "Entities",
-                .product(name: "CoordinatorContract", package: "Coordinator")
+                .product(name: "CoordinatorContract", package: "Coordinator"),
             ],
             path: "Sources/Contract"
         ),
@@ -48,7 +48,7 @@ let package = Package(
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 "Entities",
-                "Strings"
+                "Strings",
             ],
             path: "Sources/Implementation"
         ),
@@ -60,7 +60,7 @@ let package = Package(
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 .product(name: "EntitiesMocks", package: "Entities"),
                 "Entities",
-                "Data"
+                "Data",
             ]
         ),
     ]

@@ -9,7 +9,7 @@ public struct Invitation: Identifiable, Equatable, Hashable, Sendable {
     public let listName: String
     public let invitedId: String
     public let index: Int
-    
+
     public init(
         documentId: String,
         ownerName: String,

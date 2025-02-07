@@ -1,5 +1,5 @@
-import Foundation
 import Entities
+import Foundation
 import xRedux
 
 // MARK: - Reducer user actions
@@ -8,240 +8,250 @@ extension Home.Reducer {
 
     @MainActor
     func onDidTapList(
-		state: inout State,
+        state: inout State,
         uid: UUID
-	) -> Effect<Action> {
-		guard let index = state.viewModel.lists.index(for: uid),
-              let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .error()
-			return .none
-		}
-		dependencies.coordinator.push(.listItems(list))
-		return .none
-	}
+    ) -> Effect<Action> {
+        guard let index = state.viewModel.lists.index(for: uid),
+            let list = state.viewModel.lists[safe: index]?.list
+        else {
+            state.viewState = .error()
+            return .none
+        }
+        dependencies.coordinator.push(.listItems(list))
+        return .none
+    }
 
-	func onDidTapToggleListButton(
-		state: inout State,
+    func onDidTapToggleListButton(
+        state: inout State,
         uid: UUID
-	) -> Effect<Action> {
-		guard let index = state.viewModel.lists.index(for: uid),
-              state.viewModel.lists[safe: index] != nil else {
-			state.viewState = .error()
-			return .none
-		}
-		state.viewState = .updatingList
-		state.viewModel.lists[index].list.done.toggle()
-		let list = state.viewModel.lists[index].list
-		return .task { send in
-			await send(
-				.toggleListResult(
-					useCase.updateList(
-						list: list
-					)
-				)
-			)
-		}
-	}
+    ) -> Effect<Action> {
+        guard let index = state.viewModel.lists.index(for: uid),
+            state.viewModel.lists[safe: index] != nil
+        else {
+            state.viewState = .error()
+            return .none
+        }
+        state.viewState = .updatingList
+        state.viewModel.lists[index].list.done.toggle()
+        let list = state.viewModel.lists[index].list
+        return .task { send in
+            await send(
+                .toggleListResult(
+                    useCase.updateList(
+                        list: list
+                    )
+                )
+            )
+        }
+    }
 
-	func onDidTapDeleteListButton(
-		state: inout State,
+    func onDidTapDeleteListButton(
+        state: inout State,
         uid: UUID
-	) -> Effect<Action> {
-		guard let index = state.viewModel.lists.index(for: uid),
-              let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .error()
-			return .none
-		}
-		state.viewState = .updatingList
-		state.viewModel.lists.remove(at: index)
-		return .task { send in
-			await send(
-				.deleteListResult(
-					useCase.deleteList(list.documentId)
-				)
-			)
-		}
-	}
+    ) -> Effect<Action> {
+        guard let index = state.viewModel.lists.index(for: uid),
+            let list = state.viewModel.lists[safe: index]?.list
+        else {
+            state.viewState = .error()
+            return .none
+        }
+        state.viewState = .updatingList
+        state.viewModel.lists.remove(at: index)
+        return .task { send in
+            await send(
+                .deleteListResult(
+                    useCase.deleteList(list.documentId)
+                )
+            )
+        }
+    }
 
     @MainActor
     func onDidTapShareListButton(
-		state: inout State,
+        state: inout State,
         uid: UUID
-	) -> Effect<Action> {
-		guard let index = state.viewModel.lists.index(for: uid),
-              let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .error()
-			return .none
-		}
-		dependencies.coordinator.present(sheet: .shareList(list))
+    ) -> Effect<Action> {
+        guard let index = state.viewModel.lists.index(for: uid),
+            let list = state.viewModel.lists[safe: index]?.list
+        else {
+            state.viewState = .error()
+            return .none
+        }
+        dependencies.coordinator.present(sheet: .shareList(list))
 
-		return .none
-	}
+        return .none
+    }
 
-	func onDidTapEditListButton(
-		state: inout State,
+    func onDidTapEditListButton(
+        state: inout State,
         uid: UUID
-	) -> Effect<Action> {
-		guard let index = state.viewModel.lists.index(for: uid),
-              let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .error()
-			return .none
-		}
-		state.viewState = .editingList(uid)
-		state.viewModel.lists.remove(at: index)
-		state.viewModel.lists.insert(newListRow(
-            list: list
-        ), at: index)
+    ) -> Effect<Action> {
+        guard let index = state.viewModel.lists.index(for: uid),
+            let list = state.viewModel.lists[safe: index]?.list
+        else {
+            state.viewState = .error()
+            return .none
+        }
+        state.viewState = .editingList(uid)
+        state.viewModel.lists.remove(at: index)
+        state.viewModel.lists.insert(
+            newListRow(
+                list: list
+            ),
+            at: index
+        )
 
-		return .none
-	}
+        return .none
+    }
 
-	func onDidTapUpdateListButton(
-		state: inout State,
+    func onDidTapUpdateListButton(
+        state: inout State,
         uid: UUID,
-		name: String
-	) -> Effect<Action> {
-		guard let index = state.viewModel.lists.index(for: uid),
-              var list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .error()
-			return .none
-		}
-		list.name = name
-		return .task { send in
-			await send(
-				.addListResult(
-					useCase.updateList(
-						list: list
-					)
-				)
-			)
-		}
-	}
+        name: String
+    ) -> Effect<Action> {
+        guard let index = state.viewModel.lists.index(for: uid),
+            var list = state.viewModel.lists[safe: index]?.list
+        else {
+            state.viewState = .error()
+            return .none
+        }
+        list.name = name
+        return .task { send in
+            await send(
+                .addListResult(
+                    useCase.updateList(
+                        list: list
+                    )
+                )
+            )
+        }
+    }
 
-	func onDidTapCancelEditListButton(
-		state: inout State,
+    func onDidTapCancelEditListButton(
+        state: inout State,
         uid: UUID
-	) -> Effect<Action> {
-		guard let index = state.viewModel.lists.index(for: uid),
-              let list = state.viewModel.lists[safe: index]?.list else {
-			state.viewState = .error()
-			return .none
-		}
-		state.viewState = .idle
-		state.viewModel.lists.remove(at: index)
-		state.viewModel.lists.insert(list.toListRow, at: index)
-		return .none
-	}
+    ) -> Effect<Action> {
+        guard let index = state.viewModel.lists.index(for: uid),
+            let list = state.viewModel.lists[safe: index]?.list
+        else {
+            state.viewState = .error()
+            return .none
+        }
+        state.viewState = .idle
+        state.viewModel.lists.remove(at: index)
+        state.viewModel.lists.insert(list.toListRow, at: index)
+        return .none
+    }
 
-	func onDidTapAddRowButton(
-		state: inout State
-	) -> Effect<Action> {
-		guard
-			!state.viewModel.lists.contains(
-				where: { $0.isEditing }
-			)
-		else {
-			return .none
-		}
-		state.viewState = .addingList
+    func onDidTapAddRowButton(
+        state: inout State
+    ) -> Effect<Action> {
+        guard
+            !state.viewModel.lists.contains(
+                where: { $0.isEditing }
+            )
+        else {
+            return .none
+        }
+        state.viewState = .addingList
         state.viewModel.lists.insert(newListRow(), at: 0)
-		return .none
-	}
+        return .none
+    }
 
-	func onDidTapCancelAddListButton(
-		state: inout State
-	) -> Effect<Action> {
-		state.viewState = .idle
-		state.viewModel.lists.removeAll { $0.isEditing }
-		return .none
-	}
+    func onDidTapCancelAddListButton(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
+        state.viewModel.lists.removeAll { $0.isEditing }
+        return .none
+    }
 
-	func onDidTapSubmitListButton(
-		state: inout State,
-		newListName: String
-	) -> Effect<Action> {
-		return .task { send in
-			await send(
-				.addListResult(
-					useCase.addList(
-						name: newListName
-					)
-				)
-			)
-		}
-	}
+    func onDidTapSubmitListButton(
+        state: inout State,
+        newListName: String
+    ) -> Effect<Action> {
+        return .task { send in
+            await send(
+                .addListResult(
+                    useCase.addList(
+                        name: newListName
+                    )
+                )
+            )
+        }
+    }
 
-	func onDidSortLists(
-		state: inout State,
-		fromIndex: IndexSet,
-		toIndex: Int
-	) -> Effect<Action> {
-		state.viewState = .sortingList
-		state.viewModel.lists.move(fromOffsets: fromIndex, toOffset: toIndex)
-		let lists = state.viewModel.lists
-			.map { $0.list }
-		return .task { send in
-			await send(
-				.sortListsResult(
-					useCase.sortLists(
-						lists: lists
-					)
-				)
-			)
-		}
-	}
+    func onDidSortLists(
+        state: inout State,
+        fromIndex: IndexSet,
+        toIndex: Int
+    ) -> Effect<Action> {
+        state.viewState = .sortingList
+        state.viewModel.lists.move(fromOffsets: fromIndex, toOffset: toIndex)
+        let lists = state.viewModel.lists
+            .map { $0.list }
+        return .task { send in
+            await send(
+                .sortListsResult(
+                    useCase.sortLists(
+                        lists: lists
+                    )
+                )
+            )
+        }
+    }
 
-	func onDidTapDismissError(
-		state: inout State
-	) -> Effect<Action> {
-		state.viewState = .idle
-		return .none
-	}
+    func onDidTapDismissError(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
+        return .none
+    }
 
-	func onDidTapAutoSortLists(
-		state: inout State
-	) -> Effect<Action> {
-		state.viewState = .sortingList
+    func onDidTapAutoSortLists(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .sortingList
         state.viewModel.lists.sorted()
-		let lists = state.viewModel.lists
-			.map { $0.list }
-		return .task { send in
-			await send(
-				.sortListsResult(
-					useCase.sortLists(
-						lists: lists
-					)
-				)
-			)
-		}
-	}
+        let lists = state.viewModel.lists
+            .map { $0.list }
+        return .task { send in
+            await send(
+                .sortListsResult(
+                    useCase.sortLists(
+                        lists: lists
+                    )
+                )
+            )
+        }
+    }
 }
 
 // MARK: - Private
 
 extension Home.Reducer {
-	fileprivate func newListRow(
+    fileprivate func newListRow(
         list: UserList = UserList.emptyList
     ) -> WrappedUserList {
-		WrappedUserList(
+        WrappedUserList(
             id: list.id,
-			list: list,
-			isEditing: true
-		)
-	}
+            list: list,
+            isEditing: true
+        )
+    }
 }
 
 // MARK: - Empty list
 
 extension UserList {
-	fileprivate static var emptyList: UserList {
-		UserList(
+    fileprivate static var emptyList: UserList {
+        UserList(
             id: UUID(),
-			documentId: "",
-			name: "",
-			done: false,
-			uid: [],
-			index: -Date().milliseconds
-		)
-	}
+            documentId: "",
+            name: "",
+            done: false,
+            uid: [],
+            index: -Date().milliseconds
+        )
+    }
 }

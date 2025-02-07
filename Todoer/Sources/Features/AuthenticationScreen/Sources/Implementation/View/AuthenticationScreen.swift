@@ -1,15 +1,15 @@
+import AuthenticationScreenContract
 import AuthenticationServices
+import Common
+import CoordinatorContract
 import CoordinatorMocks
+import Entities
 import GoogleSignIn
 import GoogleSignInSwift
-import SwiftUI
-import Common
-import xRedux
-import ThemeAssets
-import CoordinatorContract
-import Entities
-import AuthenticationScreenContract
 import Strings
+import SwiftUI
+import ThemeAssets
+import xRedux
 
 // MARK: - AuthenticationScreen
 
@@ -198,7 +198,7 @@ struct AuthenticationScreen_Previews: PreviewProvider {
     struct Dependencies: AuthenticationScreenDependencies {
         let coordinator: CoordinatorApi
     }
-    
+
     static var previews: some View {
         Authentication.Builder.makeAuthentication(
             dependencies: Dependencies(

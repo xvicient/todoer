@@ -1,9 +1,9 @@
 extension Share.Reducer {
 
-    // MARK: - ViewModel
+	// MARK: - ViewModel
 
-    @MainActor
-    struct ViewModel {
-        var content = ""
-    }
+	@MainActor
+	struct ViewModel {
+		var content = ""
+	}
 }

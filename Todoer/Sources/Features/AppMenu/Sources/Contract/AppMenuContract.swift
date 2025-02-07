@@ -1,5 +1,5 @@
-import SwiftUI
 import CoordinatorContract
+import SwiftUI
 
 public struct AppMenu {}
 

@@ -2,12 +2,12 @@ import SwiftUI
 
 // MARK: - TDList
 
-public struct TDList: View {    
+public struct TDList: View {
     @Binding private var searchText: String
     @Binding private var isSearchFocused: Bool
-    
+
     private let sections: () -> AnyView
-    
+
     public init(
         @ViewBuilder sections: @escaping () -> AnyView,
         searchText: Binding<String>,

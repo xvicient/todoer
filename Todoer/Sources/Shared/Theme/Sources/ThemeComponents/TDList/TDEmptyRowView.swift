@@ -1,5 +1,5 @@
-import SwiftUI
 import Strings
+import SwiftUI
 
 protocol TDEmptyRowActions {
     var onSubmit: (String) -> Void { get }
@@ -11,10 +11,10 @@ protocol TDEmptyRowActions {
 struct TDEmptyRowView: View {
     @ObservedObject var row: TDListRow
     let actions: TDEmptyRowActions
-    
+
     @FocusState private var isEmptyRowFocused: Bool
     @State private var emptyRowText = ""
-    
+
     var body: some View {
         HStack {
             row.image
@@ -65,4 +65,3 @@ struct TDEmptyRowView: View {
         }
     }
 }
-

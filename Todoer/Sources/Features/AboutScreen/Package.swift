@@ -14,12 +14,12 @@ let package = Package(
         .library(
             name: "AboutScreen",
             targets: ["AboutScreen"]
-        )
+        ),
     ],
     dependencies: [
         .package(path: "../Common"),
-        .package(path: "../Theme")
-        
+        .package(path: "../Theme"),
+
     ],
     targets: [
         .target(
@@ -31,7 +31,7 @@ let package = Package(
             name: "AboutScreen",
             dependencies: [
                 "Common",
-                .product(name: "ThemeAssets", package: "Theme")
+                .product(name: "ThemeAssets", package: "Theme"),
             ],
             path: "Sources/Implementation"
         ),

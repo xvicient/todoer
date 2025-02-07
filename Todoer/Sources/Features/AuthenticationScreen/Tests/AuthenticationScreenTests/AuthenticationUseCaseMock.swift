@@ -3,15 +3,15 @@ import xRedux
 @testable import AuthenticationScreen
 
 class AuthenticationUseCaseMock: AuthenticationUseCaseApi {
-	var result: ActionResult<EquatableVoid>!
+    var result: ActionResult<EquatableVoid>!
 
-	enum UseCaseError: Error {
-		case error
-	}
+    enum UseCaseError: Error {
+        case error
+    }
 
-	func singIn(
-		provider: Authentication.Provider
-	) async -> ActionResult<EquatableVoid> {
-		result
-	}
+    func singIn(
+        provider: Authentication.Provider
+    ) async -> ActionResult<EquatableVoid> {
+        result
+    }
 }

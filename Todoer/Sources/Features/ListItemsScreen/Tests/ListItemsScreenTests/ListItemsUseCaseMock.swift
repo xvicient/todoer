@@ -1,22 +1,22 @@
-import xRedux
-import Entities
 import Combine
+import Entities
+import xRedux
 
 @testable import ListItemsScreen
 
 class ListItemsUseCaseMock: ListItemsUseCaseApi {
-    
+
     var fetchItemsResult: ActionResult<[Item]>!
     var addItemResult: ActionResult<Item>!
     var deleteItemResult: ActionResult<EquatableVoid>!
     var updateItemNameResult: ActionResult<Item>!
     var updateItemDoneResult: ActionResult<EquatableVoid>!
     var sortItemsResult: ActionResult<EquatableVoid>!
-    
+
     enum UseCaseError: Error {
         case error
     }
-    
+
     func fetchItems(
         listId: String
     ) -> AnyPublisher<[Item], any Error> {
@@ -36,41 +36,40 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
                 .eraseToAnyPublisher()
         }
     }
-    
+
     func addItem(
         with name: String,
         list: UserList
     ) async -> ActionResult<Item> {
         addItemResult
     }
-    
+
     func deleteItem(
         itemId: String,
         listId: String
     ) async -> ActionResult<EquatableVoid> {
         deleteItemResult
     }
-    
+
     func updateItemName(
         item: Item,
         listId: String
     ) async -> ActionResult<Item> {
         updateItemNameResult
     }
-    
+
     func updateItemDone(
         item: Item,
         list: UserList
     ) async -> ActionResult<EquatableVoid> {
         updateItemDoneResult
     }
-    
+
     func sortItems(
         items: [Item],
         listId: String
     ) async -> ActionResult<EquatableVoid> {
         sortItemsResult
     }
-    
-    
+
 }

@@ -1,7 +1,7 @@
 import Foundation
 
-public extension Error {
-	var code: Int {
-		(self as NSError).code
-	}
+extension Error {
+    public var code: Int {
+        (self as NSError).code
+    }
 }

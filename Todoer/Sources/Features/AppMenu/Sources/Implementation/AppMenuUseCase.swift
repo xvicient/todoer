@@ -1,13 +1,13 @@
+import AppMenuContract
 import Combine
 import Data
 import xRedux
-import AppMenuContract
 
 protocol MenuUseCaseApi {
     /// Retrieves the URL of the user's profile photo
     /// - Returns: A result containing either the photo URL string or an error
     func getPhotoUrl() async -> ActionResult<String>
-    
+
     /// Signs out the current user
     /// - Returns: A result indicating success or failure of the sign-out operation
     func signOut() -> ActionResult<EquatableVoid>
@@ -18,8 +18,8 @@ protocol MenuUseCaseApi {
 }
 
 extension AppMenu {
-    
-	struct UseCase: MenuUseCaseApi {
+
+    struct UseCase: MenuUseCaseApi {
 
         /// Repository for managing lists
         private let listsRepository: ListsRepositoryApi
@@ -45,16 +45,16 @@ extension AppMenu {
 
         /// Retrieves the URL of the user's profile photo
         /// - Returns: A result containing either the photo URL string or an error
-		func getPhotoUrl() async -> ActionResult<String> {
-			do {
-				let photoUrl = try await usersRepository.getSelfUser()?.photoUrl
-				return .success(photoUrl ?? "")
-			}
-			catch {
-				return .failure(error)
-			}
-		}
-        
+        func getPhotoUrl() async -> ActionResult<String> {
+            do {
+                let photoUrl = try await usersRepository.getSelfUser()?.photoUrl
+                return .success(photoUrl ?? "")
+            }
+            catch {
+                return .failure(error)
+            }
+        }
+
         /// Signs out the current user
         /// - Returns: A result indicating success or failure of the sign-out operation
         func signOut() -> ActionResult<EquatableVoid> {
@@ -67,7 +67,7 @@ extension AppMenu {
                 return .failure(error)
             }
         }
-        
+
         /// Deletes the current user's account and associated data
         /// - Returns: A result indicating success or failure of the account deletion
         func deleteAccount() async -> ActionResult<EquatableVoid> {
@@ -80,5 +80,5 @@ extension AppMenu {
                 return .failure(error)
             }
         }
-	}
+    }
 }

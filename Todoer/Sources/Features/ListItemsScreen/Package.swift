@@ -14,24 +14,24 @@ let package = Package(
         .library(
             name: "ListItemsScreen",
             targets: ["ListItemsScreen"]
-        )
+        ),
     ],
     dependencies: [
-        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0"),
+        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.1"),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Data"),
         .package(path: "../Entities"),
         .package(path: "../Coordinator"),
-        .package(path: "../Strings")
-        
+        .package(path: "../Strings"),
+
     ],
     targets: [
         .target(
             name: "ListItemsScreenContract",
             dependencies: [
                 "Entities",
-                "Common"
+                "Common",
             ],
             path: "Sources/Contract"
         ),
@@ -45,7 +45,7 @@ let package = Package(
                 "Data",
                 "Entities",
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
-                "Strings"
+                "Strings",
             ],
             path: "Sources/Implementation"
         ),
@@ -57,7 +57,7 @@ let package = Package(
                 .product(name: "xReduxTest", package: "xRedux"),
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 .product(name: "EntitiesMocks", package: "Entities"),
-                "Entities"
+                "Entities",
             ]
         ),
     ]

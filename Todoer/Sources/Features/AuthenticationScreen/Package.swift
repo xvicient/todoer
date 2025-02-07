@@ -14,17 +14,17 @@ let package = Package(
         .library(
             name: "AuthenticationScreen",
             targets: ["AuthenticationScreen"]
-        )
+        ),
     ],
     dependencies: [
-        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0"),
+        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.1"),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
         .package(path: "../Entities"),
         .package(path: "../Strings"),
-        .package(path: "../../../../Packages/External/GoogleSignInDependencies")
-        
+        .package(path: "../../../../Packages/External/GoogleSignInDependencies"),
+
     ],
     targets: [
         .target(
@@ -45,7 +45,7 @@ let package = Package(
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 "Entities",
                 "Strings",
-                "GoogleSignInDependencies"
+                "GoogleSignInDependencies",
             ],
             path: "Sources/Implementation"
         ),
@@ -55,7 +55,7 @@ let package = Package(
                 "AuthenticationScreen",
                 .product(name: "xReduxTest", package: "xRedux"),
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
-                "Entities"
+                "Entities",
             ]
         ),
     ]

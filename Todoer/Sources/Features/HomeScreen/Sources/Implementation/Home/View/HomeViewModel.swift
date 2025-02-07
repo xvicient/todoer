@@ -1,26 +1,26 @@
-import Foundation
-import Entities
-import ThemeComponents
 import Common
+import Entities
+import Foundation
+import ThemeComponents
 
 extension Home.Reducer {
 
-	// MARK: - ViewModel
+    // MARK: - ViewModel
 
-	@MainActor
-	struct ViewModel {
-		var lists = [WrappedUserList]()
-		var invitations = [Invitation]()
-		var photoUrl = ""
-	}
+    @MainActor
+    struct ViewModel {
+        var lists = [WrappedUserList]()
+        var invitations = [Invitation]()
+        var photoUrl = ""
+    }
 
     struct WrappedUserList: Identifiable, Sendable, ElementSortable {
         let id: UUID
-		var list: UserList
-		let leadingActions: [TDSwipeAction]
-		let trailingActions: [TDSwipeAction]
-		var isEditing: Bool
-        
+        var list: UserList
+        let leadingActions: [TDSwipeAction]
+        let trailingActions: [TDSwipeAction]
+        var isEditing: Bool
+
         var done: Bool { list.done }
         var name: String { list.name }
         var index: Int {
@@ -32,20 +32,20 @@ extension Home.Reducer {
             }
         }
 
-		init(
+        init(
             id: UUID,
-			list: UserList,
-			leadingActions: [TDSwipeAction] = [],
-			trailingActions: [TDSwipeAction] = [],
-			isEditing: Bool = false
-		) {
+            list: UserList,
+            leadingActions: [TDSwipeAction] = [],
+            trailingActions: [TDSwipeAction] = [],
+            isEditing: Bool = false
+        ) {
             self.id = id
-			self.list = list
-			self.leadingActions = leadingActions
-			self.trailingActions = trailingActions
-			self.isEditing = isEditing
-		}
-	}
+            self.list = list
+            self.leadingActions = leadingActions
+            self.trailingActions = trailingActions
+            self.isEditing = isEditing
+        }
+    }
 }
 
 extension Array where Element == Home.Reducer.WrappedUserList {

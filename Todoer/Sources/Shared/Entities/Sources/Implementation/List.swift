@@ -7,7 +7,7 @@ public struct UserList: Identifiable, Equatable, Hashable, Sendable {
     public var done: Bool
     public var uid: [String]
     public var index: Int
-    
+
     public init(
         id: UUID,
         documentId: String,

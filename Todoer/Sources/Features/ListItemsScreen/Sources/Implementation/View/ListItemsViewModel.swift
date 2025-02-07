@@ -1,28 +1,27 @@
-import Foundation
-import Entities
-import ThemeComponents
-import Entities
 import Common
+import Entities
+import Foundation
+import ThemeComponents
 
 // MARK: - ListItemsViewModel
 
 extension ListItems.Reducer {
 
-	// MARK: - ViewModel
+    // MARK: - ViewModel
 
-	@MainActor
-	struct ViewModel {
-		var items = [WrappedItem]()
+    @MainActor
+    struct ViewModel {
+        var items = [WrappedItem]()
         var listName: String = ""
-	}
+    }
 
     struct WrappedItem: Identifiable, Equatable, ElementSortable {
         let id: UUID
-		var item: Item
-		let leadingActions: [TDSwipeAction]
-		let trailingActions: [TDSwipeAction]
-		var isEditing: Bool
-        
+        var item: Item
+        let leadingActions: [TDSwipeAction]
+        let trailingActions: [TDSwipeAction]
+        var isEditing: Bool
+
         var done: Bool { item.done }
         var name: String { item.name }
         var index: Int {
@@ -34,20 +33,20 @@ extension ListItems.Reducer {
             }
         }
 
-		init(
+        init(
             id: UUID,
-			item: Item,
-			leadingActions: [TDSwipeAction] = [],
-			trailingActions: [TDSwipeAction] = [],
-			isEditing: Bool = false
-		) {
+            item: Item,
+            leadingActions: [TDSwipeAction] = [],
+            trailingActions: [TDSwipeAction] = [],
+            isEditing: Bool = false
+        ) {
             self.id = id
-			self.item = item
-			self.leadingActions = leadingActions
-			self.trailingActions = trailingActions
-			self.isEditing = isEditing
-		}
-	}
+            self.item = item
+            self.leadingActions = leadingActions
+            self.trailingActions = trailingActions
+            self.isEditing = isEditing
+        }
+    }
 }
 
 extension Array where Element == ListItems.Reducer.WrappedItem {

@@ -2,8 +2,8 @@ import Foundation
 
 extension Authentication.Reducer {
 
-	// MARK: - ViewModel
+    // MARK: - ViewModel
 
-	@MainActor
-	struct ViewModel {}
+    @MainActor
+    struct ViewModel {}
 }

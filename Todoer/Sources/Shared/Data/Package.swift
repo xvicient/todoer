@@ -18,15 +18,15 @@ let package = Package(
             targets: [
                 "DataMocks"
             ]
-        )
+        ),
     ],
     dependencies: [
         .package(path: "../../../../Packages/External/FirebaseDependencies"),
         .package(path: "../../../../Packages/External/GoogleSignInDependencies"),
         .package(path: "../Entities"),
         .package(path: "../Common"),
-        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.0")
-        
+        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.1"),
+
     ],
     targets: [
         .target(
@@ -35,7 +35,7 @@ let package = Package(
                 "FirebaseDependencies",
                 "GoogleSignInDependencies",
                 .product(name: "Entities", package: "Entities"),
-                "Common"
+                "Common",
             ],
             path: "Sources/Implementation"
         ),
@@ -45,7 +45,7 @@ let package = Package(
                 "Entities",
                 "FirebaseDependencies",
                 "Data",
-                .product(name: "xRedux", package: "xRedux")
+                .product(name: "xRedux", package: "xRedux"),
             ],
             path: "Sources/Mocks"
         ),
@@ -57,9 +57,9 @@ let package = Package(
                 "GoogleSignInDependencies",
                 .product(name: "Entities", package: "Entities"),
                 .product(name: "EntitiesMocks", package: "Entities"),
-                .product(name: "xRedux", package: "xRedux")
+                .product(name: "xRedux", package: "xRedux"),
             ],
             path: "Tests"
-        )
+        ),
     ]
 )

@@ -1,13 +1,13 @@
-import SwiftUI
-import CoordinatorMocks
-import xRedux
-import CoordinatorContract
-import ThemeComponents
-import Entities
-import Common
-import HomeScreenContract
 import AppMenuContract
+import Common
+import CoordinatorContract
+import CoordinatorMocks
+import Entities
+import HomeScreenContract
 import Strings
+import SwiftUI
+import ThemeComponents
+import xRedux
 
 // MARK: - HomeScreen
 
@@ -37,7 +37,8 @@ struct HomeScreen: View {
                 guard isSearchFocused else { return }
                 if store.state.viewState == .addingList {
                     store.send(.didTapCancelAddListButton)
-                } else if case let .editingList(uid) = store.state.viewState {
+                }
+                else if case let .editingList(uid) = store.state.viewState {
                     store.send(.didTapCancelEditListButton(uid))
                 }
             }
@@ -62,12 +63,12 @@ struct HomeScreen: View {
 
 // MARK: - ViewBuilders
 
-private extension HomeScreen {
-    
+extension HomeScreen {
+
     @ViewBuilder
-    func sections() -> AnyView {
+    fileprivate func sections() -> AnyView {
         AnyView(
-            Group{
+            Group {
                 if !store.state.viewModel.invitations.isEmpty {
                     invitationsView(store.state.viewModel.invitations)
                 }
@@ -81,7 +82,7 @@ private extension HomeScreen {
     }
 
     @ViewBuilder
-    func listContent() -> AnyView {
+    fileprivate func listContent() -> AnyView {
         AnyView(
             TDListContent(
                 configuration: contentConfiguration,
@@ -92,7 +93,7 @@ private extension HomeScreen {
     }
 
     @ViewBuilder
-    var loadingView: some View {
+    fileprivate var loadingView: some View {
         if store.state.viewState == .loading {
             ProgressView()
         }
@@ -101,17 +102,17 @@ private extension HomeScreen {
 
 // MARK: - List comfigurations
 
-private extension HomeScreen {
-    
-    var sectionConfiguration: TDListSection.Configuration {
+extension HomeScreen {
+
+    fileprivate var sectionConfiguration: TDListSection.Configuration {
         .init(
             title: Strings.Home.todosText,
             addButtonTitle: Strings.Home.newTodoButtonTitle,
             isSortEnabled: store.state.viewModel.lists.filter { !$0.isEditing }.count > 1
         )
     }
-    
-    var sectionActions: TDListSection.Actions {
+
+    fileprivate var sectionActions: TDListSection.Actions {
         .init(
             onAddRow: {
                 isSearchFocused = false
@@ -121,16 +122,16 @@ private extension HomeScreen {
             onSortRows: { store.send(.didTapAutoSortLists) }
         )
     }
-    
-    var contentConfiguration: TDListContent.Configuration {
+
+    fileprivate var contentConfiguration: TDListContent.Configuration {
         .init(
             lineLimit: 2,
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
-    
-    var contentActions: TDListContent.Actions {
+
+    fileprivate var contentActions: TDListContent.Actions {
         .init(
             onSubmit: { store.send(.didTapSubmitListButton($0)) },
             onUpdate: { store.send(.didTapUpdateListButton($0, $1)) },
@@ -187,7 +188,7 @@ struct Home_Previews: PreviewProvider {
     struct Dependencies: HomeScreenDependencies {
         let coordinator: CoordinatorApi
     }
-    
+
     static var previews: some View {
         Home.Builder.makeHome(
             dependencies: Dependencies(coordinator: CoordinatorMock())

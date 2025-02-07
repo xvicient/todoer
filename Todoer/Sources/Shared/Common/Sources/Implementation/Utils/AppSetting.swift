@@ -17,7 +17,8 @@ public class AppSetting<Value: Codable> {
     public var wrappedValue: Value {
         get {
             if let data = container.data(forKey: key),
-               let value = try? JSONDecoder().decode(Value.self, from: data) {
+                let value = try? JSONDecoder().decode(Value.self, from: data)
+            {
                 return value
             }
             return defaultValue
