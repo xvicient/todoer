@@ -4,8 +4,12 @@
 
 A modern task management app built with Swift 6 using Redux architecture and Firebase Firestore.
 
-![Preview1](/docs/media/00.gif) ![Preview2](/docs/media/01.png) ![Preview2](/docs/media/02.png) ![Preview2](/docs/media/03.png)
-
+<p align="center">
+<img src="/docs/media/00.gif" height="1000"/>
+<img src="/docs/media/01.png" height="1000"/>
+<img src="/docs/media/01.png" height="1000"/>
+<img src="/docs/media/01.png" height="1000"/>
+</p>
 ## 🚀 Features
 - Real-time task synchronization with Firebase Firestore
 - Google Sign-In integration
