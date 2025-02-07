@@ -32,21 +32,21 @@ let package = Package(
                 "Data",
                 "Entities"
             ],
-            path: "Contract"
+            path: "Sources/Contract"
         ),
         .target(
             name: "Coordinator",
             dependencies: [
                 "CoordinatorContract"
             ],
-            path: "Sources"
+            path: "Sources/Implementation"
         ),
         .target(
             name: "CoordinatorMocks",
             dependencies: [
                 "CoordinatorContract"
             ],
-            path: "Mocks"
+            path: "Sources/Mocks"
         )
     ]
 )

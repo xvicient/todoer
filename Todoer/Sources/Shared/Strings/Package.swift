@@ -15,7 +15,7 @@ let package = Package(
     targets: [
         .target(
             name: "Strings",
-            path: "Sources"
+            path: "Sources/Implementation"
         )
     ]
 )

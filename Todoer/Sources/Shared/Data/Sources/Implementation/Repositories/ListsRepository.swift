@@ -75,7 +75,7 @@ public final class ListsRepository: ListsRepositoryApi {
     public func addSharedLists(
     ) async throws -> [UserList] {
         let result = try await listsDataSource.addLists(
-            names: sharedListsDataSource.sharedLists,
+            names: sharedListsDataSource.sharedLists.filter { !$0.isEmpty },
             uid: usersDataSource.uid
         ).map(\.toDomain)
         sharedListsDataSource.sharedLists.removeAll()

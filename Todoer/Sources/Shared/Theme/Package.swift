@@ -24,10 +24,10 @@ let package = Package(
     targets: [
         .target(
             name: "ThemeAssets",
-            path: "ThemeAssets",
+            path: "Sources/ThemeAssets",
             resources: [
-                .process("Resources/Assets.xcassets"),
-                .process("Resources/Colors.xcassets")
+                .process("Assets/Assets.xcassets"),
+                .process("Assets/Colors.xcassets")
             ]
         ),
         .target(
@@ -37,7 +37,7 @@ let package = Package(
                 "Common",
                 "Strings"
             ],
-            path: "ThemeComponents"
+            path: "Sources/ThemeComponents"
         )
     ]
 )

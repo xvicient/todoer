@@ -27,14 +27,14 @@ let package = Package(
     targets: [
         .target(
             name: "Entities",
-            path: "Sources"
+            path: "Sources/Implementation"
         ),
         .target(
             name: "EntitiesMocks",
             dependencies: [
                 "Common"
             ],
-            path: "Mocks"
+            path: "Sources/Mocks"
         )
     ]
 )

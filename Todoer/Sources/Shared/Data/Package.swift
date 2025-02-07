@@ -37,7 +37,7 @@ let package = Package(
                 .product(name: "Entities", package: "Entities"),
                 "Common"
             ],
-            path: "Sources"
+            path: "Sources/Implementation"
         ),
         .target(
             name: "DataMocks",
@@ -47,7 +47,7 @@ let package = Package(
                 "Data",
                 .product(name: "xRedux", package: "xRedux")
             ],
-            path: "Mocks"
+            path: "Sources/Mocks"
         ),
         .testTarget(
             name: "DataTests",
