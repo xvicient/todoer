@@ -7,8 +7,8 @@ A modern task management app built with Swift 6 using Redux architecture and Fir
 
 
 ## 🚀 Features
-- Real-time task synchronization with Firebase Firestore
-- Google Sign-In integration
+- Real-time data synchronization with Firebase Firestore
+- Apple and Google Sign-In integration
 - Redux-based state management
 - Crash reporting with Crashlytics
 
@@ -46,7 +46,7 @@ View → Action → Reducer → State → View
 ##### Dependencies
 | **Package**            | **Version** | **Purpose**                   |
 |-------------------------|------------|--------------------------------|
-| [xRedux](https://github.com/xvicient/xRedux) | 1.0+      | Feature state management architecture  |
+| [xRedux](https://github.com/xvicient/xRedux) [![Propietary](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](Propietary) | 1.0+      | Feature state management architecture  |
 | [FirebaseFirestore](https://firebase.google.com/docs/firestore) | 10.0+      | Real-time database           |
 | [FirebaseAuth](https://firebase.google.com/docs/auth)         | 10.0+      | User authentication          |
 | [FirebaseCrashlytics](https://firebase.google.com/docs/crashlytics) | 10.0+      | Crash reporting               |
@@ -63,12 +63,12 @@ View → Action → Reducer → State → View
 ## 📱 App Store
 [![Download on the App Store](https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg)](https://apps.apple.com/es/app/todoer/id6476218460?l=en-GB)
 
-👨💻 Author
+## 👨💻 Author
 
 Xavier Vicient Manteca
 
 [GitHub Profile](https://github.com/xvicient) • [LinkedIn](https://www.linkedin.com/in/xvicient/)
 
-© License
+## © License
 
 This project is proprietary software. All rights reserved © 2025 Xavier Vicient Manteca. Unauthorized distribution is prohibited.
