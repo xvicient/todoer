@@ -1,7 +1,5 @@
 [![Swift 6](https://img.shields.io/badge/Swift-6.0-orange.svg?style=flat)](https://swift.org) [![Platform](https://img.shields.io/badge/Platform-iOS_17+-blue.svg)](https://developer.apple.com/ios/) [![License](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](LICENSE)
 # Todoer
-![Todoer](/docs/media/icon.png)
-
 A modern task management app built with Swift 6 using Redux architecture and Firebase Firestore.
 
 | ![Image1](/docs/media/00.gif) | ![Image2](/docs/media/01.png) | ![Image3](/docs/media/02.png) | ![Image4](/docs/media/03.png) |
@@ -24,7 +22,7 @@ A modern task management app built with Swift 6 using Redux architecture and Fir
    ```
 2. Install dependencies using Xcode 15+ (SPM packages will resolve automatically)
 
-3. Configure Firebase adding your GoogleService-Info.plist to Todoer/Resources
+3. Configure Firebase: for security reasons the GoogleService-Info.plist can't be provided, add your GoogleService-Info.plist to Todoer/Resources.
 
 4. Build & run using ⌘R
 
@@ -46,11 +44,14 @@ View → Action → Reducer → State → View
 - Reducers: Pure functions handling state transitions
 
 ##### Dependencies
-- xRedux 1.0+ Redux architecture
-- FirebaseFirestore 10.0+ Real-time database
-- FirebaseAuth  10.0+ User authentication
-- FirebaseCrashlytics 10.0+ Crash reporting
-- GoogleSignIn  7.0+  Google authentication
+| **Package**            | **Version** | **Purpose**                   |
+|-------------------------|------------|--------------------------------|
+| [xRedux](https://github.com/xvicient/xRedux) | 1.0+      | Feature state management architecture  |
+| [FirebaseFirestore](https://firebase.google.com/docs/firestore) | 10.0+      | Real-time database           |
+| [FirebaseAuth](https://firebase.google.com/docs/auth)         | 10.0+      | User authentication          |
+| [FirebaseCrashlytics](https://firebase.google.com/docs/crashlytics) | 10.0+      | Crash reporting               |
+| [GoogleSignIn](https://developers.google.com/identity/sign-in/ios) | 7.0+       | Google authentication         |
+
 
 ## 🧪 Testing
 ### Test Includes:
