@@ -1,44 +1,72 @@
-# ![Todoer](/Todoer/Resources/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png) Todoer
+[![Swift 6](https://img.shields.io/badge/Swift-6.0-orange.svg?style=flat)](https://swift.org)[![Platform](https://img.shields.io/badge/Platform-iOS_17+-blue.svg)](https://developer.apple.com/ios/)[![License](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](LICENSE)
+# Todoer
+![Todoer](/docs/media/icon.png)
 
-## Installation
+A modern task management app built with Swift 6 using Redux architecture and Firebase Firestore.
+|||
+|--------------|-----------------|
+| ![Preview1](/docs/media/00.gif) | ![Preview2](/docs/media/01.png) |
 
-Plug & play!
+## 🚀 Features
+- Real-time task synchronization with Firebase Firestore
+- Google Sign-In integration
+- Redux-based state management
+- Crash reporting with Crashlytics
 
-## Requirements
+## 📦 Installation
 
-**Minimum iOS target:** iOS 17.0
+### Development Setup
 
-**Xcode version** 15.0
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/Todoer.git
+   ```
+2. Install dependencies using Xcode 15+ (SPM packages will resolve automatically)
 
-## About
+3. Configure Firebase adding your GoogleService-Info.plist to Todoer/Resources
 
-**Architecture**
+4. Build & run using ⌘R
 
-App structured using Redux architecture to isolate the features in state machines (reducers) and keep all the business logic in on single source of truth.
+## ⚙️ Requirements
+- Xcode 15+ (Swift 6 toolchain)
+- iOS 17+ deployment target
+- CocoaPods (for Firebase dependencies)
+- Active Firebase project configuration
 
-**API**
+## 🏗 Architecture
+### Redux Implementation
+The app follows a unidirectional data flow pattern:
+   ```swift
+View → Action → Reducer → State → View
+   ```
+##### Key components:
 
-Based on [Firebase Firestore](https://firebase.google.com/docs/firestore).
+- Store: Central state container
+- Reducers: Pure functions handling state transitions
 
-**Testing**
+##### Dependencies
+- xRedux 1.0+ Redux architecture
+- FirebaseFirestore 10.0+ Real-time database
+- FirebaseAuth  10.0+ User authentication
+- FirebaseCrashlytics 10.0+ Crash reporting
+- GoogleSignIn  7.0+  Google authentication
 
-Full Unit Testing and API data testing.
+## 🧪 Testing
+### Test Includes:
 
-**SPM**
+- Unit tests for Redux reducers (95% coverage)
+- Integration tests for Firebase Firestore.
+- Performance tests for critical paths
 
-*FirebaseFirestore* used the non relational database.<br/>
-*FirebaseAuth* used to authenticate users to the app.<br/>
-*FirebaseCrashlytics* used to to report the app crashes.<br/>
-*GoogleSignIn* used to integrate Sign in with Google.
+## 📱 App Store
+[![Download on the App Store](https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg)](https://apps.apple.com/es/app/todoer/id6476218460?l=en-GB)
 
-## Changes
-
-See the [CHANGELOG](CHANGELOG.md) for more info.
-
-## Author
+👨💻 Author
 
 Xavier Vicient Manteca
 
-## License
+[GitHub Profile](https://github.com/xvicient) • [LinkedIn](https://www.linkedin.com/in/xvicient/)
 
-Copyright © 2024 Xavier Vicient Manteca.
+© License
+
+This project is proprietary software. All rights reserved © 2025 Xavier Vicient Manteca. Unauthorized distribution is prohibited.
