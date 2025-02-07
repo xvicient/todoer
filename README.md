@@ -1,10 +1,20 @@
 [![Swift 6](https://img.shields.io/badge/Swift-6.0-orange.svg?style=flat)](https://swift.org) [![Platform](https://img.shields.io/badge/Platform-iOS_17+-blue.svg)](https://developer.apple.com/ios/) [![License](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](LICENSE)
 # Todoer
+[![Download on the App Store](https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg)](https://apps.apple.com/es/app/todoer/id6476218460?l=en-GB)
+
 A modern task management app built with Swift 6 using Redux architecture and Firebase Firestore.
 
 | ![Image1](/docs/media/00.gif) | ![Image2](/docs/media/01.png) | ![Image3](/docs/media/02.png) | ![Image4](/docs/media/03.png) |
 |:---------------------:|:---------------------:|:---------------------:|:---------------------:|
 
+## Table of Contents
+- [🚀 Features](#-features)
+- [📦 Installation](#-installation)
+- [⚙️ Requirements](#️-requirements)
+- [🏗 Architecture](#-architecture)
+- [🧪 Testing](#-testing)
+- [👨💻 Author](#-author)
+- [© License](#-license)
 
 ## 🚀 Features
 - Real-time data synchronization with Firebase Firestore
@@ -60,14 +70,11 @@ View → Action → Reducer → State → View
 - Integration tests for Firebase Firestore.
 - Performance tests for critical paths
 
-## 📱 App Store
-[![Download on the App Store](https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg)](https://apps.apple.com/es/app/todoer/id6476218460?l=en-GB)
-
 ## 👨💻 Author
 
 Xavier Vicient Manteca
 
-[GitHub Profile](https://github.com/xvicient) • [LinkedIn](https://www.linkedin.com/in/xvicient/)
+[GitHub](https://github.com/xvicient) • [LinkedIn](https://www.linkedin.com/in/xvicient/)
 
 ## © License
 
