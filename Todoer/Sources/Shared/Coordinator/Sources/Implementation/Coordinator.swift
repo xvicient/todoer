@@ -10,6 +10,7 @@ final class Coordinator: CoordinatorApi, ObservableObject {
     @Published var fullScreenCover: FullScreenCover?
     @Published var landingView: AnyView?
     @Published var landingScreen: Screen
+    @Published var isLoading: Bool = true
     private let authenticationService: AuthenticationService
     private let featureProvider: FeatureProviderAPI
     public var isUserLogged: Bool {
@@ -25,7 +26,14 @@ final class Coordinator: CoordinatorApi, ObservableObject {
         landingScreen = authenticationService.isUserLogged ? .home : .authentication
         landingView = build(screen: landingScreen)
     }
-
+    
+    @MainActor
+    func showLoading(_ isLoading: Bool) {
+        Task { @MainActor in
+            self.isLoading = isLoading
+        }
+    }
+    
     @MainActor
     func loggOut() {
         landingScreen = .authentication

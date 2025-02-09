@@ -42,7 +42,6 @@ struct HomeScreen: View {
                     store.send(.didTapCancelEditListButton(uid))
                 }
             }
-            loadingView
         }
         .onAppear {
             store.send(.onViewAppear)
@@ -108,13 +107,6 @@ extension HomeScreen {
             onSwipe: swipeActions,
             onMove: moveList
         )
-    }
-    
-    @ViewBuilder
-    fileprivate var loadingView: some View {
-        if store.state.viewState == .loading {
-            ProgressView()
-        }
     }
 }
 

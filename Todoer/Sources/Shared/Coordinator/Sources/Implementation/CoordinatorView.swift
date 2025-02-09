@@ -13,32 +13,37 @@ public struct CoordinatorView: View {
     }
 
     public var body: some View {
-        NavigationStack(path: $coordinator.path) {
-            coordinator.landingView
-                .setupNavigationBar(screen: coordinator.landingScreen)
-                .if(coordinator.isUserLogged) {
-                    $0.navigationBarItems(
-                        leading: menuView
-                    )
-                }
-                .navigationDestination(for: Screen.self) { screen in
-                    coordinator.build(screen: screen)
-                        .setupNavigationBar(screen: screen)
-                }
-                .sheet(item: $coordinator.sheet) { sheet in
-                    switch sheet {
-                    case .shareList:
-                        coordinator.build(sheet: sheet)
-                            .presentationDetents(
-                                [.height(350)]
-                            )
+        ZStack {
+            NavigationStack(path: $coordinator.path) {
+                coordinator.landingView
+                    .setupNavigationBar(screen: coordinator.landingScreen)
+                    .if(coordinator.isUserLogged) {
+                        $0.navigationBarItems(
+                            leading: menuView
+                        )
                     }
-                }
-                .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
-                    coordinator.build(fullScreenCover: fullScreenCover)
-                }
+                    .navigationDestination(for: Screen.self) { screen in
+                        coordinator.build(screen: screen)
+                            .setupNavigationBar(screen: screen)
+                    }
+                    .sheet(item: $coordinator.sheet) { sheet in
+                        switch sheet {
+                        case .shareList:
+                            coordinator.build(sheet: sheet)
+                                .presentationDetents(
+                                    [.height(350)]
+                                )
+                        }
+                    }
+                    .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in
+                        coordinator.build(fullScreenCover: fullScreenCover)
+                    }
+            }
+            .zIndex(0)
+            .preferredColorScheme(.light)
+            LoadingView()
+                .loadingOpacity(coordinator: coordinator)
         }
-        .preferredColorScheme(.light)
     }
 }
 
@@ -71,6 +76,10 @@ extension View {
     fileprivate func setupNavigationBar(screen: Screen) -> some View {
         modifier(NavigationBarModifier(screen: screen))
     }
+    
+    fileprivate func loadingOpacity(coordinator: Coordinator) -> some View {
+        modifier(LoadingOpacityModifier(coordinator: coordinator))
+    }
 }
 
 extension UINavigationController {
@@ -79,3 +88,62 @@ extension UINavigationController {
         navigationBar.topItem?.backButtonDisplayMode = .minimal
     }
 }
+
+fileprivate struct LoadingView: View {
+    var body: some View {
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+                .zIndex(0)
+            Image.todoer
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(.horizontal, 35)
+                .zIndex(1)
+        }
+    }
+}
+
+fileprivate struct LoadingOpacityModifier: ViewModifier {
+    @ObservedObject var coordinator: Coordinator
+    
+    func body(content: Content) -> some View {
+        content
+            .opacity(coordinator.isLoading ? 1.0 : 0.0)
+            .zIndex(1)
+            .allowsHitTesting(coordinator.isLoading)
+            .if(coordinator.landingScreen != .home) {
+                $0.hidden()
+            }
+            .animation(
+                .easeInOut(duration: 0.5),
+                value: coordinator.isLoading
+            )
+    }
+}
+
+//fileprivate struct LoadingOpacityModifier: ViewModifier {
+//    @ObservedObject var coordinator: Coordinator
+//    @State private var hideAfterDelay = false
+//    
+//    func body(content: Content) -> some View {
+//        content
+//            .opacity(hideAfterDelay ? 0 : 1)
+//            .animation(.easeInOut(duration: 0.5), value: hideAfterDelay)
+//            .onChange(of: coordinator.isLoading) {
+//                if coordinator.isLoading {
+//                    // Immediately show without animation
+//                    hideAfterDelay = false
+//                } else {
+//                    // Start 2-second delay before animating out
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                        hideAfterDelay = true
+//                    }
+//                }
+//            }
+//            .onAppear {
+//                // Reset state when view reappears
+//                hideAfterDelay = !coordinator.isLoading
+//            }
+//    }
+//}

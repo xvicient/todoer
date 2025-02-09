@@ -115,7 +115,9 @@ public struct TDListSection: View {
                 title: configuration.addButtonTitle,
                 icon: Image.plusCircleFill
             ) {
-                actions.onAddRow()
+                withAnimation {
+                    actions.onAddRow()
+                }
             }
             TDListSectionButton(
                 title: Strings.List.sortButtonTitle,

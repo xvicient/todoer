@@ -27,21 +27,25 @@ struct TDEmptyRowView: View {
                 }
                 .onSubmit {
                     hideKeyboard()
-                    if row.name.isEmpty {
-                        actions.onSubmit($emptyRowText.wrappedValue)
-                    }
-                    else {
-                        actions.onUpdate(row.id, $emptyRowText.wrappedValue)
+                    withAnimation {
+                        if row.name.isEmpty {
+                            actions.onSubmit($emptyRowText.wrappedValue)
+                        }
+                        else {
+                            actions.onUpdate(row.id, $emptyRowText.wrappedValue)
+                        }
                     }
                 }
                 .submitLabel(.done)
             Button(action: {
                 hideKeyboard()
-                if row.name.isEmpty {
-                    actions.onCancelAdd()
-                }
-                else {
-                    actions.onCancelEdit(row.id)
+                withAnimation {
+                    if row.name.isEmpty {
+                        actions.onCancelAdd()
+                    }
+                    else {
+                        actions.onCancelEdit(row.id)
+                    }
                 }
             }) {
                 Image.xmark
