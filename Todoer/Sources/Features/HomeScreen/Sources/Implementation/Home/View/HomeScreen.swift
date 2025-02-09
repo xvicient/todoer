@@ -28,7 +28,7 @@ struct HomeScreen: View {
 
     var body: some View {
         ZStack {
-            TDList(
+            TDListView(
                 sections: sections,
                 searchText: $searchText,
                 isSearchFocused: $isSearchFocused
@@ -73,66 +73,33 @@ extension HomeScreen {
                     invitationsView(store.state.viewModel.invitations)
                 }
                 TDListSection(
-                    content: listContent,
-                    configuration: sectionConfiguration,
-                    actions: sectionActions
+                    configuration: configuration,
+                    actions: actions,
+                    rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
                 )
             }
         )
     }
 
-    @ViewBuilder
-    fileprivate func listContent() -> AnyView {
-        AnyView(
-            TDListContent(
-                configuration: contentConfiguration,
-                actions: contentActions,
-                rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
-            )
-        )
-    }
-
-    @ViewBuilder
-    fileprivate var loadingView: some View {
-        if store.state.viewState == .loading {
-            ProgressView()
-        }
-    }
-}
-
-// MARK: - List comfigurations
-
-extension HomeScreen {
-
-    fileprivate var sectionConfiguration: TDListSection.Configuration {
+    fileprivate var configuration: TDListSection.Configuration {
         .init(
             title: Strings.Home.todosText,
             addButtonTitle: Strings.Home.newTodoButtonTitle,
-            isSortEnabled: store.state.viewModel.lists.filter { !$0.isEditing }.count > 1
-        )
-    }
-
-    fileprivate var sectionActions: TDListSection.Actions {
-        .init(
-            onAddRow: {
-                isSearchFocused = false
-                searchText = ""
-                store.send(.didTapAddRowButton)
-            },
-            onSortRows: { store.send(.didTapAutoSortLists) }
-        )
-    }
-
-    fileprivate var contentConfiguration: TDListContent.Configuration {
-        .init(
+            isSortEnabled: store.state.viewModel.lists.filter { !$0.isEditing }.count > 1,
             lineLimit: 2,
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
 
-    fileprivate var contentActions: TDListContent.Actions {
+    fileprivate var actions: TDListSection.Actions {
         .init(
+            onAddRow: {
+                isSearchFocused = false
+                searchText = ""
+                store.send(.didTapAddRowButton)
+            },
+            onSortRows: { store.send(.didTapAutoSortLists) },
             onSubmit: { store.send(.didTapSubmitListButton($0)) },
             onUpdate: { store.send(.didTapUpdateListButton($0, $1)) },
             onCancelAdd: { store.send(.didTapCancelAddListButton) },
@@ -141,6 +108,13 @@ extension HomeScreen {
             onSwipe: swipeActions,
             onMove: moveList
         )
+    }
+    
+    @ViewBuilder
+    fileprivate var loadingView: some View {
+        if store.state.viewState == .loading {
+            ProgressView()
+        }
     }
 }
 

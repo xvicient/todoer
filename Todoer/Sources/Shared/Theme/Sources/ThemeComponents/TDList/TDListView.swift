@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - TDList
 
-public struct TDList: View {
+public struct TDListView: View {
     @Binding private var searchText: String
     @Binding private var isSearchFocused: Bool
 

@@ -22,7 +22,7 @@ struct ListItemsScreen: View {
 
     var body: some View {
         ZStack {
-            TDList(
+            TDListView(
                 sections: sections,
                 searchText: $searchText,
                 isSearchFocused: $isSearchFocused
@@ -59,65 +59,32 @@ extension ListItemsScreen {
         AnyView(
             Group {
                 TDListSection(
-                    content: itemsContent,
-                    configuration: sectionConfiguration,
-                    actions: sectionActions
+                    configuration: configuration,
+                    actions: actions,
+                    rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
                 )
             }
         )
     }
 
-    @ViewBuilder
-    fileprivate func itemsContent() -> AnyView {
-        AnyView(
-            TDListContent(
-                configuration: contentConfiguration,
-                actions: contentActions,
-                rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
-            )
-        )
-    }
-
-    @ViewBuilder
-    fileprivate var loadingView: some View {
-        if store.state.viewState == .loading {
-            ProgressView()
-        }
-    }
-}
-
-// MARK: - List comfigurations
-
-extension ListItemsScreen {
-
-    fileprivate var sectionConfiguration: TDListSection.Configuration {
+    fileprivate var configuration: TDListSection.Configuration {
         .init(
             title: store.state.viewModel.listName,
             addButtonTitle: Strings.ListItems.newItemButtonTitle,
-            isSortEnabled: store.state.viewModel.items.filter { !$0.isEditing }.count > 1
-        )
-    }
-
-    fileprivate var sectionActions: TDListSection.Actions {
-        .init(
-            onAddRow: {
-                isSearchFocused = false
-                searchText = ""
-                store.send(.didTapAddRowButton)
-            },
-            onSortRows: { store.send(.didTapAutoSortItems) }
-        )
-    }
-
-    fileprivate var contentConfiguration: TDListContent.Configuration {
-        .init(
+            isSortEnabled: store.state.viewModel.items.filter { !$0.isEditing }.count > 1,
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
 
-    fileprivate var contentActions: TDListContent.Actions {
-        .init(
+    fileprivate var actions: TDListSection.Actions {
+        TDListSection.Actions(
+            onAddRow: {
+                isSearchFocused = false
+                searchText = ""
+                store.send(.didTapAddRowButton)
+            },
+            onSortRows: { store.send(.didTapAutoSortItems) },
             onSubmit: { store.send(.didTapSubmitItemButton($0)) },
             onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
             onCancelAdd: { store.send(.didTapCancelAddItemButton) },
@@ -125,6 +92,13 @@ extension ListItemsScreen {
             onSwipe: swipeActions,
             onMove: moveItem
         )
+    }
+    
+    @ViewBuilder
+    fileprivate var loadingView: some View {
+        if store.state.viewState == .loading {
+            ProgressView()
+        }
     }
 }
 
