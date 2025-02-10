@@ -65,12 +65,21 @@ struct TDFilledRowView: View {
     ) -> some View {
         ForEach(swipeActions) { action in
             Button(role: action.role) {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    isDone.toggle()
+                switch action {
+                case .done, .undone:
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isDone.toggle()
+                        actions.onSwipe(row.id, action)
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        row.strikethrough = isDone
+                    }
+                case .edit, .share:
                     actions.onSwipe(row.id, action)
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    row.strikethrough = isDone
+                case .delete:
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        actions.onSwipe(row.id, action)
+                    }
                 }
             } label: {
                 action.icon
