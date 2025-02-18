@@ -1,5 +1,5 @@
 {
-  "originHash" : "8b8272effe91b36aeec54e34cb991d8c10d76e2393219c5e5d5d4c5f5b208ba5",
+  "originHash" : "1e34c8862209c1a6878a8d88eaf421468d81b534cf0900d2466e14c7045303f8",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -148,9 +148,9 @@
     {
       "identity" : "xredux",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/xvicient/xRedux.git",
+      "location" : "https://www.github.com/xvicient/xRedux",
       "state" : {
-        "revision" : "a5d51e980fa1204dddd3100974d6d5d275ea4163",
+        "revision" : "fcb9eb499b7666dd02f52c5434d994b96d6ba3d1",
         "version" : "1.0.1"
       }
     }

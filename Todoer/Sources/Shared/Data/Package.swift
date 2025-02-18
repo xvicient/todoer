@@ -25,7 +25,7 @@ let package = Package(
         .package(path: "../../../../Packages/External/GoogleSignInDependencies"),
         .package(path: "../Entities"),
         .package(path: "../Common"),
-        .package(url: "https://github.com/xvicient/xRedux", from: "1.0.1"),
+        .package(url: "https://www.github.com/xvicient/xRedux", from: "1.0.1"),
 
     ],
     targets: [
