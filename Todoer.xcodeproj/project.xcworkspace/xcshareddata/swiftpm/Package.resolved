@@ -1,5 +1,5 @@
 {
-  "originHash" : "8b8272effe91b36aeec54e34cb991d8c10d76e2393219c5e5d5d4c5f5b208ba5",
+  "originHash" : "30692a772efe147c530c07132318287960f6f40973cb99521810c6fdbec4d73a",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -146,11 +146,20 @@
       }
     },
     {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://www.github.com/siteline/swiftui-introspect.git",
+      "state" : {
+        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
+        "version" : "1.3.0"
+      }
+    },
+    {
       "identity" : "xredux",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/xvicient/xRedux.git",
+      "location" : "https://www.github.com/xvicient/xRedux",
       "state" : {
-        "revision" : "a5d51e980fa1204dddd3100974d6d5d275ea4163",
+        "revision" : "fcb9eb499b7666dd02f52c5434d994b96d6ba3d1",
         "version" : "1.0.1"
       }
     }

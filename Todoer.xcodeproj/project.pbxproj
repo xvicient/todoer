@@ -40,6 +40,8 @@
 		D65D30932D43FEF900A9A5B6 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30922D43FEF900A9A5B6 /* Entities */; };
 		D65D30A32D47757500A9A5B6 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A22D47757500A9A5B6 /* Common */; };
 		D65D30A62D47758600A9A5B6 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A52D47758600A9A5B6 /* Data */; };
+		D66FD2342D6357230091DD7C /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = D66FD2332D6357230091DD7C /* SwiftUIIntrospect */; };
+		D66FD2362D6367AA0091DD7C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FD2352D6367A40091DD7C /* HomeView.swift */; };
 		D689D24D2D52683500932CB0 /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = D689D24C2D52683500932CB0 /* ThemeAssets */; };
 /* End PBXBuildFile section */
 
@@ -99,6 +101,7 @@
 		D6104E0F2D3E5E72004A2A0A /* TodoerTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TodoerTests.xctestplan; sourceTree = "<group>"; };
 		D611566D2D3D551200DD2DA6 /* AppMenu */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppMenu; sourceTree = "<group>"; };
 		D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureProvider.swift; sourceTree = "<group>"; };
+		D66FD2352D6367A40091DD7C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
 		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -144,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D66FD2342D6357230091DD7C /* SwiftUIIntrospect in Frameworks */,
 				C75EB5892D32968B00317D07 /* AuthenticationScreen in Frameworks */,
 				C72241DC2D3172630046C0D7 /* Data in Frameworks */,
 				C77FFADF2D32C6E100C59A48 /* CoordinatorContract in Frameworks */,
@@ -207,6 +211,7 @@
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				D66FD2352D6367A40091DD7C /* HomeView.swift */,
 				C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */,
 				C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */,
 				C78AF05E2D332BBF009244AF /* Shared */,
@@ -377,6 +382,7 @@
 				D62464E22D36B33C0097F7DE /* ShareListScreen */,
 				D62464E42D36B33C0097F7DE /* ShareListScreenContract */,
 				D62464E72D36B3730097F7DE /* Entities */,
+				D66FD2332D6357230091DD7C /* SwiftUIIntrospect */,
 			);
 			productName = Listio;
 			productReference = D6A29BF32B09706100FA7F84 /* Todoer.app */;
@@ -426,6 +432,7 @@
 				D65D30A12D47757500A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Common" */,
 				D65D30A42D47758600A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Data" */,
 				D689D24B2D52683500932CB0 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Theme" */,
+				D66FD2322D6357230091DD7C /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -513,6 +520,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D66FD2362D6367AA0091DD7C /* HomeView.swift in Sources */,
 				D650873E2D35BEDE0056F8F3 /* FeatureProvider.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */,
 			);
@@ -661,6 +669,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -725,6 +734,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -757,7 +767,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
-				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_DEBUG_DYLIB = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Todoer/Resources/Info.plist;
@@ -795,7 +805,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = JPMAMPZRCV;
-				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_DEBUG_DYLIB = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Todoer/Resources/Info.plist;
@@ -924,6 +934,14 @@
 				minimumVersion = 1.0.1;
 			};
 		};
+		D66FD2322D6357230091DD7C /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://www.github.com/siteline/swiftui-introspect.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1028,6 +1046,11 @@
 		D65D30A52D47758600A9A5B6 /* Data */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Data;
+		};
+		D66FD2332D6357230091DD7C /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D66FD2322D6357230091DD7C /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 		D689D24C2D52683500932CB0 /* ThemeAssets */ = {
 			isa = XCSwiftPackageProductDependency;

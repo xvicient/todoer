@@ -19,14 +19,15 @@ struct FeatureProvider: FeatureProviderAPI {
     func makeHomeScreen(
         coordinator: CoordinatorApi
     ) -> any View {
-        struct Dependencies: HomeScreenDependencies {
-            let coordinator: CoordinatorApi
-        }
-        return Home.Builder.makeHome(
-            dependencies: Dependencies(
-                coordinator: coordinator
-            )
-        )
+//        struct Dependencies: HomeScreenDependencies {
+//            let coordinator: CoordinatorApi
+//        }
+//        return Home.Builder.makeHome(
+//            dependencies: Dependencies(
+//                coordinator: coordinator
+//            )
+//        )
+        Home3()
     }
 
     func makeListItemsScreen(
