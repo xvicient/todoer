@@ -9,7 +9,7 @@ struct Home3: View {
         case community = "Gaming"
     }
     
-    class ScrollViewDelegate2: NSObject, UICollectionViewDelegate {
+    class ScrollViewDelegate: NSObject, UICollectionViewDelegate {
         weak var scrollView: UIScrollView?
         var onScroll: ((CGFloat) -> Void)?
         var onScrollFinish: ((CGFloat) -> Void)?
@@ -23,19 +23,13 @@ struct Home3: View {
                 onScrollFinish?(scrollView.contentOffset.y)
             }
         }
-        
-        func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//            onScrollFinish?(scrollView.contentOffset.y)
-        }
     }
     
-    /// View Properties
+    private let scrollDelegate = ScrollViewDelegate()
     @State private var searchText: String = ""
     @FocusState private var isSearching: Bool
     @State private var activeTab: Tab = .all
-    @Environment(\.colorScheme) private var scheme
     @Namespace private var animation
-    private let scrollDelegate = ScrollViewDelegate2()
     @State private var contentOffset: CGFloat = 0.0
     @State  private var originalOffset: CGFloat = .zero
     @State private var scrollviewHeight: CGFloat = 0.0
@@ -47,6 +41,9 @@ struct Home3: View {
             List {
                 DummyMessagesView()
             }
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollContentBackground(.hidden)
             .listStyle(.plain)
             .introspect(.list, on: .iOS(.v16, .v17, .v18)) { collection in
                 scrollDelegate.scrollView = collection
@@ -81,13 +78,12 @@ struct Home3: View {
                     collection.setContentOffset(CGPoint(x: 0, y: targetOffset), animated: true)
                 }
             }
-            .safeAreaPadding(EdgeInsets(top: 15.0, leading: 0, bottom: 0, trailing: 0))
+            .safeAreaPadding(.top, 15)
             .safeAreaInset(edge: .top, spacing: 0) {
-                ExpandableNavigationBar()
+                searchBar()
             }
             .animation(.snappy(duration: 0.3, extraBounce: 0), value: isSearching)
             .background(.black.opacity(0.8))
-            Text("\(contentOffset)")
         }
         .onChange(of: isSearching) {
             if isSearching && minY <= -searchbarThreshold {
@@ -100,7 +96,6 @@ struct Home3: View {
                 animated: true
             )
             
-            // Force update state values
             scrollDelegate.onScroll?(targetOffset)
             scrollDelegate.onScrollFinish?(targetOffset)
         }
@@ -108,27 +103,24 @@ struct Home3: View {
         .preferredColorScheme(.light)
     }
     
-    /// Expandable Navigation Bar
     @ViewBuilder
-    func ExpandableNavigationBar(_ title: String = "Messages") -> some View {
+    fileprivate func searchBar() -> some View {
         VStack {
             let scaleProgress = minY > 0 ? 1 + (max(min(minY / scrollviewHeight, 1), 0) * 0.5) : 1
             let progress = isSearching ? 1 : max(min(-minY / searchbarThreshold, 1), 0)
             
             VStack(spacing: 10) {
-                /// Title
-                Text(title)
+                Text("To-do's")
                     .font(.largeTitle.bold())
                     .scaleEffect(scaleProgress, anchor: .topLeading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)
                 
-                /// Search Bar
                 HStack(spacing: 12) {
                     Image(systemName: "magnifyingglass")
                         .font(.title3)
                     
-                    TextField("Search Conversations", text: $searchText)
+                    TextField("Search", text: $searchText)
                         .focused($isSearching)
                     
                     if isSearching {
@@ -166,7 +158,7 @@ struct Home3: View {
                             }) {
                                 Text(tab.rawValue)
                                     .font(.callout)
-                                    .foregroundStyle(activeTab == tab ? (scheme == .dark ? .black : .white) : Color.primary)
+                                    .foregroundStyle(activeTab == tab ? .white : .black)
                                     .padding(.vertical, 8)
                                     .padding(.horizontal, 15)
                                     .background {
@@ -214,6 +206,14 @@ struct Home3: View {
                         .frame(width: 80, height: 8)
                 })
             }
+            .listRowInsets(
+                .init(
+                    top: 8,
+                    leading: 8,
+                    bottom: 8,
+                    trailing: 8
+                )
+            )
             .swipeActions(edge: .leading, allowsFullSwipe: true) {
                 Button(action: {
                     

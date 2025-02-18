@@ -32,14 +32,6 @@ struct TDFilledRowView: View {
             .foregroundColor(Color.textBlack)
         }
         .frame(minHeight: 40)
-        .listRowInsets(
-            .init(
-                top: 8,
-                leading: 8,
-                bottom: 8,
-                trailing: 8
-            )
-        )
         .onAppear {
             isDone = row.strikethrough
         }

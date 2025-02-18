@@ -12,7 +12,7 @@ import xRedux
 struct ListItemsScreen: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
     @State private var searchText = ""
-    @State private var isSearchFocused = false
+    @FocusState private var isSearchFocused: Bool
 
     init(
         store: Store<ListItems.Reducer>

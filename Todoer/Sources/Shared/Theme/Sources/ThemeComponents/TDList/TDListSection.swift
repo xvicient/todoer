@@ -79,14 +79,6 @@ public struct TDListSection: View {
     }
 
     public var body: some View {
-        Section(header: Text(configuration.title).listRowHeaderStyle()) {
-            header()
-            content()
-        }
-    }
-    
-    @ViewBuilder
-    private func content() -> some View {
         ForEach(rows) {
             if $0.isEditing {
                 TDEmptyRowView(
@@ -105,31 +97,5 @@ public struct TDListSection: View {
         .if(configuration.isMoveEnabled) {
             $0.onMove(perform: actions.onMove)
         }
-    }
-
-    @ViewBuilder
-    private func header() -> some View {
-        HStack(spacing: 24) {
-            Spacer()
-            TDListSectionButton(
-                title: configuration.addButtonTitle,
-                icon: Image.plusCircleFill
-            ) {
-                withAnimation {
-                    actions.onAddRow()
-                }
-            }
-            TDListSectionButton(
-                title: Strings.List.sortButtonTitle,
-                icon: Image.arrowUpArrowDownCircleFill
-            ) {
-                actions.onSortRows()
-            }
-            .if(!configuration.isSortEnabled) {
-                $0.hidden()
-            }
-            Spacer()
-        }
-        .padding(.bottom, 12)
     }
 }

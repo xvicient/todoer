@@ -11,11 +11,35 @@ import xRedux
 
 // MARK: - HomeScreen
 
+struct ChildView: View {
+    let searchFocus: FocusState<Bool>.Binding
+
+    // Custom initializer
+    init(searchFocus: FocusState<Bool>.Binding) {
+        self.searchFocus = searchFocus
+    }
+
+    var body: some View {
+        VStack {
+            TextField("Search...", text: .constant(""))
+                .focused(searchFocus) // Use the FocusState binding
+                .animation(.snappy(duration: 0.3, extraBounce: 0), value: searchFocus.wrappedValue) // Use the underlying Bool for animation
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            Button("Clear Focus") {
+                // Change the focus value via wrappedValue
+                searchFocus.wrappedValue = false
+            }
+        }
+    }
+}
+
 struct HomeScreen: View {
     @ObservedObject private var store: Store<Home.Reducer>
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
-    @State private var isSearchFocused = false
+    @FocusState private var isSearchFocused: Bool
     private var invitationsView: Home.MakeInvitationsView
 
     init(
@@ -28,6 +52,7 @@ struct HomeScreen: View {
 
     var body: some View {
         ZStack {
+//            ChildView(searchFocus: $isSearchFocused)
             TDListView(
                 sections: sections,
                 searchText: $searchText,
