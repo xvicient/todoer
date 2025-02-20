@@ -79,19 +79,19 @@ public struct TDListSection: View {
     }
 
     public var body: some View {
-        ForEach(rows) {
-            if $0.isEditing {
+        ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
+            if row.isEditing {
                 TDEmptyRowView(
-                    row: $0,
+                    row: row,
                     actions: actions
-                )
+                ).id(index)
             }
             else {
                 TDFilledRowView(
-                    row: $0,
+                    row: row,
                     actions: actions,
                     configuration: configuration
-                )
+                ).id(index)
             }
         }
         .if(configuration.isMoveEnabled) {
