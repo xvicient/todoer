@@ -1,51 +1,78 @@
 import SwiftUI
-import Combine
-import ThemeAssets
 
-// MARK: - TDList
-
-public struct TDListView: View {
+struct TestView: View {
     enum Tab: String, CaseIterable {
-        case add = "Add"
-        case sort = "Sort"
         case all = "All"
-        case shared = "Shared"
-        case invitations = "Invitations"
+        case personal = "Personal"
+        case office = "Updates"
+        case community = "Gaming"
     }
     
+    class ScrollViewDelegate: NSObject, UICollectionViewDelegate {
+        weak var scrollView: UIScrollView?
+        var onScroll: ((CGFloat) -> Void)?
+        var onScrollFinish: ((CGFloat) -> Void)?
+        
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            onScroll?(scrollView.contentOffset.y)
+        }
+        
+        func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+            if !decelerate {
+                onScrollFinish?(scrollView.contentOffset.y)
+            }
+        }
+    }
+    
+    private let scrollDelegate = ScrollViewDelegate()
+    @State private var searchText: String = ""
+    @FocusState private var isSearching: Bool
     @State private var activeTab: Tab = .all
     @Namespace private var animation
+    @State private var contentOffset: CGFloat = 0.0
+    @State  private var originalOffset: CGFloat = .zero
+    @State private var scrollviewHeight: CGFloat = 0.0
     @State private var minY: CGFloat = 0.0
-    
     private let searchbarThreshold: CGFloat = 60.0
-    @Binding private var searchText: String
-    private var isSearchFocused: FocusState<Bool>.Binding
-
-    private let sections: () -> AnyView
-
-    public init(
-        @ViewBuilder sections: @escaping () -> AnyView,
-        searchText: Binding<String>,
-        isSearchFocused: FocusState<Bool>.Binding
-    ) {
-        self.sections = sections
-        self._searchText = searchText
-        self.isSearchFocused = isSearchFocused
-    }
-
-    public var body: some View {
+    
+    var body: some View {
         VStack {
             if #available(iOS 18.0, *) {
                 ScrollViewReader { proxy in
                     List {
-                        sections()
+                        ForEach(0..<200, id: \.self) { n in
+                            HStack(spacing: 12) {
+                                Circle()
+                                    .frame(width: 55, height: 55)
+                                    .overlay(
+                                        Text("\(n)")
+                                    )
+                                
+                                VStack(alignment: .leading, spacing: 6, content: {
+                                    Rectangle()
+                                        .frame(width: 140, height: 8)
+                                    
+                                    Rectangle()
+                                        .frame(height: 8)
+                                    
+                                    Rectangle()
+                                        .frame(width: 80, height: 8)
+                                })
+                            }
+                            .id(n)
+                            .foregroundStyle(.gray.opacity(0.4))
+                            .padding(.horizontal, 5)
+                        }
+                    }
+                    .onAppear {
+                        UIScrollView.appearance().bounces = false
                     }
                     .onScrollPhaseChange { _, _, context in
                         DispatchQueue.main.async {
                             let offset = context.geometry.contentOffset.y + context.geometry.contentInsets.top
                             
                             if offset < searchbarThreshold {
-                                withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
+                                withAnimation(.snappy(duration: 0.3, extraBounce: 0)) {
                                     proxy.scrollTo(0, anchor: .top)
                                 }
                             }
@@ -60,14 +87,15 @@ public struct TDListView: View {
                                 withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
                                     minY = 0
                                 }
-                            } else if -offset > -searchbarThreshold {
-                                minY = -offset
                             } else {
-                                minY = -searchbarThreshold
+                                if -offset > -searchbarThreshold {
+                                    minY = -offset
+                                } else {
+                                    minY = -searchbarThreshold
+                                }
                             }
                         }
                     }
-                    .removeBounce()
                     .scrollIndicators(.hidden)
                     .scrollBounceBehavior(.basedOnSize)
                     .scrollContentBackground(.hidden)
@@ -79,6 +107,7 @@ public struct TDListView: View {
                     .background(.black.opacity(0.8))
                 }
             }
+            Text("\(minY)")
         }
         .navigationBarHidden(true)
         .preferredColorScheme(.light)
@@ -87,12 +116,13 @@ public struct TDListView: View {
     @ViewBuilder
     fileprivate func searchBar() -> some View {
         VStack {
-            let progress = max(min(-minY / searchbarThreshold, 1), 0)
-            
+            let scaleProgress = minY > 0 ? 1 + (max(min(minY / scrollviewHeight, 1), 0) * 0.5) : 1
+            let progress =  max(min(-minY / searchbarThreshold, 1), 0)
             ZStack {
                 VStack {
                     Text("To-do's")
                         .font(.largeTitle.bold())
+//                        .scaleEffect(scaleProgress, anchor: .topLeading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top, 20 - (20 * progress))
                     Spacer()
@@ -104,11 +134,11 @@ public struct TDListView: View {
                             .font(.title3)
                         
                         TextField("Search", text: $searchText)
-                            .focused(isSearchFocused)
+                            .focused($isSearching)
                         
-                        if isSearchFocused.wrappedValue {
+                        if isSearching {
                             Button(action: {
-                                isSearchFocused.wrappedValue = false
+                                isSearching = false
                             }, label: {
                                 Image(systemName: "xmark")
                                     .font(.title3)
@@ -139,7 +169,7 @@ public struct TDListView: View {
                                         activeTab = tab
                                     }
                                 }) {
-                                    tab.content
+                                    Text(tab.rawValue)
                                         .font(.callout)
                                         .foregroundStyle(activeTab == tab ? .white : .black)
                                         .padding(.vertical, 8)
@@ -168,33 +198,66 @@ public struct TDListView: View {
         }
         .frame(height: 190)
     }
-}
-
-fileprivate extension TDListView.Tab {
+    
+    /// Dummy Messages View
     @ViewBuilder
-    var content: some View {
-        switch self {
-        case .add: return Text(Image.plusCircleFill)
-        case .sort: return Text(Image.arrowUpArrowDownCircleFill)
-        default: return Text(rawValue)
+    func DummyMessagesView() -> some View {
+        ForEach(0..<200, id: \.self) { n in
+            HStack(spacing: 12) {
+                Circle()
+                    .frame(width: 55, height: 55)
+                    .overlay(
+                        Text("\(n)")
+                    )
+                
+                VStack(alignment: .leading, spacing: 6, content: {
+                    Rectangle()
+                        .frame(width: 140, height: 8)
+                    
+                    Rectangle()
+                        .frame(height: 8)
+                    
+                    Rectangle()
+                        .frame(width: 80, height: 8)
+                })
+            }
+            .listRowInsets(
+                .init(
+                    top: 8,
+                    leading: 8,
+                    bottom: 8,
+                    trailing: 8
+                )
+            )
+            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "xmark")
+                        .font(.title3)
+                })
+            }
+            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "xmark")
+                        .font(.title3)
+                })
+                Button(action: {
+                    
+                }, label: {
+                    Image(systemName: "xmark")
+                        .font(.title3)
+                })
+            }
+            .foregroundStyle(.gray.opacity(0.4))
+            .padding(.horizontal, 5)
         }
     }
 }
 
-fileprivate struct ListNoBounceModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .onAppear {
-                UIScrollView.appearance().bounces = false
-            }
-            .onDisappear {
-                UIScrollView.appearance().bounces = true
-            }
-    }
+#Preview {
+    TestView()
 }
 
-fileprivate extension View {
-    func removeBounce() -> some View {
-        modifier(ListNoBounceModifier())
-    }
-}
