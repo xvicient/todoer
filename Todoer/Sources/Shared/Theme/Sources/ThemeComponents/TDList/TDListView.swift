@@ -34,54 +34,48 @@ public struct TDListView: View {
     }
 
     public var body: some View {
-        VStack {
-            if #available(iOS 18.0, *) {
-                ScrollViewReader { proxy in
-                    List {
-                        sections()
-                    }
-                    .onScrollPhaseChange { _, _, context in
-                        DispatchQueue.main.async {
-                            let offset = context.geometry.contentOffset.y + context.geometry.contentInsets.top
-                            
-                            if offset < searchbarThreshold {
-                                withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
-                                    proxy.scrollTo(0, anchor: .top)
-                                }
-                            }
+        ScrollViewReader { proxy in
+            List {
+                sections()
+            }
+            .onScrollPhaseChange { _, _, context in
+                DispatchQueue.main.async {
+                    let offset = context.geometry.contentOffset.y + context.geometry.contentInsets.top
+                    
+                    if offset < searchbarThreshold {
+                        withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
+                            proxy.scrollTo(0, anchor: .top)
                         }
                     }
-                    .onScrollGeometryChange(for: CGFloat.self) {
-                        $0.contentOffset.y + $0.contentInsets.top
-                    } action: { _, offset in
-                        DispatchQueue.main.async {
-                            // minY = max(min(-offset, 0), -searchbarThreshold)
-                            if abs(offset) == .zero {
-                                withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
-                                    minY = 0
-                                }
-                            } else if -offset > -searchbarThreshold {
-                                minY = -offset
-                            } else {
-                                minY = -searchbarThreshold
-                            }
-                        }
-                    }
-                    .removeBounce()
-                    .scrollIndicators(.hidden)
-                    .scrollBounceBehavior(.basedOnSize)
-                    .scrollContentBackground(.hidden)
-                    .listStyle(.plain)
-                    .safeAreaPadding(.top, 15)
-                    .safeAreaInset(edge: .top, spacing: 0) {
-                        searchBar()
-                    }
-                    .background(.black.opacity(0.8))
                 }
             }
+            .onScrollGeometryChange(for: CGFloat.self) {
+                $0.contentOffset.y + $0.contentInsets.top
+            } action: { _, offset in
+                DispatchQueue.main.async {
+                    // minY = max(min(-offset, 0), -searchbarThreshold)
+                    if abs(offset) == .zero {
+                        withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
+                            minY = 0
+                        }
+                    } else if -offset > -searchbarThreshold {
+                        minY = -offset
+                    } else {
+                        minY = -searchbarThreshold
+                    }
+                }
+            }
+            .removeBounce()
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            .scrollContentBackground(.hidden)
+            .listStyle(.plain)
+            .safeAreaPadding(.top, 15)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                searchBar()
+            }
+            .background(.black.opacity(0.8))
         }
-        .navigationBarHidden(true)
-        .preferredColorScheme(.light)
     }
     
     @ViewBuilder
@@ -97,7 +91,7 @@ public struct TDListView: View {
                         .padding(.top, 20 - (20 * progress))
                     Spacer()
                 }
-                .zIndex(999)
+                .zIndex(1)
                 VStack {
                     HStack(spacing: 12) {
                         Image(systemName: "magnifyingglass")

@@ -32,7 +32,7 @@ extension Home.Reducer {
             _ = onDidTapCancelEditListButton(state: &state, uid: uid)
         }
 
-        state.viewState = .loading
+//        state.viewState = .loading
 
         return .task { send in
             await send(

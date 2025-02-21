@@ -11,36 +11,13 @@ import xRedux
 
 // MARK: - HomeScreen
 
-struct ChildView: View {
-    let searchFocus: FocusState<Bool>.Binding
-
-    // Custom initializer
-    init(searchFocus: FocusState<Bool>.Binding) {
-        self.searchFocus = searchFocus
-    }
-
-    var body: some View {
-        VStack {
-            TextField("Search...", text: .constant(""))
-                .focused(searchFocus) // Use the FocusState binding
-                .animation(.snappy(duration: 0.3, extraBounce: 0), value: searchFocus.wrappedValue) // Use the underlying Bool for animation
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button("Clear Focus") {
-                // Change the focus value via wrappedValue
-                searchFocus.wrappedValue = false
-            }
-        }
-    }
-}
-
 struct HomeScreen: View {
     @ObservedObject private var store: Store<Home.Reducer>
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
     private var invitationsView: Home.MakeInvitationsView
+    @State private var loadingOpacity: Double = 1
 
     init(
         store: Store<Home.Reducer>,
@@ -52,12 +29,12 @@ struct HomeScreen: View {
 
     var body: some View {
         ZStack {
-//            ChildView(searchFocus: $isSearchFocused)
             TDListView(
                 sections: sections,
                 searchText: $searchText,
                 isSearchFocused: $isSearchFocused
             )
+            .zIndex(0)
             .onChange(of: isSearchFocused) {
                 guard isSearchFocused else { return }
                 if store.state.viewState == .addingList {
@@ -68,6 +45,7 @@ struct HomeScreen: View {
                 }
             }
             loadingView
+                .zIndex(1)
         }
         .onAppear {
             store.send(.onViewAppear)
@@ -78,7 +56,7 @@ struct HomeScreen: View {
             }
         }
         .disabled(
-            store.state.viewState == .loading
+            store.state.viewState.isLoading
         )
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
@@ -137,8 +115,32 @@ extension HomeScreen {
     
     @ViewBuilder
     fileprivate var loadingView: some View {
-        if store.state.viewState == .loading {
-            ProgressView()
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            
+            Image.todoer
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(.horizontal, 35)
+                .scaleEffect(loadingOpacity == 1 ? 1 : 0.9)
+                .animation(.interactiveSpring(), value: loadingOpacity)
+        }
+        .toolbar(.hidden, for: .navigationBar)
+        .opacity(loadingOpacity)
+        .animation(.spring(duration: 0.3), value: loadingOpacity)
+        .onChange(of: store.state.viewState.isLoading) {
+            if !store.state.viewState.isLoading {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    withAnimation(.easeInOut(duration: 0.8)) {
+                        loadingOpacity = 0
+                    }
+                }
+            } else {
+                withAnimation(.easeIn(duration: 0.2)) {
+                    loadingOpacity = 1
+                }
+            }
         }
     }
 }

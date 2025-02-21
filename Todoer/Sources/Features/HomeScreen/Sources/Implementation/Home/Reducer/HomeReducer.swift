@@ -104,6 +104,16 @@ extension Home {
                     false
                 }
             }
+            
+            var isLoading: Bool {
+                switch self {
+                case .loading:
+                    true
+                default:
+                    false
+                }
+            }
+              
         }
 
         let dependencies: HomeScreenDependencies
