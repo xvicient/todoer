@@ -109,6 +109,7 @@ public struct TDListView: View {
                         if isSearchFocused.wrappedValue {
                             Button(action: {
                                 isSearchFocused.wrappedValue = false
+                                searchText = ""
                             }, label: {
                                 Image(systemName: "xmark")
                                     .font(.title3)
@@ -197,4 +198,38 @@ fileprivate extension View {
     func removeBounce() -> some View {
         modifier(ListNoBounceModifier())
     }
+}
+
+#Preview {
+    TDListView(
+        sections: {
+            AnyView(
+                ForEach(0..<200, id: \.self) { n in
+                    HStack(spacing: 12) {
+                        Circle()
+                            .frame(width: 55, height: 55)
+                            .overlay(
+                                Text("\(n)")
+                            )
+                        
+                        VStack(alignment: .leading, spacing: 6, content: {
+                            Rectangle()
+                                .frame(width: 140, height: 8)
+                            
+                            Rectangle()
+                                .frame(height: 8)
+                            
+                            Rectangle()
+                                .frame(width: 80, height: 8)
+                        })
+                    }
+                    .id(n)
+                    .foregroundStyle(.gray.opacity(0.4))
+                    .padding(.horizontal, 5)
+                }
+            )
+        },
+        searchText: .constant(""),
+        isSearchFocused: FocusState<Bool>().projectedValue
+    )
 }

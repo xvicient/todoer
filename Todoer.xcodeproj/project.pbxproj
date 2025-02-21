@@ -40,7 +40,6 @@
 		D65D30932D43FEF900A9A5B6 /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30922D43FEF900A9A5B6 /* Entities */; };
 		D65D30A32D47757500A9A5B6 /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A22D47757500A9A5B6 /* Common */; };
 		D65D30A62D47758600A9A5B6 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = D65D30A52D47758600A9A5B6 /* Data */; };
-		D66FD2362D6367AA0091DD7C /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66FD2352D6367A40091DD7C /* TestView.swift */; };
 		D689D24D2D52683500932CB0 /* ThemeAssets in Frameworks */ = {isa = PBXBuildFile; productRef = D689D24C2D52683500932CB0 /* ThemeAssets */; };
 /* End PBXBuildFile section */
 
@@ -100,7 +99,6 @@
 		D6104E0F2D3E5E72004A2A0A /* TodoerTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TodoerTests.xctestplan; sourceTree = "<group>"; };
 		D611566D2D3D551200DD2DA6 /* AppMenu */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppMenu; sourceTree = "<group>"; };
 		D650873D2D35BEA50056F8F3 /* FeatureProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureProvider.swift; sourceTree = "<group>"; };
-		D66FD2352D6367A40091DD7C /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		D6A29BF32B09706100FA7F84 /* Todoer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A29C112B09706200FA7F84 /* TodoerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITests.swift; sourceTree = "<group>"; };
 		D6A29C132B09706200FA7F84 /* TodoerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoerUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -209,7 +207,6 @@
 		C79CB26D2B0D537A00C2BD18 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				D66FD2352D6367A40091DD7C /* TestView.swift */,
 				C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */,
 				C79CB2A52B0D57F700C2BD18 /* TodoerApp.swift */,
 				C78AF05E2D332BBF009244AF /* Shared */,
@@ -516,7 +513,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D66FD2362D6367AA0091DD7C /* TestView.swift in Sources */,
 				D650873E2D35BEDE0056F8F3 /* FeatureProvider.swift in Sources */,
 				C79CB2A62B0D57F700C2BD18 /* TodoerApp.swift in Sources */,
 			);
