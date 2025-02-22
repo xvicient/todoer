@@ -24,9 +24,11 @@ public struct TDListView: View {
     
     @FocusState private var isSearching: Bool
     private var headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
-    @State private var isScrolling: Bool = false
+    private var headerHeight: CGFloat = 150.0
 
     private let sections: () -> AnyView
+    
+    @State private var animateGradient = false
 
     public init(
         @ViewBuilder sections: @escaping () -> AnyView,
@@ -41,6 +43,33 @@ public struct TDListView: View {
     }
 
     public var body: some View {
+        ZStack {
+            headerBackground()
+            .zIndex(0)
+            list()
+            .zIndex(1)
+        }
+    }
+    
+    @ViewBuilder
+    fileprivate func headerBackground() -> some View {
+        ZStack {
+            LinearGradient(colors: [.gray, .clear], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .hueRotation(.degrees(animateGradient ? 45 : 0))
+                .ignoresSafeArea()
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 5.0).repeatForever(autoreverses: true)) {
+                        animateGradient.toggle()
+                    }
+                }
+            Color.white
+                .safeAreaPadding(.top, headerHeight)
+                .ignoresSafeArea(edges: [.leading, .trailing, .bottom])
+        }
+    }
+    
+    @ViewBuilder
+    fileprivate func list() -> some View {
         ScrollViewReader { proxy in
             List {
                 sections()
@@ -62,7 +91,6 @@ public struct TDListView: View {
             } action: { _, offset in
                 guard !isSearching else { return }
                 DispatchQueue.main.async {
-                    // minY = max(min(-offset, 0), -searchbarThreshold)
                     if abs(offset) == .zero {
                         withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
                             minY = 0
@@ -84,24 +112,19 @@ public struct TDListView: View {
             .simultaneousGesture(DragGesture().onChanged({ _ in
                 isSearching = false
             }))
-            .onTapGesture {
-                isSearching = false
-            }
             .removeBounce()
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
             .scrollContentBackground(.hidden)
             .listStyle(.plain)
             .safeAreaInset(edge: .top, spacing: 0) {
-                searchBar()
-                    .background(isSearching ? .gray : .clear)
+                header()
             }
-            .background(.gray)
         }
     }
     
     @ViewBuilder
-    fileprivate func searchBar() -> some View {
+    fileprivate func header() -> some View {
         VStack {
             let progress = max(min(-minY / searchbarThreshold, 1), 0)
             
@@ -186,7 +209,7 @@ public struct TDListView: View {
             }
             .safeAreaPadding(.horizontal, 15)
         }
-        .frame(height: 150)
+        .frame(height: headerHeight)
     }
 }
 
@@ -220,7 +243,7 @@ fileprivate extension View {
     TDListView(
         sections: {
             AnyView(
-                ForEach(0..<200, id: \.self) { n in
+                ForEach(0..<20, id: \.self) { n in
                     HStack(spacing: 12) {
                         Circle()
                             .frame(width: 55, height: 55)
