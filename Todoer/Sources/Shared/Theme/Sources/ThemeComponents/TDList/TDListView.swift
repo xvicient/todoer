@@ -29,6 +29,7 @@ public struct TDListView: View {
     private let sections: () -> AnyView
     
     @State private var animateGradient = false
+    @State private var isScrolling = false
 
     public init(
         @ViewBuilder sections: @escaping () -> AnyView,
@@ -74,13 +75,14 @@ public struct TDListView: View {
             List {
                 sections()
             }
-            .onScrollPhaseChange { _, _, context in
+            .onScrollPhaseChange { _, newPhase, context in
+                isScrolling = newPhase.isScrolling
                 DispatchQueue.main.async {
                     guard !isSearching else { return }
                     let offset = context.geometry.contentOffset.y + context.geometry.contentInsets.top
                     
                     if offset < searchbarThreshold {
-                        withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
+                        withAnimation(headerAnimation) {
                             proxy.scrollTo(0, anchor: .top)
                         }
                     }
@@ -92,7 +94,7 @@ public struct TDListView: View {
                 guard !isSearching else { return }
                 DispatchQueue.main.async {
                     if abs(offset) == .zero {
-                        withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.8)) {
+                        withAnimation(headerAnimation) {
                             minY = 0
                         }
                     } else if -offset > -searchbarThreshold {
@@ -105,8 +107,11 @@ public struct TDListView: View {
             .onChange(of: isSearching) {
                 guard isSearching else { return }
                 withAnimation(headerAnimation) {
-                    minY = 0
                     proxy.scrollTo(0, anchor: .top)
+                } completion: {
+                    withAnimation(headerAnimation.delay(0.1)) {
+                        minY = 0
+                    }
                 }
             }
             .simultaneousGesture(DragGesture().onChanged({ _ in
@@ -145,6 +150,7 @@ public struct TDListView: View {
                         
                         TextField("Search", text: $searchText)
                             .focused($isSearching)
+                            .disabled(isScrolling)
                         
                         if isSearching {
                             Button(action: {
