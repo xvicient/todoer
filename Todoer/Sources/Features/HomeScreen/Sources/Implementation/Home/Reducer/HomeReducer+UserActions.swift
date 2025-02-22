@@ -231,27 +231,12 @@ extension Home.Reducer {
 
 extension Home.Reducer {
     fileprivate func newListRow(
-        list: UserList = UserList.emptyList
+        list: UserList = UserList.empty
     ) -> WrappedUserList {
         WrappedUserList(
             id: list.id,
             list: list,
             isEditing: true
-        )
-    }
-}
-
-// MARK: - Empty list
-
-extension UserList {
-    fileprivate static var emptyList: UserList {
-        UserList(
-            id: UUID(),
-            documentId: "",
-            name: "",
-            done: false,
-            uid: [],
-            index: -Date().milliseconds
         )
     }
 }

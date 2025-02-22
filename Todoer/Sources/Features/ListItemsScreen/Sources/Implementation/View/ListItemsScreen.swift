@@ -25,7 +25,8 @@ struct ListItemsScreen: View {
             TDListView(
                 sections: sections,
                 searchText: $searchText,
-                isSearchFocused: $isSearchFocused
+                isSearchFocused: $isSearchFocused,
+                hasBackButton: true
             )
             .onChange(of: isSearchFocused) {
                 guard isSearchFocused else { return }

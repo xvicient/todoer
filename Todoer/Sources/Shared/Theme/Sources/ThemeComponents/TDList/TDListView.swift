@@ -17,20 +17,27 @@ public struct TDListView: View {
     @Namespace private var animation
     @State private var minY: CGFloat = 0.0
     
-    private let searchbarThreshold: CGFloat = 60.0
+    private let searchbarThreshold: CGFloat = 50.0
     @Binding private var searchText: String
     private var isSearchFocused: FocusState<Bool>.Binding
+    private var hasBackButton: Bool
+    
+    @FocusState private var isSearching: Bool
+    private var headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
+    @State private var isScrolling: Bool = false
 
     private let sections: () -> AnyView
 
     public init(
         @ViewBuilder sections: @escaping () -> AnyView,
         searchText: Binding<String>,
-        isSearchFocused: FocusState<Bool>.Binding
+        isSearchFocused: FocusState<Bool>.Binding,
+        hasBackButton: Bool = false
     ) {
         self.sections = sections
         self._searchText = searchText
         self.isSearchFocused = isSearchFocused
+        self.hasBackButton = hasBackButton
     }
 
     public var body: some View {
@@ -40,6 +47,7 @@ public struct TDListView: View {
             }
             .onScrollPhaseChange { _, _, context in
                 DispatchQueue.main.async {
+                    guard !isSearching else { return }
                     let offset = context.geometry.contentOffset.y + context.geometry.contentInsets.top
                     
                     if offset < searchbarThreshold {
@@ -52,6 +60,7 @@ public struct TDListView: View {
             .onScrollGeometryChange(for: CGFloat.self) {
                 $0.contentOffset.y + $0.contentInsets.top
             } action: { _, offset in
+                guard !isSearching else { return }
                 DispatchQueue.main.async {
                     // minY = max(min(-offset, 0), -searchbarThreshold)
                     if abs(offset) == .zero {
@@ -65,16 +74,29 @@ public struct TDListView: View {
                     }
                 }
             }
+            .onChange(of: isSearching) {
+                guard isSearching else { return }
+                withAnimation(headerAnimation) {
+                    minY = 0
+                    proxy.scrollTo(0, anchor: .top)
+                }
+            }
+            .simultaneousGesture(DragGesture().onChanged({ _ in
+                isSearching = false
+            }))
+            .onTapGesture {
+                isSearching = false
+            }
             .removeBounce()
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
             .scrollContentBackground(.hidden)
             .listStyle(.plain)
-            .safeAreaPadding(.top, 15)
             .safeAreaInset(edge: .top, spacing: 0) {
                 searchBar()
+                    .background(isSearching ? .gray : .clear)
             }
-            .background(.black.opacity(0.8))
+            .background(.gray)
         }
     }
     
@@ -88,7 +110,8 @@ public struct TDListView: View {
                     Text("To-do's")
                         .font(.largeTitle.bold())
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, 20 - (20 * progress))
+                        .padding(.top, -(30 * progress) - 10)
+                        .padding(.leading, hasBackButton ? 10 * progress : 0)
                     Spacer()
                 }
                 .zIndex(1)
@@ -98,11 +121,11 @@ public struct TDListView: View {
                             .font(.title3)
                         
                         TextField("Search", text: $searchText)
-                            .focused(isSearchFocused)
+                            .focused($isSearching)
                         
-                        if isSearchFocused.wrappedValue {
+                        if isSearching {
                             Button(action: {
-                                isSearchFocused.wrappedValue = false
+                                isSearching = false
                                 searchText = ""
                             }, label: {
                                 Image(systemName: "xmark")
@@ -113,17 +136,18 @@ public struct TDListView: View {
                     }
                     .foregroundStyle(Color.primary)
                     .padding(.vertical, 10)
-                    .padding(.horizontal, 15 - (progress * 15))
+                    .padding(.horizontal, 15 - (progress * 13))
                     .frame(height: 45)
                     .clipShape(.capsule)
                     .background {
                         RoundedRectangle(cornerRadius: 25 - (progress * 25))
                             .fill(.background)
                             .shadow(color: .gray.opacity(0.25), radius: 5, x: 0, y: 5)
-                            .padding(.top, -progress * 190)
+                            .padding(.top, -progress * 120)
                             .padding(.bottom, -progress * searchbarThreshold)
                             .padding(.horizontal, -progress * 15)
                     }
+                    .padding(.top, -(progress * 18))
                     
                     /// Custom Segmented Picker
                     ScrollView(.horizontal) {
@@ -154,14 +178,15 @@ public struct TDListView: View {
                             }
                         }
                     }
+                    .padding(.top, -(progress * 18))
                     .frame(height: 50)
                 }
-                .padding(.top, 60 + minY)
+                .padding(.top, 30 + minY)
                 .zIndex(0)
             }
             .safeAreaPadding(.horizontal, 15)
         }
-        .frame(height: 190)
+        .frame(height: 150)
     }
 }
 
@@ -181,9 +206,6 @@ fileprivate struct ListNoBounceModifier: ViewModifier {
         content
             .onAppear {
                 UIScrollView.appearance().bounces = false
-            }
-            .onDisappear {
-                UIScrollView.appearance().bounces = true
             }
     }
 }

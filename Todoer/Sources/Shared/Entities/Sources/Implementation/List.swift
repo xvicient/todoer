@@ -1,4 +1,5 @@
 import Foundation
+import Common
 
 public struct UserList: Identifiable, Equatable, Hashable, Sendable {
     public let id: UUID
@@ -22,5 +23,18 @@ public struct UserList: Identifiable, Equatable, Hashable, Sendable {
         self.done = done
         self.uid = uid
         self.index = index
+    }
+}
+
+public extension UserList {
+    static var empty: UserList {
+        UserList(
+            id: UUID(),
+            documentId: "",
+            name: "",
+            done: false,
+            uid: [],
+            index: -Date().milliseconds
+        )
     }
 }

@@ -18,7 +18,7 @@ public struct CoordinatorView: View {
                 .setupNavigationBar(screen: coordinator.landingScreen)
                 .if(coordinator.isUserLogged) {
                     $0.navigationBarItems(
-                        leading: menuView
+                        trailing: menuView
                     )
                 }
                 .navigationDestination(for: Screen.self) { screen in
@@ -54,15 +54,7 @@ struct NavigationBarModifier: ViewModifier {
         else {
             content
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(Color.backgroundWhite)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Image.todoer
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: /*@START_MENU_TOKEN@*/ 100 /*@END_MENU_TOKEN@*/)
-                    }
-                }
+                .toolbarBackground(.hidden, for: .navigationBar)
         }
     }
 }

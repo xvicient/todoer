@@ -65,6 +65,11 @@ extension Home {
         struct State: AppAlertState {
             var viewState = ViewState.idle
             var viewModel = ViewModel()
+            
+            init(viewState: ViewState = ViewState.idle, viewModel: ViewModel = ViewModel()) {
+                self.viewState = viewState
+                self.viewModel = viewModel
+            }
 
             var alert: AppAlert<Action>? {
                 guard case .alert(let data) = viewState else {

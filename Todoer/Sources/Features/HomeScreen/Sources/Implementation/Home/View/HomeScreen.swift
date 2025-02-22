@@ -18,6 +18,11 @@ struct HomeScreen: View {
     @FocusState private var isSearchFocused: Bool
     private var invitationsView: Home.MakeInvitationsView
     @State private var loadingOpacity: Double = 1
+    @State private var isToolbarHidden: Visibility = .hidden
+    private var isLoading: Bool {
+        store.state.viewState.isLoading &&
+        store.state.viewModel.lists.isEmpty
+    }
 
     init(
         store: Store<Home.Reducer>,
@@ -47,6 +52,7 @@ struct HomeScreen: View {
             loadingView
                 .zIndex(1)
         }
+        .toolbar(isToolbarHidden, for: .navigationBar)
         .onAppear {
             store.send(.onViewAppear)
         }
@@ -126,7 +132,6 @@ extension HomeScreen {
                 .scaleEffect(loadingOpacity == 1 ? 1 : 0.9)
                 .animation(.interactiveSpring(), value: loadingOpacity)
         }
-        .toolbar(.hidden, for: .navigationBar)
         .opacity(loadingOpacity)
         .animation(.spring(duration: 0.3), value: loadingOpacity)
         .onChange(of: store.state.viewState.isLoading) {
@@ -135,11 +140,13 @@ extension HomeScreen {
                     withAnimation(.easeInOut(duration: 0.8)) {
                         loadingOpacity = 0
                     }
+                    isToolbarHidden = .visible
                 }
-            } else {
+            } else if store.state.viewModel.lists.isEmpty {
                 withAnimation(.easeIn(duration: 0.2)) {
                     loadingOpacity = 1
                 }
+                isToolbarHidden = .hidden
             }
         }
     }
@@ -191,8 +198,26 @@ struct Home_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        Home.Builder.makeHome(
-            dependencies: Dependencies(coordinator: CoordinatorMock())
+        var viewModel = Home.Reducer.ViewModel()
+        let list = UserList.empty
+        viewModel.lists = [
+            Home.Reducer.WrappedUserList(
+                id: list.id,
+                list: list,
+                isEditing: false
+            )]
+        let reducer = Home.Reducer(dependencies: Dependencies(coordinator: CoordinatorMock()))
+        let store = Store(initialState: .init(viewModel: viewModel), reducer: reducer)
+        return HomeScreen(
+            store: store,
+            invitationsView: {
+                AnyView(
+                    Invitations.Builder.makeInvitations(
+                        invitations: $0
+                    )
+                    .id(UUID())
+                )
+            }
         )
     }
 }
