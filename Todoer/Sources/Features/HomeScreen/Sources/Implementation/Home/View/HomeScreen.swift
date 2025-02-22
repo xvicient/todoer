@@ -136,12 +136,10 @@ extension HomeScreen {
         .animation(.spring(duration: 0.3), value: loadingOpacity)
         .onChange(of: store.state.viewState.isLoading) {
             if !store.state.viewState.isLoading {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    withAnimation(.easeInOut(duration: 0.8)) {
-                        loadingOpacity = 0
-                    }
-                    isToolbarHidden = .visible
+                withAnimation(.easeInOut(duration: 1.0).delay(0.5)) {
+                    loadingOpacity = 0
                 }
+                isToolbarHidden = .visible
             } else if store.state.viewModel.lists.isEmpty {
                 withAnimation(.easeIn(duration: 0.2)) {
                     loadingOpacity = 1
