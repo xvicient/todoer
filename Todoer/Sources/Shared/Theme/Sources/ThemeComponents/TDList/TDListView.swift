@@ -9,8 +9,16 @@ public struct TDListView: View {
         case add = "Add"
         case sort = "Sort"
         case all = "All"
+        case mine = "Mine"
         case shared = "Shared"
         case invitations = "Invitations"
+        
+        var isFilter: Bool {
+            switch self {
+            case .add, .sort: false
+            case .all, .mine, .shared, .invitations: true
+            }
+        }
     }
     
     @State private var activeTab: Tab = .all
@@ -181,32 +189,22 @@ public struct TDListView: View {
                     /// Custom Segmented Picker
                     ScrollView(.horizontal) {
                         HStack(spacing: 12) {
-                            ForEach(Tab.allCases, id: \.rawValue) { tab in
-                                Button(action: {
-                                    withAnimation(.snappy) {
-                                        activeTab = tab
-                                    }
-                                }) {
-                                    tab.content
-                                        .font(.callout)
-                                        .foregroundStyle(activeTab == tab ? .white : .black)
-                                        .padding(.vertical, 8)
-                                        .padding(.horizontal, 15)
-                                        .background {
-                                            if activeTab == tab {
-                                                Capsule()
-                                                    .fill(Color.primary)
-                                                    .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
-                                            } else {
-                                                Capsule()
-                                                    .fill(.background)
-                                            }
-                                        }
-                                }
-                                .buttonStyle(.plain)
+                            ForEach(Tab.allCases.filter({ !$0.isFilter }), id: \.rawValue) { tab in
+                                tabButton(
+                                    tab: tab
+                                )
+                            }
+                            Divider()
+                                .frame(width: 1, height: 30)
+                                .background(Color.gray)
+                            ForEach(Tab.allCases.filter({ $0.isFilter }), id: \.rawValue) { tab in
+                                tabButton(
+                                    tab: tab
+                                )
                             }
                         }
                     }
+                    .scrollIndicators(.hidden)
                     .padding(.top, -(progress * 18))
                     .frame(height: 50)
                 }
@@ -217,16 +215,40 @@ public struct TDListView: View {
         }
         .frame(height: headerHeight)
     }
-}
-
-fileprivate extension TDListView.Tab {
+    
     @ViewBuilder
-    var content: some View {
-        switch self {
-        case .add: return Text(Image.plusCircleFill)
-        case .sort: return Text(Image.arrowUpArrowDownCircleFill)
-        default: return Text(rawValue)
+    fileprivate func tabButton(
+        tab: Tab
+    ) -> some View {
+        Button(action: {
+            if tab.isFilter {
+                withAnimation(.snappy) {
+                    activeTab = tab
+                }
+            }
+        }) {
+            Text(tab.rawValue)
+                .font(.callout)
+                .foregroundStyle(tab.isFilter ? (activeTab == tab ? .white : .black) : .white)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 15)
+                .background {
+                    if tab.isFilter {
+                        if activeTab == tab {
+                            Capsule()
+                                .fill(Color.primary)
+                                .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
+                        } else {
+                            Capsule()
+                                .fill(.background)
+                        }
+                    } else {
+                        Capsule()
+                            .fill(Color.primary)
+                    }
+                }
         }
+        .buttonStyle(.plain)
     }
 }
 

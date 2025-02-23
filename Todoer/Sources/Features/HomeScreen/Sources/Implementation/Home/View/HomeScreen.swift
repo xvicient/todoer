@@ -129,7 +129,7 @@ extension HomeScreen {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .padding(.horizontal, 35)
-                .scaleEffect(loadingOpacity == 1 ? 1 : 0.9)
+                .scaleEffect(loadingOpacity == 1 ? 1 : 0.5)
                 .animation(.interactiveSpring(), value: loadingOpacity)
         }
         .opacity(loadingOpacity)
