@@ -35,7 +35,9 @@ struct HomeScreen: View {
     var body: some View {
         ZStack {
             TDListView(
-                sections: sections,
+                content: listContent,
+                actions: listActions,
+                configuration: listConfiguration,
                 searchText: $searchText,
                 isSearchFocused: $isSearchFocused
             )
@@ -73,42 +75,44 @@ struct HomeScreen: View {
 // MARK: - ViewBuilders
 
 extension HomeScreen {
-
-    @ViewBuilder
-    fileprivate func sections() -> AnyView {
-        AnyView(
-            Group {
-                if !store.state.viewModel.invitations.isEmpty {
-                    invitationsView(store.state.viewModel.invitations)
-                }
-                TDListSection(
-                    configuration: configuration,
-                    actions: actions,
-                    rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
-                )
+    fileprivate var tabActions: [TDListTabActionItem] {
+        TDListTabAction.allCases
+            .sorted { $0.rawValue < $1.rawValue }
+            .map { tab in
+                let sortEnabled = store.state.viewModel.lists.filter { !$0.isEditing }.count > 1
+                return TDListTabActionItem(tab: tab, isEnabled: tab == .sort ? sortEnabled : true )
             }
+        
+    }
+    
+    fileprivate var listConfiguration: TDListView.Configuration {
+        .init(
+            title: Strings.Home.todosText,
+            tabActions: tabActions
         )
     }
 
-    fileprivate var configuration: TDListSection.Configuration {
+    @ViewBuilder
+    fileprivate func listContent() -> AnyView {
+        AnyView(
+            TDListContent(
+                configuration: contentConfiguration,
+                actions: contentActions,
+                rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
+            )
+        )
+    }
+
+    fileprivate var contentConfiguration: TDListContent.Configuration {
         .init(
-            title: Strings.Home.todosText,
-            addButtonTitle: Strings.Home.newTodoButtonTitle,
-            isSortEnabled: store.state.viewModel.lists.filter { !$0.isEditing }.count > 1,
             lineLimit: 2,
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
 
-    fileprivate var actions: TDListSection.Actions {
+    fileprivate var contentActions: TDListContent.Actions {
         .init(
-            onAddRow: {
-                isSearchFocused = false
-                searchText = ""
-                store.send(.didTapAddRowButton)
-            },
-            onSortRows: { store.send(.didTapAutoSortLists) },
             onSubmit: { store.send(.didTapSubmitListButton($0)) },
             onUpdate: { store.send(.didTapUpdateListButton($0, $1)) },
             onCancelAdd: { store.send(.didTapCancelAddListButton) },
@@ -153,6 +157,29 @@ extension HomeScreen {
 // MARK: - Private
 
 extension HomeScreen {
+    fileprivate var listActions: (TDListTabAction) -> Void {
+        { action in
+            switch action {
+            case .add:
+                {
+                    isSearchFocused = false
+                    searchText = ""
+                    store.send(.didTapAddRowButton)
+                }()
+            case .sort:
+                store.send(.didTapAutoSortLists)
+            case .all:
+                break
+            case .mine:
+                break
+            case .shared:
+                break
+            case .invitations:
+                break
+            }
+        }
+    }
+    
     fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
         { rowId, option in
             switch option {

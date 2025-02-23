@@ -23,10 +23,11 @@ struct ListItemsScreen: View {
     var body: some View {
         ZStack {
             TDListView(
-                sections: sections,
+                content: listContent,
+                actions: listActions,
+                configuration: listConfiguration,
                 searchText: $searchText,
-                isSearchFocused: $isSearchFocused,
-                hasBackButton: true
+                isSearchFocused: $isSearchFocused
             )
             .onChange(of: isSearchFocused) {
                 guard isSearchFocused else { return }
@@ -54,38 +55,45 @@ struct ListItemsScreen: View {
 // MARK: - ViewBuilders
 
 extension ListItemsScreen {
-
-    @ViewBuilder
-    fileprivate func sections() -> AnyView {
-        AnyView(
-            Group {
-                TDListSection(
-                    configuration: configuration,
-                    actions: actions,
-                    rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
-                )
+    fileprivate var tabActions: [TDListTabActionItem] {
+        TDListTabAction.allCases
+            .filter { !$0.isFilter }
+            .sorted { $0.rawValue < $1.rawValue }
+            .map { tab in
+                let sortEnabled = store.state.viewModel.items.filter { !$0.isEditing }.count > 1
+                return TDListTabActionItem(tab: tab, isEnabled: tab == .sort ? sortEnabled : true )
             }
+        
+    }
+    
+    fileprivate var listConfiguration: TDListView.Configuration {
+        .init(
+            title: store.state.viewModel.listName,
+            hasBackButton: true,
+            tabActions: tabActions
         )
     }
 
-    fileprivate var configuration: TDListSection.Configuration {
+    @ViewBuilder
+    fileprivate func listContent() -> AnyView {
+        AnyView(
+            TDListContent(
+                configuration: contentConfiguration,
+                actions: contentActions,
+                rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
+            )
+        )
+    }
+
+    fileprivate var contentConfiguration: TDListContent.Configuration {
         .init(
-            title: store.state.viewModel.listName,
-            addButtonTitle: Strings.ListItems.newItemButtonTitle,
-            isSortEnabled: store.state.viewModel.items.filter { !$0.isEditing }.count > 1,
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
             isSwipeEnabled: !store.state.viewState.isEditing
         )
     }
 
-    fileprivate var actions: TDListSection.Actions {
-        TDListSection.Actions(
-            onAddRow: {
-                isSearchFocused = false
-                searchText = ""
-                store.send(.didTapAddRowButton)
-            },
-            onSortRows: { store.send(.didTapAutoSortItems) },
+    fileprivate var contentActions: TDListContent.Actions {
+        TDListContent.Actions(
             onSubmit: { store.send(.didTapSubmitItemButton($0)) },
             onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
             onCancelAdd: { store.send(.didTapCancelAddItemButton) },
@@ -106,6 +114,29 @@ extension ListItemsScreen {
 // MARK: - Private
 
 extension ListItemsScreen {
+    fileprivate var listActions: (TDListTabAction) -> Void {
+        { action in
+            switch action {
+            case .add:
+                {
+                    isSearchFocused = false
+                    searchText = ""
+                    store.send(.didTapAddRowButton)
+                }()
+            case .sort:
+                store.send(.didTapAutoSortItems)
+            case .all:
+                break
+            case .mine:
+                break
+            case .shared:
+                break
+            case .invitations:
+                break
+            }
+        }
+    }
+    
     fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
         { rowId, option in
             switch option {

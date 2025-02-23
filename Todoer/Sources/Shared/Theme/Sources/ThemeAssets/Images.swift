@@ -14,12 +14,9 @@ extension Image {
     public static let largecircleFillCircle = Image(systemName: "largecircle.fill.circle")
     public static let xmark = Image(systemName: "xmark")
     public static let squareAndArrowUp = Image(systemName: "square.and.arrow.up")
-    public static let plusCircleFill = Image(systemName: "plus.circle.fill")
+    public static let mag = Image(systemName: "magnifyingglass")
     public static let personCropCircle = Image(systemName: "person.crop.circle")
     public static let trash = Image(systemName: "trash")
     public static let squareAndPencil = Image(systemName: "square.and.pencil")
     public static let ellipsis = Image(systemName: "ellipsis")
-    public static let arrowUpArrowDownCircleFill = Image(
-        systemName: "arrow.up.arrow.down.circle.fill"
-    )
 }

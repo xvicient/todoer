@@ -1,54 +1,58 @@
 import SwiftUI
 import Combine
 import ThemeAssets
+import Strings
 
 // MARK: - TDList
 
 public struct TDListView: View {
-    enum Tab: String, CaseIterable {
-        case add = "Add"
-        case sort = "Sort"
-        case all = "All"
-        case mine = "Mine"
-        case shared = "Shared"
-        case invitations = "Invitations"
-        
-        var isFilter: Bool {
-            switch self {
-            case .add, .sort: false
-            case .all, .mine, .shared, .invitations: true
-            }
+    
+    private typealias Tab = TDListTabAction
+    public typealias Actions = (TDListTabAction) -> Void
+    
+    public struct Configuration {
+        let title: String
+        let hasBackButton: Bool
+        let tabActions: [TDListTabActionItem]
+
+        public init(
+            title: String,
+            hasBackButton: Bool = false,
+            tabActions: [TDListTabActionItem]
+        ) {
+            self.title = title
+            self.hasBackButton = hasBackButton
+            self.tabActions = tabActions
         }
     }
     
-    @State private var activeTab: Tab = .all
-    @Namespace private var animation
-    @State private var minY: CGFloat = 0.0
-    
-    private let searchbarThreshold: CGFloat = 50.0
+    private let listContent: () -> AnyView
+    private let actions: Actions
+    private let configuration: Configuration
     @Binding private var searchText: String
-    private var isSearchFocused: FocusState<Bool>.Binding
-    private var hasBackButton: Bool
+    @FocusState.Binding private var isSearchFocused: Bool
     
-    @FocusState private var isSearching: Bool
-    private var headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
-    private var headerHeight: CGFloat = 150.0
-
-    private let sections: () -> AnyView
-    
+    @Namespace private var animation
+    @State private var activeTab: Tab = .all
+    @State private var minY: CGFloat = 0.0
     @State private var animateGradient = false
     @State private var isScrolling = false
+    private let searchbarThreshold: CGFloat = 50.0
+    private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
+    private let headerHeight: CGFloat = 150.0
 
     public init(
-        @ViewBuilder sections: @escaping () -> AnyView,
+        @ViewBuilder content: @escaping () -> AnyView,
+        actions: @escaping Actions,
+        configuration: Configuration,
         searchText: Binding<String>,
-        isSearchFocused: FocusState<Bool>.Binding,
-        hasBackButton: Bool = false
+        isSearchFocused: FocusState<Bool>.Binding
     ) {
-        self.sections = sections
+        self.listContent = content
+        self.actions = actions
+        self.configuration = configuration
         self._searchText = searchText
-        self.isSearchFocused = isSearchFocused
-        self.hasBackButton = hasBackButton
+        self._isSearchFocused = isSearchFocused
     }
 
     public var body: some View {
@@ -81,12 +85,12 @@ public struct TDListView: View {
     fileprivate func list() -> some View {
         ScrollViewReader { proxy in
             List {
-                sections()
+                listContent()
             }
             .onScrollPhaseChange { _, newPhase, context in
                 isScrolling = newPhase.isScrolling
                 DispatchQueue.main.async {
-                    guard !isSearching else { return }
+                    guard !isSearchFocused else { return }
                     let offset = context.geometry.contentOffset.y + context.geometry.contentInsets.top
                     
                     if offset < searchbarThreshold {
@@ -99,7 +103,7 @@ public struct TDListView: View {
             .onScrollGeometryChange(for: CGFloat.self) {
                 $0.contentOffset.y + $0.contentInsets.top
             } action: { _, offset in
-                guard !isSearching else { return }
+                guard !isSearchFocused else { return }
                 DispatchQueue.main.async {
                     if abs(offset) == .zero {
                         withAnimation(headerAnimation) {
@@ -112,8 +116,8 @@ public struct TDListView: View {
                     }
                 }
             }
-            .onChange(of: isSearching) {
-                guard isSearching else { return }
+            .onChange(of: isSearchFocused) {
+                guard isSearchFocused else { return }
                 withAnimation(headerAnimation) {
                     proxy.scrollTo(0, anchor: .top)
                 } completion: {
@@ -123,7 +127,7 @@ public struct TDListView: View {
                 }
             }
             .simultaneousGesture(DragGesture().onChanged({ _ in
-                isSearching = false
+                isSearchFocused = false
             }))
             .removeBounce()
             .scrollIndicators(.hidden)
@@ -143,29 +147,30 @@ public struct TDListView: View {
             
             ZStack {
                 VStack {
-                    Text("To-do's")
+                    Text(configuration.title)
                         .font(.largeTitle.bold())
+                        .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top, -(30 * progress) - 10)
-                        .padding(.leading, hasBackButton ? 10 * progress : 0)
+                        .padding(.leading, configuration.hasBackButton ? 10 * progress : 0)
                     Spacer()
                 }
                 .zIndex(1)
                 VStack {
                     HStack(spacing: 12) {
-                        Image(systemName: "magnifyingglass")
+                        Image.mag
                             .font(.title3)
                         
-                        TextField("Search", text: $searchText)
-                            .focused($isSearching)
+                        TextField(Strings.List.searchPlaceholder, text: $searchText)
+                            .focused($isSearchFocused)
                             .disabled(isScrolling)
                         
-                        if isSearching {
+                        if isSearchFocused {
                             Button(action: {
-                                isSearching = false
+                                isSearchFocused = false
                                 searchText = ""
                             }, label: {
-                                Image(systemName: "xmark")
+                                Image.xmark
                                     .font(.title3)
                             })
                             .transition(.asymmetric(insertion: .push(from: .bottom), removal: .push(from: .top)))
@@ -186,20 +191,19 @@ public struct TDListView: View {
                     }
                     .padding(.top, -(progress * 18))
                     
-                    /// Custom Segmented Picker
                     ScrollView(.horizontal) {
                         HStack(spacing: 12) {
-                            ForEach(Tab.allCases.filter({ !$0.isFilter }), id: \.rawValue) { tab in
+                            ForEach(configuration.tabActions.filter({ !$0.tab.isFilter }), id: \.self) { item in
                                 tabButton(
-                                    tab: tab
+                                    item: item
                                 )
                             }
                             Divider()
                                 .frame(width: 1, height: 30)
                                 .background(Color.gray)
-                            ForEach(Tab.allCases.filter({ $0.isFilter }), id: \.rawValue) { tab in
+                            ForEach(configuration.tabActions.filter({ $0.tab.isFilter }), id: \.self) { item in
                                 tabButton(
-                                    tab: tab
+                                    item: item
                                 )
                             }
                         }
@@ -218,23 +222,24 @@ public struct TDListView: View {
     
     @ViewBuilder
     fileprivate func tabButton(
-        tab: Tab
+        item: TDListTabActionItem
     ) -> some View {
         Button(action: {
-            if tab.isFilter {
-                withAnimation(.snappy) {
-                    activeTab = tab
+            withAnimation {
+                actions(item.tab)
+                if item.tab.isFilter {
+                    activeTab = item.tab
                 }
             }
         }) {
-            Text(tab.rawValue)
+            Text(item.tab.stringValue)
                 .font(.callout)
-                .foregroundStyle(tab.isFilter ? (activeTab == tab ? .white : .black) : .white)
+                .foregroundStyle(item.tab.isFilter ? (activeTab == item.tab ? .white : .black) : .white)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 15)
                 .background {
-                    if tab.isFilter {
-                        if activeTab == tab {
+                    if item.tab.isFilter {
+                        if activeTab == item.tab {
                             Capsule()
                                 .fill(Color.primary)
                                 .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
@@ -248,6 +253,7 @@ public struct TDListView: View {
                     }
                 }
         }
+        .disabled(!item.isEnabled)
         .buttonStyle(.plain)
     }
 }
@@ -269,7 +275,7 @@ fileprivate extension View {
 
 #Preview {
     TDListView(
-        sections: {
+        content: {
             AnyView(
                 ForEach(0..<20, id: \.self) { n in
                     HStack(spacing: 12) {
@@ -296,6 +302,11 @@ fileprivate extension View {
                 }
             )
         },
+        actions: { _ in },
+        configuration: .init(
+            title: "To-do's",
+            tabActions: [TDListTabActionItem(tab: .add, isEnabled: true)]
+        ),
         searchText: .constant(""),
         isSearchFocused: FocusState<Bool>().projectedValue
     )

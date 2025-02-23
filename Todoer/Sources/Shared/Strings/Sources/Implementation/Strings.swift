@@ -3,6 +3,16 @@ public struct Strings {
     public struct List {
         public static let newItemPlaceholder = "Name..."
         public static let sortButtonTitle = "Sort"
+        public static let searchPlaceholder = "Search"
+    }
+    
+    public struct TabAction {
+        public static let add = "Add"
+        public static let sort = "Sort"
+        public static let all = "All"
+        public static let mine = "Mine"
+        public static let shared = "Shared"
+        public static let invitations = "Invitations"
     }
 
     public struct AppMenu {

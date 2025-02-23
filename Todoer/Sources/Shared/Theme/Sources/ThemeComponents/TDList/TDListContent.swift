@@ -2,28 +2,19 @@ import Common
 import Strings
 import SwiftUI
 
-public struct TDListSection: View {
+public struct TDListContent: View {
     public typealias Content = () -> AnyView
 
     public struct Configuration: TDFilledRowConfiguration {
-        let title: String
-        let addButtonTitle: String
-        let isSortEnabled: Bool
         let lineLimit: Int?
         let isMoveEnabled: Bool
         let isSwipeEnabled: Bool
 
         public init(
-            title: String,
-            addButtonTitle: String,
-            isSortEnabled: Bool,
             lineLimit: Int? = nil,
             isMoveEnabled: Bool,
             isSwipeEnabled: Bool
         ) {
-            self.title = title
-            self.addButtonTitle = addButtonTitle
-            self.isSortEnabled = isSortEnabled
             self.lineLimit = lineLimit
             self.isMoveEnabled = isMoveEnabled
             self.isSwipeEnabled = isSwipeEnabled
@@ -31,8 +22,6 @@ public struct TDListSection: View {
     }
 
     public struct Actions: TDFilledRowActions, TDEmptyRowActions {
-        let onAddRow: () -> Void
-        let onSortRows: () -> Void
         let onSubmit: (String) -> Void
         let onUpdate: (UUID, String) -> Void
         let onCancelAdd: () -> Void
@@ -42,8 +31,6 @@ public struct TDListSection: View {
         let onMove: (IndexSet, Int) -> Void
 
         public init(
-            onAddRow: @escaping () -> Void,
-            onSortRows: @escaping () -> Void,
             onSubmit: @escaping (String) -> Void,
             onUpdate: @escaping (UUID, String) -> Void,
             onCancelAdd: @escaping () -> Void,
@@ -52,8 +39,6 @@ public struct TDListSection: View {
             onSwipe: @escaping (UUID, TDSwipeAction) -> Void,
             onMove: @escaping (IndexSet, Int) -> Void
         ) {
-            self.onAddRow = onAddRow
-            self.onSortRows = onSortRows
             self.onSubmit = onSubmit
             self.onUpdate = onUpdate
             self.onCancelAdd = onCancelAdd
