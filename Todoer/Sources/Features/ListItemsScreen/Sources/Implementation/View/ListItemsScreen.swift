@@ -125,13 +125,7 @@ extension ListItemsScreen {
                 }()
             case .sort:
                 store.send(.didTapAutoSortItems)
-            case .all:
-                break
-            case .mine:
-                break
-            case .shared:
-                break
-            case .invitations:
+            default:
                 break
             }
         }
@@ -144,10 +138,10 @@ extension ListItemsScreen {
                 store.send(.didTapToggleItemButton(rowId))
             case .delete:
                 store.send(.didTapDeleteItemButton(rowId))
-            case .share:
-                break
             case .edit:
                 store.send(.didTapEditItemButton(rowId))
+            default:
+                break
             }
         }
     }

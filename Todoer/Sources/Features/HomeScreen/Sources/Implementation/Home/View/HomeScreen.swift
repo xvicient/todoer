@@ -19,6 +19,7 @@ struct HomeScreen: View {
     private var invitationsView: Home.MakeInvitationsView
     @State private var loadingOpacity: Double = 1
     @State private var isToolbarHidden: Visibility = .hidden
+    @State private var activeTab: TDListTabAction = .all
     private var isLoading: Bool {
         store.state.viewState.isLoading &&
         store.state.viewModel.lists.isEmpty
@@ -52,7 +53,7 @@ struct HomeScreen: View {
                 }
             }
             loadingView
-                .zIndex(1)
+            .zIndex(1)
         }
         .toolbar(isToolbarHidden, for: .navigationBar)
         .onAppear {
@@ -95,11 +96,17 @@ extension HomeScreen {
     @ViewBuilder
     fileprivate func listContent() -> AnyView {
         AnyView(
-            TDListContent(
-                configuration: contentConfiguration,
-                actions: contentActions,
-                rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
-            )
+            Group {
+                if activeTab == .invitations {
+                    invitationsView(store.state.viewModel.invitations)
+                } else {
+                    TDListContent(
+                        configuration: contentConfiguration,
+                        actions: contentActions,
+                        rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
+                    )
+                }
+            }
         )
     }
 
@@ -159,6 +166,7 @@ extension HomeScreen {
 extension HomeScreen {
     fileprivate var listActions: (TDListTabAction) -> Void {
         { action in
+            activeTab = action
             switch action {
             case .add:
                 {
@@ -170,9 +178,7 @@ extension HomeScreen {
                 store.send(.didTapAutoSortLists)
             case .all:
                 break
-            case .mine:
-                break
-            case .shared:
+            case .sharing:
                 break
             case .invitations:
                 break

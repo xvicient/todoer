@@ -4,8 +4,7 @@ public enum TDListTabAction: Int, CaseIterable {
     case add
     case sort
     case all
-    case mine
-    case shared
+    case sharing
     case invitations
     
     var stringValue: String {
@@ -13,8 +12,7 @@ public enum TDListTabAction: Int, CaseIterable {
         case .add: Strings.TabAction.add
         case .sort: Strings.TabAction.sort
         case .all: Strings.TabAction.all
-        case .mine: Strings.TabAction.mine
-        case .shared: Strings.TabAction.shared
+        case .sharing: Strings.TabAction.sharing
         case .invitations: Strings.TabAction.invitations
         }
     }
@@ -22,7 +20,7 @@ public enum TDListTabAction: Int, CaseIterable {
     public var isFilter: Bool {
         switch self {
         case .add, .sort: false
-        case .all, .mine, .shared, .invitations: true
+        case .all, .sharing, .invitations: true
         }
     }
 }

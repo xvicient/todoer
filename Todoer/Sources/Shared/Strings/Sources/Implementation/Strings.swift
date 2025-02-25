@@ -10,8 +10,7 @@ public struct Strings {
         public static let add = "Add"
         public static let sort = "Sort"
         public static let all = "All"
-        public static let mine = "Mine"
-        public static let shared = "Shared"
+        public static let sharing = "Sharing"
         public static let invitations = "Invitations"
     }
 
