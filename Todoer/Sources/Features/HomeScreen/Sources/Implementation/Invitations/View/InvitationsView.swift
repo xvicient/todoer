@@ -14,7 +14,7 @@ struct InvitationsView: View {
     }
 
     var body: some View {
-        Section(header: Text(Strings.Invitations.invitationsText)) {
+        VStack {
             ForEach(store.state.viewModel.invitations) { invitation in
                 HStack {
                     VStack(alignment: .leading) {

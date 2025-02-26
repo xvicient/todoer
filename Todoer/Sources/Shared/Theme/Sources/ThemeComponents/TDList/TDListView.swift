@@ -10,6 +10,26 @@ public struct TDListView: View {
     private typealias Tab = TDListTabAction
     public typealias Actions = (TDListTabAction) -> Void
     
+    enum SlideDirection {
+        case forward
+        case backward
+        
+        var transition: AnyTransition {
+            switch self {
+            case .forward:
+                    .asymmetric(
+                        insertion: .move(edge: .trailing),
+                        removal: .move(edge: .leading)
+                    )
+            case .backward:
+                    .asymmetric(
+                        insertion: .move(edge: .leading),
+                        removal: .move(edge: .trailing)
+                    )
+            }
+        }
+    }
+    
     public struct Configuration {
         let title: String
         let hasBackButton: Bool
@@ -40,6 +60,7 @@ public struct TDListView: View {
     private let searchbarThreshold: CGFloat = 50.0
     private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
     private let headerHeight: CGFloat = 150.0
+    @State private var slideDirection: SlideDirection = .forward
 
     public init(
         @ViewBuilder content: @escaping () -> AnyView,
@@ -58,9 +79,14 @@ public struct TDListView: View {
     public var body: some View {
         ZStack {
             headerBackground()
-            .zIndex(0)
             list()
-            .zIndex(1)
+                .id(activeTab.rawValue)
+                .transition(slideDirection.transition)
+            VStack {
+                header()
+                    .background(.clear)
+                Spacer()
+            }
         }
     }
     
@@ -134,10 +160,11 @@ public struct TDListView: View {
             .scrollBounceBehavior(.basedOnSize)
             .scrollContentBackground(.hidden)
             .listStyle(.plain)
-            .safeAreaInset(edge: .top, spacing: 0) {
-                header()
+            .safeAreaInset(edge: .top) {
+                Color.clear.frame(height: 240) // Adds inset at the top
             }
         }
+        .ignoresSafeArea()
     }
     
     @ViewBuilder
@@ -225,6 +252,7 @@ public struct TDListView: View {
         item: TDListTabActionItem
     ) -> some View {
         Button(action: {
+            slideDirection = item.tab.rawValue > activeTab.rawValue ? .forward : .backward
             withAnimation {
                 actions(item.tab)
                 if item.tab.isFilter {
