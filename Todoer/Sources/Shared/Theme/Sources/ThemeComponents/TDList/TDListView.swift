@@ -7,8 +7,7 @@ import Strings
 
 public struct TDListView: View {
     
-    private typealias Tab = TDListTabAction
-    public typealias Actions = (TDListTabAction) -> Void
+    public typealias Actions = (TDListTab) -> Void
     
     enum SlideDirection {
         case forward
@@ -33,12 +32,12 @@ public struct TDListView: View {
     public struct Configuration {
         let title: String
         let hasBackButton: Bool
-        let tabActions: [TDListTabActionItem]
+        let tabActions: [TDListTabItem]
 
         public init(
             title: String,
             hasBackButton: Bool = false,
-            tabActions: [TDListTabActionItem]
+            tabActions: [TDListTabItem]
         ) {
             self.title = title
             self.hasBackButton = hasBackButton
@@ -51,9 +50,9 @@ public struct TDListView: View {
     private let configuration: Configuration
     @Binding private var searchText: String
     @FocusState.Binding private var isSearchFocused: Bool
+    @Binding private var activeTab: TDListTab
     
     @Namespace private var animation
-    @State private var activeTab: Tab = .all
     @State private var minY: CGFloat = 0.0
     @State private var animateGradient = false
     @State private var isScrolling = false
@@ -67,13 +66,16 @@ public struct TDListView: View {
         actions: @escaping Actions,
         configuration: Configuration,
         searchText: Binding<String>,
-        isSearchFocused: FocusState<Bool>.Binding
+        isSearchFocused: FocusState<Bool>.Binding,
+        activeTab: Binding<TDListTab>
     ) {
         self.listContent = content
         self.actions = actions
         self.configuration = configuration
         self._searchText = searchText
         self._isSearchFocused = isSearchFocused
+        self._activeTab = activeTab
+        print("XVM \(activeTab)")
     }
 
     public var body: some View {
@@ -251,7 +253,7 @@ public struct TDListView: View {
     
     @ViewBuilder
     fileprivate func tabButton(
-        item: TDListTabActionItem
+        item: TDListTabItem
     ) -> some View {
         Button(action: {
             withAnimation {
@@ -333,9 +335,10 @@ fileprivate extension View {
         actions: { _ in },
         configuration: .init(
             title: "To-do's",
-            tabActions: [TDListTabActionItem(tab: .add, isEnabled: true)]
+            tabActions: [TDListTabItem(tab: .add, isEnabled: true)]
         ),
         searchText: .constant(""),
-        isSearchFocused: FocusState<Bool>().projectedValue
+        isSearchFocused: FocusState<Bool>().projectedValue,
+        activeTab: .constant(.all)
     )
 }

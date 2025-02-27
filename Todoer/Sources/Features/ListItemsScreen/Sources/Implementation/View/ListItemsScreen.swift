@@ -27,7 +27,11 @@ struct ListItemsScreen: View {
                 actions: listActions,
                 configuration: listConfiguration,
                 searchText: $searchText,
-                isSearchFocused: $isSearchFocused
+                isSearchFocused: $isSearchFocused,
+                activeTab: Binding(
+                    get: { .all },
+                    set: { _ in }
+                )
             )
             .onChange(of: isSearchFocused) {
                 guard isSearchFocused else { return }
@@ -55,13 +59,13 @@ struct ListItemsScreen: View {
 // MARK: - ViewBuilders
 
 extension ListItemsScreen {
-    fileprivate var tabActions: [TDListTabActionItem] {
-        TDListTabAction.allCases
+    fileprivate var tabActions: [TDListTabItem] {
+        TDListTab.allCases
             .filter { !$0.isFilter }
             .sorted { $0.rawValue < $1.rawValue }
             .map { tab in
                 let sortEnabled = store.state.viewModel.items.filter { !$0.isEditing }.count > 1
-                return TDListTabActionItem(tab: tab, isEnabled: tab == .sort ? sortEnabled : true )
+                return TDListTabItem(tab: tab, isEnabled: tab == .sort ? sortEnabled : true)
             }
         
     }
@@ -114,7 +118,7 @@ extension ListItemsScreen {
 // MARK: - Private
 
 extension ListItemsScreen {
-    fileprivate var listActions: (TDListTabAction) -> Void {
+    fileprivate var listActions: (TDListTab) -> Void {
         { action in
             switch action {
             case .add:

@@ -27,6 +27,9 @@ let package = Package(
     targets: [
         .target(
             name: "Entities",
+            dependencies: [
+                "Common"
+            ],
             path: "Sources/Implementation"
         ),
         .target(

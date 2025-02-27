@@ -12,14 +12,35 @@ import xRedux
 // MARK: - HomeScreen
 
 struct HomeScreen: View {
+    enum HomeSource {
+        case allLists
+        case sharingLists
+        case invitations
+        
+        var activeTab: TDListTab {
+            switch self {
+            case .allLists:
+                .all
+            case .sharingLists:
+                .sharing
+            case .invitations:
+                .invitations
+            }
+        }
+    }
+    
     @ObservedObject private var store: Store<Home.Reducer>
-    @Environment(\.scenePhase) private var scenePhase
-    @State private var searchText = ""
-    @FocusState private var isSearchFocused: Bool
     private var invitationsView: Home.MakeInvitationsView
+    
+    @Environment(\.scenePhase) private var scenePhase
+    
     @State private var loadingOpacity: Double = 1
     @State private var isToolbarHidden: Visibility = .hidden
-    @State private var activeTab: TDListTabAction = .all
+    @State private var source: HomeSource = .allLists
+    
+    @State private var searchText = ""
+    @FocusState private var isSearchFocused: Bool
+    
     private var isLoading: Bool {
         store.state.viewState.isLoading &&
         store.state.viewModel.lists.isEmpty
@@ -40,7 +61,11 @@ struct HomeScreen: View {
                 actions: listActions,
                 configuration: listConfiguration,
                 searchText: $searchText,
-                isSearchFocused: $isSearchFocused
+                isSearchFocused: $isSearchFocused,
+                activeTab: Binding(
+                    get: { source.activeTab },
+                    set: { _ in }
+                )
             )
             .zIndex(0)
             .onChange(of: isSearchFocused) {
@@ -76,12 +101,15 @@ struct HomeScreen: View {
 // MARK: - ViewBuilders
 
 extension HomeScreen {
-    fileprivate var tabActions: [TDListTabActionItem] {
-        TDListTabAction.allCases
+    fileprivate var tabActions: [TDListTabItem] {
+        TDListTab.allCases
             .sorted { $0.rawValue < $1.rawValue }
             .map { tab in
                 let sortEnabled = store.state.viewModel.lists.filter { !$0.isEditing }.count > 1
-                return TDListTabActionItem(tab: tab, isEnabled: tab == .sort ? sortEnabled : true )
+                return TDListTabItem(
+                    tab: tab,
+                    isEnabled: tab == .sort ? sortEnabled : true
+                )
             }
         
     }
@@ -97,10 +125,14 @@ extension HomeScreen {
     fileprivate func listContent() -> AnyView {
         AnyView(
             Group {
-                switch activeTab {
-                case .invitations:
-                    invitationsView(store.state.viewModel.invitations)
-                case .sharing:
+                switch source {
+                case .allLists:
+                    TDListContent(
+                        configuration: contentConfiguration,
+                        actions: contentActions,
+                        rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
+                    )
+                case .sharingLists:
                     let rows = store.state.viewModel.lists
                         .filter { list in
                             !list.list.uid.filter { $0 != store.state.viewModel.userUid }.isEmpty
@@ -111,12 +143,8 @@ extension HomeScreen {
                         actions: contentActions,
                         rows: rows
                     )
-                default:
-                    TDListContent(
-                        configuration: contentConfiguration,
-                        actions: contentActions,
-                        rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
-                    )
+                case .invitations:
+                    invitationsView(store.state.viewModel.invitations)
                 }
             }
         )
@@ -152,7 +180,6 @@ extension HomeScreen {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .padding(.horizontal, 35)
-                .scaleEffect(loadingOpacity == 1 ? 1 : 0.5)
                 .animation(.interactiveSpring(), value: loadingOpacity)
         }
         .opacity(loadingOpacity)
@@ -176,25 +203,24 @@ extension HomeScreen {
 // MARK: - Private
 
 extension HomeScreen {
-    fileprivate var listActions: (TDListTabAction) -> Void {
+    fileprivate var listActions: (TDListTab) -> Void {
         { action in
             switch action {
             case .add:
-                activeTab = .all
+                source = .allLists
                 return {
                     isSearchFocused = false
                     searchText = ""
                     store.send(.didTapAddRowButton)
                 }()
             case .sort:
-                activeTab = .all
                 store.send(.didTapAutoSortLists)
             case .all:
-                activeTab = action
+                source = .allLists
             case .sharing:
-                activeTab = action
+                source = .sharingLists
             case .invitations:
-                activeTab = action
+                source = .invitations
             }
         }
     }

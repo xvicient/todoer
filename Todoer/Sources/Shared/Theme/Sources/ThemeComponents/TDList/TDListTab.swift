@@ -1,6 +1,6 @@
 import Strings
 
-public enum TDListTabAction: Int, CaseIterable {
+public enum TDListTab: Int, CaseIterable {
     case add
     case sort
     case all
@@ -24,7 +24,7 @@ public enum TDListTabAction: Int, CaseIterable {
         }
     }
     
-    var activeTab: TDListTabAction {
+    var activeTab: TDListTab {
         switch self {
         case .sharing: .sharing
         case .invitations: .invitations
@@ -33,12 +33,12 @@ public enum TDListTabAction: Int, CaseIterable {
     }
 }
 
-public struct TDListTabActionItem: Hashable {
-    let tab: TDListTabAction
+public struct TDListTabItem: Hashable {
+    let tab: TDListTab
     let isEnabled: Bool
     
     public init(
-        tab: TDListTabAction,
+        tab: TDListTab,
         isEnabled: Bool
     ) {
         self.tab = tab
