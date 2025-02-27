@@ -10,6 +10,7 @@ extension Home.Reducer {
     @MainActor
     struct ViewModel {
         var lists = [WrappedUserList]()
+        var userUid = ""
         var invitations = [Invitation]()
         var photoUrl = ""
     }

@@ -97,9 +97,21 @@ extension HomeScreen {
     fileprivate func listContent() -> AnyView {
         AnyView(
             Group {
-                if activeTab == .invitations {
+                switch activeTab {
+                case .invitations:
                     invitationsView(store.state.viewModel.invitations)
-                } else {
+                case .sharing:
+                    let rows = store.state.viewModel.lists
+                        .filter { list in
+                            !list.list.uid.filter { $0 != store.state.viewModel.userUid }.isEmpty
+                        }
+                        .filter(with: searchText).map { $0.tdListRow }
+                    TDListContent(
+                        configuration: contentConfiguration,
+                        actions: contentActions,
+                        rows: rows
+                    )
+                default:
                     TDListContent(
                         configuration: contentConfiguration,
                         actions: contentActions,
@@ -166,22 +178,23 @@ extension HomeScreen {
 extension HomeScreen {
     fileprivate var listActions: (TDListTabAction) -> Void {
         { action in
-            activeTab = action
             switch action {
             case .add:
-                {
+                activeTab = .all
+                return {
                     isSearchFocused = false
                     searchText = ""
                     store.send(.didTapAddRowButton)
                 }()
             case .sort:
+                activeTab = .all
                 store.send(.didTapAutoSortLists)
             case .all:
-                break
+                activeTab = action
             case .sharing:
-                break
+                activeTab = action
             case .invitations:
-                break
+                activeTab = action
             }
         }
     }

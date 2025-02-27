@@ -225,13 +225,15 @@ public struct TDListView: View {
                                     item: item
                                 )
                             }
-                            Divider()
-                                .frame(width: 1, height: 30)
-                                .background(Color.gray)
-                            ForEach(configuration.tabActions.filter({ $0.tab.isFilter }), id: \.self) { item in
-                                tabButton(
-                                    item: item
-                                )
+                            if !configuration.tabActions.filter({ $0.tab.isFilter }).isEmpty {
+                                Divider()
+                                    .frame(width: 1, height: 30)
+                                    .background(Color.gray)
+                                ForEach(configuration.tabActions.filter({ $0.tab.isFilter }), id: \.self) { item in
+                                    tabButton(
+                                        item: item
+                                    )
+                                }
                             }
                         }
                     }
@@ -252,12 +254,10 @@ public struct TDListView: View {
         item: TDListTabActionItem
     ) -> some View {
         Button(action: {
-            slideDirection = item.tab.rawValue > activeTab.rawValue ? .forward : .backward
             withAnimation {
+                slideDirection = item.tab.rawValue > activeTab.rawValue ? .forward : .backward
                 actions(item.tab)
-                if item.tab.isFilter {
-                    activeTab = item.tab
-                }
+                activeTab = item.tab.activeTab
             }
         }) {
             Text(item.tab.stringValue)

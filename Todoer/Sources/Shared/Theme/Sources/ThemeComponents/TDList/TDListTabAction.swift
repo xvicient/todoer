@@ -23,6 +23,14 @@ public enum TDListTabAction: Int, CaseIterable {
         case .all, .sharing, .invitations: true
         }
     }
+    
+    var activeTab: TDListTabAction {
+        switch self {
+        case .sharing: .sharing
+        case .invitations: .invitations
+        default: .all
+        }
+    }
 }
 
 public struct TDListTabActionItem: Hashable {

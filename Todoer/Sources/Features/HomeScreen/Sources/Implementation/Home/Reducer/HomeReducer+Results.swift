@@ -14,6 +14,7 @@ extension Home.Reducer {
             state.viewState = .idle
             state.viewModel.lists = data.lists.map { $0.toListRow }
             state.viewModel.invitations = data.invitations
+            state.viewModel.userUid = data.userUid
         case .failure:
             state.viewState = .error()
         }
