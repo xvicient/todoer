@@ -101,23 +101,11 @@ struct HomeScreen: View {
 // MARK: - ViewBuilders
 
 extension HomeScreen {
-    fileprivate var tabActions: [TDListTabItem] {
-        TDListTab.allCases
-            .sorted { $0.rawValue < $1.rawValue }
-            .map { tab in
-                let sortEnabled = store.state.viewModel.lists.filter { !$0.isEditing }.count > 1
-                return TDListTabItem(
-                    tab: tab,
-                    isEnabled: tab == .sort ? sortEnabled : true
-                )
-            }
-        
-    }
-    
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: Strings.Home.todosText,
-            tabActions: tabActions
+            tabs: TDListTab.allCases
+                .removingSort(if: store.state.viewModel.lists.filter { !$0.isEditing }.count < 2)
         )
     }
 

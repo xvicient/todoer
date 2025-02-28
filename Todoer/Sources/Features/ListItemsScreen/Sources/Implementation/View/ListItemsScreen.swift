@@ -59,22 +59,13 @@ struct ListItemsScreen: View {
 // MARK: - ViewBuilders
 
 extension ListItemsScreen {
-    fileprivate var tabActions: [TDListTabItem] {
-        TDListTab.allCases
-            .filter { !$0.isFilter }
-            .sorted { $0.rawValue < $1.rawValue }
-            .map { tab in
-                let sortEnabled = store.state.viewModel.items.filter { !$0.isEditing }.count > 1
-                return TDListTabItem(tab: tab, isEnabled: tab == .sort ? sortEnabled : true)
-            }
-        
-    }
-    
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: store.state.viewModel.listName,
             hasBackButton: true,
-            tabActions: tabActions
+            tabs: TDListTab.allCases
+                .removingSort(if: store.state.viewModel.items.filter { !$0.isEditing }.count < 2)
+                .filter { !$0.isFilter }
         )
     }
 

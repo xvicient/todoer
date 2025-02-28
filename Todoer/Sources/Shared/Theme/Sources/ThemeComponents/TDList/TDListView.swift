@@ -32,16 +32,16 @@ public struct TDListView: View {
     public struct Configuration {
         let title: String
         let hasBackButton: Bool
-        let tabActions: [TDListTabItem]
+        let tabs: [TDListTab]
 
         public init(
             title: String,
             hasBackButton: Bool = false,
-            tabActions: [TDListTabItem]
+            tabs: [TDListTab]
         ) {
             self.title = title
             self.hasBackButton = hasBackButton
-            self.tabActions = tabActions
+            self.tabs = tabs
         }
     }
     
@@ -75,7 +75,6 @@ public struct TDListView: View {
         self._searchText = searchText
         self._isSearchFocused = isSearchFocused
         self._activeTab = activeTab
-        print("XVM \(activeTab)")
     }
 
     public var body: some View {
@@ -163,7 +162,7 @@ public struct TDListView: View {
             .scrollContentBackground(.hidden)
             .listStyle(.plain)
             .safeAreaInset(edge: .top) {
-                Color.clear.frame(height: 240) // Adds inset at the top
+                Color.clear.frame(height: 240)
             }
         }
         .ignoresSafeArea()
@@ -222,16 +221,16 @@ public struct TDListView: View {
                     
                     ScrollView(.horizontal) {
                         HStack(spacing: 12) {
-                            ForEach(configuration.tabActions.filter({ !$0.tab.isFilter }), id: \.self) { item in
+                            ForEach(configuration.tabs.filter({ !$0.isFilter }), id: \.self) { item in
                                 tabButton(
                                     item: item
                                 )
                             }
-                            if !configuration.tabActions.filter({ $0.tab.isFilter }).isEmpty {
+                            if !configuration.tabs.filter({ $0.isFilter }).isEmpty {
                                 Divider()
                                     .frame(width: 1, height: 30)
                                     .background(Color.gray)
-                                ForEach(configuration.tabActions.filter({ $0.tab.isFilter }), id: \.self) { item in
+                                ForEach(configuration.tabs.filter({ $0.isFilter }), id: \.self) { item in
                                     tabButton(
                                         item: item
                                     )
@@ -253,23 +252,23 @@ public struct TDListView: View {
     
     @ViewBuilder
     fileprivate func tabButton(
-        item: TDListTabItem
+        item: TDListTab
     ) -> some View {
         Button(action: {
             withAnimation {
-                slideDirection = item.tab.rawValue > activeTab.rawValue ? .forward : .backward
-                actions(item.tab)
-                activeTab = item.tab.activeTab
+                slideDirection = item.rawValue > activeTab.rawValue ? .forward : .backward
+                actions(item)
+                activeTab = item.activeTab
             }
         }) {
-            Text(item.tab.stringValue)
+            Text(item.stringValue)
                 .font(.callout)
-                .foregroundStyle(item.tab.isFilter ? (activeTab == item.tab ? .white : .black) : .white)
+                .foregroundStyle(item.isFilter ? (activeTab == item ? .white : .black) : .white)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 15)
                 .background {
-                    if item.tab.isFilter {
-                        if activeTab == item.tab {
+                    if item.isFilter {
+                        if activeTab == item {
                             Capsule()
                                 .fill(Color.primary)
                                 .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
@@ -283,7 +282,6 @@ public struct TDListView: View {
                     }
                 }
         }
-        .disabled(!item.isEnabled)
         .buttonStyle(.plain)
     }
 }
@@ -335,7 +333,7 @@ fileprivate extension View {
         actions: { _ in },
         configuration: .init(
             title: "To-do's",
-            tabActions: [TDListTabItem(tab: .add, isEnabled: true)]
+            tabs: TDListTab.allCases
         ),
         searchText: .constant(""),
         isSearchFocused: FocusState<Bool>().projectedValue,
