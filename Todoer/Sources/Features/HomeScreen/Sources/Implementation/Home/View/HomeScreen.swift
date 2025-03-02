@@ -15,7 +15,6 @@ struct HomeScreen: View {
     enum HomeSource {
         case allLists
         case sharingLists
-        case invitations
         
         var activeTab: TDListTab {
             switch self {
@@ -23,8 +22,6 @@ struct HomeScreen: View {
                 .all
             case .sharingLists:
                 .sharing
-            case .invitations:
-                .invitations
             }
         }
     }
@@ -37,6 +34,8 @@ struct HomeScreen: View {
     @State private var loadingOpacity: Double = 1
     @State private var isToolbarHidden: Visibility = .hidden
     @State private var source: HomeSource = .allLists
+    @State var isShowingInvitations: Bool = false
+    @State private var sheetHeight: CGFloat = 0
     
     @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
@@ -81,6 +80,43 @@ struct HomeScreen: View {
             .zIndex(1)
         }
         .toolbar(isToolbarHidden, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button {
+                    isShowingInvitations = true
+                } label: {
+                    Image(systemName: "square.and.arrow.up.circle")
+                        .rotationEffect(.degrees(180))
+                        .overlay(
+                            Text("\(store.state.viewModel.invitations.count)")
+                                .font(.caption2).bold()
+                                .foregroundColor(.white)
+                                .frame(width: 18, height: 18)
+                                .background(Circle().fill(Color.red))
+                                .offset(x: 5, y: -3),
+                            alignment: .topTrailing
+                        )
+                }
+                .foregroundStyle(.black.gradient)
+                .font(.system(size: 24))
+
+                .sheet(isPresented: $isShowingInvitations, onDismiss: {
+                    isShowingInvitations = false
+                }) {
+                    invitationsView(store.state.viewModel.invitations)
+                        .background(GeometryReader { geometry in
+                            Color.clear
+                                .onAppear {
+                                    sheetHeight = geometry.size.height
+                                    print(geometry.size.height)
+                                }
+                        })
+                        .presentationDetents([.height(sheetHeight)])
+                        .presentationDragIndicator(.hidden)
+                }
+                .padding(.trailing, -20)
+            }
+        }
         .onAppear {
             store.send(.onViewAppear)
         }
@@ -131,8 +167,6 @@ extension HomeScreen {
                         actions: contentActions,
                         rows: rows
                     )
-                case .invitations:
-                    invitationsView(store.state.viewModel.invitations)
                 }
             }
         )
@@ -207,8 +241,6 @@ extension HomeScreen {
                 source = .allLists
             case .sharing:
                 source = .sharingLists
-            case .invitations:
-                source = .invitations
             }
         }
     }

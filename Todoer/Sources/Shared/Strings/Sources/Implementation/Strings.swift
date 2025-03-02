@@ -11,7 +11,6 @@ public struct Strings {
         public static let sort = "Sort"
         public static let all = "All"
         public static let sharing = "Sharing"
-        public static let invitations = "Invitations"
     }
 
     public struct AppMenu {

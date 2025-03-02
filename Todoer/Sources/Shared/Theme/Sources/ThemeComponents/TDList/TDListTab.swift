@@ -5,7 +5,6 @@ public enum TDListTab: Int, CaseIterable {
     case sort
     case all
     case sharing
-    case invitations
     
     var stringValue: String {
         switch self {
@@ -13,21 +12,19 @@ public enum TDListTab: Int, CaseIterable {
         case .sort: Strings.TabAction.sort
         case .all: Strings.TabAction.all
         case .sharing: Strings.TabAction.sharing
-        case .invitations: Strings.TabAction.invitations
         }
     }
     
     public var isFilter: Bool {
         switch self {
         case .add, .sort: false
-        case .all, .sharing, .invitations: true
+        case .all, .sharing: true
         }
     }
     
     var activeTab: TDListTab {
         switch self {
         case .sharing: .sharing
-        case .invitations: .invitations
         default: .all
         }
     }
