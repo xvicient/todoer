@@ -5,6 +5,7 @@ import xRedux
 
 extension Home.Reducer {
 
+    @MainActor
     func onFetchDataResult(
         state: inout State,
         result: ActionResult<HomeData>
@@ -12,9 +13,11 @@ extension Home.Reducer {
         switch result {
         case .success(let data):
             state.viewState = .idle
-            state.viewModel.lists = data.lists.map { $0.toListRow }
-            state.viewModel.invitations = data.invitations
-            state.viewModel.userUid = data.userUid
+            state.viewModel = ViewModel(
+                userUid: data.userUid,
+                lists: data.lists.map { $0.toListRow },
+                invitations: data.invitations
+            )
         case .failure:
             state.viewState = .error()
         }

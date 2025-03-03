@@ -46,7 +46,7 @@ extension Home {
             case didTapAddRowButton
             case didTapCancelAddListButton
             case didTapSubmitListButton(String)
-            case didSortLists(IndexSet, Int)
+            case didSortLists(IndexSet, Int, Source)
             case didTapDismissError
             case didTapAutoSortLists
 
@@ -109,16 +109,6 @@ extension Home {
                     false
                 }
             }
-            
-            var isLoading: Bool {
-                switch self {
-                case .loading:
-                    true
-                default:
-                    false
-                }
-            }
-              
         }
 
         let dependencies: HomeScreenDependencies

@@ -162,6 +162,7 @@ extension ListItems.Reducer {
     ) -> Effect<Action> {
         state.viewState = .sortingItems
         state.viewModel.items.move(fromOffsets: fromIndex, toOffset: toIndex)
+        state.viewModel.items.reIndex()
         let items = state.viewModel.items
             .map { $0.item }
         let listId = dependencies.list.documentId

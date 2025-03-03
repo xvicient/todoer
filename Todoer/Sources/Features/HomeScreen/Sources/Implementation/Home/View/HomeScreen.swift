@@ -12,26 +12,13 @@ import xRedux
 // MARK: - HomeScreen
 
 struct HomeScreen: View {
-    private enum Source {
-        case allLists
-        case sharingLists
-        
-        var activeTab: TDListTab {
-            switch self {
-            case .allLists:
-                .all
-            case .sharingLists:
-                .sharing
-            }
-        }
-    }
     
     @ObservedObject private var store: Store<Home.Reducer>
     private var invitationsView: Home.MakeInvitationsView
     
     @Environment(\.scenePhase) private var scenePhase
     
-    @State private var source: Source = .allLists
+    @State private var source: Home.Reducer.Source = .allLists
     @State var isShowingInvitations: Bool = false
     @State private var sheetHeight: CGFloat = 0
     
@@ -43,11 +30,6 @@ struct HomeScreen: View {
             get: { source.activeTab },
             set: { _ in }
         )
-    }
-
-    private var isLoading: Bool {
-        store.state.viewState.isLoading &&
-        store.state.viewModel.lists.isEmpty
     }
 
     init(
@@ -93,9 +75,6 @@ struct HomeScreen: View {
                 store.send(.onSceneActive)
             }
         }
-        .disabled(
-            store.state.viewState.isLoading
-        )
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
         }
@@ -150,35 +129,19 @@ extension HomeScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: Strings.Home.todosText,
-            tabs: TDListTab.allCases
-                .removingSort(if: store.state.viewModel.lists.filter { !$0.isEditing }.count < 2)
+            tabs: store.state.viewModel.tabs
         )
     }
 
     @ViewBuilder
     fileprivate func listContent() -> AnyView {
         AnyView(
-            Group {
-                switch source {
-                case .allLists:
-                    TDListContent(
-                        configuration: contentConfiguration,
-                        actions: contentActions,
-                        rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
-                    )
-                case .sharingLists:
-                    let rows = store.state.viewModel.lists
-                        .filter { list in
-                            !list.list.uid.filter { $0 != store.state.viewModel.userUid }.isEmpty
-                        }
-                        .filter(with: searchText).map { $0.tdListRow }
-                    TDListContent(
-                        configuration: contentConfiguration,
-                        actions: contentActions,
-                        rows: rows
-                    )
-                }
-            }
+            TDListContent(
+                configuration: contentConfiguration,
+                actions: contentActions,
+                rows: store.state.viewModel.lists(for: source)
+                    .filter(with: searchText).map { $0.tdListRow }
+            )
         )
     }
 
@@ -239,7 +202,7 @@ extension HomeScreen {
 
     fileprivate func moveList(fromOffset: IndexSet, toOffset: Int) {
         guard !isSearchFocused, !store.state.viewState.isEditing else { return }
-        store.send(.didSortLists(fromOffset, toOffset))
+        store.send(.didSortLists(fromOffset, toOffset, source))
     }
 }
 
@@ -265,14 +228,7 @@ struct Home_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        var viewModel = Home.Reducer.ViewModel()
-        let list = UserList.empty
-        viewModel.lists = [
-            Home.Reducer.WrappedUserList(
-                id: list.id,
-                list: list,
-                isEditing: false
-            )]
+        let viewModel = Home.Reducer.ViewModel()
         let reducer = Home.Reducer(dependencies: Dependencies(coordinator: CoordinatorMock()))
         let store = Store(initialState: .init(viewModel: viewModel), reducer: reducer)
         return HomeScreen(
