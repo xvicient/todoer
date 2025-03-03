@@ -255,10 +255,10 @@ public struct TDListView: View {
         item: TDListTab
     ) -> some View {
         Button(action: {
+            slideDirection = item.rawValue > activeTab.rawValue ? .forward : .backward
             withAnimation {
-                slideDirection = item.rawValue > activeTab.rawValue ? .forward : .backward
-                actions(item)
                 activeTab = item.activeTab
+                actions(item)
             }
         }) {
             Text(item.stringValue)
