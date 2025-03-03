@@ -5,12 +5,22 @@ import xRedux
 
 extension Home.Reducer {
 
+    @MainActor
     func onAppear(
         state: inout State
     ) -> Effect<Action> {
         state.viewState = .loading
+        if state.viewModel.lists.isEmpty {
+            dependencies.coordinator.showLoading(true)
+        }
+
         return .publish(
             useCase.fetchHomeData()
+                .handleEvents(receiveOutput: { _ in
+                    dependencies.coordinator.showLoading(false)
+                }, receiveCancel: {
+                    dependencies.coordinator.showLoading(false)
+                })
                 .map { .fetchDataResult(.success($0)) }
                 .catch { Just(.fetchDataResult(.failure($0))) }
                 .eraseToAnyPublisher()

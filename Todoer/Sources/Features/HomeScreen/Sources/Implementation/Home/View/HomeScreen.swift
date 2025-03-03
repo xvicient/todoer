@@ -31,8 +31,6 @@ struct HomeScreen: View {
     
     @Environment(\.scenePhase) private var scenePhase
     
-    @State private var loadingOpacity: Double = 1
-    @State private var isToolbarHidden: Visibility = .hidden
     @State private var source: Source = .allLists
     @State var isShowingInvitations: Bool = false
     @State private var sheetHeight: CGFloat = 0
@@ -70,7 +68,6 @@ struct HomeScreen: View {
                 isSearchFocused: $isSearchFocused,
                 activeTab: activeTabBinding
             )
-            .zIndex(0)
             .onChange(of: isSearchFocused) {
                 guard isSearchFocused else { return }
                 if store.state.viewState == .addingList {
@@ -80,10 +77,7 @@ struct HomeScreen: View {
                     store.send(.didTapCancelEditListButton(uid))
                 }
             }
-            loadingView
-            .zIndex(1)
         }
-        .toolbar(isToolbarHidden, for: .navigationBar)
         .toolbar {
             if !store.state.viewModel.invitations.isEmpty {
                 ToolbarItem(placement: .automatic) {
@@ -147,35 +141,6 @@ extension HomeScreen {
                 .presentationDragIndicator(.hidden)
         }
         .padding(.trailing, -20)
-    }
-    
-    @ViewBuilder
-    fileprivate var loadingView: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
-            
-            Image.todoer
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding(.horizontal, 35)
-                .animation(.interactiveSpring(), value: loadingOpacity)
-        }
-        .opacity(loadingOpacity)
-        .animation(.spring(duration: 0.3), value: loadingOpacity)
-        .onChange(of: store.state.viewState.isLoading) {
-            if !store.state.viewState.isLoading {
-                withAnimation(.easeInOut(duration: 1.0).delay(0.5)) {
-                    loadingOpacity = 0
-                }
-                isToolbarHidden = .visible
-            } else if store.state.viewModel.lists.isEmpty {
-                withAnimation(.easeIn(duration: 0.2)) {
-                    loadingOpacity = 1
-                }
-                isToolbarHidden = .hidden
-            }
-        }
     }
 }
 

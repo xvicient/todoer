@@ -52,9 +52,7 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
             .snapshotPublisher()
             .filter { !$0.metadata.hasPendingWrites }
             .map { snapshot in
-//                snapshot.documents.compactMap { try? $0.data(as: InvitationDTO.self) }
-                [InvitationDTO(ownerName: "test123", ownerEmail: "123@test.com", listId: "123", listName: "testlist123", invitedId: "123", index: 0),
-                 InvitationDTO(ownerName: "test456", ownerEmail: "456@test.com", listId: "456", listName: "testlist456", invitedId: "456", index: 1)]
+                snapshot.documents.compactMap { try? $0.data(as: InvitationDTO.self) }
             }
             .eraseToAnyPublisher()
     }
