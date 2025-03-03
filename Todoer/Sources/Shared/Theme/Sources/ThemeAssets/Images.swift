@@ -19,5 +19,5 @@ extension Image {
     public static let trash = Image(systemName: "trash")
     public static let squareAndPencil = Image(systemName: "square.and.pencil")
     public static let ellipsis = Image(systemName: "ellipsis")
-    public static let squareArrowUpCircle = Image(systemName: "square.and.arrow.up.circle")
+    public static let squareArrowDownFill = Image(systemName: "square.and.arrow.down.fill")
 }

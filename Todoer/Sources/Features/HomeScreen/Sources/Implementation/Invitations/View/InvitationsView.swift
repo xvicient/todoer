@@ -29,6 +29,7 @@ struct InvitationsView: View {
             ScrollView {
                 VStack {
                     ForEach(store.state.viewModel.invitations) { invitation in
+                        Divider()
                         HStack {
                             VStack(alignment: .leading) {
                                 Text("\(invitation.ownerName)")

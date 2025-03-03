@@ -12,7 +12,7 @@ import xRedux
 // MARK: - HomeScreen
 
 struct HomeScreen: View {
-    enum HomeSource {
+    private enum Source {
         case allLists
         case sharingLists
         
@@ -33,13 +33,20 @@ struct HomeScreen: View {
     
     @State private var loadingOpacity: Double = 1
     @State private var isToolbarHidden: Visibility = .hidden
-    @State private var source: HomeSource = .allLists
+    @State private var source: Source = .allLists
     @State var isShowingInvitations: Bool = false
     @State private var sheetHeight: CGFloat = 0
     
     @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
     
+    private var activeTabBinding: Binding<TDListTab> {
+        Binding(
+            get: { source.activeTab },
+            set: { _ in }
+        )
+    }
+
     private var isLoading: Bool {
         store.state.viewState.isLoading &&
         store.state.viewModel.lists.isEmpty
@@ -61,10 +68,7 @@ struct HomeScreen: View {
                 configuration: listConfiguration,
                 searchText: $searchText,
                 isSearchFocused: $isSearchFocused,
-                activeTab: Binding(
-                    get: { source.activeTab },
-                    set: { _ in }
-                )
+                activeTab: activeTabBinding
             )
             .zIndex(0)
             .onChange(of: isSearchFocused) {
@@ -81,40 +85,10 @@ struct HomeScreen: View {
         }
         .toolbar(isToolbarHidden, for: .navigationBar)
         .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button {
-                    isShowingInvitations = true
-                } label: {
-                    Image(systemName: "square.and.arrow.up.circle")
-                        .rotationEffect(.degrees(180))
-                        .overlay(
-                            Text("\(store.state.viewModel.invitations.count)")
-                                .font(.caption2).bold()
-                                .foregroundColor(.white)
-                                .frame(width: 18, height: 18)
-                                .background(Circle().fill(Color.red))
-                                .offset(x: 5, y: -3),
-                            alignment: .topTrailing
-                        )
+            if !store.state.viewModel.invitations.isEmpty {
+                ToolbarItem(placement: .automatic) {
+                    invitationsToolbarItem
                 }
-                .foregroundStyle(.black.gradient)
-                .font(.system(size: 24))
-
-                .sheet(isPresented: $isShowingInvitations, onDismiss: {
-                    isShowingInvitations = false
-                }) {
-                    invitationsView(store.state.viewModel.invitations)
-                        .background(GeometryReader { geometry in
-                            Color.clear
-                                .onAppear {
-                                    sheetHeight = geometry.size.height
-                                    print(geometry.size.height)
-                                }
-                        })
-                        .presentationDetents([.height(sheetHeight)])
-                        .presentationDragIndicator(.hidden)
-                }
-                .padding(.trailing, -20)
             }
         }
         .onAppear {
@@ -135,6 +109,77 @@ struct HomeScreen: View {
 }
 
 // MARK: - ViewBuilders
+
+extension HomeScreen {
+    
+    @ViewBuilder
+    fileprivate var invitationsToolbarItem: some View {
+        Button {
+            isShowingInvitations = true
+        } label: {
+            Image.squareArrowDownFill
+                .foregroundStyle(.black)
+                .font(.system(size: 14))
+                .padding(5)
+                .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                .overlay(
+                    Text("\(store.state.viewModel.invitations.count)")
+                        .font(.caption2).bold()
+                        .foregroundColor(.white)
+                        .frame(width: 18, height: 18)
+                        .background(Circle().fill(Color.red))
+                        .offset(x: 5, y: -3),
+                    alignment: .topTrailing
+                )
+        }
+        .sheet(isPresented: $isShowingInvitations, onDismiss: {
+            isShowingInvitations = false
+        }) {
+            invitationsView(store.state.viewModel.invitations)
+                .background(GeometryReader { geometry in
+                    Color.clear
+                        .onAppear {
+                            sheetHeight = geometry.size.height
+                            print(geometry.size.height)
+                        }
+                })
+                .presentationDetents([.height(sheetHeight)])
+                .presentationDragIndicator(.hidden)
+        }
+        .padding(.trailing, -20)
+    }
+    
+    @ViewBuilder
+    fileprivate var loadingView: some View {
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            
+            Image.todoer
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(.horizontal, 35)
+                .animation(.interactiveSpring(), value: loadingOpacity)
+        }
+        .opacity(loadingOpacity)
+        .animation(.spring(duration: 0.3), value: loadingOpacity)
+        .onChange(of: store.state.viewState.isLoading) {
+            if !store.state.viewState.isLoading {
+                withAnimation(.easeInOut(duration: 1.0).delay(0.5)) {
+                    loadingOpacity = 0
+                }
+                isToolbarHidden = .visible
+            } else if store.state.viewModel.lists.isEmpty {
+                withAnimation(.easeIn(duration: 0.2)) {
+                    loadingOpacity = 1
+                }
+                isToolbarHidden = .hidden
+            }
+        }
+    }
+}
+
+// MARK: - TDListView
 
 extension HomeScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
@@ -192,39 +237,6 @@ extension HomeScreen {
         )
     }
     
-    @ViewBuilder
-    fileprivate var loadingView: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
-            
-            Image.todoer
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding(.horizontal, 35)
-                .animation(.interactiveSpring(), value: loadingOpacity)
-        }
-        .opacity(loadingOpacity)
-        .animation(.spring(duration: 0.3), value: loadingOpacity)
-        .onChange(of: store.state.viewState.isLoading) {
-            if !store.state.viewState.isLoading {
-                withAnimation(.easeInOut(duration: 1.0).delay(0.5)) {
-                    loadingOpacity = 0
-                }
-                isToolbarHidden = .visible
-            } else if store.state.viewModel.lists.isEmpty {
-                withAnimation(.easeIn(duration: 0.2)) {
-                    loadingOpacity = 1
-                }
-                isToolbarHidden = .hidden
-            }
-        }
-    }
-}
-
-// MARK: - Private
-
-extension HomeScreen {
     fileprivate var listActions: (TDListTab) -> Void {
         { action in
             switch action {
