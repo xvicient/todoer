@@ -11,7 +11,6 @@ public final class Coordinator: CoordinatorApi, ObservableObject {
     @Published var landingView: AnyView?
     @Published var landingScreen: Screen
     @Published var isLoading: Bool = true
-    @Published var sheetHeight: CGFloat = 300
     private let authenticationService: AuthenticationService
     private let featureProvider: FeatureProviderAPI
     public var isUserLogged: Bool {
