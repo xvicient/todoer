@@ -3,7 +3,7 @@ import Data
 import SwiftUI
 
 @MainActor
-final class Coordinator: CoordinatorApi, ObservableObject {
+public final class Coordinator: CoordinatorApi, ObservableObject {
 
     @Published var path = NavigationPath()
     @Published var sheet: Sheet?
@@ -11,13 +11,14 @@ final class Coordinator: CoordinatorApi, ObservableObject {
     @Published var landingView: AnyView?
     @Published var landingScreen: Screen
     @Published var isLoading: Bool = true
+    @Published var sheetHeight: CGFloat = 300
     private let authenticationService: AuthenticationService
     private let featureProvider: FeatureProviderAPI
     public var isUserLogged: Bool {
         authenticationService.isUserLogged
     }
 
-    init(
+    public init(
         authenticationService: AuthenticationService = AuthenticationService(),
         featureProvider: FeatureProviderAPI
     ) {
@@ -28,45 +29,45 @@ final class Coordinator: CoordinatorApi, ObservableObject {
     }
     
     @MainActor
-    func showLoading(_ isLoading: Bool) {
+    public func showLoading(_ isLoading: Bool) {
         Task { @MainActor in
             self.isLoading = isLoading
         }
     }
 
     @MainActor
-    func loggOut() {
+    public func loggOut() {
         landingScreen = .authentication
         landingView = build(screen: .authentication)
     }
 
     @MainActor
-    func loggIn() {
+    public func loggIn() {
         landingScreen = .home
         landingView = build(screen: .home)
     }
 
-    func push(_ screen: Screen) {
+    public func push(_ screen: Screen) {
         path.append(screen)
     }
 
-    func present(sheet: Sheet) {
+    public func present(sheet: Sheet) {
         self.sheet = sheet
     }
 
-    func present(fullScreenCover: FullScreenCover) {
+    public func present(fullScreenCover: FullScreenCover) {
         self.fullScreenCover = fullScreenCover
     }
 
-    func pop() {
+    public func pop() {
         path.removeLast()
     }
 
-    func popToRoot() {
+    public func popToRoot() {
         path.removeLast(path.count)
     }
 
-    func dismissSheet() {
+    public func dismissSheet() {
         self.sheet = nil
     }
 
@@ -83,9 +84,7 @@ final class Coordinator: CoordinatorApi, ObservableObject {
     func build(sheet: Sheet) -> some View {
         switch sheet {
         case .shareList(let list):
-            NavigationStack {
-                AnyView(featureProvider.makeShareListScreen(coordinator: self, list: list))
-            }
+            AnyView(featureProvider.makeShareListScreen(coordinator: self, list: list))
         }
     }
 

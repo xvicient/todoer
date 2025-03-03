@@ -9,9 +9,13 @@ extension ShareList.Reducer {
         state: inout State,
         result: ActionResult<ShareData>
     ) -> Effect<Action> {
-        if case .success(let data) = result {
+        switch result {
+        case .success(let data):
             state.viewModel.users = data.users
             state.viewModel.selfName = data.selfName
+            state.viewState = .idle
+        case .failure:
+            state.viewState = .error()
         }
         return .none
     }

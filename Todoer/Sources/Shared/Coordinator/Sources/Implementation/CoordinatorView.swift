@@ -3,12 +3,12 @@ import SwiftUI
 import ThemeAssets
 
 public struct CoordinatorView: View {
-    @StateObject private var coordinator: Coordinator
+    @ObservedObject private var coordinator: Coordinator
     private let menuView: AnyView
-
-    public init(featureProvider: FeatureProviderAPI) {
-        let coordinator = Coordinator(featureProvider: featureProvider)
-        _coordinator = StateObject(wrappedValue: coordinator)
+    @State private var sheetHeight: CGFloat = 0
+    
+    public init(coordinator: Coordinator) {
+        self.coordinator = coordinator
         menuView = coordinator.build(screen: .menu)
     }
 
@@ -30,9 +30,15 @@ public struct CoordinatorView: View {
                         switch sheet {
                         case .shareList:
                             coordinator.build(sheet: sheet)
-                                .presentationDetents(
-                                    [.height(350)]
-                                )
+                                .background(GeometryReader { geometry in
+                                    Color.clear
+                                        .onAppear {
+                                            sheetHeight = geometry.size.height
+                                        }
+                                })
+                                .presentationDetents([.height(sheetHeight)])
+                                .presentationDragIndicator(.hidden)
+                                .id(sheetHeight)
                         }
                     }
                     .fullScreenCover(item: $coordinator.fullScreenCover) { fullScreenCover in

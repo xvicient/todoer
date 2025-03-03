@@ -113,7 +113,6 @@ extension HomeScreen {
                     Color.clear
                         .onAppear {
                             sheetHeight = geometry.size.height
-                            print(geometry.size.height)
                         }
                 })
                 .presentationDetents([.height(sheetHeight)])
