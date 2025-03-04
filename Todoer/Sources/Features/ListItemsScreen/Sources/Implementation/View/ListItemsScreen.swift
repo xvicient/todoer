@@ -62,7 +62,6 @@ extension ListItemsScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: store.state.viewModel.listName,
-            hasBackButton: true,
             tabs: TDListTab.allCases
                 .removingSort(if: store.state.viewModel.items.filter { !$0.isEditing }.count < 2)
                 .filter { !$0.isFilter }

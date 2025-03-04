@@ -31,16 +31,13 @@ public struct TDListView: View {
     
     public struct Configuration {
         let title: String
-        let hasBackButton: Bool
         let tabs: [TDListTab]
-
+        
         public init(
             title: String,
-            hasBackButton: Bool = false,
             tabs: [TDListTab]
         ) {
             self.title = title
-            self.hasBackButton = hasBackButton
             self.tabs = tabs
         }
     }
@@ -54,16 +51,22 @@ public struct TDListView: View {
     @Binding private var activeTab: TDListTab
     
     /// Animation properties
-    @Namespace private var animation
+    @Namespace private var tabAnimation
     @State private var slideDirection: SlideDirection = .forward
     private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
     
     /// Scrolling properties
     @State private var minY: CGFloat = 0.0
     @State private var isScrolling = false
-    private let searchbarThreshold: CGFloat = 50.0
-    private let headerHeight: CGFloat = 150.0
-
+    private let searchbarThreshold: CGFloat = 60.0
+    private let headerHeight: CGFloat = 145.0
+    
+    /// Toolbar  properties
+    @Environment(\.presentationMode) private var presentationMode
+    private var hasBackButton: Bool {
+        presentationMode.wrappedValue.isPresented
+    }
+    
     public init(
         @ViewBuilder content: @escaping () -> AnyView,
         actions: @escaping Actions,
@@ -79,31 +82,32 @@ public struct TDListView: View {
         self._isSearchFocused = isSearchFocused
         self._activeTab = activeTab
     }
-
-    public var body: some View {
-        ZStack {
-            list()
-                .id(activeTab.rawValue)
-                .transition(slideDirection.transition)
-            header()
-        }
-        .background(background)
-    }
     
+    public var body: some View {
+        list
+            .id(activeTab.rawValue)
+            .transition(slideDirection.transition)
+            .background(background)
+    }
+}
+
+// MARK: - TDListView ViewBuilders
+
+extension TDListView {
     @ViewBuilder
     fileprivate var background: some View {
         VStack {
             Color(.lightGray)
-                .ignoresSafeArea(edges: [.leading, .trailing, .top])
+                .ignoresSafeArea(edges: .all)
                 .frame(height: headerHeight)
             Color.white
                 .safeAreaPadding(.top, headerHeight)
-                .ignoresSafeArea(edges: [.leading, .trailing, .bottom])
+                .ignoresSafeArea(edges: .all)
         }
     }
     
     @ViewBuilder
-    fileprivate func list() -> some View {
+    fileprivate var list: some View {
         ScrollViewReader { proxy in
             List {
                 listContent()
@@ -152,96 +156,85 @@ public struct TDListView: View {
             }))
             .removeBounce()
             .scrollIndicators(.hidden)
-            .scrollBounceBehavior(.basedOnSize)
             .scrollContentBackground(.hidden)
             .listStyle(.plain)
-            .safeAreaInset(edge: .top) {
-                Color.clear.frame(height: 240)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                header()
             }
         }
-        .ignoresSafeArea()
     }
     
     @ViewBuilder
     fileprivate func header() -> some View {
-        VStack {
+        ZStack {
             let progress = max(min(-minY / searchbarThreshold, 1), 0)
-            
-            ZStack {
-                VStack {
-                    Text(configuration.title)
-                        .font(.largeTitle.bold())
-                        .lineLimit(1)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, -(30 * progress) - 10)
-                        .padding(.leading, configuration.hasBackButton ? 10 * progress : 0)
-                    Spacer()
-                }
-                .zIndex(1)
-                VStack {
-                    HStack(spacing: 12) {
-                        Image.mag
-                            .font(.title3)
-                        
-                        TextField(Strings.List.searchPlaceholder, text: $searchText)
-                            .focused($isSearchFocused)
-                            .disabled(isScrolling)
-                        
-                        if isSearchFocused {
-                            Button(action: {
-                                isSearchFocused = false
-                                searchText = ""
-                            }, label: {
-                                Image.xmark
-                                    .font(.title3)
-                            })
-                            .transition(.asymmetric(insertion: .push(from: .bottom), removal: .push(from: .top)))
-                        }
-                    }
-                    .foregroundStyle(Color.primary)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 15 - (progress * 13))
-                    .frame(height: 45)
-                    .clipShape(.capsule)
-                    .background {
-                        RoundedRectangle(cornerRadius: 25 - (progress * 25))
-                            .fill(.background)
-                            .shadow(color: .gray.opacity(0.25), radius: 5, x: 0, y: 5)
-                            .padding(.top, -progress * 120)
-                            .padding(.bottom, -progress * searchbarThreshold)
-                            .padding(.horizontal, -progress * 15)
-                    }
-                    .padding(.top, -(progress * 18))
+            VStack {
+                HStack(spacing: 12) {
+                    Image.mag
+                        .font(.title3)
                     
-                    ScrollView(.horizontal) {
-                        HStack(spacing: 12) {
-                            ForEach(configuration.tabs.filter({ !$0.isFilter }), id: \.self) { item in
+                    TextField(Strings.List.searchPlaceholder, text: $searchText)
+                        .focused($isSearchFocused)
+                        .disabled(isScrolling)
+                    
+                    if isSearchFocused {
+                        Button(action: {
+                            isSearchFocused = false
+                            searchText = ""
+                        }, label: {
+                            Image.xmark
+                                .font(.title3)
+                        })
+                        .transition(.asymmetric(insertion: .push(from: .bottom), removal: .push(from: .top)))
+                    }
+                }
+                .padding(.horizontal, 15 - (progress * 13))
+                .padding(.top, (progress * 20))
+                .frame(height: 45)
+                .clipShape(.capsule)
+                .background {
+                    RoundedRectangle(cornerRadius: 25 - (progress * 25))
+                        .fill(.background)
+                        .shadow(color: .gray.opacity(0.25), radius: 5, x: 0, y: 5)
+                        .padding(.top, -progress * 120)
+                        .padding(.bottom, -progress * searchbarThreshold)
+                        .padding(.horizontal, -progress * 15)
+                }
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: 12) {
+                        ForEach(configuration.tabs.filter({ !$0.isFilter }), id: \.self) { item in
+                            tabButton(
+                                item: item
+                            )
+                        }
+                        if !configuration.tabs.filter({ $0.isFilter }).isEmpty {
+                            Divider()
+                                .frame(width: 1, height: 30)
+                                .background(Color.gray)
+                            ForEach(configuration.tabs.filter({ $0.isFilter }), id: \.self) { item in
                                 tabButton(
                                     item: item
                                 )
                             }
-                            if !configuration.tabs.filter({ $0.isFilter }).isEmpty {
-                                Divider()
-                                    .frame(width: 1, height: 30)
-                                    .background(Color.gray)
-                                ForEach(configuration.tabs.filter({ $0.isFilter }), id: \.self) { item in
-                                    tabButton(
-                                        item: item
-                                    )
-                                }
-                            }
                         }
                     }
-                    .scrollIndicators(.hidden)
-                    .padding(.top, -(progress * 18))
-                    .frame(height: 50)
                 }
-                .padding(.top, 30 + minY)
-                .zIndex(0)
+                .scrollIndicators(.hidden)
+                .frame(height: 50)
+                .safeAreaPadding(.bottom, -minY)
             }
             .safeAreaPadding(.horizontal, 15)
-            .frame(height: headerHeight)
-            Spacer()
+            .frame(height: headerHeight, alignment: .bottom)
+            VStack {
+                Text(configuration.title)
+                    .font(.largeTitle.bold())
+                    .lineLimit(1)
+                    .safeAreaPadding(.bottom, (110 - (21 * progress))-minY)
+                    .frame(height: headerHeight, alignment: .bottomLeading)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .safeAreaPadding(.leading, hasBackButton ? 15 + (15 * progress) : 15)
         }
     }
     
@@ -266,7 +259,7 @@ public struct TDListView: View {
                         if activeTab == item {
                             Capsule()
                                 .fill(Color.primary)
-                                .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
+                                .matchedGeometryEffect(id: "ACTIVETAB", in: tabAnimation)
                         } else {
                             Capsule()
                                 .fill(.background)
