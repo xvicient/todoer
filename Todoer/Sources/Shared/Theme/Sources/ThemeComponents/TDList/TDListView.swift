@@ -54,7 +54,6 @@ public struct TDListView: View {
     
     @Namespace private var animation
     @State private var minY: CGFloat = 0.0
-    @State private var animateGradient = false
     @State private var isScrolling = false
     private let searchbarThreshold: CGFloat = 50.0
     private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
@@ -79,7 +78,6 @@ public struct TDListView: View {
 
     public var body: some View {
         ZStack {
-            headerBackground()
             list()
                 .id(activeTab.rawValue)
                 .transition(slideDirection.transition)
@@ -89,19 +87,15 @@ public struct TDListView: View {
                 Spacer()
             }
         }
+        .background(background)
     }
     
     @ViewBuilder
-    fileprivate func headerBackground() -> some View {
-        ZStack {
-            LinearGradient(colors: [.gray, .clear], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .hueRotation(.degrees(animateGradient ? 45 : 0))
-                .ignoresSafeArea()
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 5.0).repeatForever(autoreverses: true)) {
-                        animateGradient.toggle()
-                    }
-                }
+    fileprivate var background: some View {
+        VStack {
+            Color(.lightGray)
+                .ignoresSafeArea(edges: [.leading, .trailing, .top])
+                .frame(height: headerHeight)
             Color.white
                 .safeAreaPadding(.top, headerHeight)
                 .ignoresSafeArea(edges: [.leading, .trailing, .bottom])
