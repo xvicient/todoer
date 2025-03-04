@@ -45,6 +45,7 @@ public struct TDListView: View {
         }
     }
     
+    /// init properties
     private let listContent: () -> AnyView
     private let actions: Actions
     private let configuration: Configuration
@@ -52,13 +53,16 @@ public struct TDListView: View {
     @FocusState.Binding private var isSearchFocused: Bool
     @Binding private var activeTab: TDListTab
     
+    /// Animation properties
     @Namespace private var animation
+    @State private var slideDirection: SlideDirection = .forward
+    private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
+    
+    /// Scrolling properties
     @State private var minY: CGFloat = 0.0
     @State private var isScrolling = false
     private let searchbarThreshold: CGFloat = 50.0
-    private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
     private let headerHeight: CGFloat = 150.0
-    @State private var slideDirection: SlideDirection = .forward
 
     public init(
         @ViewBuilder content: @escaping () -> AnyView,
@@ -81,11 +85,7 @@ public struct TDListView: View {
             list()
                 .id(activeTab.rawValue)
                 .transition(slideDirection.transition)
-            VStack {
-                header()
-                    .background(.clear)
-                Spacer()
-            }
+            header()
         }
         .background(background)
     }
@@ -240,8 +240,9 @@ public struct TDListView: View {
                 .zIndex(0)
             }
             .safeAreaPadding(.horizontal, 15)
+            .frame(height: headerHeight)
+            Spacer()
         }
-        .frame(height: headerHeight)
     }
     
     @ViewBuilder
