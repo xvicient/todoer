@@ -227,11 +227,9 @@ extension TDListView {
             .safeAreaPadding(.horizontal, 15)
             .frame(height: headerHeight, alignment: .bottom)
             VStack {
-                Text(configuration.title)
-                    .font(.largeTitle.bold())
-                    .lineLimit(1)
-                    .safeAreaPadding(.bottom, (110 - (21 * progress))-minY)
-                    .frame(height: headerHeight, alignment: .bottomLeading)
+                TDExpandableText(text: configuration.title, limit: 1)
+                .safeAreaPadding(.bottom, (110 - (21 * progress))-minY)
+                .frame(height: headerHeight, alignment: .bottomLeading)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .safeAreaPadding(.leading, hasBackButton ? 15 + (15 * progress) : 15)
