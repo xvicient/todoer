@@ -9,7 +9,7 @@ public struct TDExpandableText: View {
     @State private var truncatedSize: CGSize = .zero
     @State private var sheetHeight: CGFloat = 100
     
-    public init(text: String, limit: Int = 100) {
+    public init(text: String, limit: Int) {
         self.text = text
         self.limit = limit
     }
