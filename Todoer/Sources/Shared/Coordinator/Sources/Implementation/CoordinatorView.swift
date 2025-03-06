@@ -104,7 +104,7 @@ fileprivate struct LoadingOpacityModifier: ViewModifier {
                 $0.hidden()
             }
             .animation(
-                .easeInOut(duration: 0.5),
+                .easeInOut(duration: 0.5).delay(0.5),
                 value: coordinator.isLoading
             )
     }

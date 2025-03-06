@@ -9,15 +9,18 @@ public struct TDListContent: View {
         let lineLimit: Int?
         let isMoveEnabled: Bool
         let isSwipeEnabled: Bool
+        let listHeight: CGFloat
 
         public init(
             lineLimit: Int? = nil,
             isMoveEnabled: Bool,
-            isSwipeEnabled: Bool
+            isSwipeEnabled: Bool,
+            listHeight: CGFloat
         ) {
             self.lineLimit = lineLimit
             self.isMoveEnabled = isMoveEnabled
             self.isSwipeEnabled = isSwipeEnabled
+            self.listHeight = listHeight
         }
     }
 
@@ -64,23 +67,67 @@ public struct TDListContent: View {
     }
 
     public var body: some View {
-        ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
-            if row.isEditing {
-                TDEmptyRowView(
-                    row: row,
-                    actions: actions
-                ).id(index)
+        if rows.isEmpty {
+            VStack {
+                Spacer()
+                Image.questionmarkDashed
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 50, height: 50)
+                    .foregroundColor(.gray.opacity(0.6))
+                
+                Text(Strings.List.noResults)
+                    .font(.headline)
+                    .foregroundColor(.gray)
+                Spacer()
             }
-            else {
-                TDFilledRowView(
-                    row: row,
-                    actions: actions,
-                    configuration: configuration
-                ).id(index)
+            .frame(height: configuration.listHeight == 0 ? 0 : (configuration.listHeight - 145))
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+        } else {
+            ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
+                if row.isEditing {
+                    TDEmptyRowView(
+                        row: row,
+                        actions: actions
+                    ).id(index)
+                }
+                else {
+                    TDFilledRowView(
+                        row: row,
+                        actions: actions,
+                        configuration: configuration
+                    ).id(index)
+                }
             }
-        }
-        .if(configuration.isMoveEnabled) {
-            $0.onMove(perform: actions.onMove)
+            .if(configuration.isMoveEnabled) {
+                $0.onMove(perform: actions.onMove)
+            }
         }
     }
+}
+
+#Preview {
+    List {
+        TDListContent(
+            configuration: TDListContent.Configuration(
+                isMoveEnabled: true,
+                isSwipeEnabled: true,
+                listHeight: 0.0
+            ),
+            actions: TDListContent.Actions(
+                onSubmit: { _ in },
+                onUpdate: { _, _ in },
+                onCancelAdd: {} ,
+                onCancelEdit: { _ in },
+                onSwipe: { _, _ in },
+                onMove: { _, _ in }),
+            rows: []
+        )
+    }
+    .scrollIndicators(.hidden)
+    .scrollContentBackground(.hidden)
+    .listStyle(.plain)
 }

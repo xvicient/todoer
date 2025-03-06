@@ -22,24 +22,26 @@ struct ListItemsScreen: View {
 
     var body: some View {
         ZStack {
-            TDListView(
-                content: listContent,
-                actions: listActions,
-                configuration: listConfiguration,
-                searchText: $searchText,
-                isSearchFocused: $isSearchFocused,
-                activeTab: Binding(
-                    get: { .all },
-                    set: { _ in }
+            GeometryReader { geometry in
+                TDListView(
+                    content: { listContent(geometry.size.height) },
+                    actions: listActions,
+                    configuration: listConfiguration,
+                    searchText: $searchText,
+                    isSearchFocused: $isSearchFocused,
+                    activeTab: Binding(
+                        get: { .all },
+                        set: { _ in }
+                    )
                 )
-            )
-            .onChange(of: isSearchFocused) {
-                guard isSearchFocused else { return }
-                if store.state.viewState == .addingItem {
-                    store.send(.didTapCancelAddItemButton)
-                }
-                else if case let .editingItem(uid) = store.state.viewState {
-                    store.send(.didTapCancelEditItemButton(uid))
+                .onChange(of: isSearchFocused) {
+                    guard isSearchFocused else { return }
+                    if store.state.viewState == .addingItem {
+                        store.send(.didTapCancelAddItemButton)
+                    }
+                    else if case let .editingItem(uid) = store.state.viewState {
+                        store.send(.didTapCancelEditItemButton(uid))
+                    }
                 }
             }
             loadingView
@@ -69,20 +71,21 @@ extension ListItemsScreen {
     }
 
     @ViewBuilder
-    fileprivate func listContent() -> AnyView {
+    fileprivate func listContent(_ listHeight: CGFloat) -> AnyView {
         AnyView(
             TDListContent(
-                configuration: contentConfiguration,
+                configuration: contentConfiguration(listHeight),
                 actions: contentActions,
                 rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
             )
         )
     }
 
-    fileprivate var contentConfiguration: TDListContent.Configuration {
+    fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
-            isSwipeEnabled: !store.state.viewState.isEditing
+            isSwipeEnabled: !store.state.viewState.isEditing,
+            listHeight: listHeight
         )
     }
 

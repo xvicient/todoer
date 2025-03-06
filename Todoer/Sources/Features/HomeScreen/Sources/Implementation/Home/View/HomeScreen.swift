@@ -42,21 +42,23 @@ struct HomeScreen: View {
 
     var body: some View {
         ZStack {
-            TDListView(
-                content: listContent,
-                actions: listActions,
-                configuration: listConfiguration,
-                searchText: $searchText,
-                isSearchFocused: $isSearchFocused,
-                activeTab: activeTabBinding
-            )
-            .onChange(of: isSearchFocused) {
-                guard isSearchFocused else { return }
-                if store.state.viewState == .addingList {
-                    store.send(.didTapCancelAddListButton)
-                }
-                else if case let .editingList(uid) = store.state.viewState {
-                    store.send(.didTapCancelEditListButton(uid))
+            GeometryReader { geometry in
+                TDListView(
+                    content: { listContent(geometry.size.height) },
+                    actions: listActions,
+                    configuration: listConfiguration,
+                    searchText: $searchText,
+                    isSearchFocused: $isSearchFocused,
+                    activeTab: activeTabBinding
+                )
+                .onChange(of: isSearchFocused) {
+                    guard isSearchFocused else { return }
+                    if store.state.viewState == .addingList {
+                        store.send(.didTapCancelAddListButton)
+                    }
+                    else if case let .editingList(uid) = store.state.viewState {
+                        store.send(.didTapCancelEditListButton(uid))
+                    }
                 }
             }
         }
@@ -133,10 +135,10 @@ extension HomeScreen {
     }
 
     @ViewBuilder
-    fileprivate func listContent() -> AnyView {
+    fileprivate func listContent(_ listHeight: CGFloat) -> AnyView {
         AnyView(
             TDListContent(
-                configuration: contentConfiguration,
+                configuration: contentConfiguration(listHeight),
                 actions: contentActions,
                 rows: store.state.viewModel.lists(for: source)
                     .filter(with: searchText).map { $0.tdListRow }
@@ -144,11 +146,12 @@ extension HomeScreen {
         )
     }
 
-    fileprivate var contentConfiguration: TDListContent.Configuration {
+    fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
             lineLimit: 2,
             isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
-            isSwipeEnabled: !store.state.viewState.isEditing
+            isSwipeEnabled: !store.state.viewState.isEditing,
+            listHeight: listHeight
         )
     }
 

@@ -4,6 +4,7 @@ public struct Strings {
         public static let newItemPlaceholder = "Name..."
         public static let sortButtonTitle = "Sort"
         public static let searchPlaceholder = "Search"
+        public static let noResults = "No Results"
     }
     
     public struct TabAction {
