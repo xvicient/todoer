@@ -84,10 +84,13 @@ public struct TDListView: View {
     }
     
     public var body: some View {
-        list
-            .id(activeTab.rawValue)
-            .transition(slideDirection.transition)
-            .background(background)
+        ZStack {
+            list
+                .id(activeTab.rawValue)
+                .transition(slideDirection.transition)
+            header()
+        }
+        .background(background)
     }
 }
 
@@ -159,80 +162,83 @@ extension TDListView {
             .scrollContentBackground(.hidden)
             .listStyle(.plain)
             .safeAreaInset(edge: .top, spacing: 0) {
-                header()
+                Color.clear.frame(height: headerHeight)
             }
         }
     }
     
     @ViewBuilder
     fileprivate func header() -> some View {
-        ZStack {
-            let progress = max(min(-minY / searchbarThreshold, 1), 0)
-            VStack {
-                HStack(spacing: 12) {
-                    Image.mag
-                        .font(.title3)
-                    
-                    TextField(Strings.List.searchPlaceholder, text: $searchText)
-                        .focused($isSearchFocused)
-                        .disabled(isScrolling)
-                    
-                    if isSearchFocused {
-                        Button(action: {
-                            isSearchFocused = false
-                            searchText = ""
-                        }, label: {
-                            Image.xmark
-                                .font(.title3)
-                        })
-                        .transition(.asymmetric(insertion: .push(from: .bottom), removal: .push(from: .top)))
-                    }
-                }
-                .padding(.horizontal, 15 - (progress * 13))
-                .padding(.top, (progress * 20))
-                .frame(height: 45)
-                .clipShape(.capsule)
-                .background {
-                    RoundedRectangle(cornerRadius: 25 - (progress * 25))
-                        .fill(.background)
-                        .shadow(color: .gray.opacity(0.25), radius: 5, x: 0, y: 5)
-                        .padding(.top, -progress * 120)
-                        .padding(.bottom, -progress * searchbarThreshold)
-                        .padding(.horizontal, -progress * 15)
-                }
-                
-                ScrollView(.horizontal) {
+        VStack {
+            ZStack {
+                let progress = max(min(-minY / searchbarThreshold, 1), 0)
+                VStack {
                     HStack(spacing: 12) {
-                        ForEach(configuration.tabs.filter({ !$0.isFilter }), id: \.self) { item in
-                            tabButton(
-                                item: item
-                            )
+                        Image.mag
+                            .font(.title3)
+                        
+                        TextField(Strings.List.searchPlaceholder, text: $searchText)
+                            .focused($isSearchFocused)
+                            .disabled(isScrolling)
+                        
+                        if isSearchFocused {
+                            Button(action: {
+                                isSearchFocused = false
+                                searchText = ""
+                            }, label: {
+                                Image.xmark
+                                    .font(.title3)
+                            })
+                            .transition(.asymmetric(insertion: .push(from: .bottom), removal: .push(from: .top)))
                         }
-                        if !configuration.tabs.filter({ $0.isFilter }).isEmpty {
-                            Divider()
-                                .frame(width: 1, height: 30)
-                                .background(Color.gray)
-                            ForEach(configuration.tabs.filter({ $0.isFilter }), id: \.self) { item in
+                    }
+                    .padding(.horizontal, 15 - (progress * 13))
+                    .padding(.top, (progress * 20))
+                    .frame(height: 45)
+                    .clipShape(.capsule)
+                    .background {
+                        RoundedRectangle(cornerRadius: 25 - (progress * 25))
+                            .fill(.background)
+                            .shadow(color: .gray.opacity(0.25), radius: 5, x: 0, y: 5)
+                            .padding(.top, -progress * 120)
+                            .padding(.bottom, -progress * searchbarThreshold)
+                            .padding(.horizontal, -progress * 15)
+                    }
+                    
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 12) {
+                            ForEach(configuration.tabs.filter({ !$0.isFilter }), id: \.self) { item in
                                 tabButton(
                                     item: item
                                 )
                             }
+                            if !configuration.tabs.filter({ $0.isFilter }).isEmpty {
+                                Divider()
+                                    .frame(width: 1, height: 30)
+                                    .background(Color.gray)
+                                ForEach(configuration.tabs.filter({ $0.isFilter }), id: \.self) { item in
+                                    tabButton(
+                                        item: item
+                                    )
+                                }
+                            }
                         }
                     }
+                    .scrollIndicators(.hidden)
+                    .frame(height: 50)
+                    .safeAreaPadding(.bottom, -minY)
                 }
-                .scrollIndicators(.hidden)
-                .frame(height: 50)
-                .safeAreaPadding(.bottom, -minY)
+                .safeAreaPadding(.horizontal, 15)
+                .frame(height: headerHeight, alignment: .bottom)
+                VStack {
+                    TDExpandableText(text: configuration.title, limit: 1)
+                        .safeAreaPadding(.bottom, (110 - (21 * progress))-minY)
+                        .frame(height: headerHeight, alignment: .bottomLeading)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .safeAreaPadding(.leading, hasBackButton ? 15 + (15 * progress) : 15)
             }
-            .safeAreaPadding(.horizontal, 15)
-            .frame(height: headerHeight, alignment: .bottom)
-            VStack {
-                TDExpandableText(text: configuration.title, limit: 1)
-                .safeAreaPadding(.bottom, (110 - (21 * progress))-minY)
-                .frame(height: headerHeight, alignment: .bottomLeading)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .safeAreaPadding(.leading, hasBackButton ? 15 + (15 * progress) : 15)
+            Spacer()
         }
     }
     
