@@ -15,6 +15,10 @@ extension Array where Element: ElementSortable {
             }
         }
 
+        reIndex()
+    }
+    
+    public mutating func reIndex() {
         enumerated().forEach {
             self[$0.offset].index = $0.offset
         }

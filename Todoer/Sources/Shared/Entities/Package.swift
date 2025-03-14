@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "Entities",
     platforms: [
-        .iOS(.v17)
+        .iOS(.v18)
     ],
     products: [
         .library(
@@ -27,6 +27,9 @@ let package = Package(
     targets: [
         .target(
             name: "Entities",
+            dependencies: [
+                "Common"
+            ],
             path: "Sources/Implementation"
         ),
         .target(

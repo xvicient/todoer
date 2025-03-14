@@ -28,7 +28,7 @@ struct TodoerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            CoordinatorView(featureProvider: FeatureProvider())
+            CoordinatorView(coordinator: Coordinator(featureProvider: FeatureProvider()))
         }
     }
 }

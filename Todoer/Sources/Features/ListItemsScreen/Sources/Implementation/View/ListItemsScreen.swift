@@ -12,7 +12,7 @@ import xRedux
 struct ListItemsScreen: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
     @State private var searchText = ""
-    @State private var isSearchFocused = false
+    @FocusState private var isSearchFocused: Bool
 
     init(
         store: Store<ListItems.Reducer>
@@ -22,18 +22,26 @@ struct ListItemsScreen: View {
 
     var body: some View {
         ZStack {
-            TDListView(
-                sections: sections,
-                searchText: $searchText,
-                isSearchFocused: $isSearchFocused
-            )
-            .onChange(of: isSearchFocused) {
-                guard isSearchFocused else { return }
-                if store.state.viewState == .addingItem {
-                    store.send(.didTapCancelAddItemButton)
-                }
-                else if case let .editingItem(uid) = store.state.viewState {
-                    store.send(.didTapCancelEditItemButton(uid))
+            GeometryReader { geometry in
+                TDListView(
+                    content: { listContent(geometry.size.height) },
+                    actions: listActions,
+                    configuration: listConfiguration,
+                    searchText: $searchText,
+                    isSearchFocused: $isSearchFocused,
+                    activeTab: Binding(
+                        get: { .all },
+                        set: { _ in }
+                    )
+                )
+                .onChange(of: isSearchFocused) {
+                    guard isSearchFocused else { return }
+                    if store.state.viewState == .addingItem {
+                        store.send(.didTapCancelAddItemButton)
+                    }
+                    else if case let .editingItem(uid) = store.state.viewState {
+                        store.send(.didTapCancelEditItemButton(uid))
+                    }
                 }
             }
             loadingView
@@ -53,38 +61,36 @@ struct ListItemsScreen: View {
 // MARK: - ViewBuilders
 
 extension ListItemsScreen {
-
-    @ViewBuilder
-    fileprivate func sections() -> AnyView {
-        AnyView(
-            Group {
-                TDListSection(
-                    configuration: configuration,
-                    actions: actions,
-                    rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
-                )
-            }
-        )
-    }
-
-    fileprivate var configuration: TDListSection.Configuration {
+    fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: store.state.viewModel.listName,
-            addButtonTitle: Strings.ListItems.newItemButtonTitle,
-            isSortEnabled: store.state.viewModel.items.filter { !$0.isEditing }.count > 1,
-            isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
-            isSwipeEnabled: !store.state.viewState.isEditing
+            tabs: TDListTab.allCases
+                .removingSort(if: store.state.viewModel.items.filter { !$0.isEditing }.count < 2)
+                .filter { !$0.isFilter }
         )
     }
 
-    fileprivate var actions: TDListSection.Actions {
-        TDListSection.Actions(
-            onAddRow: {
-                isSearchFocused = false
-                searchText = ""
-                store.send(.didTapAddRowButton)
-            },
-            onSortRows: { store.send(.didTapAutoSortItems) },
+    @ViewBuilder
+    fileprivate func listContent(_ listHeight: CGFloat) -> AnyView {
+        AnyView(
+            TDListContent(
+                configuration: contentConfiguration(listHeight),
+                actions: contentActions,
+                rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
+            )
+        )
+    }
+
+    fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
+        .init(
+            isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
+            isSwipeEnabled: !store.state.viewState.isEditing,
+            listHeight: listHeight
+        )
+    }
+
+    fileprivate var contentActions: TDListContent.Actions {
+        TDListContent.Actions(
             onSubmit: { store.send(.didTapSubmitItemButton($0)) },
             onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
             onCancelAdd: { store.send(.didTapCancelAddItemButton) },
@@ -105,6 +111,23 @@ extension ListItemsScreen {
 // MARK: - Private
 
 extension ListItemsScreen {
+    fileprivate var listActions: (TDListTab) -> Void {
+        { action in
+            switch action {
+            case .add:
+                {
+                    isSearchFocused = false
+                    searchText = ""
+                    store.send(.didTapAddRowButton)
+                }()
+            case .sort:
+                store.send(.didTapAutoSortItems)
+            default:
+                break
+            }
+        }
+    }
+    
     fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
         { rowId, option in
             switch option {
@@ -112,10 +135,10 @@ extension ListItemsScreen {
                 store.send(.didTapToggleItemButton(rowId))
             case .delete:
                 store.send(.didTapDeleteItemButton(rowId))
-            case .share:
-                break
             case .edit:
                 store.send(.didTapEditItemButton(rowId))
+            default:
+                break
             }
         }
     }

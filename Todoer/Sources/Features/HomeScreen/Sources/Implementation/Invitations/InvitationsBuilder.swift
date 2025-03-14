@@ -13,7 +13,10 @@ public struct Invitations {
                 useCase: UseCase()
             )
             let store = Store(initialState: .init(), reducer: reducer)
-            return InvitationsView(store: store)
+            return InvitationsView(
+                store: store,
+                invitationsCount: invitations.count
+            )
         }
     }
 }

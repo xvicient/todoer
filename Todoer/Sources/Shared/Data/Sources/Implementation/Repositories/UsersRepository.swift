@@ -1,6 +1,7 @@
 import Entities
 
 public protocol UsersRepositoryApi {
+    var uid: String { get }
 
     func setUid(_ value: String)
 
@@ -44,6 +45,10 @@ public final class UsersRepository: UsersRepositoryApi {
 
     public func setUid(_ value: String) {
         usersDataSource.uid = value
+    }
+    
+    public var uid: String {
+        usersDataSource.uid
     }
 
     public func createUser(

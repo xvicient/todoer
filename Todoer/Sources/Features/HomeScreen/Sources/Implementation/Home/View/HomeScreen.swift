@@ -12,11 +12,25 @@ import xRedux
 // MARK: - HomeScreen
 
 struct HomeScreen: View {
+    
     @ObservedObject private var store: Store<Home.Reducer>
-    @Environment(\.scenePhase) private var scenePhase
-    @State private var searchText = ""
-    @State private var isSearchFocused = false
     private var invitationsView: Home.MakeInvitationsView
+    
+    @Environment(\.scenePhase) private var scenePhase
+    
+    @State private var source: Home.Reducer.Source = .allLists
+    @State var isShowingInvitations: Bool = false
+    @State private var sheetHeight: CGFloat = 0
+    
+    @State private var searchText = ""
+    @FocusState private var isSearchFocused: Bool
+    
+    private var activeTabBinding: Binding<TDListTab> {
+        Binding(
+            get: { source.activeTab },
+            set: { _ in }
+        )
+    }
 
     init(
         store: Store<Home.Reducer>,
@@ -28,21 +42,32 @@ struct HomeScreen: View {
 
     var body: some View {
         ZStack {
-            TDListView(
-                sections: sections,
-                searchText: $searchText,
-                isSearchFocused: $isSearchFocused
-            )
-            .onChange(of: isSearchFocused) {
-                guard isSearchFocused else { return }
-                if store.state.viewState == .addingList {
-                    store.send(.didTapCancelAddListButton)
-                }
-                else if case let .editingList(uid) = store.state.viewState {
-                    store.send(.didTapCancelEditListButton(uid))
+            GeometryReader { geometry in
+                TDListView(
+                    content: { listContent(geometry.size.height) },
+                    actions: listActions,
+                    configuration: listConfiguration,
+                    searchText: $searchText,
+                    isSearchFocused: $isSearchFocused,
+                    activeTab: activeTabBinding
+                )
+                .onChange(of: isSearchFocused) {
+                    guard isSearchFocused else { return }
+                    if store.state.viewState == .addingList {
+                        store.send(.didTapCancelAddListButton)
+                    }
+                    else if case let .editingList(uid) = store.state.viewState {
+                        store.send(.didTapCancelEditListButton(uid))
+                    }
                 }
             }
-            loadingView
+        }
+        .toolbar {
+            if !store.state.viewModel.invitations.isEmpty {
+                ToolbarItem(placement: .automatic) {
+                    invitationsToolbarItem
+                }
+            }
         }
         .onAppear {
             store.send(.onViewAppear)
@@ -52,9 +77,6 @@ struct HomeScreen: View {
                 store.send(.onSceneActive)
             }
         }
-        .disabled(
-            store.state.viewState == .loading
-        )
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
         }
@@ -64,42 +86,77 @@ struct HomeScreen: View {
 // MARK: - ViewBuilders
 
 extension HomeScreen {
-
+    
     @ViewBuilder
-    fileprivate func sections() -> AnyView {
-        AnyView(
-            Group {
-                if !store.state.viewModel.invitations.isEmpty {
-                    invitationsView(store.state.viewModel.invitations)
-                }
-                TDListSection(
-                    configuration: configuration,
-                    actions: actions,
-                    rows: store.state.viewModel.lists.filter(with: searchText).map { $0.tdListRow }
+    fileprivate var invitationsToolbarItem: some View {
+        Button {
+            isShowingInvitations = true
+        } label: {
+            Image.squareArrowDownFill
+                .foregroundStyle(.black)
+                .font(.system(size: 14))
+                .padding(5)
+                .overlay(Circle().stroke(Color.black, lineWidth: 2))
+                .overlay(
+                    Text("\(store.state.viewModel.invitations.count)")
+                        .font(.caption2).bold()
+                        .foregroundColor(.white)
+                        .frame(width: 18, height: 18)
+                        .background(Circle().fill(Color.red))
+                        .offset(x: 5, y: -3),
+                    alignment: .topTrailing
                 )
-            }
-        )
+        }
+        .sheet(isPresented: $isShowingInvitations, onDismiss: {
+            isShowingInvitations = false
+        }) {
+            invitationsView(store.state.viewModel.invitations)
+                .background(GeometryReader { geometry in
+                    Color.clear
+                        .onAppear {
+                            sheetHeight = geometry.size.height
+                        }
+                })
+                .presentationDetents([.height(sheetHeight)])
+                .presentationDragIndicator(.hidden)
+        }
+        .padding(.trailing, -20)
     }
+}
 
-    fileprivate var configuration: TDListSection.Configuration {
+// MARK: - TDListView
+
+extension HomeScreen {
+    fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: Strings.Home.todosText,
-            addButtonTitle: Strings.Home.newTodoButtonTitle,
-            isSortEnabled: store.state.viewModel.lists.filter { !$0.isEditing }.count > 1,
-            lineLimit: 2,
-            isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
-            isSwipeEnabled: !store.state.viewState.isEditing
+            tabs: store.state.viewModel.tabs
         )
     }
 
-    fileprivate var actions: TDListSection.Actions {
+    @ViewBuilder
+    fileprivate func listContent(_ listHeight: CGFloat) -> AnyView {
+        AnyView(
+            TDListContent(
+                configuration: contentConfiguration(listHeight),
+                actions: contentActions,
+                rows: store.state.viewModel.lists(for: source)
+                    .filter(with: searchText).map { $0.tdListRow }
+            )
+        )
+    }
+
+    fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
-            onAddRow: {
-                isSearchFocused = false
-                searchText = ""
-                store.send(.didTapAddRowButton)
-            },
-            onSortRows: { store.send(.didTapAutoSortLists) },
+            lineLimit: 2,
+            isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
+            isSwipeEnabled: !store.state.viewState.isEditing,
+            listHeight: listHeight
+        )
+    }
+
+    fileprivate var contentActions: TDListContent.Actions {
+        .init(
             onSubmit: { store.send(.didTapSubmitListButton($0)) },
             onUpdate: { store.send(.didTapUpdateListButton($0, $1)) },
             onCancelAdd: { store.send(.didTapCancelAddListButton) },
@@ -110,17 +167,26 @@ extension HomeScreen {
         )
     }
     
-    @ViewBuilder
-    fileprivate var loadingView: some View {
-        if store.state.viewState == .loading {
-            ProgressView()
+    fileprivate var listActions: (TDListTab) -> Void {
+        { action in
+            switch action {
+            case .add:
+                source = .allLists
+                return {
+                    isSearchFocused = false
+                    searchText = ""
+                    store.send(.didTapAddRowButton)
+                }()
+            case .sort:
+                store.send(.didTapAutoSortLists)
+            case .all:
+                source = .allLists
+            case .sharing:
+                source = .sharingLists
+            }
         }
     }
-}
-
-// MARK: - Private
-
-extension HomeScreen {
+    
     fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
         { rowId, option in
             switch option {
@@ -138,7 +204,7 @@ extension HomeScreen {
 
     fileprivate func moveList(fromOffset: IndexSet, toOffset: Int) {
         guard !isSearchFocused, !store.state.viewState.isEditing else { return }
-        store.send(.didSortLists(fromOffset, toOffset))
+        store.send(.didSortLists(fromOffset, toOffset, source))
     }
 }
 
@@ -164,8 +230,19 @@ struct Home_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        Home.Builder.makeHome(
-            dependencies: Dependencies(coordinator: CoordinatorMock())
+        let viewModel = Home.Reducer.ViewModel()
+        let reducer = Home.Reducer(dependencies: Dependencies(coordinator: CoordinatorMock()))
+        let store = Store(initialState: .init(viewModel: viewModel), reducer: reducer)
+        return HomeScreen(
+            store: store,
+            invitationsView: {
+                AnyView(
+                    Invitations.Builder.makeInvitations(
+                        invitations: $0
+                    )
+                    .id(UUID())
+                )
+            }
         )
     }
 }

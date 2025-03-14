@@ -56,14 +56,6 @@ struct TDEmptyRowView: View {
             .buttonStyle(.borderless)
         }
         .frame(height: 40)
-        .listRowInsets(
-            .init(
-                top: 8,
-                leading: 8,
-                bottom: 8,
-                trailing: 8
-            )
-        )
         .onAppear {
             isEmptyRowFocused = true
         }

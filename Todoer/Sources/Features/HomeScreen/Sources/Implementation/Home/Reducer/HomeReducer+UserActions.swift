@@ -180,14 +180,49 @@ extension Home.Reducer {
             )
         }
     }
-
+    
+    /// Handles the reordering of lists when a user performs a drag and drop operation.
+    /// This function manages both the UI state and the persistence of the new order.
+    ///
+    /// The function works with both all lists and sharing lists views by:
+    /// 1. Mapping the source indices from the filtered view to the main list
+    /// 2. Performing the move operation on the main list
+    /// 3. Reindexing all items to maintain proper order
+    /// 4. Persisting the changes through the use case
+    ///
+    /// - Parameters:
+    ///   - state: The current state to be modified
+    ///   - fromIndex: The indices of items being moved in the filtered view
+    ///   - toIndex: The destination index in the filtered view
+    ///   - source: The source view (.allLists or .sharingLists) where the reordering occurred
+    /// - Returns: An effect that persists the new order through the use case
     func onDidSortLists(
         state: inout State,
         fromIndex: IndexSet,
-        toIndex: Int
+        toIndex: Int,
+        source: Source
     ) -> Effect<Action> {
         state.viewState = .sortingList
-        state.viewModel.lists.move(fromOffsets: fromIndex, toOffset: toIndex)
+        let sortedLists = state.viewModel.lists(for: source)
+        
+        // 1. Map the indices from filtered list to main list
+        let mainListFromIndex = IndexSet(fromIndex.map { sourceIndex in
+            state.viewModel.lists.firstIndex { $0.id == sortedLists[sourceIndex].id } ?? 0
+        })
+        
+        // 2. When moving to the end, toIndex will be equal to the array count
+        let mainListToIndex: Int
+        if toIndex >= sortedLists.count {
+            mainListToIndex = state.viewModel.lists.count
+        } else {
+            mainListToIndex = state.viewModel.lists.firstIndex { $0.id == sortedLists[toIndex].id } ?? 0
+        }
+        
+        // 3. Move items in the main list
+        state.viewModel.lists.move(fromOffsets: mainListFromIndex, toOffset: mainListToIndex)
+        state.viewModel.lists.reIndex()
+        
+        // 4. Persisting the changes through the use case
         let lists = state.viewModel.lists
             .map { $0.list }
         return .task { send in
@@ -231,27 +266,12 @@ extension Home.Reducer {
 
 extension Home.Reducer {
     fileprivate func newListRow(
-        list: UserList = UserList.emptyList
+        list: UserList = UserList.empty
     ) -> WrappedUserList {
         WrappedUserList(
             id: list.id,
             list: list,
             isEditing: true
-        )
-    }
-}
-
-// MARK: - Empty list
-
-extension UserList {
-    fileprivate static var emptyList: UserList {
-        UserList(
-            id: UUID(),
-            documentId: "",
-            name: "",
-            done: false,
-            uid: [],
-            index: -Date().milliseconds
         )
     }
 }

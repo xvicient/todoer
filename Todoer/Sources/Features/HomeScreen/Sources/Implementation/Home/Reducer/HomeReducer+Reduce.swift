@@ -78,11 +78,12 @@ extension Home.Reducer {
                 newListName: name
             )
 
-        case (.idle, .didSortLists(let fromIndex, let toIndex)):
+        case (.idle, .didSortLists(let fromIndex, let toIndex, let source)):
             return onDidSortLists(
                 state: &state,
                 fromIndex: fromIndex,
-                toIndex: toIndex
+                toIndex: toIndex,
+                source: source
             )
 
         case (.alert, .didTapDismissError):

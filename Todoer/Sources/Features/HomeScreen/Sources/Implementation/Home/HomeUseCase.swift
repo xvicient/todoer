@@ -34,6 +34,7 @@ extension Home {
     struct HomeData: Equatable, Sendable {
         let lists: [UserList]
         let invitations: [Invitation]
+        let userUid: String
     }
 
     struct UseCase: HomeUseCaseApi {
@@ -51,15 +52,18 @@ extension Home {
         private let listsRepository: ListsRepositoryApi
         private let itemsRepository: ItemsRepositoryApi
         private let invitationsRepository: InvitationsRepositoryApi
+        private let usersRepository: UsersRepositoryApi
 
         init(
             listsRepository: ListsRepositoryApi = ListsRepository(),
             itemsRepository: ItemsRepositoryApi = ItemsRepository(),
-            invitationsRepository: InvitationsRepositoryApi = InvitationsRepository()
+            invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
+            usersRepository: UsersRepositoryApi = UsersRepository()
         ) {
             self.listsRepository = listsRepository
             self.itemsRepository = itemsRepository
             self.invitationsRepository = invitationsRepository
+            self.usersRepository = usersRepository
         }
 
         var sharedListsCount: Int {
@@ -81,7 +85,13 @@ extension Home {
                 fetchLists(),
                 fetchInvitations()
             )
-            .map { HomeData(lists: $0, invitations: $1) }
+            .map { lists, invitations in
+                HomeData(
+                    lists: lists,
+                    invitations: invitations,
+                    userUid: usersRepository.uid
+                )
+            }
             .eraseToAnyPublisher()
         }
 

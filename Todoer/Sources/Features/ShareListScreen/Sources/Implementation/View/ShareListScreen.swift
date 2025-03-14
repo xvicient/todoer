@@ -26,7 +26,10 @@ struct ShareListScreen: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            title
+            Text(Strings.ShareList.shareText)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
+                .font(.largeTitle.bold())
+                .padding(.vertical)
             if store.state.viewModel.selfName == nil {
                 TDTextField(
                     text: $shareOwnerNameText,
@@ -55,8 +58,7 @@ struct ShareListScreen: View {
                 Text(Strings.ShareList.notSharedYetText)
                     .foregroundColor(Color.textBlack)
                     .font(.system(size: 14))
-            }
-            else {
+            } else {
                 ScrollView(.horizontal) {
                     HStack(spacing: 20) {
                         ForEach(store.state.viewModel.users) { user in
@@ -87,7 +89,6 @@ struct ShareListScreen: View {
             }
         }
         .padding(.horizontal, 24)
-        .frame(maxHeight: .infinity)
         .background(Color.backgroundWhite)
         .onAppear {
             store.send(.onAppear)
@@ -95,25 +96,6 @@ struct ShareListScreen: View {
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
         }
-    }
-}
-
-// MARK: - ViewBuilders
-
-extension ShareListScreen {
-    @ViewBuilder
-    fileprivate var title: some View {
-        HStack {
-            Image.squareAndArrowUp
-                .foregroundColor(Color.backgroundBlack)
-                .fontWeight(.medium)
-            Text(Strings.ShareList.shareText)
-                .foregroundColor(Color.textBlack)
-                .fontWeight(.medium)
-            Spacer()
-        }
-        .padding(.top, 24)
-        .padding(.bottom, 8)
     }
 }
 
