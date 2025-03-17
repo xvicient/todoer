@@ -11,7 +11,6 @@ import xRedux
 
 struct ListItemsScreen: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
-    @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
 
     init(
@@ -27,7 +26,10 @@ struct ListItemsScreen: View {
                     content: { listContent(geometry.size.height) },
                     actions: listActions,
                     configuration: listConfiguration,
-                    searchText: $searchText,
+                    searchText: Binding(
+                        get: { store.state.searchText },
+                        set: { store.send(.didUpdateSearchText($0)) }
+                    ),
                     isSearchFocused: $isSearchFocused,
                     activeTab: Binding(
                         get: { .all },
@@ -63,9 +65,9 @@ struct ListItemsScreen: View {
 extension ListItemsScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
-            title: store.state.viewModel.listName,
+            title: store.state.listName,
             tabs: TDListTab.allCases
-                .removingSort(if: store.state.viewModel.items.filter { !$0.isEditing }.count < 2)
+                .removingSort(if: store.state.items.filter { !$0.isEditing }.count < 2)
                 .filter { !$0.isFilter }
         )
     }
@@ -76,7 +78,7 @@ extension ListItemsScreen {
             TDListContent(
                 configuration: contentConfiguration(listHeight),
                 actions: contentActions,
-                rows: store.state.viewModel.items.filter(with: searchText).map { $0.tdListRow }
+                rows: store.state.filteredItems
             )
         )
     }
@@ -117,7 +119,7 @@ extension ListItemsScreen {
             case .add:
                 {
                     isSearchFocused = false
-                    searchText = ""
+                    store.send(.didUpdateSearchText(""))
                     store.send(.didTapAddRowButton)
                 }()
             case .sort:
@@ -146,22 +148,6 @@ extension ListItemsScreen {
     fileprivate func moveItem(fromOffset: IndexSet, toOffset: Int) {
         guard !isSearchFocused, !store.state.viewState.isEditing else { return }
         store.send(.didSortItems(fromOffset, toOffset))
-    }
-}
-
-// MARK: - ItemRow to TDRow
-
-extension ListItems.Reducer.WrappedItem {
-    fileprivate var tdListRow: TDListRow {
-        TDListRow(
-            id: item.id,
-            name: item.name,
-            image: item.done ? Image.largecircleFillCircle : Image.circle,
-            strikethrough: item.done,
-            leadingActions: leadingActions,
-            trailingActions: trailingActions,
-            isEditing: isEditing
-        )
     }
 }
 

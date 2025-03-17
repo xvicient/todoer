@@ -140,8 +140,11 @@ extension HomeScreen {
             TDListContent(
                 configuration: contentConfiguration(listHeight),
                 actions: contentActions,
-                rows: store.state.viewModel.lists(for: source)
-                    .filter(with: searchText).map { $0.tdListRow }
+                rows: Binding(
+                    get: { store.state.viewModel.lists(for: source)
+                        .filter(with: searchText).map { $0.tdListRow } },
+                    set: { _ in }
+                )
             )
         )
     }

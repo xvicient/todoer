@@ -46,6 +46,37 @@ public final class ItemsRepository: ItemsRepositoryApi {
         listId: String
     ) -> AnyPublisher<[Item], Error> {
         itemsDataSource.fetchItems(listId: listId)
+            .scan([ItemDTO]()) { storedItems, newItems in
+                // Convert stored items to dictionary (ignoring items without ID)
+                let storedItemsDict = storedItems.reduce(into: [String: ItemDTO]()) { dict, item in
+                    guard let id = item.id else {
+                        return
+                    }
+                    dict[id] = item
+                }
+                
+                var updatedItems = [ItemDTO]()
+                        
+                for newItem in newItems {
+                    guard let newId = newItem.id else { continue } // Skip items without ID
+                    
+                    if let storedItem = storedItemsDict[newId] {
+                        // Merge changes: update name/done only if changed
+                        let mergedItem = ItemDTO(
+                            id: storedItem.id,
+                            name: storedItem.name != newItem.name ? newItem.name : storedItem.name,
+                            done: storedItem.done != newItem.done ? newItem.done : storedItem.done,
+                            index: storedItem.index // Always take latest index
+                        )
+                        updatedItems.append(mergedItem)
+                    } else {
+                        // Add new items (with valid ID)
+                        updatedItems.append(newItem)
+                    }
+                }
+                
+                return updatedItems
+            }
             .tryMap { $0.map(\.toDomain) }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

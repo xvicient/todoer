@@ -3,7 +3,6 @@ import xRedux
 
 // MARK: - Reducer view appear
 
-@MainActor
 extension ListItems.Reducer {
     func onAppear(
         state: inout State

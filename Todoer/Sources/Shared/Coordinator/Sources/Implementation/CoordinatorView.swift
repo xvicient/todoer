@@ -24,7 +24,8 @@ public struct CoordinatorView: View {
                     }
                     .navigationDestination(for: Screen.self) { screen in
                         coordinator.build(screen: screen)
-                            .setupNavigationBar(screen: screen)
+//                            .id(screen.id)
+//                            .setupNavigationBar(screen: screen)
                     }
                     .sheet(item: $coordinator.sheet) { sheet in
                         switch sheet {

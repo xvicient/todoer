@@ -13,41 +13,36 @@ struct TDEmptyRowView: View {
     let actions: TDEmptyRowActions
 
     @FocusState private var isEmptyRowFocused: Bool
-    @State private var emptyRowText = ""
+    @Binding private var text: String
+    @State private var localText: String = ""
+
+    init(
+        row: TDListRow,
+        actions: TDEmptyRowActions,
+        text: Binding<String>
+    ) {
+        self.row = row
+        self.actions = actions
+        self._text = text
+    }
 
     var body: some View {
         HStack {
             row.image
                 .foregroundColor(Color.buttonBlack)
-            TextField(Strings.List.newItemPlaceholder, text: $emptyRowText)
+            
+            TextField(Strings.List.newItemPlaceholder, text: $localText)
                 .foregroundColor(Color.textBlack)
                 .focused($isEmptyRowFocused)
-                .onAppear {
-                    emptyRowText = row.name
-                }
-                .onSubmit {
-                    hideKeyboard()
-                    withAnimation {
-                        if row.name.isEmpty {
-                            actions.onSubmit($emptyRowText.wrappedValue)
-                        }
-                        else {
-                            actions.onUpdate(row.id, $emptyRowText.wrappedValue)
-                        }
+                .onSubmit(handleSubmit)
+                .onChange(of: text) {
+                    if localText != text {
+                        localText = text
                     }
                 }
                 .submitLabel(.done)
-            Button(action: {
-                hideKeyboard()
-                withAnimation {
-                    if row.name.isEmpty {
-                        actions.onCancelAdd()
-                    }
-                    else {
-                        actions.onCancelEdit(row.id)
-                    }
-                }
-            }) {
+            
+            Button(action: handleCancel) {
                 Image.xmark
                     .resizable()
                     .frame(width: 12, height: 12)
@@ -58,6 +53,33 @@ struct TDEmptyRowView: View {
         .frame(height: 40)
         .onAppear {
             isEmptyRowFocused = true
+            localText = text
+        }
+    }
+
+    // Handle submit action
+    private func handleSubmit() {
+        hideKeyboard()
+        text = localText
+        withAnimation {
+            if row.name.isEmpty {
+                actions.onSubmit(localText)
+            } else {
+                actions.onUpdate(row.id, localText)
+            }
+        }
+    }
+
+    // Handle cancel action
+    private func handleCancel() {
+        hideKeyboard()
+        withAnimation {
+            if row.name.isEmpty {
+                actions.onCancelAdd()
+            } else {
+                actions.onCancelEdit(row.id)
+                localText = text
+            }
         }
     }
 }

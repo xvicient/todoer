@@ -54,16 +54,16 @@ public struct TDListContent: View {
 
     private let configuration: Configuration
     private let actions: Actions
-    private let rows: [TDListRow]
+    @Binding private var rows: [TDListRow]
 
     public init(
         configuration: Configuration,
         actions: Actions,
-        rows: [TDListRow]
+        rows: Binding<[TDListRow]>
     ) {
         self.configuration = configuration
         self.actions = actions
-        self.rows = rows
+        self._rows = rows
     }
 
     public var body: some View {
@@ -81,7 +81,8 @@ public struct TDListContent: View {
                     .foregroundColor(.gray)
                 Spacer()
             }
-            .frame(height: configuration.listHeight == 0 ? 0 : (configuration.listHeight - 145))
+            .frame(height: (configuration.listHeight - 145) < 0 ? 0 : (configuration.listHeight - 145)
+            )
             .frame(maxWidth: .infinity)
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
@@ -91,7 +92,8 @@ public struct TDListContent: View {
                 if row.isEditing {
                     TDEmptyRowView(
                         row: row,
-                        actions: actions
+                        actions: actions,
+                        text: $rows[index].name
                     ).id(index)
                 }
                 else {
@@ -124,7 +126,7 @@ public struct TDListContent: View {
                 onCancelEdit: { _ in },
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }),
-            rows: []
+            rows: .constant([])
         )
     }
     .scrollIndicators(.hidden)

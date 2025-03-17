@@ -2,14 +2,27 @@ import Data
 import Entities
 import SwiftUI
 
-public enum Screen: Hashable, Identifiable {
+public enum Screen: Identifiable, Hashable, Equatable {
     case authentication
     case home
     case listItems(UserList)
     case about
     case menu
 
-    public var id: Self { self }
+    public var id: String {
+        switch self {
+        case .listItems(let id):
+            "listItems\(id)"
+        case .authentication:
+            "authentication"
+        case .home:
+            "home"
+        case .about:
+            "about"
+        case .menu:
+            "menu"
+        }
+    }
 }
 
 public enum Sheet: Hashable, Identifiable {

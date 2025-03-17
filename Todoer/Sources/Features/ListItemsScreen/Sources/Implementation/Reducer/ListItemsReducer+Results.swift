@@ -3,7 +3,6 @@ import xRedux
 
 // MARK: - Reducer results
 
-@MainActor
 extension ListItems.Reducer {
     func onFetchItemsResult(
         state: inout State,
@@ -11,9 +10,24 @@ extension ListItems.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let items):
-            state.viewState = .idle
-            state.viewModel.items = items.map { $0.toItemRow }
-            state.viewModel.listName = dependencies.list.name
+            guard let editingIndex = state.items.firstIndex(where: { $0.isEditing }),
+                  var editingRow = state.items[safe: editingIndex],
+                  let remoteItem = items.first(where: { $0.documentId == editingRow.item.documentId })
+            else {
+                state.viewState = .idle
+                state.items = items.map { $0.toItemRow }
+                return .none
+            }
+            
+            // Update editing item
+            if editingRow.item.hasChanges(comparedTo: remoteItem) {
+                editingRow.item.update(with: remoteItem)
+                state.items[editingIndex] = editingRow
+            } else {
+                state.viewState = .idle
+                state.items = items.map { $0.toItemRow }
+                return .none
+            }
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }
@@ -26,10 +40,9 @@ extension ListItems.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let item):
-            if let index = state.viewModel.items.firstIndex(where: { $0.isEditing }) {
+            if let index = state.items.firstIndex(where: { $0.isEditing }) {
                 state.viewState = .idle
-                state.viewModel.items.remove(at: index)
-                state.viewModel.items.insert(item.toItemRow, at: index)
+                state.items.replace(item: item, at: index)
             }
             else {
                 state.viewState = .error(Errors.default)
@@ -84,5 +97,20 @@ extension ListItems.Reducer {
             state.viewState = .error(Errors.default)
         }
         return .none
+    }
+}
+
+fileprivate extension Item {
+    func hasChanges(comparedTo item: Item) -> Bool {
+        name != item.name || done != item.done
+    }
+    
+    mutating func update(with item: Item) {
+        if name != item.name {
+            name = item.name
+        }
+        if done != item.done {
+            done = item.done
+        }
     }
 }

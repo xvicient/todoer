@@ -4,6 +4,8 @@ import Foundation
 import ListItemsScreenContract
 import Strings
 import xRedux
+import ThemeComponents
+import SwiftUI
 
 // MARK: - ListItemsReducer
 
@@ -48,6 +50,7 @@ extension ListItems {
             case didSortItems(IndexSet, Int)
             case didTapDismissError
             case didTapAutoSortItems
+            case didUpdateSearchText(String)
 
             // MARK: - Results
             /// ListItemsReducer+Results
@@ -58,10 +61,29 @@ extension ListItems {
             case sortItemsResult(ActionResult<EquatableVoid>)
         }
 
-        @MainActor
         struct State: AppAlertState {
-            var viewState = ViewState.idle
-            var viewModel = ViewModel()
+            var viewState: ViewState = .loading
+            var items = [WrappedItem]()
+            var listName: String
+            var searchText = ""
+            var filteredItems: Binding<[TDListRow]> {
+                Binding(
+                    get: {
+                        items.filter(with: searchText).map { $0.tdListRow }
+                    },
+                    set: { _ in }
+                )
+            }
+            
+            init(
+                listName: String
+            ) {
+                self.listName = listName
+            }
+            
+            var isEditing: Bool {
+                items.contains { $0.isEditing }
+            }
 
             var alert: AppAlert<Action>? {
                 guard case .alert(let data) = viewState else {
@@ -108,132 +130,87 @@ extension ListItems {
         init(dependencies: ListItemsReducerDependencies) {
             self.dependencies = dependencies
         }
+    }
+}
 
-        // MARK: - Reduce
+extension ListItems.Reducer {
+    struct WrappedItem: Identifiable, Equatable, ElementSortable {
+        var id: UUID {
+            item.id
+        }
+        var item: Item
+        let leadingActions: [TDSwipeAction]
+        let trailingActions: [TDSwipeAction]
+        var isEditing: Bool
 
-        @MainActor
-        func reduce(
-            _ state: inout State,
-            _ action: Action
-        ) -> Effect<Action> {
-            switch (state.viewState, action) {
-            case (.idle, .onAppear):
-                return onAppear(
-                    state: &state
-                )
-
-            case (.idle, .didTapToggleItemButton(let rowId)):
-                return onDidTapToggleItemButton(
-                    state: &state,
-                    uid: rowId
-                )
-
-            case (.idle, .didTapDeleteItemButton(let rowId)):
-                return onDidTapDeleteItemButton(
-                    state: &state,
-                    uid: rowId
-                )
-
-            case (.idle, .didTapAddRowButton):
-                return onDidTapAddRowButton(
-                    state: &state
-                )
-
-            case (.addingItem, .didTapCancelAddItemButton):
-                return onDidTapCancelAddRowButton(
-                    state: &state
-                )
-
-            case (.addingItem, .didTapSubmitItemButton(let newItemName)):
-                return onDidTapSubmitItemButton(
-                    state: &state,
-                    newItemName: newItemName
-                )
-
-            case (.loading, .fetchItemsResult(let result)),
-                (.idle, .fetchItemsResult(let result)):
-                return onFetchItemsResult(
-                    state: &state,
-                    result: result
-                )
-
-            case (.addingItem, .addItemResult(let result)),
-                (.editingItem, .addItemResult(let result)):
-                return onAddItemResult(
-                    state: &state,
-                    result: result
-                )
-
-            case (.updatingItem, .deleteItemResult(let result)):
-                return onDeleteItemResult(
-                    state: &state,
-                    result: result
-                )
-
-            case (.updatingItem, .toggleItemResult(let result)):
-                return onToggleItemResult(
-                    state: &state,
-                    result: result
-                )
-
-            case (.idle, .didTapEditItemButton(let rowId)):
-                return onDidTapEditItemButton(
-                    state: &state,
-                    uid: rowId
-                )
-
-            case (.editingItem, .didTapCancelEditItemButton(let rowId)):
-                return onDidTapCancelEditItemButton(
-                    state: &state,
-                    uid: rowId
-                )
-
-            case (.editingItem, .didTapUpdateItemButton(let rowId, let name)):
-                return onDidTapUpdateItemButton(
-                    state: &state,
-                    uid: rowId,
-                    name: name
-                )
-
-            case (.idle, .didSortItems(let fromIndex, let toIndex)):
-                return onDidSortItems(
-                    state: &state,
-                    fromIndex: fromIndex,
-                    toIndex: toIndex
-                )
-
-            case (.idle, .didTapAutoSortItems):
-                return onDidTapAutoSortItems(
-                    state: &state
-                )
-
-            case (.sortingItems, .sortItemsResult(let result)):
-                return onSortItemsResult(
-                    state: &state,
-                    result: result
-                )
-
-            case (.alert, .didTapDismissError):
-                return onDidTapDismissError(
-                    state: &state
-                )
-
-            default:
-                Logger.log(
-                    "No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)"
-                )
-                return .none
+        var done: Bool { item.done }
+        var name: String { item.name }
+        var index: Int {
+            get {
+                item.index
             }
+            set {
+                item.index = newValue
+            }
+        }
+
+        init(
+            item: Item,
+            leadingActions: [TDSwipeAction] = [],
+            trailingActions: [TDSwipeAction] = [],
+            isEditing: Bool = false
+        ) {
+            self.item = item
+            self.leadingActions = leadingActions
+            self.trailingActions = trailingActions
+            self.isEditing = isEditing
         }
     }
 }
 
-// MARK: - Item to ItemRow
+extension Array where Element == ListItems.Reducer.WrappedItem {
+    func index(for id: UUID) -> Int? {
+        firstIndex { $0.id == id }
+    }
+    
+    mutating func replace(item: Item, at index: Int) {
+        remove(at: index)
+        insert(item.toItemRow, at: index)
+    }
+    
+    var last: ListItems.Reducer.WrappedItem? {
+        self.min(by: { $0.index < $1.index })
+    }
+    
+    mutating func removeLast() {
+        if let last {
+            removeAll { $0.id == last.id }
+        }
+    }
+
+}
+
+// MARK: - WrappedItem to TDListRow
+
+extension ListItems.Reducer.WrappedItem {
+    fileprivate var tdListRow: TDListRow {
+        TDListRow(
+            id: item.id,
+            name: item.name,
+            image: item.done ? Image.largecircleFillCircle : Image.circle,
+            strikethrough: item.done,
+            leadingActions: leadingActions,
+            trailingActions: trailingActions,
+            isEditing: isEditing
+        )
+    }
+}
+
+// MARK: - Item to WrappedItem
 
 extension Item {
     var toItemRow: ListItems.Reducer.WrappedItem {
         ListItems.Reducer.WrappedItem(
-            id: id,
             item: self,
             leadingActions: [done ? .undone : .done],
             trailingActions: [.delete, .edit]

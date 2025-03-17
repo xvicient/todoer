@@ -16,7 +16,7 @@ public struct ListItems {
         ) -> some View {
             ListItemsScreen(
                 store: Store(
-                    initialState: .init(),
+                    initialState: .init(listName: dependencies.list.name),
                     reducer: Reducer(
                         dependencies: ReducerDependencies(
                             list: dependencies.list,
