@@ -1,8 +1,9 @@
 import CoordinatorContract
 import SwiftUI
-import ThemeAssets
+import ThemeComponents
 
 public struct CoordinatorView: View {
+    @StateObject private var loading = TDLoadingModel()
     @ObservedObject private var coordinator: Coordinator
     private let menuView: AnyView
     @State private var sheetHeight: CGFloat = 0
@@ -24,8 +25,7 @@ public struct CoordinatorView: View {
                     }
                     .navigationDestination(for: Screen.self) { screen in
                         coordinator.build(screen: screen)
-//                            .id(screen.id)
-//                            .setupNavigationBar(screen: screen)
+                            .setupNavigationBar(screen: screen)
                     }
                     .sheet(item: $coordinator.sheet) { sheet in
                         switch sheet {
@@ -47,9 +47,10 @@ public struct CoordinatorView: View {
                     }
             }
             .preferredColorScheme(.light)
-            LoadingView()
-                .loadingOpacity(coordinator: coordinator)
+            TDLoadingView()
+                .loadingOpacity(isHidden: coordinator.landingScreen != .home)
         }
+        .environmentObject(loading)
     }
 }
 
@@ -74,43 +75,7 @@ extension View {
     fileprivate func setupNavigationBar(screen: Screen) -> some View {
         modifier(NavigationBarModifier(screen: screen))
     }
-    
-    fileprivate func loadingOpacity(coordinator: Coordinator) -> some View {
-        modifier(LoadingOpacityModifier(coordinator: coordinator))
-    }
 }
-
-fileprivate struct LoadingView: View {
-    var body: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
-            Image.todoer
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding(.horizontal, 35)
-        }
-    }
-}
-
-fileprivate struct LoadingOpacityModifier: ViewModifier {
-    @ObservedObject var coordinator: Coordinator
-    
-    func body(content: Content) -> some View {
-        content
-            .opacity(coordinator.isLoading ? 1.0 : 0.0)
-            .zIndex(1)
-            .allowsHitTesting(coordinator.isLoading)
-            .if(coordinator.landingScreen != .home) {
-                $0.hidden()
-            }
-            .animation(
-                .easeInOut(duration: 0.5).delay(0.5),
-                value: coordinator.isLoading
-            )
-    }
-}
-
 
 extension UINavigationController {
     open override func viewWillLayoutSubviews() {

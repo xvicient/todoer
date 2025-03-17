@@ -48,7 +48,6 @@ public protocol CoordinatorApi {
     func pop()
     func popToRoot()
     func dismissSheet()
-    func showLoading(_ isLoading: Bool)
 }
 
 @MainActor

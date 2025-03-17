@@ -23,7 +23,7 @@ let package = Package(
     dependencies: [
         .package(path: "../Data"),
         .package(path: "../Entities"),
-
+        .package(path: "../Theme")
     ],
     targets: [
         .target(
@@ -37,7 +37,8 @@ let package = Package(
         .target(
             name: "Coordinator",
             dependencies: [
-                "CoordinatorContract"
+                "CoordinatorContract",
+                .product(name: "ThemeComponents", package: "Theme")
             ],
             path: "Sources/Implementation"
         ),

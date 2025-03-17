@@ -8,11 +8,13 @@ import Strings
 import SwiftUI
 import ThemeComponents
 import xRedux
+import Coordinator
 
 // MARK: - HomeScreen
 
 struct HomeScreen: View {
     
+    @EnvironmentObject var loading: TDLoadingModel
     @ObservedObject private var store: Store<Home.Reducer>
     private var invitationsView: Home.MakeInvitationsView
     
@@ -76,6 +78,9 @@ struct HomeScreen: View {
             if scenePhase == .active {
                 store.send(.onSceneActive)
             }
+        }
+        .onChange(of: store.state.viewState) {
+            loading.show(store.state.viewState == .loading)
         }
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }

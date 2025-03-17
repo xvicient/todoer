@@ -9,18 +9,12 @@ extension Home.Reducer {
     func onAppear(
         state: inout State
     ) -> Effect<Action> {
-        state.viewState = .loading
         if state.viewModel.lists.isEmpty {
-            dependencies.coordinator.showLoading(true)
+            state.viewState = .loading
         }
 
         return .publish(
             useCase.fetchHomeData()
-                .handleEvents(receiveOutput: { _ in
-                    dependencies.coordinator.showLoading(false)
-                }, receiveCancel: {
-                    dependencies.coordinator.showLoading(false)
-                })
                 .map { .fetchDataResult(.success($0)) }
                 .catch { Just(.fetchDataResult(.failure($0))) }
                 .eraseToAnyPublisher()

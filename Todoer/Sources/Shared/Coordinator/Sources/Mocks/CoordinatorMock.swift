@@ -36,6 +36,4 @@ public final class CoordinatorMock: CoordinatorApi {
     public var isLoggInCalled = false
 
     public var isDismissSheetCalled = false
-    
-    public func showLoading(_ isLoading: Bool) {}
 }
