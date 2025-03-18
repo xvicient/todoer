@@ -4,20 +4,6 @@ import Foundation
 import ThemeComponents
 
 extension Home.Reducer {
-    enum Source {
-        case allLists
-        case sharingLists
-        
-        var activeTab: TDListTab {
-            switch self {
-            case .allLists:
-                .all
-            case .sharingLists:
-                .sharing
-            }
-        }
-    }
-
     // MARK: - ViewModel
 
     @MainActor
@@ -75,16 +61,5 @@ extension Home.Reducer {
 extension Array where Element == Home.Reducer.WrappedUserList {
     func index(for id: UUID) -> Int? {
         self.firstIndex(where: { $0.id == id })
-    }
-}
-
-extension Home.Reducer.ViewModel {
-    nonisolated func lists(for source: Home.Reducer.Source) -> [Home.Reducer.WrappedUserList] {
-        switch source {
-        case .allLists:
-            lists
-        case .sharingLists:
-            lists.filter { list in !list.list.uid.filter { $0 != userUid }.isEmpty }
-        }
     }
 }

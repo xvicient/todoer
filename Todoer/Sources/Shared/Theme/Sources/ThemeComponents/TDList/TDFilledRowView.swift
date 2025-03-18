@@ -12,8 +12,7 @@ protocol TDFilledRowConfiguration {
 }
 
 struct TDFilledRowView: View {
-    @ObservedObject var row: TDListRow
-    @State private var isDone: Bool = false
+    var row: TDListRow
     let actions: TDFilledRowActions
     let configuration: TDFilledRowConfiguration
 
@@ -25,19 +24,13 @@ struct TDFilledRowView: View {
                 TDURLText(text: row.name)
                     .lineLimit(configuration.lineLimit)
                     .multilineTextAlignment(.leading)
-                    .strikethrough(isDone)
+                    .strikethrough(row.strikethrough)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.borderless)
             .foregroundColor(Color.textBlack)
         }
         .frame(minHeight: 40)
-        .onAppear {
-            isDone = row.strikethrough
-        }
-        .onChange(of: row.strikethrough) {
-            isDone = row.strikethrough
-        }
         .if(configuration.isSwipeEnabled) {
             $0.swipeActions(edge: .leading) {
                 swipeActions(row, row.leadingActions)
@@ -58,20 +51,12 @@ struct TDFilledRowView: View {
         ForEach(swipeActions) { action in
             Button(role: action.role) {
                 switch action {
-                case .done, .undone:
+                case .done, .undone, .delete:
                     withAnimation(.easeInOut(duration: 0.2)) {
-                        isDone.toggle()
                         actions.onSwipe(row.id, action)
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        row.strikethrough = isDone
                     }
                 case .edit, .share:
                     actions.onSwipe(row.id, action)
-                case .delete:
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        actions.onSwipe(row.id, action)
-                    }
                 }
             } label: {
                 action.icon

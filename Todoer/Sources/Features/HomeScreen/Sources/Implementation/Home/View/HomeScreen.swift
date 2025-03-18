@@ -20,7 +20,7 @@ struct HomeScreen: View {
     
     @Environment(\.scenePhase) private var scenePhase
     
-    @State private var source: Home.Reducer.Source = .allLists
+    @State private var source: TDListTab = .all
     @State var isShowingInvitations: Bool = false
     @State private var sheetHeight: CGFloat = 0
     
@@ -146,7 +146,7 @@ extension HomeScreen {
                 configuration: contentConfiguration(listHeight),
                 actions: contentActions,
                 rows: Binding(
-                    get: { store.state.viewModel.lists(for: source)
+                    get: { store.state.viewModel.lists.filter(by: source.isCompleted)
                         .filter(with: searchText).map { $0.tdListRow } },
                     set: { _ in }
                 )
@@ -179,7 +179,7 @@ extension HomeScreen {
         { action in
             switch action {
             case .add:
-                source = .allLists
+                source = .all
                 return {
                     isSearchFocused = false
                     searchText = ""
@@ -188,9 +188,11 @@ extension HomeScreen {
             case .sort:
                 store.send(.didTapAutoSortLists)
             case .all:
-                source = .allLists
-            case .sharing:
-                source = .sharingLists
+                source = .all
+            case .done:
+                source = .done
+            case .todo:
+                source = .todo
             }
         }
     }

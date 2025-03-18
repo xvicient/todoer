@@ -66,10 +66,14 @@ extension ListItems {
             var items = [WrappedItem]()
             var listName: String
             var searchText = ""
-            var filteredItems: Binding<[TDListRow]> {
+            var tabs: [TDListTab] {
+                TDListTab.allCases
+                    .removingSort(if: items.filter { !$0.isEditing }.count < 2)
+            }
+            func filteredItems(isCompleted: Bool?) -> Binding<[TDListRow]> {
                 Binding(
                     get: {
-                        items.filter(with: searchText).map { $0.tdListRow }
+                        items.filter(by: isCompleted).filter(with: searchText).map { $0.tdListRow }
                     },
                     set: { _ in }
                 )

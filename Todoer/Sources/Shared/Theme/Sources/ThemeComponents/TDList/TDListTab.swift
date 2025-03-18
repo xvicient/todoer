@@ -1,30 +1,44 @@
 import Strings
 
-public enum TDListTab: Int, CaseIterable {
+public enum TDListTab: Int, CaseIterable, Equatable, Sendable {
     case add
     case sort
     case all
-    case sharing
+    case todo
+    case done
     
     var stringValue: String {
         switch self {
         case .add: Strings.TabAction.add
         case .sort: Strings.TabAction.sort
         case .all: Strings.TabAction.all
-        case .sharing: Strings.TabAction.sharing
+        case .todo: Strings.TabAction.todo
+        case .done: Strings.TabAction.done
         }
     }
     
     public var isFilter: Bool {
         switch self {
         case .add, .sort: false
-        case .all, .sharing: true
+        case .all, .done, .todo: true
         }
     }
     
-    var activeTab: TDListTab {
+    public var isCompleted: Bool? {
         switch self {
-        case .sharing: .sharing
+        case .done:
+            return true
+        case .todo:
+            return false
+        default:
+            return nil
+        }
+    }
+    
+    public var activeTab: TDListTab {
+        switch self {
+        case .done: .done
+        case .todo: .todo
         default: .all
         }
     }

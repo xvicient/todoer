@@ -5,6 +5,7 @@ import Foundation
 import HomeScreenContract
 import Strings
 import xRedux
+import ThemeComponents
 
 // MARK: - HomeReducer
 
@@ -46,7 +47,7 @@ extension Home {
             case didTapAddRowButton
             case didTapCancelAddListButton
             case didTapSubmitListButton(String)
-            case didSortLists(IndexSet, Int, Source)
+            case didSortLists(IndexSet, Int, TDListTab)
             case didTapDismissError
             case didTapAutoSortLists
 

@@ -12,6 +12,14 @@ import xRedux
 struct ListItemsScreen: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
     @FocusState private var isSearchFocused: Bool
+    @State private var source: TDListTab = .all
+    
+    private var activeTabBinding: Binding<TDListTab> {
+        Binding(
+            get: { source.activeTab },
+            set: { _ in }
+        )
+    }
 
     init(
         store: Store<ListItems.Reducer>
@@ -31,10 +39,7 @@ struct ListItemsScreen: View {
                         set: { store.send(.didUpdateSearchText($0)) }
                     ),
                     isSearchFocused: $isSearchFocused,
-                    activeTab: Binding(
-                        get: { .all },
-                        set: { _ in }
-                    )
+                    activeTab: activeTabBinding
                 )
                 .onChange(of: isSearchFocused) {
                     guard isSearchFocused else { return }
@@ -66,9 +71,7 @@ extension ListItemsScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: store.state.listName,
-            tabs: TDListTab.allCases
-                .removingSort(if: store.state.items.filter { !$0.isEditing }.count < 2)
-                .filter { !$0.isFilter }
+            tabs: store.state.tabs
         )
     }
 
@@ -78,7 +81,7 @@ extension ListItemsScreen {
             TDListContent(
                 configuration: contentConfiguration(listHeight),
                 actions: contentActions,
-                rows: store.state.filteredItems
+                rows: store.state.filteredItems(isCompleted: source.isCompleted)
             )
         )
     }
@@ -117,15 +120,20 @@ extension ListItemsScreen {
         { action in
             switch action {
             case .add:
-                {
+                source = .all
+                return {
                     isSearchFocused = false
                     store.send(.didUpdateSearchText(""))
                     store.send(.didTapAddRowButton)
                 }()
             case .sort:
                 store.send(.didTapAutoSortItems)
-            default:
-                break
+            case .all:
+                source = .all
+            case .done:
+                source = .done
+            case .todo:
+                source = .todo
             }
         }
     }

@@ -19,7 +19,7 @@ extension ListItems.Reducer {
         uid: UUID
     ) -> Effect<Action> {
         guard let index = state.items.index(for: uid),
-            state.items[safe: index] != nil
+              state.items[safe: index] != nil
         else {
             state.viewState = .error(Errors.default)
             return .none

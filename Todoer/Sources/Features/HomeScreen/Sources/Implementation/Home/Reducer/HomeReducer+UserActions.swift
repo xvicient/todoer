@@ -1,6 +1,7 @@
 import Entities
 import Foundation
 import xRedux
+import ThemeComponents
 
 // MARK: - Reducer user actions
 
@@ -200,10 +201,10 @@ extension Home.Reducer {
         state: inout State,
         fromIndex: IndexSet,
         toIndex: Int,
-        source: Source
+        source: TDListTab
     ) -> Effect<Action> {
         state.viewState = .sortingList
-        let sortedLists = state.viewModel.lists(for: source)
+        let sortedLists = state.viewModel.lists.filter(by: source.isCompleted)
         
         // 1. Map the indices from filtered list to main list
         let mainListFromIndex = IndexSet(fromIndex.map { sourceIndex in

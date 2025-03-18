@@ -32,4 +32,10 @@ extension Array where Element: ElementSortable {
             }
     }
 
+    public func filter(by done: Bool?) -> [Element] {
+        guard let done else {
+            return self
+        }
+        return filter { $0.done == done }
+    }
 }
