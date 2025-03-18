@@ -78,12 +78,12 @@ extension Home.Reducer {
                 newListName: name
             )
 
-        case (.idle, .didSortLists(let fromIndex, let toIndex, let source)):
-            return onDidSortLists(
+        case (.idle, .didMoveList(let fromIndex, let toIndex, let isCompleted)):
+            return onDidMoveList(
                 state: &state,
                 fromIndex: fromIndex,
                 toIndex: toIndex,
-                source: source
+                isCompleted: isCompleted
             )
 
         case (.alert, .didTapDismissError):
@@ -129,8 +129,8 @@ extension Home.Reducer {
                 result: result
             )
 
-        case (.sortingList, .sortListsResult(let result)):
-            return onSortListsResult(
+        case (.movingList, .moveListsResult(let result)):
+            return onMoveListsResult(
                 state: &state,
                 result: result
             )

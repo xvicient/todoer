@@ -94,19 +94,24 @@ public struct TDListContent: View {
                         row: row,
                         actions: actions,
                         text: $rows[index].name
-                    ).id(index)
+                    )
+                    .moveDisabled(!configuration.isMoveEnabled)
+                    .id(index)
                 }
                 else {
                     TDFilledRowView(
                         row: row,
                         actions: actions,
                         configuration: configuration
-                    ).id(index)
+                    )
+                    .moveDisabled(!configuration.isMoveEnabled)
+                    .id(index)
                 }
             }
-            .if(configuration.isMoveEnabled) {
-                $0.onMove(perform: actions.onMove)
-            }
+            .onMove(perform: actions.onMove)
+//            .if(configuration.isMoveEnabled) {
+//                $0.onMove(perform: actions.onMove)
+//            }
         }
     }
 }

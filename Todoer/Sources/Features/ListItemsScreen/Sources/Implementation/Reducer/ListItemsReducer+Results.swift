@@ -86,7 +86,7 @@ extension ListItems.Reducer {
         return .none
     }
 
-    func onSortItemsResult(
+    func onMoveItemsResult(
         state: inout State,
         result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {

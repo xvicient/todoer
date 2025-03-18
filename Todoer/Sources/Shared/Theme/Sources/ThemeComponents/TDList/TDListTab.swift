@@ -2,6 +2,7 @@ import Strings
 
 public enum TDListTab: Int, CaseIterable, Equatable, Sendable {
     case add
+    case move
     case sort
     case all
     case todo
@@ -11,6 +12,7 @@ public enum TDListTab: Int, CaseIterable, Equatable, Sendable {
         switch self {
         case .add: Strings.TabAction.add
         case .sort: Strings.TabAction.sort
+        case .move: Strings.TabAction.move
         case .all: Strings.TabAction.all
         case .todo: Strings.TabAction.todo
         case .done: Strings.TabAction.done
@@ -19,7 +21,7 @@ public enum TDListTab: Int, CaseIterable, Equatable, Sendable {
     
     public var isFilter: Bool {
         switch self {
-        case .add, .sort: false
+        case .add, .sort, .move: false
         case .all, .done, .todo: true
         }
     }

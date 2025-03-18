@@ -26,6 +26,7 @@ struct HomeScreen: View {
     
     @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
+    @State private var editMode: EditMode = .inactive
     
     private var activeTabBinding: Binding<TDListTab> {
         Binding(
@@ -43,7 +44,7 @@ struct HomeScreen: View {
     }
 
     var body: some View {
-        ZStack {
+        VStack {
             GeometryReader { geometry in
                 TDListView(
                     content: { listContent(geometry.size.height) },
@@ -64,6 +65,7 @@ struct HomeScreen: View {
                 }
             }
         }
+        .environment(\.editMode, $editMode)
         .toolbar {
             if !store.state.viewModel.invitations.isEmpty {
                 ToolbarItem(placement: .automatic) {
@@ -81,6 +83,9 @@ struct HomeScreen: View {
         }
         .onChange(of: store.state.viewState) {
             loading.show(store.state.viewState == .loading)
+        }
+        .onChange(of: editMode) {
+            print(editMode)
         }
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
@@ -157,8 +162,8 @@ extension HomeScreen {
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
             lineLimit: 2,
-            isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
-            isSwipeEnabled: !store.state.viewState.isEditing,
+            isMoveEnabled: !isSearchFocused && editMode == .active,
+            isSwipeEnabled: !store.state.viewState.isEditing && editMode == .inactive,
             listHeight: listHeight
         )
     }
@@ -187,6 +192,8 @@ extension HomeScreen {
                 }()
             case .sort:
                 store.send(.didTapAutoSortLists)
+            case .move:
+                break
             case .all:
                 source = .all
             case .done:
@@ -213,8 +220,7 @@ extension HomeScreen {
     }
 
     fileprivate func moveList(fromOffset: IndexSet, toOffset: Int) {
-        guard !isSearchFocused, !store.state.viewState.isEditing else { return }
-        store.send(.didSortLists(fromOffset, toOffset, source))
+        store.send(.didMoveList(fromOffset, toOffset, source.isCompleted))
     }
 }
 

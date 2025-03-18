@@ -243,38 +243,55 @@ extension TDListView {
     }
     
     @ViewBuilder
-    fileprivate func tabButton(
-        item: TDListTab
-    ) -> some View {
-        Button(action: {
-            slideDirection = item.rawValue > activeTab.rawValue ? .forward : .backward
-            withAnimation {
-                activeTab = item.activeTab
-                actions(item)
+        fileprivate func tabButton(
+            item: TDListTab
+        ) -> some View {
+            switch item {
+            case .move:
+                EditButton()
+                    .tableButtonStyle(item: item, active: activeTab == item)
+            default:
+                Button(action: {
+                    slideDirection = item.rawValue > activeTab.rawValue ? .forward : .backward
+                    withAnimation {
+                        activeTab = item.activeTab
+                        actions(item)
+                    }
+                }) {
+                    Text(item.stringValue)
+                        .tableButtonStyle(item: item, active: activeTab == item)
+                }
+                .buttonStyle(.plain)
             }
-        }) {
-            Text(item.stringValue)
-                .font(.callout)
-                .foregroundStyle(item.isFilter ? (activeTab == item ? .white : .black) : .white)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 15)
-                .background {
-                    if item.isFilter {
-                        if activeTab == item {
-                            Capsule()
-                                .fill(Color.primary)
-                                .matchedGeometryEffect(id: "ACTIVETAB", in: tabAnimation)
-                        } else {
-                            Capsule()
-                                .fill(.background)
-                        }
-                    } else {
+        }
+}
+
+fileprivate struct TabButtonModifier: ViewModifier {
+    @Namespace private var tabAnimation
+    var item: TDListTab
+    var active: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .font(.callout)
+            .foregroundStyle(item.isFilter ? (active ? .white : .black) : .white)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 15)
+            .background {
+                if item.isFilter {
+                    if active {
                         Capsule()
                             .fill(Color.primary)
+                            .matchedGeometryEffect(id: "ACTIVETAB", in: tabAnimation)
+                    } else {
+                        Capsule()
+                            .fill(.background)
                     }
+                } else {
+                    Capsule()
+                        .fill(Color.primary)
                 }
-        }
-        .buttonStyle(.plain)
+            }
     }
 }
 
@@ -288,6 +305,10 @@ fileprivate struct ListNoBounceModifier: ViewModifier {
 }
 
 fileprivate extension View {
+    func tableButtonStyle(item: TDListTab, active: Bool) -> some View {
+        modifier(TabButtonModifier(item: item, active: active))
+    }
+                 
     func removeBounce() -> some View {
         modifier(ListNoBounceModifier())
     }

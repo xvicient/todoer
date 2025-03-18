@@ -90,11 +90,12 @@ extension ListItems.Reducer {
                 name: name
             )
 
-        case (.idle, .didSortItems(let fromIndex, let toIndex)):
-            return onDidSortItems(
+        case (.idle, .didMoveItem(let fromIndex, let toIndex, let isCompleted)):
+            return onDidMoveItem(
                 state: &state,
                 fromIndex: fromIndex,
-                toIndex: toIndex
+                toIndex: toIndex,
+                isCompleted: isCompleted
             )
 
         case (.idle, .didTapAutoSortItems):
@@ -102,8 +103,8 @@ extension ListItems.Reducer {
                 state: &state
             )
 
-        case (.sortingItems, .sortItemsResult(let result)):
-            return onSortItemsResult(
+        case (.movingItem, .moveItemsResult(let result)):
+            return onMoveItemsResult(
                 state: &state,
                 result: result
             )

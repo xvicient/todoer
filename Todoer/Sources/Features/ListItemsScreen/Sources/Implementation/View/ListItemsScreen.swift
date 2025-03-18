@@ -13,6 +13,7 @@ struct ListItemsScreen: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
     @FocusState private var isSearchFocused: Bool
     @State private var source: TDListTab = .all
+    @State private var editMode: EditMode = .inactive
     
     private var activeTabBinding: Binding<TDListTab> {
         Binding(
@@ -53,6 +54,7 @@ struct ListItemsScreen: View {
             }
             loadingView
         }
+        .environment(\.editMode, $editMode)
         .onAppear {
             store.send(.onAppear)
         }
@@ -88,8 +90,8 @@ extension ListItemsScreen {
 
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
-            isMoveEnabled: !isSearchFocused && !store.state.viewState.isEditing,
-            isSwipeEnabled: !store.state.viewState.isEditing,
+            isMoveEnabled: !isSearchFocused && editMode == .active,
+            isSwipeEnabled: !store.state.viewState.isEditing && editMode == .inactive,
             listHeight: listHeight
         )
     }
@@ -128,6 +130,8 @@ extension ListItemsScreen {
                 }()
             case .sort:
                 store.send(.didTapAutoSortItems)
+            case .move:
+                break
             case .all:
                 source = .all
             case .done:
@@ -154,8 +158,7 @@ extension ListItemsScreen {
     }
 
     fileprivate func moveItem(fromOffset: IndexSet, toOffset: Int) {
-        guard !isSearchFocused, !store.state.viewState.isEditing else { return }
-        store.send(.didSortItems(fromOffset, toOffset))
+        store.send(.didMoveItem(fromOffset, toOffset, source.isCompleted))
     }
 }
 

@@ -47,7 +47,7 @@ extension Home {
             case didTapAddRowButton
             case didTapCancelAddListButton
             case didTapSubmitListButton(String)
-            case didSortLists(IndexSet, Int, TDListTab)
+            case didMoveList(IndexSet, Int, Bool?)
             case didTapDismissError
             case didTapAutoSortLists
 
@@ -58,7 +58,7 @@ extension Home {
             case toggleListResult(ActionResult<UserList>)
             case deleteListResult(ActionResult<EquatableVoid>)
             case addListResult(ActionResult<UserList>)
-            case sortListsResult(ActionResult<EquatableVoid>)
+            case moveListsResult(ActionResult<EquatableVoid>)
             case deleteAccountResult(ActionResult<EquatableVoid>)
         }
 
@@ -86,6 +86,7 @@ extension Home {
             case loading
             case addingList
             case sortingList
+            case movingList
             case updatingList
             case editingList(UUID)
             case alert(AppAlert<Action>)

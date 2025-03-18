@@ -1,6 +1,7 @@
 import Entities
 import Foundation
 import xRedux
+import ThemeComponents
 
 // MARK: - Reducer user actions
 
@@ -157,21 +158,28 @@ extension ListItems.Reducer {
         state.items.insert(item.toItemRow, at: index)
         return .none
     }
-
-    func onDidSortItems(
+    
+    func onDidMoveItem(
         state: inout State,
         fromIndex: IndexSet,
-        toIndex: Int
+        toIndex: Int,
+        isCompleted: Bool?
     ) -> Effect<Action> {
-        state.viewState = .sortingItems
-        state.items.move(fromOffsets: fromIndex, toOffset: toIndex)
-        state.items.reIndex()
+        state.viewState = .movingItem
+        
+        state.items.move(
+            fromIndex: fromIndex,
+            toIndex: toIndex,
+            isCompleted: isCompleted
+        )
+        
         let items = state.items
             .map { $0.item }
         let listId = dependencies.list.documentId
+        
         return .task { send in
             await send(
-                .sortItemsResult(
+                .moveItemsResult(
                     dependencies.useCase.sortItems(
                         items: items,
                         listId: listId
@@ -191,7 +199,7 @@ extension ListItems.Reducer {
         let listId = dependencies.list.documentId
         return .task { send in
             await send(
-                .sortItemsResult(
+                .moveItemsResult(
                     dependencies.useCase.sortItems(
                         items: items,
                         listId: listId

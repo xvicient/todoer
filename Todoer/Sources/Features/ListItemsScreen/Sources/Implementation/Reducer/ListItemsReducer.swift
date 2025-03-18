@@ -47,7 +47,7 @@ extension ListItems {
             case didTapEditItemButton(UUID)
             case didTapUpdateItemButton(UUID, String)
             case didTapCancelEditItemButton(UUID)
-            case didSortItems(IndexSet, Int)
+            case didMoveItem(IndexSet, Int, Bool?)
             case didTapDismissError
             case didTapAutoSortItems
             case didUpdateSearchText(String)
@@ -58,7 +58,7 @@ extension ListItems {
             case addItemResult(ActionResult<Item>)
             case deleteItemResult(ActionResult<EquatableVoid>)
             case toggleItemResult(ActionResult<EquatableVoid>)
-            case sortItemsResult(ActionResult<EquatableVoid>)
+            case moveItemsResult(ActionResult<EquatableVoid>)
         }
 
         struct State: AppAlertState {
@@ -105,6 +105,7 @@ extension ListItems {
             case updatingItem
             case editingItem(UUID)
             case sortingItems
+            case movingItem
             case alert(AppAlert<Action>)
 
             static func error(
