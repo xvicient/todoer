@@ -122,22 +122,6 @@ extension HomeScreen {
     }
 }
 
-// MARK: - ListRow to TDRow
-
-extension Home.Reducer.WrappedUserList {
-    public var tdListRow: TDListRow {
-        TDListRow(
-            id: list.id,
-            name: list.name,
-            image: list.done ? Image.largecircleFillCircle : Image.circle,
-            strikethrough: list.done,
-            leadingActions: leadingActions,
-            trailingActions: trailingActions,
-            isEditing: isEditing
-        )
-    }
-}
-
 struct Home_Previews: PreviewProvider {
     struct Dependencies: HomeScreenDependencies {
         let coordinator: CoordinatorApi

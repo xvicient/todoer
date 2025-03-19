@@ -65,8 +65,10 @@ extension ListItems {
             var listName: String
             var searchText = ""
             var tabs: [TDListTab] {
-                TDListTab.allCases
-                    .removingSort(if: items.filter { !$0.isEditing }.count < 2)
+                guard items.filter(\.isEditing).count < 2 else {
+                    return TDListTab.allCases
+                }
+                return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
             }
             func filteredItems(isCompleted: Bool?) -> Binding<[TDListRow]> {
                 Binding(

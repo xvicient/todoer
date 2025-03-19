@@ -55,37 +55,44 @@ extension Home {
             /// HomeReducer+Results
             case fetchDataResult(ActionResult<HomeData>)
             case addListResult(ActionResult<UserList>)
-            case homeResult(ActionResult<EquatableVoid>)
             case addSharedListsResult(ActionResult<[UserList]>)
+            case homeResult(ActionResult<EquatableVoid>)
         }
 
         @MainActor
         struct State: AppAlertState {
             var viewState = ViewState.idle
             
-            var lists = [WrappedUserList]()
+            var lists = [UserList]()
             var invitations = [Invitation]()
             
             var editMode: EditMode = .inactive
             var activeTab: TDListTab = .all
-            var searchText = ""
+            var searchText: String  = ""
             var isSearchFocused: Bool = false
             
             var tabs: [TDListTab] {
-                TDListTab.allCases
-                    .removingSort(if: lists.filter { !$0.isEditing }.count < 2)
+                guard lists.filter(\.isEditing).count < 2 else {
+                    return TDListTab.allCases
+                }
+                return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
             }
             
             var isEditing: Bool {
-                lists.contains(where: \.isEditing)
+                switch viewState {
+                case .editing:
+                    true
+                default:
+                    false
+                }
             }
             
             var isLoading: Bool {
                 switch viewState {
                 case .loading(let isLoading):
-                    return isLoading
+                    isLoading
                 default:
-                    return false
+                    false
                 }
             }
 
@@ -161,57 +168,20 @@ extension Store<Home.Reducer> {
     }
 }
 
-extension Home.Reducer {
-    struct WrappedUserList: Identifiable, Sendable, ElementSortable {
-        let id: UUID
-        var list: UserList
-        let leadingActions: [TDSwipeAction]
-        let trailingActions: [TDSwipeAction]
-        var isEditing: Bool
-
-        var done: Bool { list.done }
-        var name: String { list.name }
-        var index: Int {
-            get { list.index }
-            set { list.index = newValue }
-        }
-
-        init(
-            id: UUID,
-            list: UserList,
-            leadingActions: [TDSwipeAction] = [],
-            trailingActions: [TDSwipeAction] = [],
-            isEditing: Bool = false
-        ) {
-            self.id = id
-            self.list = list
-            self.leadingActions = leadingActions
-            self.trailingActions = trailingActions
-            self.isEditing = isEditing
-        }
-    }
-}
-
-extension Array where Element == Home.Reducer.WrappedUserList {
-    func index(for id: UUID) -> Int? {
-        self.firstIndex(where: { $0.id == id })
+extension UserList {
+    var isEditing: Bool {
+        documentId.isEmpty
     }
     
-    mutating func replace(list: UserList, at index: Int) {
-        remove(at: index)
-        insert(list.toListRow, at: index)
-    }
-}
-
-// MARK: - UserList to ListRow
-
-extension UserList {
-    var toListRow: Home.Reducer.WrappedUserList {
-        Home.Reducer.WrappedUserList(
+    fileprivate var tdListRow: TDListRow {
+        TDListRow(
             id: id,
-            list: self,
+            name: name,
+            image: done ? Image.largecircleFillCircle : Image.circle,
+            strikethrough: done,
             leadingActions: [done ? .undone : .done],
-            trailingActions: [.delete, .share]
+            trailingActions: [.delete, .share],
+            isEditing: isEditing
         )
     }
 }

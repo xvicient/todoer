@@ -37,10 +37,3 @@ public enum TDListTab: Int, CaseIterable, Equatable, Sendable {
         }
     }
 }
-
-public extension Array where Element == TDListTab {
-    func removingSort(if condition: Bool) -> [TDListTab] {
-        let result = self.sorted { $0.rawValue < $1.rawValue }
-        return condition ? result.filter { $0 != .sort } : result
-    }
-}

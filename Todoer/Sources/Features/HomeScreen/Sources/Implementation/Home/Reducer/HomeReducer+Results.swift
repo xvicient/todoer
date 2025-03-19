@@ -14,7 +14,7 @@ extension Home.Reducer {
         case .success(let data):
             state.viewState = .idle
             
-            state.lists = data.lists.map { $0.toListRow }
+            state.lists = data.lists
             state.invitations = data.invitations
         case .failure:
             state.viewState = .error()
@@ -30,7 +30,7 @@ extension Home.Reducer {
         switch result {
         case .success(let lists):
             if !lists.isEmpty {
-                state.lists.insert(contentsOf: lists.map { $0.toListRow }, at: 0)
+                state.lists.insert(contentsOf: lists.map { $0 }, at: 0)
             }
         case .failure:
             break
@@ -50,7 +50,7 @@ extension Home.Reducer {
 
         switch result {
         case .success(let list):
-            state.lists.insert(list.toListRow, at: index)
+            state.lists.insert(list, at: index)
             state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)

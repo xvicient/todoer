@@ -7,8 +7,17 @@ public protocol ElementSortable {
     var index: Int { get set }
 }
 
-extension Array where Element: ElementSortable {
-    public mutating func sorted() {
+public extension Array where Element: ElementSortable {
+    func index(for id: UUID) -> Int? {
+        firstIndex(where: { $0.id == id })
+    }
+    
+    mutating func replace(_ element: Element, at index: Int) {
+        remove(at: index)
+        insert(element, at: index)
+    }
+    
+    mutating func sorted() {
         sort {
             if $0.done != $1.done {
                 return !$0.done && $1.done
@@ -21,13 +30,13 @@ extension Array where Element: ElementSortable {
         reIndex()
     }
     
-    public mutating func reIndex() {
+    mutating func reIndex() {
         enumerated().forEach {
             self[$0.offset].index = $0.offset
         }
     }
 
-    public func filter(with searchText: String) -> [Element] {
+    func filter(with searchText: String) -> [Element] {
         searchText.isEmpty
             ? self
             : self.filter {
@@ -35,7 +44,7 @@ extension Array where Element: ElementSortable {
             }
     }
 
-    public func filter(by done: Bool?) -> [Element] {
+    func filter(by done: Bool?) -> [Element] {
         guard let done else { return self }
         return filter { $0.done == done }
     }
@@ -54,7 +63,7 @@ extension Array where Element: ElementSortable {
     ///   - toIndex: The destination index in the filtered view
     ///   - isCompleted: The state of the current list filter
     /// - Returns: An effect that persists the new order through the use case
-    public mutating func move(
+    mutating func move(
         fromIndex: IndexSet,
         toIndex: Int,
         isCompleted: Bool?

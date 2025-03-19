@@ -14,7 +14,7 @@ extension Home.Reducer {
         uid: UUID
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
-            let list = state.lists[safe: index]?.list
+            let list = state.lists[safe: index]
         else {
             state.viewState = .error()
             return .none
@@ -35,7 +35,7 @@ extension Home.Reducer {
             state.lists.removeAll { $0.isEditing }
         } else {
             state.lists.replace(
-                list: state.lists[index].list,
+                state.lists[index],
                 at: index
             )
         }
@@ -56,8 +56,8 @@ extension Home.Reducer {
             return .none
         }
         state.viewState = .loading(false)
-        state.lists[index].list.done.toggle()
-        let list = state.lists[index].list
+        state.lists[index].done.toggle()
+        let list = state.lists[index]
         
         return .task { send in
             await send(
@@ -75,7 +75,7 @@ extension Home.Reducer {
         uid: UUID
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
-            let list = state.lists[safe: index]?.list
+            let list = state.lists[safe: index]
         else {
             state.viewState = .error()
             return .none
@@ -113,7 +113,7 @@ extension Home.Reducer {
                 )
             }
         } else {
-            let list = state.lists[index].list
+            let list = state.lists[index]
             return .task { send in
                 await send(
                     .addListResult(
@@ -132,7 +132,7 @@ extension Home.Reducer {
         uid: UUID
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
-            let list = state.lists[safe: index]?.list
+            let list = state.lists[safe: index]
         else {
             state.viewState = .error()
             return .none
@@ -156,7 +156,6 @@ extension Home.Reducer {
         )
         
         let lists = state.lists
-            .map { $0.list }
         
         return .task { send in
             await send(
@@ -232,18 +231,6 @@ extension Home.Reducer {
 
 // MARK: - Private
 
-extension Home.Reducer {
-    fileprivate func newListRow(
-        list: UserList = UserList.empty
-    ) -> WrappedUserList {
-        WrappedUserList(
-            id: list.id,
-            list: list,
-            isEditing: true
-        )
-    }
-}
-
 fileprivate extension Home.Reducer {
     func addList(
         state: inout State
@@ -256,19 +243,18 @@ fileprivate extension Home.Reducer {
         onDidUpdateSearchText(state: &state, searchText: "")
         onDidChangeSearchFocus(state: &state, isFocused: false)
         state.editMode = .inactive
-        state.lists.insert(newListRow(), at: 0)
+        state.lists.insert(UserList.empty, at: 0)
         return .none
     }
     
     func sortLists(
         state: inout State
     ) -> Effect<Action> {
-        state.viewState = .idle
         state.viewState = .loading(false)
         state.editMode = .inactive
         state.lists.sorted()
         let lists = state.lists
-            .map { $0.list }
+        
         return .task { send in
             await send(
                 .homeResult(
