@@ -65,7 +65,7 @@ extension ListItems {
             var listName: String
             var searchText = ""
             var tabs: [TDListTab] {
-                guard items.filter(\.isEditing).count < 2 else {
+                guard items.filter(\.isEditing).count > 1 else {
                     return TDListTab.allCases
                 }
                 return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }

@@ -72,28 +72,10 @@ extension Home {
             var isSearchFocused: Bool = false
             
             var tabs: [TDListTab] {
-                guard lists.filter(\.isEditing).count < 2 else {
+                guard lists.filter(\.isEditing).count > 1 else {
                     return TDListTab.allCases
                 }
                 return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
-            }
-            
-            var isEditing: Bool {
-                switch viewState {
-                case .editing:
-                    true
-                default:
-                    false
-                }
-            }
-            
-            var isLoading: Bool {
-                switch viewState {
-                case .loading(let isLoading):
-                    isLoading
-                default:
-                    false
-                }
             }
 
             var alert: AppAlert<Action>? {
@@ -165,6 +147,24 @@ extension Store<Home.Reducer> {
     var isSearchFocused: Bool {
         get { state.isSearchFocused }
         set { send(.didChangeSearchFocus(newValue)) }
+    }
+    
+    var isEditing: Bool {
+        switch state.viewState {
+        case .editing:
+            editMode.isEditing
+        default:
+            false
+        }
+    }
+    
+    var isLoading: Bool {
+        switch state.viewState {
+        case .loading(let isLoading):
+            isLoading
+        default:
+            false
+        }
     }
 }
 

@@ -24,6 +24,7 @@ extension Home.Reducer {
         return .none
     }
 
+    @discardableResult
     func onDidTapCancelButton(
         state: inout State
     ) -> Effect<Action> {
@@ -168,20 +169,17 @@ extension Home.Reducer {
         }
     }
     
-    @discardableResult
     func onDidChangeSearchFocus(
         state: inout State,
         isFocused: Bool
     ) -> Effect<Action> {
         if isFocused {
-            _ = onDidTapCancelButton(state: &state)
+            onDidTapCancelButton(state: &state)
             state.editMode = .inactive
         }
-        state.viewState = .idle
         return .none
     }
     
-    @discardableResult
     func onDidChangeEditMode(
         state: inout State,
         editMode: EditMode
@@ -206,13 +204,12 @@ extension Home.Reducer {
         case .all:
             return performAction(state: &state, activeTab: .all)
         case .done:
-            return performAction(state: &state, activeTab: .all)
+            return performAction(state: &state, activeTab: .done)
         case .todo:
-            return performAction(state: &state, activeTab: .all)
+            return performAction(state: &state, activeTab: .todo)
         }
     }
     
-    @discardableResult
     func onDidUpdateSearchText(
         state: inout State,
         searchText: String
@@ -238,12 +235,13 @@ fileprivate extension Home.Reducer {
         guard !state.lists.contains(where: \.isEditing) else {
             return .none
         }
-        state.viewState = .editing
+        
         state.activeTab = .all
-        onDidUpdateSearchText(state: &state, searchText: "")
-        onDidChangeSearchFocus(state: &state, isFocused: false)
+        state.isSearchFocused = false
         state.editMode = .inactive
         state.lists.insert(UserList.empty, at: 0)
+        state.viewState = .editing
+        
         return .none
     }
     
@@ -253,6 +251,7 @@ fileprivate extension Home.Reducer {
         state.viewState = .loading(false)
         state.editMode = .inactive
         state.lists.sorted()
+        
         let lists = state.lists
         
         return .task { send in
@@ -271,9 +270,9 @@ fileprivate extension Home.Reducer {
         activeTab: TDListTab
     ) -> Effect<Action> {
         guard state.activeTab != activeTab else { return .none }
-        state.viewState = .idle
         state.activeTab = activeTab
-        onDidChangeEditMode(state: &state, editMode: .inactive)
+        state.editMode = .inactive
+        state.viewState = .idle
         return .none
     }
 }

@@ -57,8 +57,8 @@ struct HomeScreen: View {
                 store.send(.onSceneActive)
             }
         }
-        .onChange(of: store.state.viewState) {
-            loading.show(store.state.isLoading)
+        .onChange(of: store.isLoading) {
+            loading.show(store.isLoading)
         }
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
@@ -92,8 +92,8 @@ extension HomeScreen {
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
             lineLimit: 2,
-            isMoveEnabled: !store.isSearchFocused && store.state.editMode.isEditing,
-            isSwipeEnabled: !store.state.isEditing && store.editMode.isEditing,
+            isMoveEnabled: !store.isSearchFocused && store.isEditing,
+            isSwipeEnabled: !store.isEditing,
             listHeight: listHeight
         )
     }
