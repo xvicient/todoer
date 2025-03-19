@@ -13,11 +13,10 @@ extension Home.Reducer {
         switch result {
         case .success(let data):
             state.viewState = .idle
-            state.viewModel = ViewModel(
-                userUid: data.userUid,
-                lists: data.lists.map { $0.toListRow },
-                invitations: data.invitations
-            )
+            
+            state.userUid = data.userUid
+            state.lists = data.lists.map { $0.toListRow }
+            state.invitations = data.invitations
         case .failure:
             state.viewState = .error()
         }
@@ -32,7 +31,7 @@ extension Home.Reducer {
         switch result {
         case .success(let lists):
             if !lists.isEmpty {
-                state.viewModel.lists.insert(contentsOf: lists.map { $0.toListRow }, at: 0)
+                state.lists.insert(contentsOf: lists.map { $0.toListRow }, at: 0)
             }
         case .failure:
             break
@@ -44,15 +43,15 @@ extension Home.Reducer {
         state: inout State,
         result: ActionResult<UserList>
     ) -> Effect<Action> {
-        guard let index = state.viewModel.lists.firstIndex(where: { $0.isEditing }) else {
+        guard let index = state.lists.firstIndex(where: { $0.isEditing }) else {
             state.viewState = .error()
             return .none
         }
-        state.viewModel.lists.remove(at: index)
+        state.lists.remove(at: index)
 
         switch result {
         case .success(let list):
-            state.viewModel.lists.insert(list.toListRow, at: index)
+            state.lists.insert(list.toListRow, at: index)
             state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)

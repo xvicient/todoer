@@ -30,13 +30,13 @@ extension Home.Reducer {
                 state: &state
             )
             
-        case (.updating, .didTapSubmitListButton(let name)):
+        case (.editing, .didTapSubmitListButton(let name)):
             return onDidTapSubmitListButton(
                 state: &state,
                 newListName: name
             )
             
-        case (.updating, .didTapCancelButton):
+        case (.editing, .didTapCancelButton):
             return onDidTapCancelButton(
                 state: &state
             )
@@ -77,7 +77,7 @@ extension Home.Reducer {
                 state: &state
             )
             
-        case (.updating, .didChangeSearchFocus(let isFocused)):
+        case (.editing, .didChangeSearchFocus(let isFocused)):
             return onDidChangeSearchFocus(
                 state: &state,
                 isFocused: isFocused

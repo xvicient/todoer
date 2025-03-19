@@ -36,7 +36,7 @@ struct HomeScreen: View {
     
     var editModeBinding: Binding<EditMode> {
         Binding(
-            get: { store.state.viewModel.editMode },
+            get: { store.state.editMode },
             set: { store.send(.didChangeEditMode($0)) }
         )
     }
@@ -67,7 +67,7 @@ struct HomeScreen: View {
         }
         .environment(\.editMode, editModeBinding)
         .toolbar {
-            if !store.state.viewModel.invitations.isEmpty {
+            if !store.state.invitations.isEmpty {
                 ToolbarItem(placement: .automatic) {
                     invitationsToolbarItem
                 }
@@ -105,7 +105,7 @@ extension HomeScreen {
                 .padding(5)
                 .overlay(Circle().stroke(Color.black, lineWidth: 2))
                 .overlay(
-                    Text("\(store.state.viewModel.invitations.count)")
+                    Text("\(store.state.invitations.count)")
                         .font(.caption2).bold()
                         .foregroundColor(.white)
                         .frame(width: 18, height: 18)
@@ -117,7 +117,7 @@ extension HomeScreen {
         .sheet(isPresented: $isShowingInvitations, onDismiss: {
             isShowingInvitations = false
         }) {
-            invitationsView(store.state.viewModel.invitations)
+            invitationsView(store.state.invitations)
                 .background(GeometryReader { geometry in
                     Color.clear
                         .onAppear {
@@ -137,7 +137,7 @@ extension HomeScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: Strings.Home.todosText,
-            tabs: store.state.viewModel.tabs
+            tabs: store.state.tabs
         )
     }
 
@@ -148,12 +148,12 @@ extension HomeScreen {
                 configuration: contentConfiguration(listHeight),
                 actions: contentActions,
                 rows: Binding(
-                    get: { store.state.viewModel.lists.filter(by: source.isCompleted)
+                    get: { store.state.lists.filter(by: source.isCompleted)
                         .filter(with: searchText).map { $0.tdListRow } },
                     set: { _ in }
                 ),
                 isEditing: Binding(
-                    get: { store.state.viewModel.editMode == .active },
+                    get: { store.state.editMode == .active },
                     set: { _ in }
                 )
             )
@@ -163,8 +163,8 @@ extension HomeScreen {
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
             lineLimit: 2,
-            isMoveEnabled: !isSearchFocused && store.state.viewModel.editMode == .active,
-            isSwipeEnabled: !store.state.viewModel.isEditing && store.state.viewModel.editMode == .inactive,
+            isMoveEnabled: !isSearchFocused && store.state.editMode == .active,
+            isSwipeEnabled: !store.state.isEditing && store.state.editMode == .inactive,
             listHeight: listHeight
         )
     }
@@ -249,9 +249,8 @@ struct Home_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        let viewModel = Home.Reducer.ViewModel()
         let reducer = Home.Reducer(dependencies: Dependencies(coordinator: CoordinatorMock()))
-        let store = Store(initialState: .init(viewModel: viewModel), reducer: reducer)
+        let store = Store(initialState: .init(), reducer: reducer)
         return HomeScreen(
             store: store,
             invitationsView: {

@@ -9,7 +9,7 @@ extension Home.Reducer {
     func onAppear(
         state: inout State
     ) -> Effect<Action> {
-        if state.viewModel.lists.isEmpty {
+        if state.lists.isEmpty {
             state.viewState = .loading(true)
         }
 

@@ -13,13 +13,13 @@ extension Home.Reducer {
         state: inout State,
         uid: UUID
     ) -> Effect<Action> {
-        guard let index = state.viewModel.lists.index(for: uid),
-            let list = state.viewModel.lists[safe: index]?.list
+        guard let index = state.lists.index(for: uid),
+            let list = state.lists[safe: index]?.list
         else {
             state.viewState = .error()
             return .none
         }
-        state.viewModel.editMode = .inactive
+        state.editMode = .inactive
         dependencies.coordinator.push(.listItems(list))
         return .none
     }
@@ -27,27 +27,27 @@ extension Home.Reducer {
     func onDidTapAddListButton(
         state: inout State
     ) -> Effect<Action> {
-        guard !state.viewModel.lists.contains(where: \.isEditing) else {
+        guard !state.lists.contains(where: \.isEditing) else {
             return .none
         }
-        state.viewModel.editMode = .inactive
-        state.viewState = .updating
-        state.viewModel.lists.insert(newListRow(), at: 0)
+        state.editMode = .inactive
+        state.viewState = .editing
+        state.lists.insert(newListRow(), at: 0)
         return .none
     }
 
     func onDidTapCancelButton(
         state: inout State
     ) -> Effect<Action> {
-        guard let index = state.viewModel.lists.firstIndex(where: \.isEditing) else {
+        guard let index = state.lists.firstIndex(where: \.isEditing) else {
             return .none
         }
         
-        if state.viewModel.lists[index].name.isEmpty {
-            state.viewModel.lists.removeAll { $0.isEditing }
+        if state.lists[index].name.isEmpty {
+            state.lists.removeAll { $0.isEditing }
         } else {
-            state.viewModel.lists.replace(
-                list: state.viewModel.lists[index].list,
+            state.lists.replace(
+                list: state.lists[index].list,
                 at: index
             )
         }
@@ -60,7 +60,7 @@ extension Home.Reducer {
     func onDidTapEditButton(
         state: inout State
     ) -> Effect<Action> {
-        state.viewState = state.viewState == .updating ? .idle : .updating
+        state.viewState = state.viewState == .editing ? .idle : .editing
         return .none
     }
 
@@ -68,15 +68,15 @@ extension Home.Reducer {
         state: inout State,
         uid: UUID
     ) -> Effect<Action> {
-        guard let index = state.viewModel.lists.index(for: uid),
-            state.viewModel.lists[safe: index] != nil
+        guard let index = state.lists.index(for: uid),
+            state.lists[safe: index] != nil
         else {
             state.viewState = .error()
             return .none
         }
         state.viewState = .loading(false)
-        state.viewModel.lists[index].list.done.toggle()
-        let list = state.viewModel.lists[index].list
+        state.lists[index].list.done.toggle()
+        let list = state.lists[index].list
         
         return .task { send in
             await send(
@@ -93,14 +93,14 @@ extension Home.Reducer {
         state: inout State,
         uid: UUID
     ) -> Effect<Action> {
-        guard let index = state.viewModel.lists.index(for: uid),
-            let list = state.viewModel.lists[safe: index]?.list
+        guard let index = state.lists.index(for: uid),
+            let list = state.lists[safe: index]?.list
         else {
             state.viewState = .error()
             return .none
         }
         state.viewState = .loading(false)
-        state.viewModel.lists.remove(at: index)
+        state.lists.remove(at: index)
         
         return .task { send in
             await send(
@@ -115,13 +115,13 @@ extension Home.Reducer {
         state: inout State,
         newListName: String
     ) -> Effect<Action> {
-        guard let index = state.viewModel.lists.firstIndex(where: \.isEditing) else {
+        guard let index = state.lists.firstIndex(where: \.isEditing) else {
             return .none
         }
         
         state.viewState = .loading(false)
         
-        if state.viewModel.lists[index].name.isEmpty {
+        if state.lists[index].name.isEmpty {
             return .task { send in
                 await send(
                     .addListResult(
@@ -132,7 +132,7 @@ extension Home.Reducer {
                 )
             }
         } else {
-            let list = state.viewModel.lists[index].list
+            let list = state.lists[index].list
             return .task { send in
                 await send(
                     .addListResult(
@@ -150,8 +150,8 @@ extension Home.Reducer {
         state: inout State,
         uid: UUID
     ) -> Effect<Action> {
-        guard let index = state.viewModel.lists.index(for: uid),
-            let list = state.viewModel.lists[safe: index]?.list
+        guard let index = state.lists.index(for: uid),
+            let list = state.lists[safe: index]?.list
         else {
             state.viewState = .error()
             return .none
@@ -169,13 +169,13 @@ extension Home.Reducer {
     ) -> Effect<Action> {
         state.viewState = .loading(false)
         
-        state.viewModel.lists.move(
+        state.lists.move(
             fromIndex: fromIndex,
             toIndex: toIndex,
             isCompleted: isCompleted
         )
         
-        let lists = state.viewModel.lists
+        let lists = state.lists
             .map { $0.list }
         
         return .task { send in
@@ -193,9 +193,9 @@ extension Home.Reducer {
         state: inout State
     ) -> Effect<Action> {
         state.viewState = .loading(false)
-        state.viewModel.editMode = .inactive
-        state.viewModel.lists.sorted()
-        let lists = state.viewModel.lists
+        state.editMode = .inactive
+        state.lists.sorted()
+        let lists = state.lists
             .map { $0.list }
         return .task { send in
             await send(
@@ -214,7 +214,7 @@ extension Home.Reducer {
     ) -> Effect<Action> {
         if isFocused {
             _ = onDidTapCancelButton(state: &state)
-            state.viewModel.editMode = .inactive
+            state.editMode = .inactive
         }
         state.viewState = .idle
         return .none
@@ -224,7 +224,7 @@ extension Home.Reducer {
         state: inout State,
         editMode: EditMode
     ) -> Effect<Action> {
-        state.viewModel.editMode = editMode
+        state.editMode = editMode
         state.viewState = .idle
         return .none
     }
