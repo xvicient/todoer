@@ -12,6 +12,7 @@ protocol HomeUseCaseApi {
 
     func fetchHomeData() -> AnyPublisher<HomeData, Error>
 
+    @discardableResult
     func updateList(
         list: UserList
     ) async -> ActionResult<UserList>
@@ -38,7 +39,6 @@ extension Home {
     struct HomeData: Equatable, Sendable {
         let lists: [UserList]
         let invitations: [Invitation]
-        let userUid: String
     }
 
     struct UseCase: HomeUseCaseApi {
@@ -92,13 +92,13 @@ extension Home {
             .map { lists, invitations in
                 HomeData(
                     lists: lists,
-                    invitations: invitations,
-                    userUid: usersRepository.uid
+                    invitations: invitations
                 )
             }
             .eraseToAnyPublisher()
         }
-
+        
+        @discardableResult
         func updateList(
             list: UserList
         ) async -> ActionResult<UserList> {
@@ -118,7 +118,7 @@ extension Home {
         func toggleList(
             list: UserList
         ) async -> ActionResult<EquatableVoid> {
-            await _ = updateList(list: list)
+            await updateList(list: list)
             return .success()
         }
 

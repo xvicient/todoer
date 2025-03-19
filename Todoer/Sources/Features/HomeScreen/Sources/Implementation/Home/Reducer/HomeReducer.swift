@@ -39,37 +39,38 @@ extension Home {
             // MARK: - User actions
             /// HomeReducer+UserActions
             case didTapList(UUID)
-            case didTapAddListButton
             case didTapSubmitListButton(String)
             case didTapCancelButton
-            case didTapEditButton
             case didTapToggleListButton(UUID)
             case didTapShareListButton(UUID)
             case didTapDeleteListButton(UUID)
-            case didMoveList(IndexSet, Int, Bool?)
-            case didTapAutoSortLists
-            case didTapDismissError
+            case didMoveList(IndexSet, Int)
             case didChangeSearchFocus(Bool)
             case didChangeEditMode(EditMode)
+            case didChangeActiveTab(TDListTab)
+            case didUpdateSearchText(String)
+            case didTapDismissError
 
             // MARK: - Results
             /// HomeReducer+Results
             case fetchDataResult(ActionResult<HomeData>)
             case addListResult(ActionResult<UserList>)
-            case toggleListResult(ActionResult<EquatableVoid>)
-            case deleteListResult(ActionResult<EquatableVoid>)
+            case homeResult(ActionResult<EquatableVoid>)
             case addSharedListsResult(ActionResult<[UserList]>)
-            case moveListsResult(ActionResult<EquatableVoid>)
         }
 
         @MainActor
         struct State: AppAlertState {
             var viewState = ViewState.idle
-            var userUid = ""
             
             var lists = [WrappedUserList]()
             var invitations = [Invitation]()
+            
             var editMode: EditMode = .inactive
+            var activeTab: TDListTab = .all
+            var searchText = ""
+            var isSearchFocused: Bool = false
+            
             var tabs: [TDListTab] {
                 TDListTab.allCases
                     .removingSort(if: lists.filter { !$0.isEditing }.count < 2)
@@ -77,6 +78,15 @@ extension Home {
             
             var isEditing: Bool {
                 lists.contains(where: \.isEditing)
+            }
+            
+            var isLoading: Bool {
+                switch viewState {
+                case .loading(let isLoading):
+                    return isLoading
+                default:
+                    return false
+                }
             }
 
             var alert: AppAlert<Action>? {
@@ -105,15 +115,6 @@ extension Home {
                     )
                 )
             }
-            
-            var isLoading: Bool {
-                switch self {
-                case .loading(let isLoading):
-                    return isLoading
-                default:
-                    return false
-                }
-            }
         }
 
         let dependencies: HomeScreenDependencies
@@ -122,6 +123,41 @@ extension Home {
         init(dependencies: HomeScreenDependencies) {
             self.dependencies = dependencies
         }
+    }
+}
+
+// MARK: - Bindings
+
+@MainActor
+extension Store<Home.Reducer> {
+    var activeTab: TDListTab {
+        get { state.activeTab }
+        set { send(.didChangeActiveTab(newValue)) }
+    }
+    
+    var searchText: String {
+        get { state.searchText }
+        set { send(.didUpdateSearchText(newValue)) }
+    }
+    
+    var rows: [TDListRow] {
+        get {
+            state.lists
+                .filter(by: activeTab.isCompleted)
+                .filter(with: searchText)
+                .map { $0.tdListRow }
+        }
+        set { }
+    }
+    
+    var editMode: EditMode {
+        get { state.editMode }
+        set { send(.didChangeEditMode(newValue)) }
+    }
+    
+    var isSearchFocused: Bool {
+        get { state.isSearchFocused }
+        set { send(.didChangeSearchFocus(newValue)) }
     }
 }
 
@@ -165,10 +201,6 @@ extension Array where Element == Home.Reducer.WrappedUserList {
         remove(at: index)
         insert(list.toListRow, at: index)
     }
-}
-
-extension Store<Home.Reducer> {
-    
 }
 
 // MARK: - UserList to ListRow

@@ -25,11 +25,6 @@ extension Home.Reducer {
                 uid: rowId
             )
             
-        case (.idle, .didTapAddListButton):
-            return onDidTapAddListButton(
-                state: &state
-            )
-            
         case (.editing, .didTapSubmitListButton(let name)):
             return onDidTapSubmitListButton(
                 state: &state,
@@ -38,11 +33,6 @@ extension Home.Reducer {
             
         case (.editing, .didTapCancelButton):
             return onDidTapCancelButton(
-                state: &state
-            )
-            
-        case (.idle, .didTapEditButton):
-            return onDidTapEditButton(
                 state: &state
             )
 
@@ -64,17 +54,11 @@ extension Home.Reducer {
                 uid: rowId
             )
 
-        case (.idle, .didMoveList(let fromIndex, let toIndex, let isCompleted)):
+        case (.idle, .didMoveList(let fromIndex, let toIndex)):
             return onDidMoveList(
                 state: &state,
                 fromIndex: fromIndex,
-                toIndex: toIndex,
-                isCompleted: isCompleted
-            )
-
-        case (.idle, .didTapAutoSortLists):
-            return onDidTapAutoSortLists(
-                state: &state
+                toIndex: toIndex
             )
             
         case (.editing, .didChangeSearchFocus(let isFocused)):
@@ -87,6 +71,18 @@ extension Home.Reducer {
             return onDidChangeEditMode(
                 state: &state,
                 editMode: editMode
+            )
+            
+        case (.idle, .didChangeActiveTab(let activeTab)):
+            return onDidChangeActiveTab(
+                state: &state,
+                activeTab: activeTab
+            )
+            
+        case (.idle, .didUpdateSearchText(let text)):
+            return onDidUpdateSearchText(
+                state: &state,
+                searchText: text
             )
 
         case (.loading, .addSharedListsResult(let result)),
@@ -109,20 +105,8 @@ extension Home.Reducer {
                 result: result
             )
 
-        case (.loading, .toggleListResult(let result)):
-            return onResult(
-                state: &state,
-                result: result
-            )
-
-        case (.loading, .deleteListResult(let result)):
-            return onResult(
-                state: &state,
-                result: result
-            )
-
-        case (.loading, .moveListsResult(let result)):
-            return onResult(
+        case (.loading, .homeResult(let result)):
+            return onHomeResult(
                 state: &state,
                 result: result
             )

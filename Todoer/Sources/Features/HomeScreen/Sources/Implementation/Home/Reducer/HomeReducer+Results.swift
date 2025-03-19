@@ -14,7 +14,6 @@ extension Home.Reducer {
         case .success(let data):
             state.viewState = .idle
             
-            state.userUid = data.userUid
             state.lists = data.lists.map { $0.toListRow }
             state.invitations = data.invitations
         case .failure:
@@ -59,7 +58,7 @@ extension Home.Reducer {
         return .none
     }
 
-    func onResult(
+    func onHomeResult(
         state: inout State,
         result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {

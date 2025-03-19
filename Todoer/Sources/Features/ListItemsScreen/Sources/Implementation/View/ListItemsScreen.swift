@@ -17,7 +17,7 @@ struct ListItemsScreen: View {
     
     private var activeTabBinding: Binding<TDListTab> {
         Binding(
-            get: { source.activeTab },
+            get: { .all },
             set: { _ in }
         )
     }
@@ -32,15 +32,9 @@ struct ListItemsScreen: View {
         ZStack {
             GeometryReader { geometry in
                 TDListView(
-                    content: { listContent(geometry.size.height) },
-                    actions: listActions,
                     configuration: listConfiguration,
-                    searchText: Binding(
-                        get: { store.state.searchText },
-                        set: { store.send(.didUpdateSearchText($0)) }
-                    ),
-                    isSearchFocused: $isSearchFocused,
-                    activeTab: activeTabBinding
+                    content: { listContent(geometry.size.height) }
+//                    actions: listActions, TODO: - to send teh binding instead
                 )
                 .onChange(of: isSearchFocused) {
                     guard isSearchFocused else { return }
@@ -73,22 +67,23 @@ extension ListItemsScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: store.state.listName,
-            tabs: store.state.tabs
+            tabs: store.state.tabs,
+            activeTab: activeTabBinding,
+            searchText: Binding(
+                get: { store.state.searchText },
+                set: { store.send(.didUpdateSearchText($0)) }
+            ),
+            isSearchFocused: .constant(true) //$isSearchFocused, TODO: - move it to the store
         )
     }
 
     @ViewBuilder
-    fileprivate func listContent(_ listHeight: CGFloat) -> AnyView {
-        AnyView(
-            TDListContent(
-                configuration: contentConfiguration(listHeight),
-                actions: contentActions,
-                rows: store.state.filteredItems(isCompleted: source.isCompleted),
-                isEditing: Binding(
-                    get: { editMode == .active },
-                    set: { _ in }
-                )
-            )
+    fileprivate func listContent(_ listHeight: CGFloat) -> TDListContent {
+        TDListContent(
+            configuration: contentConfiguration(listHeight),
+            actions: contentActions,
+            rows: store.state.filteredItems(isCompleted: source.isCompleted),
+            editMode: $editMode
         )
     }
 
@@ -132,7 +127,7 @@ extension ListItemsScreen {
                 }()
             case .sort:
                 store.send(.didTapAutoSortItems)
-            case .move:
+            case .edit:
                 break
             case .all:
                 source = .all

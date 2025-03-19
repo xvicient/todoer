@@ -23,18 +23,6 @@ extension Home.Reducer {
         dependencies.coordinator.push(.listItems(list))
         return .none
     }
-    
-    func onDidTapAddListButton(
-        state: inout State
-    ) -> Effect<Action> {
-        guard !state.lists.contains(where: \.isEditing) else {
-            return .none
-        }
-        state.editMode = .inactive
-        state.viewState = .editing
-        state.lists.insert(newListRow(), at: 0)
-        return .none
-    }
 
     func onDidTapCancelButton(
         state: inout State
@@ -56,13 +44,6 @@ extension Home.Reducer {
         
         return .none
     }
-    
-    func onDidTapEditButton(
-        state: inout State
-    ) -> Effect<Action> {
-        state.viewState = state.viewState == .editing ? .idle : .editing
-        return .none
-    }
 
     func onDidTapToggleListButton(
         state: inout State,
@@ -80,7 +61,7 @@ extension Home.Reducer {
         
         return .task { send in
             await send(
-                .toggleListResult(
+                .homeResult(
                     useCase.toggleList(
                         list: list
                     )
@@ -104,7 +85,7 @@ extension Home.Reducer {
         
         return .task { send in
             await send(
-                .deleteListResult(
+                .homeResult(
                     useCase.deleteList(list.documentId)
                 )
             )
@@ -164,15 +145,14 @@ extension Home.Reducer {
     func onDidMoveList(
         state: inout State,
         fromIndex: IndexSet,
-        toIndex: Int,
-        isCompleted: Bool?
+        toIndex: Int
     ) -> Effect<Action> {
         state.viewState = .loading(false)
         
         state.lists.move(
             fromIndex: fromIndex,
             toIndex: toIndex,
-            isCompleted: isCompleted
+            isCompleted: state.activeTab.isCompleted
         )
         
         let lists = state.lists
@@ -180,26 +160,7 @@ extension Home.Reducer {
         
         return .task { send in
             await send(
-                .moveListsResult(
-                    useCase.sortLists(
-                        lists: lists
-                    )
-                )
-            )
-        }
-    }
-
-    func onDidTapAutoSortLists(
-        state: inout State
-    ) -> Effect<Action> {
-        state.viewState = .loading(false)
-        state.editMode = .inactive
-        state.lists.sorted()
-        let lists = state.lists
-            .map { $0.list }
-        return .task { send in
-            await send(
-                .moveListsResult(
+                .homeResult(
                     useCase.sortLists(
                         lists: lists
                     )
@@ -208,6 +169,7 @@ extension Home.Reducer {
         }
     }
     
+    @discardableResult
     func onDidChangeSearchFocus(
         state: inout State,
         isFocused: Bool
@@ -220,12 +182,43 @@ extension Home.Reducer {
         return .none
     }
     
+    @discardableResult
     func onDidChangeEditMode(
         state: inout State,
         editMode: EditMode
     ) -> Effect<Action> {
         state.editMode = editMode
         state.viewState = .idle
+        return .none
+    }
+    
+    func onDidChangeActiveTab(
+        state: inout State,
+        activeTab: TDListTab
+    ) -> Effect<Action> {
+        switch activeTab {
+        case .add:
+            return addList(state: &state)
+        case .sort:
+            return sortLists(state: &state)
+        case .edit:
+            state.viewState = state.viewState == .editing ? .idle : .editing
+            return .none
+        case .all:
+            return performAction(state: &state, activeTab: .all)
+        case .done:
+            return performAction(state: &state, activeTab: .all)
+        case .todo:
+            return performAction(state: &state, activeTab: .all)
+        }
+    }
+    
+    @discardableResult
+    func onDidUpdateSearchText(
+        state: inout State,
+        searchText: String
+    ) -> Effect<Action> {
+        state.searchText = searchText
         return .none
     }
     
@@ -248,5 +241,53 @@ extension Home.Reducer {
             list: list,
             isEditing: true
         )
+    }
+}
+
+fileprivate extension Home.Reducer {
+    func addList(
+        state: inout State
+    ) -> Effect<Action> {
+        guard !state.lists.contains(where: \.isEditing) else {
+            return .none
+        }
+        state.viewState = .editing
+        state.activeTab = .all
+        onDidUpdateSearchText(state: &state, searchText: "")
+        onDidChangeSearchFocus(state: &state, isFocused: false)
+        state.editMode = .inactive
+        state.lists.insert(newListRow(), at: 0)
+        return .none
+    }
+    
+    func sortLists(
+        state: inout State
+    ) -> Effect<Action> {
+        state.viewState = .idle
+        state.viewState = .loading(false)
+        state.editMode = .inactive
+        state.lists.sorted()
+        let lists = state.lists
+            .map { $0.list }
+        return .task { send in
+            await send(
+                .homeResult(
+                    useCase.sortLists(
+                        lists: lists
+                    )
+                )
+            )
+        }
+    }
+    
+    func performAction(
+        state: inout State,
+        activeTab: TDListTab
+    ) -> Effect<Action> {
+        guard state.activeTab != activeTab else { return .none }
+        state.viewState = .idle
+        state.activeTab = activeTab
+        onDidChangeEditMode(state: &state, editMode: .inactive)
+        return .none
     }
 }

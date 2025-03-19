@@ -49,18 +49,18 @@ public struct TDListContent: View {
     private let configuration: Configuration
     private let actions: Actions
     @Binding private var rows: [TDListRow]
-    @Binding private var isEditing: Bool
+    @Binding private var editMode: EditMode
 
     public init(
         configuration: Configuration,
         actions: Actions,
         rows: Binding<[TDListRow]>,
-        isEditing: Binding<Bool>
+        editMode: Binding<EditMode>
     ) {
         self.configuration = configuration
         self.actions = actions
         self._rows = rows
-        self._isEditing = isEditing
+        self._editMode = editMode
     }
 
     public var body: some View {
@@ -86,7 +86,7 @@ public struct TDListContent: View {
             .listRowInsets(EdgeInsets())
         } else {
             ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
-                if row.isEditing || isEditing {
+                if row.isEditing || editMode.isEditing {
                     TDEmptyRowView(
                         row: row,
                         actions: actions,
@@ -124,7 +124,7 @@ public struct TDListContent: View {
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }),
             rows: .constant([]),
-            isEditing: .constant(true)
+            editMode: .constant(.inactive)
         )
     }
     .scrollIndicators(.hidden)

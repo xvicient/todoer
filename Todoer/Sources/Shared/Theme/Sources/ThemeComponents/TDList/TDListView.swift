@@ -7,8 +7,6 @@ import Strings
 
 public struct TDListView: View {
     
-    public typealias Actions = (TDListTab) -> Void
-    
     enum SlideDirection {
         case forward
         case backward
@@ -32,22 +30,30 @@ public struct TDListView: View {
     public struct Configuration {
         let title: String
         let tabs: [TDListTab]
+        let activeTab: Binding<TDListTab>
+        let searchText: Binding<String>
+        @Binding var isSearchFocused: Bool
         
         public init(
             title: String,
-            tabs: [TDListTab]
+            tabs: [TDListTab],
+            activeTab: Binding<TDListTab>,
+            searchText: Binding<String>,
+            isSearchFocused: Binding<Bool>
         ) {
             self.title = title
             self.tabs = tabs
+            self.activeTab = activeTab
+            self.searchText = searchText
+            self._isSearchFocused = isSearchFocused
         }
     }
     
     /// init properties
-    private let listContent: () -> AnyView
-    private let actions: Actions
+    private let listContent: () -> TDListContent
     private let configuration: Configuration
     @Binding private var searchText: String
-    @FocusState.Binding private var isSearchFocused: Bool
+    @FocusState private var isSearchFocused: Bool
     @Binding private var activeTab: TDListTab
     
     /// Animation properties
@@ -68,19 +74,14 @@ public struct TDListView: View {
     }
     
     public init(
-        @ViewBuilder content: @escaping () -> AnyView,
-        actions: @escaping Actions,
         configuration: Configuration,
-        searchText: Binding<String>,
-        isSearchFocused: FocusState<Bool>.Binding,
-        activeTab: Binding<TDListTab>
+        @ViewBuilder content: @escaping () -> TDListContent
     ) {
         self.listContent = content
-        self.actions = actions
         self.configuration = configuration
-        self._searchText = searchText
-        self._isSearchFocused = isSearchFocused
-        self._activeTab = activeTab
+        self._searchText = configuration.searchText
+        self._activeTab = configuration.activeTab
+        self.isSearchFocused = configuration.isSearchFocused
     }
     
     public var body: some View {
@@ -247,19 +248,18 @@ extension TDListView {
             item: TDListTab
         ) -> some View {
             switch item {
-            case .move:
+            case .edit:
                 EditButton()
-                    .tableButtonStyle(item: item, active: activeTab == item)
+                    .tabButtonStyle(item: item, active: activeTab == item)
             default:
                 Button(action: {
                     slideDirection = item.rawValue > activeTab.rawValue ? .forward : .backward
                     withAnimation {
-                        activeTab = item.activeTab
-                        actions(item)
+                        activeTab = item
                     }
                 }) {
                     Text(item.stringValue)
-                        .tableButtonStyle(item: item, active: activeTab == item)
+                        .tabButtonStyle(item: item, active: activeTab == item)
                 }
                 .buttonStyle(.plain)
             }
@@ -305,7 +305,7 @@ fileprivate struct ListNoBounceModifier: ViewModifier {
 }
 
 fileprivate extension View {
-    func tableButtonStyle(item: TDListTab, active: Bool) -> some View {
+    func tabButtonStyle(item: TDListTab, active: Bool) -> some View {
         modifier(TabButtonModifier(item: item, active: active))
     }
                  
@@ -316,40 +316,28 @@ fileprivate extension View {
 
 #Preview {
     TDListView(
-        content: {
-            AnyView(
-                ForEach(0..<20, id: \.self) { n in
-                    HStack(spacing: 12) {
-                        Circle()
-                            .frame(width: 55, height: 55)
-                            .overlay(
-                                Text("\(n)")
-                            )
-                        
-                        VStack(alignment: .leading, spacing: 6, content: {
-                            Rectangle()
-                                .frame(width: 140, height: 8)
-                            
-                            Rectangle()
-                                .frame(height: 8)
-                            
-                            Rectangle()
-                                .frame(width: 80, height: 8)
-                        })
-                    }
-                    .id(n)
-                    .foregroundStyle(.gray.opacity(0.4))
-                    .padding(.horizontal, 5)
-                }
-            )
-        },
-        actions: { _ in },
         configuration: .init(
             title: "To-do's",
-            tabs: TDListTab.allCases
-        ),
-        searchText: .constant(""),
-        isSearchFocused: FocusState<Bool>().projectedValue,
-        activeTab: .constant(.all)
-    )
+            tabs: TDListTab.allCases,
+            activeTab: .constant(.all),
+            searchText: .constant(""),
+            isSearchFocused: .constant(true)
+        )
+    ) {
+        TDListContent(
+            configuration: .init(
+                isMoveEnabled: false,
+                isSwipeEnabled: false,
+                listHeight: 100
+            ),
+            actions: .init(
+                onSubmit: { _ in },
+                onCancel: {},
+                onSwipe: { _, _ in },
+                onMove: { _, _ in }
+            ),
+            rows: .constant([]),
+            editMode: .constant(.inactive)
+        )
+    }
 }

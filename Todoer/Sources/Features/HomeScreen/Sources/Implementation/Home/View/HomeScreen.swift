@@ -15,31 +15,10 @@ import Coordinator
 struct HomeScreen: View {
     
     @EnvironmentObject var loading: TDLoadingModel
-    @ObservedObject private var store: Store<Home.Reducer>
-    private var invitationsView: Home.MakeInvitationsView
-    
     @Environment(\.scenePhase) private var scenePhase
     
-    @State private var source: TDListTab = .all
-    @State var isShowingInvitations: Bool = false
-    @State private var sheetHeight: CGFloat = 0
-    
-    @State private var searchText = ""
-    @FocusState private var isSearchFocused: Bool
-    
-    private var activeTabBinding: Binding<TDListTab> {
-        Binding(
-            get: { source.activeTab },
-            set: { _ in }
-        )
-    }
-    
-    var editModeBinding: Binding<EditMode> {
-        Binding(
-            get: { store.state.editMode },
-            set: { store.send(.didChangeEditMode($0)) }
-        )
-    }
+    @ObservedObject private var store: Store<Home.Reducer>
+    private var invitationsView: Home.MakeInvitationsView
 
     init(
         store: Store<Home.Reducer>,
@@ -53,23 +32,20 @@ struct HomeScreen: View {
         VStack {
             GeometryReader { geometry in
                 TDListView(
-                    content: { listContent(geometry.size.height) },
-                    actions: listActions,
-                    configuration: listConfiguration,
-                    searchText: $searchText,
-                    isSearchFocused: $isSearchFocused,
-                    activeTab: activeTabBinding
-                )
-                .onChange(of: isSearchFocused) {
-                    store.send(.didChangeSearchFocus(isSearchFocused))
+                    configuration: listConfiguration
+                ) {
+                    listContent(geometry.size.height)
                 }
             }
         }
-        .environment(\.editMode, editModeBinding)
+        .environment(\.editMode, $store.editMode)
         .toolbar {
             if !store.state.invitations.isEmpty {
                 ToolbarItem(placement: .automatic) {
-                    invitationsToolbarItem
+                    InvitationsToolbarView(
+                        invitationsView: invitationsView,
+                        invitations: store.state.invitations
+                    )
                 }
             }
         }
@@ -82,52 +58,11 @@ struct HomeScreen: View {
             }
         }
         .onChange(of: store.state.viewState) {
-            loading.show(store.state.viewState.isLoading)
+            loading.show(store.state.isLoading)
         }
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
         }
-    }
-}
-
-// MARK: - ViewBuilders
-
-extension HomeScreen {
-    
-    @ViewBuilder
-    fileprivate var invitationsToolbarItem: some View {
-        Button {
-            isShowingInvitations = true
-        } label: {
-            Image.squareArrowDownFill
-                .foregroundStyle(.black)
-                .font(.system(size: 14))
-                .padding(5)
-                .overlay(Circle().stroke(Color.black, lineWidth: 2))
-                .overlay(
-                    Text("\(store.state.invitations.count)")
-                        .font(.caption2).bold()
-                        .foregroundColor(.white)
-                        .frame(width: 18, height: 18)
-                        .background(Circle().fill(Color.red))
-                        .offset(x: 5, y: -3),
-                    alignment: .topTrailing
-                )
-        }
-        .sheet(isPresented: $isShowingInvitations, onDismiss: {
-            isShowingInvitations = false
-        }) {
-            invitationsView(store.state.invitations)
-                .background(GeometryReader { geometry in
-                    Color.clear
-                        .onAppear {
-                            sheetHeight = geometry.size.height
-                        }
-                })
-                .presentationDetents([.height(sheetHeight)])
-                .presentationDragIndicator(.hidden)
-        }
-        .padding(.trailing, -20)
     }
 }
 
@@ -137,34 +72,28 @@ extension HomeScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: Strings.Home.todosText,
-            tabs: store.state.tabs
+            tabs: store.state.tabs,
+            activeTab: $store.activeTab,
+            searchText: $store.searchText,
+            isSearchFocused: $store.isSearchFocused
         )
     }
 
     @ViewBuilder
-    fileprivate func listContent(_ listHeight: CGFloat) -> AnyView {
-        AnyView(
-            TDListContent(
-                configuration: contentConfiguration(listHeight),
-                actions: contentActions,
-                rows: Binding(
-                    get: { store.state.lists.filter(by: source.isCompleted)
-                        .filter(with: searchText).map { $0.tdListRow } },
-                    set: { _ in }
-                ),
-                isEditing: Binding(
-                    get: { store.state.editMode == .active },
-                    set: { _ in }
-                )
-            )
+    fileprivate func listContent(_ listHeight: CGFloat) -> TDListContent {
+        TDListContent(
+            configuration: contentConfiguration(listHeight),
+            actions: contentActions,
+            rows: $store.rows,
+            editMode: $store.editMode
         )
     }
 
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
             lineLimit: 2,
-            isMoveEnabled: !isSearchFocused && store.state.editMode == .active,
-            isSwipeEnabled: !store.state.isEditing && store.state.editMode == .inactive,
+            isMoveEnabled: !store.isSearchFocused && store.state.editMode.isEditing,
+            isSwipeEnabled: !store.state.isEditing && store.editMode.isEditing,
             listHeight: listHeight
         )
     }
@@ -175,38 +104,8 @@ extension HomeScreen {
             onCancel: { store.send(.didTapCancelButton) },
             onTap: { store.send(.didTapList($0)) },
             onSwipe: swipeActions,
-            onMove: moveList
+            onMove: { store.send(.didMoveList($0, $1)) }
         )
-    }
-    
-    fileprivate var listActions: (TDListTab) -> Void {
-        { action in
-            switch action {
-            case .add:
-                source = .all
-                return {
-                    isSearchFocused = false
-                    searchText = ""
-                    store.send(.didTapAddListButton)
-                }()
-            case .sort:
-                store.send(.didTapAutoSortLists)
-            case .move:
-                store.send(.didTapEditButton)
-            case .all:
-                guard source != action else { return }
-                source = .all
-                store.send(.didChangeEditMode(.inactive))
-            case .done:
-                guard source != action else { return }
-                source = .done
-                store.send(.didChangeEditMode(.inactive))
-            case .todo:
-                guard source != action else { return }
-                source = .todo
-                store.send(.didChangeEditMode(.inactive))
-            }
-        }
     }
     
     fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
@@ -221,16 +120,12 @@ extension HomeScreen {
             }
         }
     }
-
-    fileprivate func moveList(fromOffset: IndexSet, toOffset: Int) {
-        store.send(.didMoveList(fromOffset, toOffset, source.isCompleted))
-    }
 }
 
 // MARK: - ListRow to TDRow
 
 extension Home.Reducer.WrappedUserList {
-    fileprivate var tdListRow: TDListRow {
+    public var tdListRow: TDListRow {
         TDListRow(
             id: list.id,
             name: list.name,
