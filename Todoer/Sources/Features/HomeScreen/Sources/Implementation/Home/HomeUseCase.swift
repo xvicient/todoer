@@ -15,6 +15,10 @@ protocol HomeUseCaseApi {
     func updateList(
         list: UserList
     ) async -> ActionResult<UserList>
+    
+    func toggleList(
+        list: UserList
+    ) async -> ActionResult<EquatableVoid>
 
     func deleteList(
         _ documentId: String
@@ -109,6 +113,13 @@ extension Home {
             catch {
                 return .failure(error)
             }
+        }
+        
+        func toggleList(
+            list: UserList
+        ) async -> ActionResult<EquatableVoid> {
+            await _ = updateList(list: list)
+            return .success()
         }
 
         func deleteList(

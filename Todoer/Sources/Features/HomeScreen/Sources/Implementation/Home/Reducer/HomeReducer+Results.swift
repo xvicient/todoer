@@ -39,33 +39,7 @@ extension Home.Reducer {
         }
         return .none
     }
-
-    func onToggleListResult(
-        state: inout State,
-        result: ActionResult<UserList>
-    ) -> Effect<Action> {
-        switch result {
-        case .success:
-            state.viewState = .idle
-        case .failure:
-            state.viewState = .error()
-        }
-        return .none
-    }
-
-    func onDeleteListResult(
-        state: inout State,
-        result: ActionResult<EquatableVoid>
-    ) -> Effect<Action> {
-        switch result {
-        case .success:
-            state.viewState = .idle
-        case .failure:
-            state.viewState = .error()
-        }
-        return .none
-    }
-
+    
     func onAddListResult(
         state: inout State,
         result: ActionResult<UserList>
@@ -86,28 +60,13 @@ extension Home.Reducer {
         return .none
     }
 
-    func onMoveListsResult(
+    func onResult(
         state: inout State,
         result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:
             state.viewState = .idle
-        case .failure:
-            state.viewState = .error()
-        }
-        return .none
-    }
-
-    @MainActor
-    func onDeleteAccountResult(
-        state: inout State,
-        result: ActionResult<EquatableVoid>
-    ) -> Effect<Action> {
-        switch result {
-        case .success:
-            state.viewState = .idle
-            dependencies.coordinator.loggOut()
         case .failure:
             state.viewState = .error()
         }

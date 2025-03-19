@@ -3,9 +3,7 @@ import SwiftUI
 
 protocol TDEmptyRowActions {
     var onSubmit: (String) -> Void { get }
-    var onUpdate: (UUID, String) -> Void { get }
-    var onCancelAdd: () -> Void { get }
-    var onCancelEdit: (UUID) -> Void { get }
+    var onCancel: () -> Void { get }
 }
 
 struct TDEmptyRowView: View {
@@ -33,26 +31,32 @@ struct TDEmptyRowView: View {
             
             TextField(Strings.List.newItemPlaceholder, text: $localText)
                 .foregroundColor(Color.textBlack)
-                .focused($isEmptyRowFocused)
+                .submitLabel(.done)
                 .onSubmit(handleSubmit)
+                .if(row.isEditing) {
+                    $0.focused($isEmptyRowFocused)
+                }
                 .onChange(of: text) {
                     if localText != text {
                         localText = text
                     }
                 }
-                .submitLabel(.done)
             
-            Button(action: handleCancel) {
-                Image.xmark
-                    .resizable()
-                    .frame(width: 12, height: 12)
-                    .foregroundColor(Color.buttonBlack)
+            if row.isEditing {
+                Button(action: handleCancel) {
+                    Image.xmark
+                        .resizable()
+                        .frame(width: 12, height: 12)
+                        .foregroundColor(Color.buttonBlack)
+                }
+                .buttonStyle(.borderless)
             }
-            .buttonStyle(.borderless)
         }
         .frame(height: 40)
         .onAppear {
-            isEmptyRowFocused = true
+            if row.isEditing {
+                isEmptyRowFocused = true
+            }
             localText = text
         }
     }
@@ -62,11 +66,7 @@ struct TDEmptyRowView: View {
         hideKeyboard()
         text = localText
         withAnimation {
-            if row.name.isEmpty {
-                actions.onSubmit(localText)
-            } else {
-                actions.onUpdate(row.id, localText)
-            }
+            actions.onSubmit(localText)
         }
     }
 
@@ -74,12 +74,8 @@ struct TDEmptyRowView: View {
     private func handleCancel() {
         hideKeyboard()
         withAnimation {
-            if row.name.isEmpty {
-                actions.onCancelAdd()
-            } else {
-                actions.onCancelEdit(row.id)
-                localText = text
-            }
+            actions.onCancel()
+            localText = text
         }
     }
 }

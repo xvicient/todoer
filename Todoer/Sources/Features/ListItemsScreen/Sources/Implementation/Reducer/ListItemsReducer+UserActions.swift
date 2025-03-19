@@ -101,53 +101,10 @@ extension ListItems.Reducer {
         }
     }
 
-    func onDidTapEditItemButton(
-        state: inout State,
-        uid: UUID
-    ) -> Effect<Action> {
-        guard let index = state.items.index(for: uid),
-            let item = state.items[safe: index]?.item
-        else {
-            state.viewState = .error(Errors.default)
-            return .none
-        }
-        state.viewState = .editingItem(uid)
-        state.items.remove(at: index)
-        state.items.insert(newItemRow(item: item), at: index)
-
-        return .none
-    }
-
-    func onDidTapUpdateItemButton(
-        state: inout State,
-        uid: UUID,
-        name: String
-    ) -> Effect<Action> {
-        guard let index = state.items.index(for: uid),
-            var item = state.items[safe: index]?.item
-        else {
-            state.viewState = .error(Errors.default)
-            return .none
-        }
-        item.name = name
-        let listId = dependencies.list.documentId
-        return .task { send in
-            await send(
-                .addItemResult(
-                    dependencies.useCase.updateItemName(
-                        item: item,
-                        listId: listId
-                    )
-                )
-            )
-        }
-    }
-
     func onDidTapCancelEditItemButton(
-        state: inout State,
-        uid: UUID
+        state: inout State
     ) -> Effect<Action> {
-        guard let index = state.items.index(for: uid),
+        guard let index = state.items.firstIndex(where: { $0.isEditing }),
             let item = state.items[safe: index]?.item
         else {
             state.viewState = .error(Errors.default)

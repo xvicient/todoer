@@ -6,6 +6,7 @@ import HomeScreenContract
 import Strings
 import xRedux
 import ThemeComponents
+import SwiftUI
 
 // MARK: - HomeReducer
 
@@ -38,28 +39,27 @@ extension Home {
             // MARK: - User actions
             /// HomeReducer+UserActions
             case didTapList(UUID)
-            case didTapToggleListButton(UUID)
-            case didTapDeleteListButton(UUID)
-            case didTapShareListButton(UUID)
-            case didTapEditListButton(UUID)
-            case didTapUpdateListButton(UUID, String)
-            case didTapCancelEditListButton(UUID)
-            case didTapAddRowButton
-            case didTapCancelAddListButton
+            case didTapAddListButton
             case didTapSubmitListButton(String)
+            case didTapCancelButton
+            case didTapEditButton
+            case didTapToggleListButton(UUID)
+            case didTapShareListButton(UUID)
+            case didTapDeleteListButton(UUID)
             case didMoveList(IndexSet, Int, Bool?)
-            case didTapDismissError
             case didTapAutoSortLists
+            case didTapDismissError
+            case didChangeSearchFocus(Bool)
+            case didChangeEditMode(EditMode)
 
             // MARK: - Results
             /// HomeReducer+Results
             case fetchDataResult(ActionResult<HomeData>)
-            case addSharedListsResult(ActionResult<[UserList]>)
-            case toggleListResult(ActionResult<UserList>)
-            case deleteListResult(ActionResult<EquatableVoid>)
             case addListResult(ActionResult<UserList>)
+            case toggleListResult(ActionResult<EquatableVoid>)
+            case deleteListResult(ActionResult<EquatableVoid>)
+            case addSharedListsResult(ActionResult<[UserList]>)
             case moveListsResult(ActionResult<EquatableVoid>)
-            case deleteAccountResult(ActionResult<EquatableVoid>)
         }
 
         @MainActor
@@ -83,12 +83,8 @@ extension Home {
 
         enum ViewState: Equatable, StringRepresentable {
             case idle
-            case loading
-            case addingList
-            case sortingList
-            case movingList
-            case updatingList
-            case editingList(UUID)
+            case loading(Bool)
+            case updating
             case alert(AppAlert<Action>)
 
             static func error(
@@ -102,13 +98,13 @@ extension Home {
                     )
                 )
             }
-
-            var isEditing: Bool {
+            
+            var isLoading: Bool {
                 switch self {
-                case .addingList, .editingList:
-                    true
+                case .loading(let isLoading):
+                    return isLoading
                 default:
-                    false
+                    return false
                 }
             }
         }
@@ -130,7 +126,7 @@ extension UserList {
             id: id,
             list: self,
             leadingActions: [done ? .undone : .done],
-            trailingActions: [.delete, .share, .edit]
+            trailingActions: [.delete, .share]
         )
     }
 }

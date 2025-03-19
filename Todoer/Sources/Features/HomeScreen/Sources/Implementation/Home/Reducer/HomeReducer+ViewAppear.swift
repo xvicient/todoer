@@ -10,7 +10,7 @@ extension Home.Reducer {
         state: inout State
     ) -> Effect<Action> {
         if state.viewModel.lists.isEmpty {
-            state.viewState = .loading
+            state.viewState = .loading(true)
         }
 
         return .publish(
@@ -27,16 +27,10 @@ extension Home.Reducer {
         guard useCase.sharedListsCount > 0 else {
             return .none
         }
+        
+        state.viewState = .loading(true)
 
-        if state.viewState == .addingList {
-            _ = onDidTapCancelAddListButton(state: &state)
-        }
-
-        if case let .editingList(uid) = state.viewState {
-            _ = onDidTapCancelEditListButton(state: &state, uid: uid)
-        }
-
-        state.viewState = .loading
+        _ = onDidTapCancelButton(state: &state)
 
         return .task { send in
             await send(

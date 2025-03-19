@@ -44,9 +44,7 @@ extension ListItems {
             case didTapAddRowButton
             case didTapCancelAddItemButton
             case didTapSubmitItemButton(String)
-            case didTapEditItemButton(UUID)
-            case didTapUpdateItemButton(UUID, String)
-            case didTapCancelEditItemButton(UUID)
+            case didTapCancelEditItemButton
             case didMoveItem(IndexSet, Int, Bool?)
             case didTapDismissError
             case didTapAutoSortItems
@@ -103,7 +101,7 @@ extension ListItems {
             case loading
             case addingItem
             case updatingItem
-            case editingItem(UUID)
+            case editingItem
             case sortingItems
             case movingItem
             case alert(AppAlert<Action>)
@@ -218,7 +216,7 @@ extension Item {
         ListItems.Reducer.WrappedItem(
             item: self,
             leadingActions: [done ? .undone : .done],
-            trailingActions: [.delete, .edit]
+            trailingActions: [.delete]
         )
     }
 }

@@ -24,6 +24,27 @@ extension Home.Reducer {
                 state: &state,
                 uid: rowId
             )
+            
+        case (.idle, .didTapAddListButton):
+            return onDidTapAddListButton(
+                state: &state
+            )
+            
+        case (.updating, .didTapSubmitListButton(let name)):
+            return onDidTapSubmitListButton(
+                state: &state,
+                newListName: name
+            )
+            
+        case (.updating, .didTapCancelButton):
+            return onDidTapCancelButton(
+                state: &state
+            )
+            
+        case (.idle, .didTapEditButton):
+            return onDidTapEditButton(
+                state: &state
+            )
 
         case (.idle, .didTapToggleListButton(let rowId)):
             return onDidTapToggleListButton(
@@ -43,41 +64,6 @@ extension Home.Reducer {
                 uid: rowId
             )
 
-        case (.idle, .didTapEditListButton(let rowId)):
-            return onDidTapEditListButton(
-                state: &state,
-                uid: rowId
-            )
-
-        case (.editingList, .didTapCancelEditListButton(let rowId)):
-            return onDidTapCancelEditListButton(
-                state: &state,
-                uid: rowId
-            )
-
-        case (.editingList, .didTapUpdateListButton(let uid, let name)):
-            return onDidTapUpdateListButton(
-                state: &state,
-                uid: uid,
-                name: name
-            )
-
-        case (.idle, .didTapAddRowButton):
-            return onDidTapAddRowButton(
-                state: &state
-            )
-
-        case (.addingList, .didTapCancelAddListButton):
-            return onDidTapCancelAddListButton(
-                state: &state
-            )
-
-        case (.addingList, .didTapSubmitListButton(let name)):
-            return onDidTapSubmitListButton(
-                state: &state,
-                newListName: name
-            )
-
         case (.idle, .didMoveList(let fromIndex, let toIndex, let isCompleted)):
             return onDidMoveList(
                 state: &state,
@@ -86,14 +72,21 @@ extension Home.Reducer {
                 isCompleted: isCompleted
             )
 
-        case (.alert, .didTapDismissError):
-            return onDidTapDismissError(
-                state: &state
-            )
-
         case (.idle, .didTapAutoSortLists):
             return onDidTapAutoSortLists(
                 state: &state
+            )
+            
+        case (.updating, .didChangeSearchFocus(let isFocused)):
+            return onDidChangeSearchFocus(
+                state: &state,
+                isFocused: isFocused
+            )
+            
+        case (.idle, .didChangeEditMode(let editMode)):
+            return onDidChangeEditMode(
+                state: &state,
+                editMode: editMode
             )
 
         case (.loading, .addSharedListsResult(let result)),
@@ -109,36 +102,34 @@ extension Home.Reducer {
                 state: &state,
                 result: result
             )
-
-        case (.updatingList, .toggleListResult(let result)):
-            return onToggleListResult(
-                state: &state,
-                result: result
-            )
-
-        case (.updatingList, .deleteListResult(let result)):
-            return onDeleteListResult(
-                state: &state,
-                result: result
-            )
-
-        case (.addingList, .addListResult(let result)),
-            (.editingList, .addListResult(let result)):
+            
+        case (.loading, .addListResult(let result)):
             return onAddListResult(
                 state: &state,
                 result: result
             )
 
-        case (.movingList, .moveListsResult(let result)):
-            return onMoveListsResult(
+        case (.loading, .toggleListResult(let result)):
+            return onResult(
                 state: &state,
                 result: result
             )
 
-        case (.alert, .deleteAccountResult(let result)):
-            return onDeleteAccountResult(
+        case (.loading, .deleteListResult(let result)):
+            return onResult(
                 state: &state,
                 result: result
+            )
+
+        case (.loading, .moveListsResult(let result)):
+            return onResult(
+                state: &state,
+                result: result
+            )
+            
+        case (.alert, .didTapDismissError):
+            return onDidTapDismissError(
+                state: &state
             )
 
         default:

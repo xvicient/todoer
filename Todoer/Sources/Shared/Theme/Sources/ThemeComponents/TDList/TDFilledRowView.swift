@@ -30,14 +30,13 @@ struct TDFilledRowView: View {
             .buttonStyle(.borderless)
             .foregroundColor(Color.textBlack)
         }
+        .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
         .frame(minHeight: 40)
         .if(configuration.isSwipeEnabled) {
             $0.swipeActions(edge: .leading) {
                 swipeActions(row, row.leadingActions)
             }
-        }
-        .if(configuration.isSwipeEnabled) {
-            $0.swipeActions(edge: .trailing) {
+            .swipeActions(edge: .trailing) {
                 swipeActions(row, row.trailingActions)
             }
         }
@@ -55,7 +54,7 @@ struct TDFilledRowView: View {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         actions.onSwipe(row.id, action)
                     }
-                case .edit, .share:
+                case .share:
                     actions.onSwipe(row.id, action)
                 }
             } label: {

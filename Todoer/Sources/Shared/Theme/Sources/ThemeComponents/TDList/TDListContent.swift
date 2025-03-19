@@ -26,26 +26,20 @@ public struct TDListContent: View {
 
     public struct Actions: TDFilledRowActions, TDEmptyRowActions {
         let onSubmit: (String) -> Void
-        let onUpdate: (UUID, String) -> Void
-        let onCancelAdd: () -> Void
-        let onCancelEdit: (UUID) -> Void
+        let onCancel: () -> Void
         let onTap: ((UUID) -> Void)?
         let onSwipe: (UUID, TDSwipeAction) -> Void
         let onMove: (IndexSet, Int) -> Void
 
         public init(
             onSubmit: @escaping (String) -> Void,
-            onUpdate: @escaping (UUID, String) -> Void,
-            onCancelAdd: @escaping () -> Void,
-            onCancelEdit: @escaping (UUID) -> Void,
+            onCancel: @escaping () -> Void,
             onTap: ((UUID) -> Void)? = nil,
             onSwipe: @escaping (UUID, TDSwipeAction) -> Void,
             onMove: @escaping (IndexSet, Int) -> Void
         ) {
             self.onSubmit = onSubmit
-            self.onUpdate = onUpdate
-            self.onCancelAdd = onCancelAdd
-            self.onCancelEdit = onCancelEdit
+            self.onCancel = onCancel
             self.onTap = onTap
             self.onSwipe = onSwipe
             self.onMove = onMove
@@ -55,15 +49,18 @@ public struct TDListContent: View {
     private let configuration: Configuration
     private let actions: Actions
     @Binding private var rows: [TDListRow]
+    @Binding private var isEditing: Bool
 
     public init(
         configuration: Configuration,
         actions: Actions,
-        rows: Binding<[TDListRow]>
+        rows: Binding<[TDListRow]>,
+        isEditing: Binding<Bool>
     ) {
         self.configuration = configuration
         self.actions = actions
         self._rows = rows
+        self._isEditing = isEditing
     }
 
     public var body: some View {
@@ -89,7 +86,7 @@ public struct TDListContent: View {
             .listRowInsets(EdgeInsets())
         } else {
             ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
-                if row.isEditing {
+                if row.isEditing || isEditing {
                     TDEmptyRowView(
                         row: row,
                         actions: actions,
@@ -109,9 +106,6 @@ public struct TDListContent: View {
                 }
             }
             .onMove(perform: actions.onMove)
-//            .if(configuration.isMoveEnabled) {
-//                $0.onMove(perform: actions.onMove)
-//            }
         }
     }
 }
@@ -126,12 +120,11 @@ public struct TDListContent: View {
             ),
             actions: TDListContent.Actions(
                 onSubmit: { _ in },
-                onUpdate: { _, _ in },
-                onCancelAdd: {} ,
-                onCancelEdit: { _ in },
+                onCancel: {} ,
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }),
-            rows: .constant([])
+            rows: .constant([]),
+            isEditing: .constant(true)
         )
     }
     .scrollIndicators(.hidden)

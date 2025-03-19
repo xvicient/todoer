@@ -26,12 +26,18 @@ struct HomeScreen: View {
     
     @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
-    @State private var editMode: EditMode = .inactive
     
     private var activeTabBinding: Binding<TDListTab> {
         Binding(
             get: { source.activeTab },
             set: { _ in }
+        )
+    }
+    
+    var editModeBinding: Binding<EditMode> {
+        Binding(
+            get: { store.state.viewModel.editMode },
+            set: { store.send(.didChangeEditMode($0)) }
         )
     }
 
@@ -55,17 +61,11 @@ struct HomeScreen: View {
                     activeTab: activeTabBinding
                 )
                 .onChange(of: isSearchFocused) {
-                    guard isSearchFocused else { return }
-                    if store.state.viewState == .addingList {
-                        store.send(.didTapCancelAddListButton)
-                    }
-                    else if case let .editingList(uid) = store.state.viewState {
-                        store.send(.didTapCancelEditListButton(uid))
-                    }
+                    store.send(.didChangeSearchFocus(isSearchFocused))
                 }
             }
         }
-        .environment(\.editMode, $editMode)
+        .environment(\.editMode, editModeBinding)
         .toolbar {
             if !store.state.viewModel.invitations.isEmpty {
                 ToolbarItem(placement: .automatic) {
@@ -82,10 +82,7 @@ struct HomeScreen: View {
             }
         }
         .onChange(of: store.state.viewState) {
-            loading.show(store.state.viewState == .loading)
-        }
-        .onChange(of: editMode) {
-            print(editMode)
+            loading.show(store.state.viewState.isLoading)
         }
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
@@ -154,6 +151,10 @@ extension HomeScreen {
                     get: { store.state.viewModel.lists.filter(by: source.isCompleted)
                         .filter(with: searchText).map { $0.tdListRow } },
                     set: { _ in }
+                ),
+                isEditing: Binding(
+                    get: { store.state.viewModel.editMode == .active },
+                    set: { _ in }
                 )
             )
         )
@@ -162,8 +163,8 @@ extension HomeScreen {
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
             lineLimit: 2,
-            isMoveEnabled: !isSearchFocused && editMode == .active,
-            isSwipeEnabled: !store.state.viewState.isEditing && editMode == .inactive,
+            isMoveEnabled: !isSearchFocused && store.state.viewModel.editMode == .active,
+            isSwipeEnabled: !store.state.viewModel.isEditing && store.state.viewModel.editMode == .inactive,
             listHeight: listHeight
         )
     }
@@ -171,9 +172,7 @@ extension HomeScreen {
     fileprivate var contentActions: TDListContent.Actions {
         .init(
             onSubmit: { store.send(.didTapSubmitListButton($0)) },
-            onUpdate: { store.send(.didTapUpdateListButton($0, $1)) },
-            onCancelAdd: { store.send(.didTapCancelAddListButton) },
-            onCancelEdit: { store.send(.didTapCancelEditListButton($0)) },
+            onCancel: { store.send(.didTapCancelButton) },
             onTap: { store.send(.didTapList($0)) },
             onSwipe: swipeActions,
             onMove: moveList
@@ -188,18 +187,24 @@ extension HomeScreen {
                 return {
                     isSearchFocused = false
                     searchText = ""
-                    store.send(.didTapAddRowButton)
+                    store.send(.didTapAddListButton)
                 }()
             case .sort:
                 store.send(.didTapAutoSortLists)
             case .move:
-                break
+                store.send(.didTapEditButton)
             case .all:
+                guard source != action else { return }
                 source = .all
+                store.send(.didChangeEditMode(.inactive))
             case .done:
+                guard source != action else { return }
                 source = .done
+                store.send(.didChangeEditMode(.inactive))
             case .todo:
+                guard source != action else { return }
                 source = .todo
+                store.send(.didChangeEditMode(.inactive))
             }
         }
     }
@@ -213,8 +218,6 @@ extension HomeScreen {
                 store.send(.didTapDeleteListButton(rowId))
             case .share:
                 store.send(.didTapShareListButton(rowId))
-            case .edit:
-                store.send(.didTapEditListButton(rowId))
             }
         }
     }

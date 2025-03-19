@@ -6,7 +6,6 @@ public enum TDSwipeAction: Identifiable, Sendable {
     case done
     case undone
     case delete
-    case edit
 
     public var id: UUID { UUID() }
 
@@ -16,7 +15,6 @@ public enum TDSwipeAction: Identifiable, Sendable {
         case .done: return Color.buttonBlack
         case .undone: return Color.buttonBlack
         case .delete: return Color.buttonDestructive
-        case .edit: return Color.buttonSecondary
         }
     }
 
@@ -26,7 +24,6 @@ public enum TDSwipeAction: Identifiable, Sendable {
         case .done: return Image.largecircleFillCircle
         case .undone: return Image.circle
         case .delete: return Image.trash
-        case .edit: return Image.squareAndPencil
         }
     }
 

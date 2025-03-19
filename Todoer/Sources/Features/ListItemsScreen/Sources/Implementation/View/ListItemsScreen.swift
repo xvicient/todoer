@@ -47,8 +47,8 @@ struct ListItemsScreen: View {
                     if store.state.viewState == .addingItem {
                         store.send(.didTapCancelAddItemButton)
                     }
-                    else if case let .editingItem(uid) = store.state.viewState {
-                        store.send(.didTapCancelEditItemButton(uid))
+                    else if store.state.viewState == .editingItem {
+                        store.send(.didTapCancelEditItemButton)
                     }
                 }
             }
@@ -83,7 +83,11 @@ extension ListItemsScreen {
             TDListContent(
                 configuration: contentConfiguration(listHeight),
                 actions: contentActions,
-                rows: store.state.filteredItems(isCompleted: source.isCompleted)
+                rows: store.state.filteredItems(isCompleted: source.isCompleted),
+                isEditing: Binding(
+                    get: { editMode == .active },
+                    set: { _ in }
+                )
             )
         )
     }
@@ -99,9 +103,7 @@ extension ListItemsScreen {
     fileprivate var contentActions: TDListContent.Actions {
         TDListContent.Actions(
             onSubmit: { store.send(.didTapSubmitItemButton($0)) },
-            onUpdate: { store.send(.didTapUpdateItemButton($0, $1)) },
-            onCancelAdd: { store.send(.didTapCancelAddItemButton) },
-            onCancelEdit: { store.send(.didTapCancelEditItemButton($0)) },
+            onCancel: { store.send(.didTapCancelEditItemButton) },
             onSwipe: swipeActions,
             onMove: moveItem
         )
@@ -149,8 +151,6 @@ extension ListItemsScreen {
                 store.send(.didTapToggleItemButton(rowId))
             case .delete:
                 store.send(.didTapDeleteItemButton(rowId))
-            case .edit:
-                store.send(.didTapEditItemButton(rowId))
             default:
                 break
             }

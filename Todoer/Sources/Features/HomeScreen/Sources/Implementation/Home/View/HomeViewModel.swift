@@ -2,6 +2,7 @@ import Common
 import Entities
 import Foundation
 import ThemeComponents
+import SwiftUI
 
 extension Home.Reducer {
     // MARK: - ViewModel
@@ -12,9 +13,14 @@ extension Home.Reducer {
         
         var lists = [WrappedUserList]()
         var invitations = [Invitation]()
+        var editMode: EditMode = .inactive
         var tabs: [TDListTab] {
             TDListTab.allCases
                 .removingSort(if: lists.filter { !$0.isEditing }.count < 2)
+        }
+        
+        var isEditing: Bool {
+            lists.contains(where: \.isEditing)
         }
         
         public init(
@@ -61,5 +67,10 @@ extension Home.Reducer {
 extension Array where Element == Home.Reducer.WrappedUserList {
     func index(for id: UUID) -> Int? {
         self.firstIndex(where: { $0.id == id })
+    }
+    
+    mutating func replace(list: UserList, at index: Int) {
+        remove(at: index)
+        insert(list.toListRow, at: index)
     }
 }

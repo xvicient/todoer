@@ -71,23 +71,9 @@ extension ListItems.Reducer {
                 result: result
             )
 
-        case (.idle, .didTapEditItemButton(let rowId)):
-            return onDidTapEditItemButton(
-                state: &state,
-                uid: rowId
-            )
-
-        case (.editingItem, .didTapCancelEditItemButton(let rowId)):
+        case (.editingItem, .didTapCancelEditItemButton):
             return onDidTapCancelEditItemButton(
-                state: &state,
-                uid: rowId
-            )
-
-        case (.editingItem, .didTapUpdateItemButton(let rowId, let name)):
-            return onDidTapUpdateItemButton(
-                state: &state,
-                uid: rowId,
-                name: name
+                state: &state
             )
 
         case (.idle, .didMoveItem(let fromIndex, let toIndex, let isCompleted)):

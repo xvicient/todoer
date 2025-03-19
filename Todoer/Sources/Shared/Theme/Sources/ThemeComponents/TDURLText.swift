@@ -9,19 +9,18 @@ public struct TDURLText: View {
 
     func highlightURL(in text: String) -> Text {
         var highlightedText = Text("")
-
-        text.split(separator: " ").forEach {
-            if $0.hasPrefix("www.") || $0.hasPrefix("http://") || $0.hasPrefix("https://") {
-                highlightedText =
-                    highlightedText + Text(" ")
-                    + Text(.init("\($0)"))
-                    .underline()
-            }
-            else {
-                highlightedText = highlightedText + Text(" \($0)")
+        
+        let words = text.split(separator: " ")
+        for (index, word) in words.enumerated() {
+            let separator = index > 0 ? " " : ""
+            
+            if word.hasPrefix("www.") || word.hasPrefix("http://") || word.hasPrefix("https://") {
+                highlightedText = highlightedText + Text(separator) + Text(.init("\(word)")).underline()
+            } else {
+                highlightedText = highlightedText + Text(separator) + Text("\(word)")
             }
         }
-
+        
         return highlightedText
     }
 }
