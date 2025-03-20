@@ -19,7 +19,6 @@ extension Home.Reducer {
             state.viewState = .error()
             return .none
         }
-        state.editMode = .inactive
         dependencies.coordinator.push(.listItems(list))
         return .none
     }
@@ -62,7 +61,7 @@ extension Home.Reducer {
         
         return .task { send in
             await send(
-                .homeResult(
+                .voidResult(
                     useCase.toggleList(
                         list: list
                     )
@@ -86,7 +85,7 @@ extension Home.Reducer {
         
         return .task { send in
             await send(
-                .homeResult(
+                .voidResult(
                     useCase.deleteList(list.documentId)
                 )
             )
@@ -95,13 +94,14 @@ extension Home.Reducer {
     
     func onDidTapSubmitListButton(
         state: inout State,
-        newListName: String
+        newListName: String,
+        uid: UUID
     ) -> Effect<Action> {
-        guard var list = state.lists.last else {
+        guard let index = state.lists.index(for: uid) else {
             return .none
         }
         
-        state.viewState = .loading(false)
+        var list = state.lists[index]
         
         if list.name.isEmpty {
             return .task { send in
@@ -148,7 +148,6 @@ extension Home.Reducer {
         fromIndex: IndexSet,
         toIndex: Int
     ) -> Effect<Action> {
-        state.viewState = .loading(false)
         
         state.lists.move(
             fromIndex: fromIndex,
@@ -160,7 +159,7 @@ extension Home.Reducer {
         
         return .task { send in
             await send(
-                .homeResult(
+                .voidResult(
                     useCase.sortLists(
                         lists: lists
                     )
@@ -175,7 +174,6 @@ extension Home.Reducer {
     ) -> Effect<Action> {
         if isFocused {
             onDidTapCancelButton(state: &state)
-            state.editMode = .inactive
         }
         return .none
     }
@@ -185,7 +183,7 @@ extension Home.Reducer {
         editMode: EditMode
     ) -> Effect<Action> {
         state.editMode = editMode
-        state.viewState = editMode.isEditing ? .editing : .idle
+        state.viewState = editMode.viewState
         return .none
     }
     
@@ -237,9 +235,8 @@ fileprivate extension Home.Reducer {
         
         state.activeTab = .all
         state.isSearchFocused = false
-        state.editMode = .inactive
         state.lists.insert(UserList.empty, at: 0)
-        state.viewState = .editing
+        state.viewState = .updating
         
         return .none
     }
@@ -248,14 +245,13 @@ fileprivate extension Home.Reducer {
         state: inout State
     ) -> Effect<Action> {
         state.viewState = .loading(false)
-        state.editMode = .inactive
         state.lists.sorted()
         
         let lists = state.lists
         
         return .task { send in
             await send(
-                .homeResult(
+                .voidResult(
                     useCase.sortLists(
                         lists: lists
                     )
@@ -270,8 +266,18 @@ fileprivate extension Home.Reducer {
     ) -> Effect<Action> {
         guard state.activeTab != activeTab else { return .none }
         state.activeTab = activeTab
-        state.editMode = .inactive
         state.viewState = .idle
         return .none
+    }
+}
+
+private extension EditMode {
+    var viewState: Home.Reducer.ViewState {
+        switch self {
+        case .active:
+            .updating
+        default:
+            .idle
+        }
     }
 }

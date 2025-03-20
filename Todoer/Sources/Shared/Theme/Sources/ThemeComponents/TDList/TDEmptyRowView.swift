@@ -2,7 +2,7 @@ import Strings
 import SwiftUI
 
 protocol TDEmptyRowActions {
-    var onSubmit: (String) -> Void { get }
+    var onSubmit: (UUID, String) -> Void { get }
     var onCancel: () -> Void { get }
 }
 
@@ -29,12 +29,10 @@ struct TDEmptyRowView: View {
                 .foregroundColor(Color.buttonBlack)
             
             TextField(Strings.List.newItemPlaceholder, text: $localText)
+                .focused($isEmptyRowFocused)
                 .foregroundColor(Color.textBlack)
                 .submitLabel(.done)
                 .onSubmit(handleSubmit)
-                .if(row.isEditing) {
-                    $0.focused($isEmptyRowFocused)
-                }
                 .onChange(of: text) {
                     if localText != text {
                         localText = text
@@ -53,9 +51,6 @@ struct TDEmptyRowView: View {
         }
         .frame(height: 40)
         .onAppear {
-            if row.isEditing {
-                isEmptyRowFocused = true
-            }
             localText = text
         }
     }
@@ -65,7 +60,7 @@ struct TDEmptyRowView: View {
         hideKeyboard()
         text = localText
         withAnimation {
-            actions.onSubmit(localText)
+            actions.onSubmit(row.id, localText)
         }
     }
 

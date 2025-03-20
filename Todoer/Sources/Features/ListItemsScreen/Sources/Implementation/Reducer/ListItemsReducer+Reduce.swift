@@ -40,7 +40,7 @@ extension ListItems.Reducer {
                 state: &state
             )
 
-        case (.addingItem, .didTapSubmitItemButton(let newItemName)):
+        case (.addingItem, .didTapSubmitItemButton(let rowId, let newItemName)): //TODO: - use id to find index
             return onDidTapSubmitItemButton(
                 state: &state,
                 newItemName: newItemName

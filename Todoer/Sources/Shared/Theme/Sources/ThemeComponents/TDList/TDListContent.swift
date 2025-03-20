@@ -25,14 +25,14 @@ public struct TDListContent: View {
     }
 
     public struct Actions: TDFilledRowActions, TDEmptyRowActions {
-        let onSubmit: (String) -> Void
+        let onSubmit: (UUID, String) -> Void
         let onCancel: () -> Void
         let onTap: ((UUID) -> Void)?
         let onSwipe: (UUID, TDSwipeAction) -> Void
         let onMove: (IndexSet, Int) -> Void
 
         public init(
-            onSubmit: @escaping (String) -> Void,
+            onSubmit: @escaping (UUID, String) -> Void,
             onCancel: @escaping () -> Void,
             onTap: ((UUID) -> Void)? = nil,
             onSwipe: @escaping (UUID, TDSwipeAction) -> Void,
@@ -118,7 +118,7 @@ public struct TDListContent: View {
                 listHeight: 0.0
             ),
             actions: TDListContent.Actions(
-                onSubmit: { _ in },
+                onSubmit: { _, _ in },
                 onCancel: {} ,
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }),

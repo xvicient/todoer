@@ -13,7 +13,7 @@ struct ListItemsScreen: View {
     @ObservedObject private var store: Store<ListItems.Reducer>
     @FocusState private var isSearchFocused: Bool
     @State private var source: TDListTab = .all
-    @State private var editMode: EditMode = .inactive
+//    @State private var editMode: EditMode = .inactive
     
     private var activeTabBinding: Binding<TDListTab> {
         Binding(
@@ -48,7 +48,7 @@ struct ListItemsScreen: View {
             }
             loadingView
         }
-        .environment(\.editMode, $editMode)
+//        .environment(\.editMode, $editMode)
         .onAppear {
             store.send(.onAppear)
         }
@@ -83,21 +83,21 @@ extension ListItemsScreen {
             configuration: contentConfiguration(listHeight),
             actions: contentActions,
             rows: store.state.filteredItems(isCompleted: source.isCompleted),
-            editMode: $editMode
+            editMode: .constant(.inactive)// $editMode
         )
     }
 
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
-            isMoveEnabled: !isSearchFocused && editMode == .active,
-            isSwipeEnabled: !store.state.viewState.isEditing && editMode == .inactive,
+            isMoveEnabled: !isSearchFocused,// && editMode == .active,
+            isSwipeEnabled: !store.state.viewState.isEditing,// && editMode == .inactive,
             listHeight: listHeight
         )
     }
 
     fileprivate var contentActions: TDListContent.Actions {
         TDListContent.Actions(
-            onSubmit: { store.send(.didTapSubmitItemButton($0)) },
+            onSubmit: { store.send(.didTapSubmitItemButton($0, $1)) },
             onCancel: { store.send(.didTapCancelEditItemButton) },
             onSwipe: swipeActions,
             onMove: moveItem

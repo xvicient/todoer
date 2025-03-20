@@ -39,7 +39,7 @@ extension Home {
             // MARK: - User actions
             /// HomeReducer+UserActions
             case didTapList(UUID)
-            case didTapSubmitListButton(String)
+            case didTapSubmitListButton(UUID, String)
             case didTapCancelButton
             case didTapToggleListButton(UUID)
             case didTapShareListButton(UUID)
@@ -56,7 +56,7 @@ extension Home {
             case fetchDataResult(ActionResult<HomeData>)
             case addListResult(ActionResult<UserList>)
             case addSharedListsResult(ActionResult<[UserList]>)
-            case homeResult(ActionResult<EquatableVoid>)
+            case voidResult(ActionResult<EquatableVoid>)
         }
 
         @MainActor
@@ -90,7 +90,7 @@ extension Home {
         enum ViewState: Equatable, StringRepresentable {
             case idle
             case loading(Bool)
-            case editing
+            case updating
             case alert(AppAlert<Action>)
 
             static func error(
@@ -149,10 +149,10 @@ extension Store<Home.Reducer> {
         set { send(.didChangeSearchFocus(newValue)) }
     }
     
-    var isEditing: Bool {
+    var isUpdating: Bool {
         switch state.viewState {
-        case .editing:
-            editMode.isEditing
+        case .updating:
+            true
         default:
             false
         }

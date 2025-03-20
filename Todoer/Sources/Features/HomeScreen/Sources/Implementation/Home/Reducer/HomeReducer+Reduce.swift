@@ -25,13 +25,14 @@ extension Home.Reducer {
                 uid: rowId
             )
             
-        case (.editing, .didTapSubmitListButton(let name)):
+        case (.updating, .didTapSubmitListButton(let uid, let name)):
             return onDidTapSubmitListButton(
                 state: &state,
-                newListName: name
+                newListName: name,
+                uid: uid
             )
             
-        case (.editing, .didTapCancelButton):
+        case (.updating, .didTapCancelButton):
             return onDidTapCancelButton(
                 state: &state
             )
@@ -54,21 +55,21 @@ extension Home.Reducer {
                 uid: rowId
             )
 
-        case (.editing, .didMoveList(let fromIndex, let toIndex)):
+        case (.updating, .didMoveList(let fromIndex, let toIndex)):
             return onDidMoveList(
                 state: &state,
                 fromIndex: fromIndex,
                 toIndex: toIndex
             )
             
-        case (.editing, .didChangeSearchFocus(let isFocused)):
+        case (.updating, .didChangeSearchFocus(let isFocused)):
             return onDidChangeSearchFocus(
                 state: &state,
                 isFocused: isFocused
             )
             
         case (.idle, .didChangeEditMode(let editMode)),
-            (.editing, .didChangeEditMode(let editMode)):
+            (.updating, .didChangeEditMode(let editMode)):
             return onDidChangeEditMode(
                 state: &state,
                 editMode: editMode
@@ -95,19 +96,20 @@ extension Home.Reducer {
 
         case (.idle, .fetchDataResult(let result)),
             (.loading, .fetchDataResult(let result)),
-            (.editing, .fetchDataResult(let result)):
+            (.updating, .fetchDataResult(let result)):
             return onFetchDataResult(
                 state: &state,
                 result: result
             )
             
-        case (.loading, .addListResult(let result)):
+        case (.updating, .addListResult(let result)):
             return onAddListResult(
                 state: &state,
                 result: result
             )
 
-        case (.loading, .homeResult(let result)):
+        case (.loading, .voidResult(let result)),
+            (.updating, .voidResult(let result)):
             return onHomeResult(
                 state: &state,
                 result: result

@@ -92,15 +92,15 @@ extension HomeScreen {
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
             lineLimit: 2,
-            isMoveEnabled: !store.isSearchFocused && store.isEditing,
-            isSwipeEnabled: !store.isEditing,
+            isMoveEnabled: !store.isSearchFocused && store.editMode.isEditing,
+            isSwipeEnabled: !store.isUpdating,
             listHeight: listHeight
         )
     }
 
     fileprivate var contentActions: TDListContent.Actions {
         .init(
-            onSubmit: { store.send(.didTapSubmitListButton($0)) },
+            onSubmit: { store.send(.didTapSubmitListButton($0, $1)) },
             onCancel: { store.send(.didTapCancelButton) },
             onTap: { store.send(.didTapList($0)) },
             onSwipe: onSwipe,

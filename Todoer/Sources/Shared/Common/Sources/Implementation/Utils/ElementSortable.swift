@@ -12,15 +12,6 @@ public extension Array where Element: ElementSortable {
         firstIndex(where: { $0.id == id })
     }
     
-    var last: Element? {
-        self.min(by: { $0.index < $1.index })
-    }
-    
-    var lastIndex: Int? {
-        guard let last = last else { return nil }
-        return self.firstIndex(where: { $0.id == last.id })
-    }
-    
     mutating func replace(_ element: Element, at index: Int) {
         remove(at: index)
         insert(element, at: index)

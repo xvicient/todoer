@@ -262,7 +262,7 @@ fileprivate extension View {
                 listHeight: 100
             ),
             actions: .init(
-                onSubmit: { _ in },
+                onSubmit: { _, _ in },
                 onCancel: {},
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }

@@ -11,7 +11,7 @@ extension Home.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let data):
-            state.viewState = state.viewState == .editing ? .editing : .idle
+            state.viewState = state.viewState == .updating ? .updating : .idle
             
             state.lists = data.lists
             state.invitations = data.invitations
@@ -41,16 +41,14 @@ extension Home.Reducer {
         state: inout State,
         result: ActionResult<UserList>
     ) -> Effect<Action> {
-        guard let index = state.lists.lastIndex else {
-            state.viewState = .error()
-            return .none
-        }
-        
         switch result {
         case .success(let list):
+            guard let index = state.lists.firstIndex(where: { $0.documentId == list.documentId }) else {
+                state.viewState = .error()
+                return .none
+            }
             state.lists.replace(list, at: index)
-            state.viewState = .idle
-            state.editMode = .inactive
+            state.viewState = .updating
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }

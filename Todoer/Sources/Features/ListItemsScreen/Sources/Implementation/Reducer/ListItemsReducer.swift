@@ -43,7 +43,7 @@ extension ListItems {
             case didTapDeleteItemButton(UUID)
             case didTapAddRowButton
             case didTapCancelAddItemButton
-            case didTapSubmitItemButton(String)
+            case didTapSubmitItemButton(UUID, String)
             case didTapCancelEditItemButton
             case didMoveItem(IndexSet, Int, Bool?)
             case didTapDismissError
