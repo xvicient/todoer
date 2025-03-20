@@ -7,7 +7,7 @@ import Strings
 
 public struct TDListView: View {
     
-    enum SlideDirection {
+    public enum SlideDirection {
         case forward
         case backward
         
@@ -57,7 +57,6 @@ public struct TDListView: View {
     @Binding private var activeTab: TDListTab
     
     /// Animation properties
-    @Namespace private var tabAnimation
     @State private var slideDirection: SlideDirection = .forward
     private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
     
@@ -206,25 +205,12 @@ extension TDListView {
                             .padding(.horizontal, -progress * 15)
                     }
                     
-                    ScrollView(.horizontal) {
-                        HStack(spacing: 12) {
-                            ForEach(configuration.tabs.filter({ !$0.isFilter }), id: \.self) { item in
-                                tabButton(
-                                    item: item
-                                )
-                            }
-                            if !configuration.tabs.filter({ $0.isFilter }).isEmpty {
-                                Divider()
-                                    .frame(width: 1, height: 30)
-                                    .background(Color.gray)
-                                ForEach(configuration.tabs.filter({ $0.isFilter }), id: \.self) { item in
-                                    tabButton(
-                                        item: item
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    
+                    TDListTabButtonView(
+                        slideDirection: $slideDirection,
+                        activeTab: $activeTab,
+                        tabs: configuration.tabs
+                    )
                     .scrollIndicators(.hidden)
                     .frame(height: 50)
                     .safeAreaPadding(.bottom, -minY)
@@ -242,57 +228,6 @@ extension TDListView {
             Spacer()
         }
     }
-    
-    @ViewBuilder
-        fileprivate func tabButton(
-            item: TDListTab
-        ) -> some View {
-            switch item {
-            case .edit:
-                EditButton()
-                    .tabButtonStyle(item: item, active: activeTab == item)
-            default:
-                Button(action: {
-                    slideDirection = item.rawValue > activeTab.rawValue ? .forward : .backward
-                    withAnimation {
-                        activeTab = item
-                    }
-                }) {
-                    Text(item.stringValue)
-                        .tabButtonStyle(item: item, active: activeTab == item)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-}
-
-fileprivate struct TabButtonModifier: ViewModifier {
-    @Namespace private var tabAnimation
-    var item: TDListTab
-    var active: Bool
-    
-    func body(content: Content) -> some View {
-        content
-            .font(.callout)
-            .foregroundStyle(item.isFilter ? (active ? .white : .black) : .white)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 15)
-            .background {
-                if item.isFilter {
-                    if active {
-                        Capsule()
-                            .fill(Color.primary)
-                            .matchedGeometryEffect(id: "ACTIVETAB", in: tabAnimation)
-                    } else {
-                        Capsule()
-                            .fill(.background)
-                    }
-                } else {
-                    Capsule()
-                        .fill(Color.primary)
-                }
-            }
-    }
 }
 
 fileprivate struct ListNoBounceModifier: ViewModifier {
@@ -304,11 +239,7 @@ fileprivate struct ListNoBounceModifier: ViewModifier {
     }
 }
 
-fileprivate extension View {
-    func tabButtonStyle(item: TDListTab, active: Bool) -> some View {
-        modifier(TabButtonModifier(item: item, active: active))
-    }
-                 
+fileprivate extension View {                 
     func removeBounce() -> some View {
         modifier(ListNoBounceModifier())
     }

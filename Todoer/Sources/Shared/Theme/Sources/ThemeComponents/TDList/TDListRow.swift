@@ -4,7 +4,7 @@ public class TDListRow: ObservableObject, Identifiable {
     public let id: UUID
     var name: String
     var image: Image
-    @Published var strikethrough: Bool //TODO: - to checl if the published var is needed
+    var strikethrough: Bool
     let leadingActions: [TDSwipeAction]
     let trailingActions: [TDSwipeAction]
     var isEditing: Bool

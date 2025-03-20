@@ -54,7 +54,7 @@ extension Home.Reducer {
                 uid: rowId
             )
 
-        case (.idle, .didMoveList(let fromIndex, let toIndex)):
+        case (.editing, .didMoveList(let fromIndex, let toIndex)):
             return onDidMoveList(
                 state: &state,
                 fromIndex: fromIndex,
