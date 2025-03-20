@@ -103,12 +103,12 @@ extension HomeScreen {
             onSubmit: { store.send(.didTapSubmitListButton($0)) },
             onCancel: { store.send(.didTapCancelButton) },
             onTap: { store.send(.didTapList($0)) },
-            onSwipe: swipeActions,
+            onSwipe: onSwipe,
             onMove: { store.send(.didMoveList($0, $1)) }
         )
     }
     
-    fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
+    fileprivate var onSwipe: (UUID, TDSwipeAction) -> Void {
         { rowId, option in
             switch option {
             case .done, .undone:

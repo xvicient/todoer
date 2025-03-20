@@ -67,7 +67,8 @@ extension Home.Reducer {
                 isFocused: isFocused
             )
             
-        case (.idle, .didChangeEditMode(let editMode)):
+        case (.idle, .didChangeEditMode(let editMode)),
+            (.editing, .didChangeEditMode(let editMode)):
             return onDidChangeEditMode(
                 state: &state,
                 editMode: editMode
@@ -93,7 +94,8 @@ extension Home.Reducer {
             )
 
         case (.idle, .fetchDataResult(let result)),
-            (.loading, .fetchDataResult(let result)):
+            (.loading, .fetchDataResult(let result)),
+            (.editing, .fetchDataResult(let result)):
             return onFetchDataResult(
                 state: &state,
                 result: result

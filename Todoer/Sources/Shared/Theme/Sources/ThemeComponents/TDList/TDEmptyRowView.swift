@@ -7,7 +7,7 @@ protocol TDEmptyRowActions {
 }
 
 struct TDEmptyRowView: View {
-    @ObservedObject var row: TDListRow
+    @Binding var row: TDListRow
     let actions: TDEmptyRowActions
 
     @FocusState private var isEmptyRowFocused: Bool
@@ -15,13 +15,12 @@ struct TDEmptyRowView: View {
     @State private var localText: String = ""
 
     init(
-        row: TDListRow,
-        actions: TDEmptyRowActions,
-        text: Binding<String>
+        row: Binding<TDListRow>,
+        actions: TDEmptyRowActions
     ) {
-        self.row = row
+        self._row = row
         self.actions = actions
-        self._text = text
+        self._text = row.name
     }
 
     var body: some View {

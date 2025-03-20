@@ -97,13 +97,13 @@ extension Home.Reducer {
         state: inout State,
         newListName: String
     ) -> Effect<Action> {
-        guard let index = state.lists.firstIndex(where: \.isEditing) else {
+        guard var list = state.lists.last else {
             return .none
         }
         
         state.viewState = .loading(false)
         
-        if state.lists[index].name.isEmpty {
+        if list.name.isEmpty {
             return .task { send in
                 await send(
                     .addListResult(
@@ -114,7 +114,7 @@ extension Home.Reducer {
                 )
             }
         } else {
-            let list = state.lists[index]
+            list.name = newListName
             return .task { send in
                 await send(
                     .addListResult(
@@ -185,7 +185,7 @@ extension Home.Reducer {
         editMode: EditMode
     ) -> Effect<Action> {
         state.editMode = editMode
-        state.viewState = .idle
+        state.viewState = editMode.isEditing ? .editing : .idle
         return .none
     }
     
@@ -199,8 +199,7 @@ extension Home.Reducer {
         case .sort:
             return sortLists(state: &state)
         case .edit:
-            state.viewState = state.viewState == .editing ? .idle : .editing
-            return .none
+            return .none /// Handled in onDidChangeEditMode
         case .all:
             return performAction(state: &state, activeTab: .all)
         case .done:

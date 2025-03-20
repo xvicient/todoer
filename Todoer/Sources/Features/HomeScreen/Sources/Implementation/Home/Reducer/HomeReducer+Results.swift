@@ -5,14 +5,13 @@ import xRedux
 
 extension Home.Reducer {
 
-    @MainActor
     func onFetchDataResult(
         state: inout State,
         result: ActionResult<HomeData>
     ) -> Effect<Action> {
         switch result {
         case .success(let data):
-            state.viewState = .idle
+            state.viewState = state.viewState == .editing ? .editing : .idle
             
             state.lists = data.lists
             state.invitations = data.invitations
@@ -42,16 +41,16 @@ extension Home.Reducer {
         state: inout State,
         result: ActionResult<UserList>
     ) -> Effect<Action> {
-        guard let index = state.lists.firstIndex(where: { $0.isEditing }) else {
+        guard let index = state.lists.lastIndex else {
             state.viewState = .error()
             return .none
         }
-        state.lists.remove(at: index)
-
+        
         switch result {
         case .success(let list):
-            state.lists.insert(list, at: index)
+            state.lists.replace(list, at: index)
             state.viewState = .idle
+            state.editMode = .inactive
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }

@@ -88,9 +88,8 @@ public struct TDListContent: View {
             ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
                 if row.isEditing || editMode.isEditing {
                     TDEmptyRowView(
-                        row: row,
-                        actions: actions,
-                        text: $rows[index].name
+                        row: $rows[index],
+                        actions: actions
                     )
                     .moveDisabled(!configuration.isMoveEnabled)
                     .id(index)
