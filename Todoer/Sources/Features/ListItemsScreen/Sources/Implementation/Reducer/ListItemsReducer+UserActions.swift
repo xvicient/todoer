@@ -172,13 +172,18 @@ extension ListItems.Reducer {
         state: inout State,
         activeTab: TDListTab
     ) -> Effect<Action> {
+        
+        /// Canceling edit mode if active if the user wants to add an item
+        if state.editMode == .active { state.editMode = .inactive }
+        
         switch activeTab {
         case .add:
             return addItem(state: &state)
         case .sort:
             return sortLists(state: &state)
         case .edit:
-            return .none /// Handled in onDidChangeEditMode
+            /// Handled in onDidChangeEditMode since we're using a EditButton
+            return .none
         case .all:
             return performAction(state: &state, activeTab: .all)
         case .done:

@@ -75,7 +75,8 @@ extension Home.Reducer {
                 editMode: editMode
             )
             
-        case (.idle, .didChangeActiveTab(let activeTab)):
+        case (.idle, .didChangeActiveTab(let activeTab)),
+            (.updating, .didChangeActiveTab(let activeTab)):
             return onDidChangeActiveTab(
                 state: &state,
                 activeTab: activeTab
