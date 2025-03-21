@@ -23,23 +23,15 @@ extension Home.Reducer {
         return .none
     }
 
-    @discardableResult //TODO: - to check if all this logic is neede or is enough with state.lists.removeAll { $0.isEditing } always since the cancel is only shown when adding
+    @discardableResult
     func onDidTapCancelButton(
         state: inout State
     ) -> Effect<Action> {
-        guard let index = state.lists.firstIndex(where: \.isEditing) else {
+        guard state.lists.contains(where: \.isEditing) else {
             return .none
         }
         
-        if state.lists[index].name.isEmpty {
-            state.lists.removeAll { $0.isEditing }
-        } else {
-            state.lists.replace(
-                state.lists[index],
-                at: index
-            )
-        }
-        
+        state.lists.removeAll { $0.isEditing }
         state.viewState = .idle
         
         return .none

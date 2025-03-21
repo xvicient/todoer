@@ -11,7 +11,6 @@ import xRedux
 
 struct ListItemsScreen: View {
     
-    @EnvironmentObject var loading: TDLoadingModel
     @ObservedObject private var store: Store<ListItems.Reducer>
 
     init(

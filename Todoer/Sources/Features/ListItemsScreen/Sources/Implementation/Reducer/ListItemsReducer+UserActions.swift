@@ -71,11 +71,14 @@ extension ListItems.Reducer {
         }
     }
     
-    //TODO: - to check if is enough or we should copy the home behaviour
     @discardableResult
     func onDidTapCancelButton(
         state: inout State
     ) -> Effect<Action> {
+        guard state.items.contains(where: \.isEditing) else {
+            return .none
+        }
+        
         state.viewState = .idle
         state.items.removeAll { $0.isEditing }
         return .none
