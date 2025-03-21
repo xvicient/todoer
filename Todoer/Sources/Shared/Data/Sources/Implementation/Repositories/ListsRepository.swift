@@ -55,38 +55,7 @@ public final class ListsRepository: ListsRepositoryApi {
 
     public func fetchLists() -> AnyPublisher<[UserList], Error> {
         listsDataSource.fetchLists(uid: usersDataSource.uid)
-            .scan([ListDTO]()) { storedLits, newLists in
-                // Convert stored lists to dictionary (ignoring lists without ID)
-                let storedListsDict = storedLits.reduce(into: [String: ListDTO]()) { dict, list in
-                    guard let id = list.id else {
-                        return
-                    }
-                    dict[id] = list
-                }
-                
-                var updatedLists = [ListDTO]()
-                        
-                for newList in newLists {
-                    guard let newId = newList.id else { continue } // Skip lists without ID
-                    
-                    if let storedList = storedListsDict[newId] {
-                        // Merge changes: update name/done only if changed
-                        let mergedList = ListDTO(
-                            id: storedList.id,
-                            name: storedList.name != newList.name ? newList.name : storedList.name,
-                            done: storedList.done != newList.done ? newList.done : storedList.done,
-                            uid: storedList.uid,
-                            index: storedList.index // Always take latest index
-                        )
-                        updatedLists.append(mergedList)
-                    } else {
-                        // Add new lists (with valid ID)
-                        updatedLists.append(newList)
-                    }
-                }
-                
-                return updatedLists
-            }
+            .scanUpdates() // Scan for updates in next events to update the previous ones
             .tryMap { $0.map(\.toDomain) }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

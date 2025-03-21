@@ -1,8 +1,6 @@
 import Common
 import Entities
-import Foundation
 import ListItemsScreenContract
-import Strings
 import SwiftUI
 import ThemeComponents
 import xRedux
@@ -40,7 +38,7 @@ struct ListItemsScreen: View {
     }
 }
 
-// MARK: - ViewBuilders
+// MARK: - TDListView
 
 extension ListItemsScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
@@ -53,45 +51,28 @@ extension ListItemsScreen {
         )
     }
 
-    @ViewBuilder
     fileprivate func listContent(_ listHeight: CGFloat) -> TDListContent {
-        TDListContent(
-            configuration: contentConfiguration(listHeight),
-            actions: contentActions,
-            rows: $store.rows,
-            editMode: $store.editMode
-        )
-    }
-
-    fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
-        .init(
+        let configuration = TDListContent.Configuration(
             lineLimit: 2,
             isMoveEnabled: !store.isSearchFocused && store.editMode.isEditing,
             isSwipeEnabled: !store.isUpdating,
             listHeight: listHeight
         )
-    }
-
-    fileprivate var contentActions: TDListContent.Actions {
-        TDListContent.Actions(
+        
+        let actions = TDListContent.Actions(
             onSubmit: { store.send(.didTapSubmitItemButton($0, $1)) },
             onCancel: { store.send(.didTapCancelButton) },
             onSwipe: onSwipe,
-            onMove: moveItem
+            onMove: { store.send(.didMoveItem($0, $1)) }
+        )
+        
+        return TDListContent(
+            configuration: configuration,
+            actions: actions,
+            rows: $store.rows,
+            editMode: $store.editMode
         )
     }
-    
-    @ViewBuilder
-    fileprivate var loadingView: some View {
-        if store.isLoading {
-            ProgressView()
-        }
-    }
-}
-
-// MARK: - Private
-
-extension ListItemsScreen {
     
     fileprivate var onSwipe: (UUID, TDSwipeAction) -> Void {
         { rowId, option in
@@ -105,9 +86,12 @@ extension ListItemsScreen {
             }
         }
     }
-
-    fileprivate func moveItem(fromOffset: IndexSet, toOffset: Int) {
-        store.send(.didMoveItem(fromOffset, toOffset))
+    
+    @ViewBuilder
+    fileprivate var loadingView: some View {
+        if store.isLoading {
+            ProgressView()
+        }
     }
 }
 

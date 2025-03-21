@@ -1,4 +1,3 @@
-import AppMenuContract
 import Common
 import CoordinatorContract
 import CoordinatorMocks
@@ -8,7 +7,6 @@ import Strings
 import SwiftUI
 import ThemeComponents
 import xRedux
-import Coordinator
 
 // MARK: - HomeScreen
 
@@ -79,32 +77,27 @@ extension HomeScreen {
         )
     }
 
-    @ViewBuilder
     fileprivate func listContent(_ listHeight: CGFloat) -> TDListContent {
-        TDListContent(
-            configuration: contentConfiguration(listHeight),
-            actions: contentActions,
-            rows: $store.rows,
-            editMode: $store.editMode
-        )
-    }
-
-    fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
-        .init(
+        let configuration = TDListContent.Configuration(
             lineLimit: 2,
             isMoveEnabled: !store.isSearchFocused && store.editMode.isEditing,
             isSwipeEnabled: !store.isUpdating,
             listHeight: listHeight
         )
-    }
-
-    fileprivate var contentActions: TDListContent.Actions {
-        .init(
+        
+        let actions = TDListContent.Actions(
             onSubmit: { store.send(.didTapSubmitListButton($0, $1)) },
             onCancel: { store.send(.didTapCancelButton) },
             onTap: { store.send(.didTapList($0)) },
             onSwipe: onSwipe,
             onMove: { store.send(.didMoveList($0, $1)) }
+        )
+        
+        return TDListContent(
+            configuration: configuration,
+            actions: actions,
+            rows: $store.rows,
+            editMode: $store.editMode
         )
     }
     
