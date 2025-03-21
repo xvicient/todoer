@@ -51,6 +51,9 @@ struct TDEmptyRowView: View {
         }
         .frame(height: 40)
         .onAppear {
+            if row.isEditing {
+                isEmptyRowFocused = true
+            }
             localText = text
         }
     }

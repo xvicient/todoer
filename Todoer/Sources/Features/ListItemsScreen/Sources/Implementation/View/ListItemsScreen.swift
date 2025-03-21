@@ -10,17 +10,9 @@ import xRedux
 // MARK: - ListItemsScreen
 
 struct ListItemsScreen: View {
-    @ObservedObject private var store: Store<ListItems.Reducer>
-    @FocusState private var isSearchFocused: Bool
-    @State private var source: TDListTab = .all
-//    @State private var editMode: EditMode = .inactive
     
-    private var activeTabBinding: Binding<TDListTab> {
-        Binding(
-            get: { .all },
-            set: { _ in }
-        )
-    }
+    @EnvironmentObject var loading: TDLoadingModel
+    @ObservedObject private var store: Store<ListItems.Reducer>
 
     init(
         store: Store<ListItems.Reducer>
@@ -32,29 +24,17 @@ struct ListItemsScreen: View {
         ZStack {
             GeometryReader { geometry in
                 TDListView(
-                    configuration: listConfiguration,
-                    content: { listContent(geometry.size.height) }
-//                    actions: listActions, TODO: - to send teh binding instead
-                )
-                .onChange(of: isSearchFocused) {
-                    guard isSearchFocused else { return }
-                    if store.state.viewState == .addingItem {
-                        store.send(.didTapCancelAddItemButton)
-                    }
-                    else if store.state.viewState == .editingItem {
-                        store.send(.didTapCancelEditItemButton)
-                    }
+                    configuration: listConfiguration
+                ) {
+                    listContent(geometry.size.height)
                 }
             }
             loadingView
         }
-//        .environment(\.editMode, $editMode)
+        .environment(\.editMode, $store.editMode)
         .onAppear {
             store.send(.onAppear)
         }
-        .disabled(
-            store.state.viewState == .loading
-        )
         .alert(item: store.alertBinding) {
             $0.alert { store.send($0) }
         }
@@ -68,12 +48,9 @@ extension ListItemsScreen {
         .init(
             title: store.state.listName,
             tabs: store.state.tabs,
-            activeTab: activeTabBinding,
-            searchText: Binding(
-                get: { store.state.searchText },
-                set: { store.send(.didUpdateSearchText($0)) }
-            ),
-            isSearchFocused: .constant(true) //$isSearchFocused, TODO: - move it to the store
+            activeTab: $store.activeTab,
+            searchText: $store.searchText,
+            isSearchFocused: $store.isSearchFocused
         )
     }
 
@@ -82,15 +59,16 @@ extension ListItemsScreen {
         TDListContent(
             configuration: contentConfiguration(listHeight),
             actions: contentActions,
-            rows: store.state.filteredItems(isCompleted: source.isCompleted),
-            editMode: .constant(.inactive)// $editMode
+            rows: $store.rows,
+            editMode: $store.editMode
         )
     }
 
     fileprivate func contentConfiguration(_ listHeight: CGFloat) -> TDListContent.Configuration {
         .init(
-            isMoveEnabled: !isSearchFocused,// && editMode == .active,
-            isSwipeEnabled: !store.state.viewState.isEditing,// && editMode == .inactive,
+            lineLimit: 2,
+            isMoveEnabled: !store.isSearchFocused && store.editMode.isEditing,
+            isSwipeEnabled: !store.isUpdating,
             listHeight: listHeight
         )
     }
@@ -98,15 +76,15 @@ extension ListItemsScreen {
     fileprivate var contentActions: TDListContent.Actions {
         TDListContent.Actions(
             onSubmit: { store.send(.didTapSubmitItemButton($0, $1)) },
-            onCancel: { store.send(.didTapCancelEditItemButton) },
-            onSwipe: swipeActions,
+            onCancel: { store.send(.didTapCancelButton) },
+            onSwipe: onSwipe,
             onMove: moveItem
         )
     }
     
     @ViewBuilder
     fileprivate var loadingView: some View {
-        if store.state.viewState == .loading {
+        if store.isLoading {
             ProgressView()
         }
     }
@@ -115,31 +93,8 @@ extension ListItemsScreen {
 // MARK: - Private
 
 extension ListItemsScreen {
-    fileprivate var listActions: (TDListTab) -> Void {
-        { action in
-            switch action {
-            case .add:
-                source = .all
-                return {
-                    isSearchFocused = false
-                    store.send(.didUpdateSearchText(""))
-                    store.send(.didTapAddRowButton)
-                }()
-            case .sort:
-                store.send(.didTapAutoSortItems)
-            case .edit:
-                break
-            case .all:
-                source = .all
-            case .done:
-                source = .done
-            case .todo:
-                source = .todo
-            }
-        }
-    }
     
-    fileprivate var swipeActions: (UUID, TDSwipeAction) -> Void {
+    fileprivate var onSwipe: (UUID, TDSwipeAction) -> Void {
         { rowId, option in
             switch option {
             case .done, .undone:
@@ -153,7 +108,7 @@ extension ListItemsScreen {
     }
 
     fileprivate func moveItem(fromOffset: IndexSet, toOffset: Int) {
-        store.send(.didMoveItem(fromOffset, toOffset, source.isCompleted))
+        store.send(.didMoveItem(fromOffset, toOffset))
     }
 }
 

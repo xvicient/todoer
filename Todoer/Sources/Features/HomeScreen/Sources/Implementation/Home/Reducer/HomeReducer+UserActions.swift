@@ -23,7 +23,7 @@ extension Home.Reducer {
         return .none
     }
 
-    @discardableResult
+    @discardableResult //TODO: - to check if all this logic is neede or is enough with state.lists.removeAll { $0.isEditing } always since the cancel is only shown when adding
     func onDidTapCancelButton(
         state: inout State
     ) -> Effect<Action> {
@@ -117,7 +117,7 @@ extension Home.Reducer {
             list.name = newListName
             return .task { send in
                 await send(
-                    .addListResult(
+                    .updateListResult(
                         useCase.updateList(
                             list: list
                         )

@@ -2,7 +2,7 @@ import Foundation
 import Common
 
 public struct UserList: Identifiable, Equatable, Hashable, Sendable, ElementSortable {
-    public let id: UUID
+    public var id: UUID
     public let documentId: String
     public var name: String
     public var done: Bool

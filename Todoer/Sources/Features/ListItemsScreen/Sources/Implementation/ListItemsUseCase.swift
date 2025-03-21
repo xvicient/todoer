@@ -119,7 +119,7 @@ extension ListItems {
                     listId: listId
                 )
 
-                return .success(updatedItem)
+                return .success(item) // TODO: - Workaround, to fix Firestore documentId missusage between Item and ItemDTO
             }
             catch {
                 return .failure(error)

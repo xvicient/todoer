@@ -94,9 +94,7 @@ extension Home.Reducer {
                 result: result
             )
 
-        case (.idle, .fetchDataResult(let result)),
-            (.loading, .fetchDataResult(let result)),
-            (.updating, .fetchDataResult(let result)):
+        case (_, .fetchDataResult(let result)):
             return onFetchDataResult(
                 state: &state,
                 result: result
@@ -107,10 +105,16 @@ extension Home.Reducer {
                 state: &state,
                 result: result
             )
+            
+        case (.updating, .updateListResult(let result)):
+            return onUpdateListResult(
+                state: &state,
+                result: result
+            )
 
         case (.loading, .voidResult(let result)),
             (.updating, .voidResult(let result)):
-            return onHomeResult(
+            return onVoidResult(
                 state: &state,
                 result: result
             )

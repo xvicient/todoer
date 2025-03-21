@@ -11,12 +11,28 @@ extension Home.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let data):
-            state.viewState = state.viewState == .updating ? .updating : .idle
+            guard let editingIndex = state.lists.firstIndex(where: { $0.isEditing }),
+                  var editingRow = state.lists[safe: editingIndex],
+                  let remoteList = data.lists.first(where: { $0.documentId == editingRow.documentId })
+            else {
+                state.viewState = .idle
+                state.lists = data.lists
+                state.invitations = data.invitations
+                return .none
+            }
             
-            state.lists = data.lists
-            state.invitations = data.invitations
-        case .failure:
-            state.viewState = .error()
+            // Update editing item
+            if editingRow.hasChanges(comparedTo: remoteList) {
+                editingRow.update(with: remoteList)
+                state.lists[editingIndex] = editingRow
+            } else {
+                state.viewState = .idle
+                state.lists = data.lists
+                state.invitations = data.invitations
+                return .none
+            }
+        case .failure(let error):
+            state.viewState = .error(error.localizedDescription)
         }
         return .none
     }
@@ -43,7 +59,25 @@ extension Home.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let list):
-            guard let index = state.lists.firstIndex(where: { $0.documentId == list.documentId }) else {
+            guard let index = state.lists.firstIndex(where: \.isEditing) else {
+                state.viewState = .error()
+                return .none
+            }
+            state.lists.replace(list, at: index)
+            state.viewState = .updating
+        case .failure(let error):
+            state.viewState = .error(error.localizedDescription)
+        }
+        return .none
+    }
+    
+    func onUpdateListResult(
+        state: inout State,
+        result: ActionResult<UserList>
+    ) -> Effect<Action> {
+        switch result {
+        case .success(let list):
+            guard let index = state.lists.firstIndex(where: { $0.id == $0.id }) else {
                 state.viewState = .error()
                 return .none
             }
@@ -55,7 +89,7 @@ extension Home.Reducer {
         return .none
     }
 
-    func onHomeResult(
+    func onVoidResult(
         state: inout State,
         result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
@@ -66,5 +100,20 @@ extension Home.Reducer {
             state.viewState = .error()
         }
         return .none
+    }
+}
+
+fileprivate extension UserList {
+    func hasChanges(comparedTo list: UserList) -> Bool {
+        name != list.name || done != list.done
+    }
+    
+    mutating func update(with list: UserList) {
+        if name != list.name {
+            name = list.name
+        }
+        if done != list.done {
+            done = list.done
+        }
     }
 }

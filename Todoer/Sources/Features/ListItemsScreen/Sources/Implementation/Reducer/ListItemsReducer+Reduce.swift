@@ -11,7 +11,19 @@ extension ListItems.Reducer {
             return onAppear(
                 state: &state
             )
-
+            
+        case (.updating, .didTapSubmitItemButton(let uid, let newItemName)):
+            return onDidTapSubmitItemButton(
+                state: &state,
+                newItemName: newItemName,
+                uid: uid
+            )
+            
+        case (.updating, .didTapCancelButton):
+            return onDidTapCancelButton(
+                state: &state
+            )
+            
         case (.idle, .didTapToggleItemButton(let rowId)):
             return onDidTapToggleItemButton(
                 state: &state,
@@ -23,27 +35,37 @@ extension ListItems.Reducer {
                 state: &state,
                 uid: rowId
             )
-
-        case (.idle, .didTapAddRowButton):
-            return onDidTapAddRowButton(
-                state: &state
+            
+        case (.updating, .didMoveItem(let fromIndex, let toIndex)):
+            return onDidMoveItem(
+                state: &state,
+                fromIndex: fromIndex,
+                toIndex: toIndex
+            )
+            
+        case (.updating, .didChangeSearchFocus(let isFocused)):
+            return onDidChangeSearchFocus(
+                state: &state,
+                isFocused: isFocused
+            )
+            
+        case (.idle, .didChangeEditMode(let editMode)),
+            (.updating, .didChangeEditMode(let editMode)):
+            return onDidChangeEditMode(
+                state: &state,
+                editMode: editMode
+            )
+            
+        case (.idle, .didChangeActiveTab(let activeTab)):
+            return onDidChangeActiveTab(
+                state: &state,
+                activeTab: activeTab
             )
             
         case (.idle, .didUpdateSearchText(let text)):
             return onDidUpdateSearchText(
                 state: &state,
                 searchText: text
-            )
-            
-        case (.addingItem, .didTapCancelAddItemButton):
-            return onDidTapCancelAddRowButton(
-                state: &state
-            )
-
-        case (.addingItem, .didTapSubmitItemButton(let rowId, let newItemName)): //TODO: - use id to find index
-            return onDidTapSubmitItemButton(
-                state: &state,
-                newItemName: newItemName
             )
 
         case (_, .fetchItemsResult(let result)):
@@ -52,45 +74,21 @@ extension ListItems.Reducer {
                 result: result
             )
 
-        case (.addingItem, .addItemResult(let result)),
-            (.editingItem, .addItemResult(let result)):
+        case (.updating, .addItemResult(let result)):
             return onAddItemResult(
                 state: &state,
                 result: result
             )
-
-        case (.updatingItem, .deleteItemResult(let result)):
-            return onDeleteItemResult(
+            
+        case (.updating, .updateItemResult(let result)):
+            return onUpdateItemResult(
                 state: &state,
                 result: result
             )
-
-        case (.updatingItem, .toggleItemResult(let result)):
-            return onToggleItemResult(
-                state: &state,
-                result: result
-            )
-
-        case (.editingItem, .didTapCancelEditItemButton):
-            return onDidTapCancelEditItemButton(
-                state: &state
-            )
-
-        case (.idle, .didMoveItem(let fromIndex, let toIndex, let isCompleted)):
-            return onDidMoveItem(
-                state: &state,
-                fromIndex: fromIndex,
-                toIndex: toIndex,
-                isCompleted: isCompleted
-            )
-
-        case (.idle, .didTapAutoSortItems):
-            return onDidTapAutoSortItems(
-                state: &state
-            )
-
-        case (.movingItem, .moveItemsResult(let result)):
-            return onMoveItemsResult(
+            
+        case (.loading, .voidResult(let result)),
+            (.updating, .voidResult(let result)):
+            return onVoidResult(
                 state: &state,
                 result: result
             )

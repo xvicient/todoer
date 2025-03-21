@@ -55,6 +55,38 @@ public final class ListsRepository: ListsRepositoryApi {
 
     public func fetchLists() -> AnyPublisher<[UserList], Error> {
         listsDataSource.fetchLists(uid: usersDataSource.uid)
+            .scan([ListDTO]()) { storedLits, newLists in
+                // Convert stored lists to dictionary (ignoring lists without ID)
+                let storedListsDict = storedLits.reduce(into: [String: ListDTO]()) { dict, list in
+                    guard let id = list.id else {
+                        return
+                    }
+                    dict[id] = list
+                }
+                
+                var updatedLists = [ListDTO]()
+                        
+                for newList in newLists {
+                    guard let newId = newList.id else { continue } // Skip lists without ID
+                    
+                    if let storedList = storedListsDict[newId] {
+                        // Merge changes: update name/done only if changed
+                        let mergedList = ListDTO(
+                            id: storedList.id,
+                            name: storedList.name != newList.name ? newList.name : storedList.name,
+                            done: storedList.done != newList.done ? newList.done : storedList.done,
+                            uid: storedList.uid,
+                            index: storedList.index // Always take latest index
+                        )
+                        updatedLists.append(mergedList)
+                    } else {
+                        // Add new lists (with valid ID)
+                        updatedLists.append(newList)
+                    }
+                }
+                
+                return updatedLists
+            }
             .tryMap { $0.map(\.toDomain) }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
@@ -118,7 +150,7 @@ public final class ListsRepository: ListsRepositoryApi {
 extension ListDTO {
     fileprivate var toDomain: UserList {
         UserList(
-            id: UUID(),
+            id: UUID(uuidString: id ?? "") ?? UUID(),
             documentId: id ?? "",
             name: name,
             done: done,

@@ -39,54 +39,40 @@ extension ListItems {
 
             // MARK: - User actions
             /// ListItemsReducer+UserActions
+            case didTapSubmitItemButton(UUID, String)
+            case didTapCancelButton
             case didTapToggleItemButton(UUID)
             case didTapDeleteItemButton(UUID)
-            case didTapAddRowButton
-            case didTapCancelAddItemButton
-            case didTapSubmitItemButton(UUID, String)
-            case didTapCancelEditItemButton
-            case didMoveItem(IndexSet, Int, Bool?)
-            case didTapDismissError
-            case didTapAutoSortItems
+            case didMoveItem(IndexSet, Int)
+            case didChangeSearchFocus(Bool)
+            case didChangeEditMode(EditMode)
+            case didChangeActiveTab(TDListTab)
             case didUpdateSearchText(String)
+            case didTapDismissError
 
             // MARK: - Results
             /// ListItemsReducer+Results
             case fetchItemsResult(ActionResult<[Item]>)
             case addItemResult(ActionResult<Item>)
-            case deleteItemResult(ActionResult<EquatableVoid>)
-            case toggleItemResult(ActionResult<EquatableVoid>)
-            case moveItemsResult(ActionResult<EquatableVoid>)
+            case updateItemResult(ActionResult<Item>)
+            case voidResult(ActionResult<EquatableVoid>)
         }
 
         struct State: AppAlertState {
-            var viewState: ViewState = .loading
-            var items = [WrappedItem]()
+            var viewState: ViewState = .loading(true)
+            
             var listName: String
-            var searchText = ""
+            var items = [Item]()
+            var editMode: EditMode = .inactive
+            var activeTab: TDListTab = .all
+            var searchText: String  = ""
+            var isSearchFocused: Bool = false
+            
             var tabs: [TDListTab] {
                 guard items.filter(\.isEditing).count > 1 else {
                     return TDListTab.allCases
                 }
                 return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
-            }
-            func filteredItems(isCompleted: Bool?) -> Binding<[TDListRow]> {
-                Binding(
-                    get: {
-                        items.filter(by: isCompleted).filter(with: searchText).map { $0.tdListRow }
-                    },
-                    set: { _ in }
-                )
-            }
-            
-            init(
-                listName: String
-            ) {
-                self.listName = listName
-            }
-            
-            var isEditing: Bool {
-                items.contains { $0.isEditing }
             }
 
             var alert: AppAlert<Action>? {
@@ -96,16 +82,18 @@ extension ListItems {
                 }
                 return data
             }
+            
+            init(
+                listName: String
+            ) {
+                self.listName = listName
+            }
         }
 
         enum ViewState: Equatable, StringRepresentable {
             case idle
-            case loading
-            case addingItem
-            case updatingItem
-            case editingItem
-            case sortingItems
-            case movingItem
+            case loading(Bool)
+            case updating
             case alert(AppAlert<Action>)
 
             static func error(
@@ -119,15 +107,6 @@ extension ListItems {
                     )
                 )
             }
-
-            var isEditing: Bool {
-                switch self {
-                case .addingItem, .editingItem:
-                    true
-                default:
-                    false
-                }
-            }
         }
 
         internal let dependencies: ListItemsReducerDependencies
@@ -138,87 +117,75 @@ extension ListItems {
     }
 }
 
-extension ListItems.Reducer {
-    struct WrappedItem: Identifiable, Equatable, ElementSortable {
-        var id: UUID {
-            item.id
-        }
-        var item: Item
-        let leadingActions: [TDSwipeAction]
-        let trailingActions: [TDSwipeAction]
-        var isEditing: Bool
+// MARK: - Bindings
 
-        var done: Bool { item.done }
-        var name: String { item.name }
-        var index: Int {
-            get {
-                item.index
-            }
-            set {
-                item.index = newValue
-            }
+@MainActor
+extension Store<ListItems.Reducer> {
+    var activeTab: TDListTab {
+        get { state.activeTab }
+        set { send(.didChangeActiveTab(newValue)) }
+    }
+    
+    var searchText: String {
+        get { state.searchText }
+        set { send(.didUpdateSearchText(newValue)) }
+    }
+    
+    var rows: [TDListRow] {
+        get {
+            state.items
+                .filter(by: activeTab.isCompleted)
+                .filter(with: searchText)
+                .map { $0.tdListRow }
         }
-
-        init(
-            item: Item,
-            leadingActions: [TDSwipeAction] = [],
-            trailingActions: [TDSwipeAction] = [],
-            isEditing: Bool = false
-        ) {
-            self.item = item
-            self.leadingActions = leadingActions
-            self.trailingActions = trailingActions
-            self.isEditing = isEditing
+        set { }
+    }
+    
+    var editMode: EditMode {
+        get { state.editMode }
+        set { send(.didChangeEditMode(newValue)) }
+    }
+    
+    var isSearchFocused: Bool {
+        get { state.isSearchFocused }
+        set { send(.didChangeSearchFocus(newValue)) }
+    }
+    
+    var isUpdating: Bool {
+        switch state.viewState {
+        case .updating:
+            true
+        default:
+            false
+        }
+    }
+    
+    var isLoading: Bool {
+        switch state.viewState {
+        case .loading(let isLoading):
+            isLoading
+        default:
+            false
         }
     }
 }
 
-extension Array where Element == ListItems.Reducer.WrappedItem {
-    func index(for id: UUID) -> Int? {
-        firstIndex { $0.id == id }
-    }
-    
-    mutating func replace(item: Item, at index: Int) {
-        remove(at: index)
-        insert(item.toItemRow, at: index)
-    }
-    
-    var last: ListItems.Reducer.WrappedItem? {
-        self.min(by: { $0.index < $1.index })
-    }
-    
-    mutating func removeLast() {
-        if let last {
-            removeAll { $0.id == last.id }
-        }
-    }
-
-}
-
-// MARK: - WrappedItem to TDListRow
-
-extension ListItems.Reducer.WrappedItem {
-    fileprivate var tdListRow: TDListRow {
-        TDListRow(
-            id: item.id,
-            name: item.name,
-            image: item.done ? Image.largecircleFillCircle : Image.circle,
-            strikethrough: item.done,
-            leadingActions: leadingActions,
-            trailingActions: trailingActions,
-            isEditing: isEditing
-        )
-    }
-}
-
-// MARK: - Item to WrappedItem
+// MARK: - Item to TDListRow
 
 extension Item {
-    var toItemRow: ListItems.Reducer.WrappedItem {
-        ListItems.Reducer.WrappedItem(
-            item: self,
+    var isEditing: Bool {
+        documentId.isEmpty
+    }
+    
+    fileprivate var tdListRow: TDListRow {
+        TDListRow(
+            id: id,
+            name: name,
+            image: done ? Image.largecircleFillCircle : Image.circle,
+            strikethrough: done,
             leadingActions: [done ? .undone : .done],
-            trailingActions: [.delete]
+            trailingActions: [.delete, .share],
+            isEditing: isEditing
         )
     }
 }

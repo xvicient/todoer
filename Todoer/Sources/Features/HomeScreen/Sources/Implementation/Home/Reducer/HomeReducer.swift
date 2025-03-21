@@ -55,6 +55,7 @@ extension Home {
             /// HomeReducer+Results
             case fetchDataResult(ActionResult<HomeData>)
             case addListResult(ActionResult<UserList>)
+            case updateListResult(ActionResult<UserList>)
             case addSharedListsResult(ActionResult<[UserList]>)
             case voidResult(ActionResult<EquatableVoid>)
         }

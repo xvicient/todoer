@@ -7,7 +7,7 @@ extension ListItems.Reducer {
     func onAppear(
         state: inout State
     ) -> Effect<Action> {
-        state.viewState = .loading
+        state.viewState = .loading(true)
         return .publish(
             dependencies.useCase.fetchItems(
                 listId: dependencies.list.documentId

@@ -1,6 +1,7 @@
 import Foundation
+import Common
 
-public struct Item: Identifiable, Equatable, Hashable, Sendable {
+public struct Item: Identifiable, Equatable, Hashable, Sendable, ElementSortable {
     public let id: UUID
     public let documentId: String
     public var name: String

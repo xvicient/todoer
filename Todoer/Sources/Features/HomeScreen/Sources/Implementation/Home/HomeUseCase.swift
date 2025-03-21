@@ -48,7 +48,7 @@ extension Home {
             var errorDescription: String? {
                 switch self {
                 case .emptyListName:
-                    return "UserList can't be empty."
+                    return "List can't be empty."
                 }
             }
         }
@@ -108,7 +108,8 @@ extension Home {
                     listId: list.documentId,
                     done: list.done
                 )
-                return .success(updatedList)
+                
+                return .success(list) // TODO: - Workaround, to fix Firestore documentId missusage between UserList and ListDTO
             }
             catch {
                 return .failure(error)
