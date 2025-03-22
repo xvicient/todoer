@@ -64,7 +64,7 @@ extension Home.Reducer {
                 return .none
             }
             state.lists.replace(list, at: index)
-            state.viewState = .updating
+            state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }
@@ -82,7 +82,7 @@ extension Home.Reducer {
                 return .none
             }
             state.lists.replace(list, at: index)
-            state.viewState = .updating
+            state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }

@@ -45,7 +45,7 @@ extension ListItems.Reducer {
                 return .none
             }
             state.items.replace(item, at: index)
-            state.viewState = .updating
+            state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }
@@ -63,7 +63,7 @@ extension ListItems.Reducer {
                 return .none
             }
             state.items.replace(item, at: index)
-            state.viewState = .updating
+            state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }
