@@ -61,10 +61,12 @@ public struct TDListView: View {
     private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
     
     /// Scrolling properties
-    @State private var minY: CGFloat = 0.0
     @State private var isScrolling = false
-    private let searchbarThreshold: CGFloat = 60.0
-    private let headerHeight: CGFloat = 145.0
+    private let headerThreeshold1: CGFloat = 55.0
+    private let headerThreeshold2: CGFloat = 90.0
+    @State private var threeshold1MinY: CGFloat = 0.0
+    @State private var threeshold2MinY: CGFloat = 0.0
+    private let headerHeight: CGFloat = 150.0
     
     /// Toolbar  properties
     @Environment(\.presentationMode) private var presentationMode
@@ -121,7 +123,7 @@ extension TDListView {
                     guard !isSearchFocused else { return }
                     let offset = context.geometry.contentOffset.y + context.geometry.contentInsets.top
                     
-                    if offset < searchbarThreshold {
+                    if offset < headerThreeshold1 {
                         withAnimation(headerAnimation) {
                             proxy.scrollTo(0, anchor: .top)
                         }
@@ -133,14 +135,15 @@ extension TDListView {
             } action: { _, offset in
                 guard !isSearchFocused else { return }
                 DispatchQueue.main.async {
+                    threeshold2MinY = -offset > -headerThreeshold2 ? -offset : -headerThreeshold2
                     if abs(offset) == .zero {
                         withAnimation(headerAnimation) {
-                            minY = 0
+                            threeshold1MinY = 0
                         }
-                    } else if -offset > -searchbarThreshold {
-                        minY = -offset
+                    } else if -offset > -headerThreeshold1 {
+                        threeshold1MinY = -offset
                     } else {
-                        minY = -searchbarThreshold
+                        threeshold1MinY = -headerThreeshold1
                     }
                 }
             }
@@ -150,7 +153,8 @@ extension TDListView {
                     proxy.scrollTo(0, anchor: .top)
                 } completion: {
                     withAnimation(headerAnimation.delay(0.1)) {
-                        minY = 0
+                        threeshold1MinY = 0
+                        threeshold2MinY = 0
                     }
                 }
             }
@@ -171,7 +175,18 @@ extension TDListView {
     fileprivate func header() -> some View {
         VStack {
             ZStack {
-                let progress = max(min(-minY / searchbarThreshold, 1), 0)
+                let progress = max(min(-threeshold1MinY / headerThreeshold1, 1), 0)
+                let threeshold1Height = (headerHeight + (threeshold2MinY*2)) < 0 ? 0 : (headerHeight + (threeshold2MinY*2))
+                let threeshold2Height = -threeshold1MinY < headerThreeshold1 ? headerHeight : headerHeight - (threeshold1MinY-threeshold2MinY)
+                
+                TDListTabButtonView(
+                    slideDirection: $slideDirection,
+                    activeTab: $activeTab,
+                    tabs: configuration.tabs
+                )
+                .padding(.bottom, 5)
+                .frame(height: threeshold1Height, alignment: .bottomLeading)
+                
                 VStack {
                     HStack(spacing: 12) {
                         Image.mag
@@ -193,38 +208,26 @@ extension TDListView {
                         }
                     }
                     .padding(.horizontal, 15 - (progress * 13))
-                    .padding(.top, (progress * 20))
                     .frame(height: 45)
                     .clipShape(.capsule)
                     .background {
                         RoundedRectangle(cornerRadius: 25 - (progress * 25))
                             .fill(.background)
                             .shadow(color: .gray.opacity(0.25), radius: 5, x: 0, y: 5)
-                            .padding(.top, -progress * 120)
-                            .padding(.bottom, -progress * searchbarThreshold)
+                            .padding(.top, -progress * headerHeight)
+                            .padding(.bottom, -progress * 10)
                             .padding(.horizontal, -progress * 15)
                     }
-                    
-                    
-                    TDListTabButtonView(
-                        slideDirection: $slideDirection,
-                        activeTab: $activeTab,
-                        tabs: configuration.tabs
-                    )
-                    .scrollIndicators(.hidden)
-                    .frame(height: 50)
-                    .safeAreaPadding(.bottom, -minY)
                 }
-                .safeAreaPadding(.horizontal, 15)
-                .frame(height: headerHeight, alignment: .bottom)
-                VStack {
-                    TDExpandableText(text: configuration.title, limit: 1)
-                        .safeAreaPadding(.bottom, (110 - (21 * progress))-minY)
-                        .frame(height: headerHeight, alignment: .bottomLeading)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .safeAreaPadding(.leading, hasBackButton ? 15 + (15 * progress) : 15)
+                .padding(.bottom, 65)
+                .frame(height: threeshold2Height, alignment: .bottomLeading)
+                
+                TDExpandableText(text: configuration.title, limit: 1)
+                    .padding(.bottom, 120)
+                    .frame(height: threeshold2Height, alignment: .bottomLeading)
+                    .safeAreaPadding(.leading, hasBackButton ? 15 : 0)
             }
+            .safeAreaPadding(.horizontal, 15)
             Spacer()
         }
     }

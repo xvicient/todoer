@@ -68,6 +68,8 @@ public struct TDListTabButtonView: View {
                 }
             }
         }
+        .scrollIndicators(.hidden)
+        .frame(height: 50)
     }
 
     @ViewBuilder

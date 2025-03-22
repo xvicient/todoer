@@ -73,6 +73,7 @@ public struct TDExpandableText: View {
                         canBeExpanded = truncatedSize != size
                     }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
