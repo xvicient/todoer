@@ -11,26 +11,10 @@ extension Home.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let data):
-            guard let editingIndex = state.lists.firstIndex(where: { $0.isEditing }),
-                  var editingRow = state.lists[safe: editingIndex],
-                  let remoteList = data.lists.first(where: { $0.documentId == editingRow.documentId })
-            else {
-                state.viewState = .idle
-                state.lists = data.lists
-                state.invitations = data.invitations
-                return .none
-            }
-            
-            // Update editing item
-            if editingRow.hasChanges(comparedTo: remoteList) {
-                editingRow.update(with: remoteList)
-                state.lists[editingIndex] = editingRow
-            } else {
-                state.viewState = .idle
-                state.lists = data.lists
-                state.invitations = data.invitations
-                return .none
-            }
+            if case .loading = state.viewState { state.viewState = .idle }
+            state.lists = data.lists
+            state.invitations = data.invitations
+            return .none
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }
@@ -82,7 +66,7 @@ extension Home.Reducer {
                 return .none
             }
             state.lists.replace(list, at: index)
-            state.viewState = .idle
+            state.viewState = .updating
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }

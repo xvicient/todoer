@@ -94,7 +94,7 @@ extension ListItems.Reducer {
         }
         
         var list = dependencies.list
-        let item = state.items[index]
+        var item = state.items[index]
         
         if item.name.isEmpty {
             list.done = false
@@ -109,6 +109,7 @@ extension ListItems.Reducer {
                 )
             }
         } else {
+            item.name = newItemName
             return .task { send in
                 await send(
                     .updateItemResult(
@@ -163,6 +164,9 @@ extension ListItems.Reducer {
         state: inout State,
         editMode: EditMode
     ) -> Effect<Action> {
+        if !state.editMode.isEditing && state.viewState == .updating {
+            onDidTapCancelButton(state: &state)
+        }
         state.editMode = editMode
         state.viewState = editMode.viewState
         return .none

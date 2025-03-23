@@ -174,6 +174,9 @@ extension Home.Reducer {
         state: inout State,
         editMode: EditMode
     ) -> Effect<Action> {
+        if !state.editMode.isEditing && state.viewState == .updating {
+            onDidTapCancelButton(state: &state)
+        }
         state.editMode = editMode
         state.viewState = editMode.viewState
         return .none

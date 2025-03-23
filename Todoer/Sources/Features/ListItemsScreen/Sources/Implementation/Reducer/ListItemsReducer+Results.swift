@@ -10,24 +10,9 @@ extension ListItems.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let items):
-            guard let editingIndex = state.items.firstIndex(where: { $0.isEditing }),
-                  var editingRow = state.items[safe: editingIndex],
-                  let remoteItem = items.first(where: { $0.documentId == editingRow.documentId })
-            else {
-                state.viewState = .idle
-                state.items = items
-                return .none
-            }
-            
-            // Update editing item
-            if editingRow.hasChanges(comparedTo: remoteItem) {
-                editingRow.update(with: remoteItem)
-                state.items[editingIndex] = editingRow
-            } else {
-                state.viewState = .idle
-                state.items = items
-                return .none
-            }
+            if case .loading = state.viewState { state.viewState = .idle }
+            state.items = items
+            return .none
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }
@@ -63,7 +48,7 @@ extension ListItems.Reducer {
                 return .none
             }
             state.items.replace(item, at: index)
-            state.viewState = .idle
+            state.viewState = .updating
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }
