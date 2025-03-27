@@ -7,7 +7,7 @@ import xRedux
 // MARK: - InvitationsView
 
 struct InvitationsView: View {
-    @ObservedObject private var store: Store<Invitations.Reducer>
+    @Bindable private var store: Store<Invitations.Reducer>
     private let rowHeight: CGFloat = 90
     private var invitationsCount: Int
     

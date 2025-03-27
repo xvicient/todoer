@@ -4,7 +4,7 @@ import ThemeAssets
 import xRedux
 
 struct ShareScreen: View {
-	@ObservedObject private var store: Store<Share.Reducer>
+    @Bindable private var store: Store<Share.Reducer>
 
 	init(
 		store: Store<Share.Reducer>

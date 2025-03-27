@@ -15,7 +15,7 @@ struct HomeScreen: View {
     @EnvironmentObject var loading: TDLoadingModel
     @Environment(\.scenePhase) private var scenePhase
     
-    @ObservedObject private var store: Store<Home.Reducer>
+    @Bindable private var store: Store<Home.Reducer>
     private var invitationsView: Home.MakeInvitationsView
 
     init(

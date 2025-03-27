@@ -9,7 +9,7 @@ import xRedux
 
 struct ListItemsScreen: View {
     
-    @ObservedObject private var store: Store<ListItems.Reducer>
+    @Bindable private var store: Store<ListItems.Reducer>
 
     init(
         store: Store<ListItems.Reducer>

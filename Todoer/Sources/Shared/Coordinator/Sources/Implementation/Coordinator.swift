@@ -3,13 +3,13 @@ import Data
 import SwiftUI
 
 @MainActor
-public final class Coordinator: CoordinatorApi, ObservableObject {
+@Observable public final class Coordinator: CoordinatorApi {
 
-    @Published var path = NavigationPath()
-    @Published var sheet: Sheet?
-    @Published var fullScreenCover: FullScreenCover?
-    @Published var landingView: AnyView?
-    @Published var landingScreen: Screen
+    var path = NavigationPath()
+    var sheet: Sheet?
+    var fullScreenCover: FullScreenCover?
+    var landingView: AnyView?
+    var landingScreen: Screen
     private let authenticationService: AuthenticationService
     private let featureProvider: FeatureProviderAPI
     public var isUserLogged: Bool {

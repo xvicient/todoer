@@ -4,7 +4,7 @@ import ThemeComponents
 
 public struct CoordinatorView: View {
     @StateObject private var loading = TDLoadingModel()
-    @ObservedObject private var coordinator: Coordinator
+    @Bindable private var coordinator: Coordinator
     private let menuView: AnyView
     @State private var sheetHeight: CGFloat = 0
     

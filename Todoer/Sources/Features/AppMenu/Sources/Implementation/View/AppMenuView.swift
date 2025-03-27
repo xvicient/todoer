@@ -9,7 +9,7 @@ import xRedux
 struct AppMenuView: View {
 
     /// Store that manages the menu state and action
-    @ObservedObject private var store: Store<AppMenu.Reducer>
+    @Bindable private var store: Store<AppMenu.Reducer>
 
     /// Initializes the menu view with a store
     /// - Parameter store: The store that manages the menu state

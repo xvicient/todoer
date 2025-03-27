@@ -12,7 +12,7 @@ import xRedux
 // MARK: - ShareListView
 
 struct ShareListScreen: View {
-    @ObservedObject private var store: Store<ShareList.Reducer>
+    @Bindable private var store: Store<ShareList.Reducer>
     @State private var shareOwnerNameText: String = ""
     @State private var shareEmailText: String = ""
     private var isShareButtonDisabled: Bool {

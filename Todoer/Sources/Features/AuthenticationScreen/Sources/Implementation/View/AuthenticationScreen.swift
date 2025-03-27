@@ -14,7 +14,7 @@ import xRedux
 // MARK: - AuthenticationScreen
 
 struct AuthenticationScreen: View {
-    @ObservedObject private var store: Store<Authentication.Reducer>
+    @Bindable private var store: Store<Authentication.Reducer>
     @State private var isTopSpacerVisible = true
     @State private var logoTopPadding = 100.0
     @State private var didFinishAnimation = false
