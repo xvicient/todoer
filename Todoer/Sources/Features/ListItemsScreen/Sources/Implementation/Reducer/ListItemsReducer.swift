@@ -56,6 +56,7 @@ extension ListItems {
             case addItemResult(ActionResult<Item>)
             case updateItemResult(ActionResult<Item>)
             case voidResult(ActionResult<EquatableVoid>)
+            case moveItemResult(ActionResult<EquatableVoid>)
         }
 
         struct State: AppAlertState {

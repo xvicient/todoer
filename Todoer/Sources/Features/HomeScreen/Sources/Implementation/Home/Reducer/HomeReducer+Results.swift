@@ -85,6 +85,18 @@ extension Home.Reducer {
         }
         return .none
     }
+    
+    func onMoveListResult(
+        state: inout State,
+        result: ActionResult<EquatableVoid>
+    ) -> Effect<Action> {
+        switch result {
+        case .success: break
+        case .failure:
+            state.viewState = .error()
+        }
+        return .none
+    }
 }
 
 fileprivate extension UserList {

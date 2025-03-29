@@ -140,7 +140,7 @@ extension ListItems.Reducer {
         
         return .task { send in
             await send(
-                .voidResult(
+                .moveItemResult(
                     dependencies.useCase.sortItems(
                         items: items,
                         listId: listId

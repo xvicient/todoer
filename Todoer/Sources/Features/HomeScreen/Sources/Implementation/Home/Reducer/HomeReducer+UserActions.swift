@@ -151,7 +151,7 @@ extension Home.Reducer {
         
         return .task { send in
             await send(
-                .voidResult(
+                .moveListResult(
                     useCase.sortLists(
                         lists: lists
                     )

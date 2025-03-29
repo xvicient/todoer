@@ -58,6 +58,7 @@ extension Home {
             case updateListResult(ActionResult<UserList>)
             case addSharedListsResult(ActionResult<[UserList]>)
             case voidResult(ActionResult<EquatableVoid>)
+            case moveListResult(ActionResult<EquatableVoid>)
         }
 
         @MainActor

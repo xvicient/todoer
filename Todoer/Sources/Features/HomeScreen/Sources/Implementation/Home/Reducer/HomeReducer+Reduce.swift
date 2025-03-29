@@ -113,9 +113,14 @@ extension Home.Reducer {
                 result: result
             )
 
-        case (.loading, .voidResult(let result)),
-            (.updating, .voidResult(let result)):
+        case (.loading, .voidResult(let result)):
             return onVoidResult(
+                state: &state,
+                result: result
+            )
+            
+        case (.updating, .moveListResult(let result)):
+            return onMoveListResult(
                 state: &state,
                 result: result
             )

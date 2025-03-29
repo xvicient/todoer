@@ -55,6 +55,18 @@ extension ListItems.Reducer {
         return .none
     }
     
+    func onMoveItemResult(
+        state: inout State,
+        result: ActionResult<EquatableVoid>
+    ) -> Effect<Action> {
+        switch result {
+        case .success: break
+        case .failure:
+            state.viewState = .error()
+        }
+        return .none
+    }
+    
     func onVoidResult(
         state: inout State,
         result: ActionResult<EquatableVoid>

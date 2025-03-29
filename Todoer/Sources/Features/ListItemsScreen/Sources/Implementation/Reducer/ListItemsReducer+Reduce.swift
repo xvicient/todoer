@@ -87,9 +87,14 @@ extension ListItems.Reducer {
                 result: result
             )
             
-        case (.loading, .voidResult(let result)),
-            (.updating, .voidResult(let result)):
+        case (.loading, .voidResult(let result)):
             return onVoidResult(
+                state: &state,
+                result: result
+            )
+            
+        case (.updating, .moveItemResult(let result)):
+            return onMoveItemResult(
                 state: &state,
                 result: result
             )
