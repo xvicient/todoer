@@ -5,32 +5,30 @@ import HomeScreenContract
 import SwiftUI
 import xRedux
 
-public struct Home {
-    public typealias MakeInvitationsView = ([Invitation]) -> AnyView
+public typealias MakeHomeInvitationsView = ([Invitation]) -> AnyView
 
-    @MainActor
-    public struct Builder {
-
-        public static func makeHome(
-            dependencies: HomeScreenDependencies
-        ) -> some View {
-            let reducer = Reducer(dependencies: dependencies)
-            let store = Store(initialState: .init(), reducer: reducer)
-            return HomeScreen(
-                store: store,
-                invitationsView: makeInvitationsView()
-            )
-        }
-
-        private static func makeInvitationsView() -> MakeInvitationsView {
-            {
-                AnyView(
-                    Invitations.Builder.makeInvitations(
-                        invitations: $0
-                    )
-                    .id(UUID())
+@MainActor
+public struct HomeBuilder {
+    
+    public static func makeHome(
+        dependencies: HomeScreenDependencies
+    ) -> some View {
+        let reducer = HomeReducer(dependencies: dependencies)
+        let store = Store(initialState: .init(), reducer: reducer)
+        return HomeScreen(
+            store: store,
+            invitationsView: makeInvitationsView()
+        )
+    }
+    
+    private static func makeInvitationsView() -> MakeHomeInvitationsView {
+        {
+            AnyView(
+                Invitations.Builder.makeInvitations(
+                    invitations: $0
                 )
-            }
+                .id(UUID())
+            )
         }
     }
 }

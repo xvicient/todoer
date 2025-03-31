@@ -7,11 +7,11 @@ import xRedux
 
 protocol HomeUseCaseApi {
     var sharedListsCount: Int { get }
-
+    
     func addSharedLists() async -> ActionResult<[UserList]>
-
+    
     func fetchHomeData() -> AnyPublisher<HomeData, Error>
-
+    
     @discardableResult
     func updateList(
         list: UserList
@@ -20,153 +20,150 @@ protocol HomeUseCaseApi {
     func toggleList(
         list: UserList
     ) async -> ActionResult<EquatableVoid>
-
+    
     func deleteList(
         _ documentId: String
     ) async -> ActionResult<EquatableVoid>
-
+    
     func addList(
         name: String
     ) async -> ActionResult<UserList>
-
+    
     func sortLists(
         lists: [UserList]
     ) async -> ActionResult<EquatableVoid>
 }
 
-extension Home {
+struct HomeData: Equatable, Sendable {
+    let lists: [UserList]
+    let invitations: [Invitation]
+}
 
-    struct HomeData: Equatable, Sendable {
-        let lists: [UserList]
-        let invitations: [Invitation]
+struct HomeUseCase: HomeUseCaseApi {
+    private enum Errors: Error, LocalizedError {
+        case emptyListName
+        
+        var errorDescription: String? {
+            switch self {
+            case .emptyListName:
+                return "List can't be empty."
+            }
+        }
     }
-
-    struct UseCase: HomeUseCaseApi {
-        private enum Errors: Error, LocalizedError {
-            case emptyListName
-
-            var errorDescription: String? {
-                switch self {
-                case .emptyListName:
-                    return "List can't be empty."
-                }
-            }
+    
+    private let listsRepository: ListsRepositoryApi
+    private let itemsRepository: ItemsRepositoryApi
+    private let invitationsRepository: InvitationsRepositoryApi
+    private let usersRepository: UsersRepositoryApi
+    
+    init(
+        listsRepository: ListsRepositoryApi = ListsRepository(),
+        itemsRepository: ItemsRepositoryApi = ItemsRepository(),
+        invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
+        usersRepository: UsersRepositoryApi = UsersRepository()
+    ) {
+        self.listsRepository = listsRepository
+        self.itemsRepository = itemsRepository
+        self.invitationsRepository = invitationsRepository
+        self.usersRepository = usersRepository
+    }
+    
+    var sharedListsCount: Int {
+        listsRepository.sharedListsCount
+    }
+    
+    func addSharedLists() async -> ActionResult<[UserList]> {
+        do {
+            let result = try await listsRepository.addSharedLists()
+            return .success(result)
         }
-
-        private let listsRepository: ListsRepositoryApi
-        private let itemsRepository: ItemsRepositoryApi
-        private let invitationsRepository: InvitationsRepositoryApi
-        private let usersRepository: UsersRepositoryApi
-
-        init(
-            listsRepository: ListsRepositoryApi = ListsRepository(),
-            itemsRepository: ItemsRepositoryApi = ItemsRepository(),
-            invitationsRepository: InvitationsRepositoryApi = InvitationsRepository(),
-            usersRepository: UsersRepositoryApi = UsersRepository()
-        ) {
-            self.listsRepository = listsRepository
-            self.itemsRepository = itemsRepository
-            self.invitationsRepository = invitationsRepository
-            self.usersRepository = usersRepository
+        catch {
+            return .failure(error)
         }
-
-        var sharedListsCount: Int {
-            listsRepository.sharedListsCount
-        }
-
-        func addSharedLists() async -> ActionResult<[UserList]> {
-            do {
-                let result = try await listsRepository.addSharedLists()
-                return .success(result)
-            }
-            catch {
-                return .failure(error)
-            }
-        }
-
-        func fetchHomeData() -> AnyPublisher<HomeData, Error> {
-            Publishers.CombineLatest(
-                fetchLists(),
-                fetchInvitations()
+    }
+    
+    func fetchHomeData() -> AnyPublisher<HomeData, Error> {
+        Publishers.CombineLatest(
+            fetchLists(),
+            fetchInvitations()
+        )
+        .map { lists, invitations in
+            HomeData(
+                lists: lists,
+                invitations: invitations
             )
-            .map { lists, invitations in
-                HomeData(
-                    lists: lists,
-                    invitations: invitations
-                )
-            }
-            .eraseToAnyPublisher()
         }
-        
-        @discardableResult
-        func updateList(
-            list: UserList
-        ) async -> ActionResult<UserList> {
-            do {
-                let updatedList = try await listsRepository.updateList(list)
-                try await itemsRepository.toogleAllItems(
-                    listId: list.documentId,
-                    done: list.done
-                )
-                
-                return .success(list) // TODO: - Workaround, to fix Firestore documentId missusage between UserList and ListDTO
-            }
-            catch {
-                return .failure(error)
-            }
+        .eraseToAnyPublisher()
+    }
+    
+    @discardableResult
+    func updateList(
+        list: UserList
+    ) async -> ActionResult<UserList> {
+        do {
+            let updatedList = try await listsRepository.updateList(list)
+            try await itemsRepository.toogleAllItems(
+                listId: list.documentId,
+                done: list.done
+            )
+            
+            return .success(list) // TODO: - Workaround, to fix Firestore documentId missusage between UserList and ListDTO
         }
-        
-        func toggleList(
-            list: UserList
-        ) async -> ActionResult<EquatableVoid> {
-            await updateList(list: list)
+        catch {
+            return .failure(error)
+        }
+    }
+    
+    func toggleList(
+        list: UserList
+    ) async -> ActionResult<EquatableVoid> {
+        await updateList(list: list)
+        return .success()
+    }
+    
+    func deleteList(
+        _ documentId: String
+    ) async -> ActionResult<EquatableVoid> {
+        do {
+            try await listsRepository.deleteList(documentId)
             return .success()
         }
-
-        func deleteList(
-            _ documentId: String
-        ) async -> ActionResult<EquatableVoid> {
-            do {
-                try await listsRepository.deleteList(documentId)
-                return .success()
-            }
-            catch {
-                return .failure(error)
-            }
+        catch {
+            return .failure(error)
         }
-
-        func addList(
-            name: String
-        ) async -> ActionResult<UserList> {
-            guard !name.isEmpty else {
-                return .failure(Errors.emptyListName)
-            }
-
-            do {
-                let list = try await listsRepository.addList(with: name)
-                return .success(list)
-            }
-            catch {
-                return .failure(error)
-            }
+    }
+    
+    func addList(
+        name: String
+    ) async -> ActionResult<UserList> {
+        guard !name.isEmpty else {
+            return .failure(Errors.emptyListName)
         }
-
-        func sortLists(
-            lists: [UserList]
-        ) async -> ActionResult<EquatableVoid> {
-            do {
-                try await listsRepository.sortLists(lists: lists)
-                return .success()
-            }
-            catch {
-                return .failure(error)
-            }
+        
+        do {
+            let list = try await listsRepository.addList(with: name)
+            return .success(list)
+        }
+        catch {
+            return .failure(error)
+        }
+    }
+    
+    func sortLists(
+        lists: [UserList]
+    ) async -> ActionResult<EquatableVoid> {
+        do {
+            try await listsRepository.sortLists(lists: lists)
+            return .success()
+        }
+        catch {
+            return .failure(error)
         }
     }
 }
 
-extension Home.UseCase {
-
+extension HomeUseCase {
+    
     fileprivate func fetchLists() -> AnyPublisher<[UserList], Error> {
         listsRepository.fetchLists()
             .map { lists in
@@ -175,7 +172,7 @@ extension Home.UseCase {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-
+    
     fileprivate func fetchInvitations() -> AnyPublisher<[Invitation], Error> {
         invitationsRepository.getInvitations()
             .map { invitations in

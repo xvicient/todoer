@@ -6,11 +6,11 @@ public struct InvitationsToolbarView: View {
     @State private var isShowingInvitations: Bool = false
     @State private var sheetHeight: CGFloat = 0
     
-    private var invitationsView: Home.MakeInvitationsView
+    private var invitationsView: MakeHomeInvitationsView
     private let invitations: [Invitation]
     
     public init(
-        @ViewBuilder invitationsView: @escaping Home.MakeInvitationsView,
+        @ViewBuilder invitationsView: @escaping MakeHomeInvitationsView,
         invitations: [Invitation]
     ) {
         self.invitationsView = invitationsView

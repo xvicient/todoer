@@ -22,7 +22,7 @@ struct FeatureProvider: FeatureProviderAPI {
         struct Dependencies: HomeScreenDependencies {
             let coordinator: CoordinatorApi
         }
-        return Home.Builder.makeHome(
+        return HomeBuilder.makeHome(
             dependencies: Dependencies(
                 coordinator: coordinator
             )

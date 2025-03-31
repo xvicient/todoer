@@ -10,117 +10,97 @@ import SwiftUI
 
 // MARK: - HomeReducer
 
-typealias HomeData = Home.HomeData
-
-extension Home {
-    struct Reducer: xRedux.Reducer {
-
-        enum Errors: Error, LocalizedError {
-            case unexpectedError
-
-            var errorDescription: String? {
-                switch self {
-                case .unexpectedError:
-                    return "Unexpected error."
-                }
+struct HomeReducer: Reducer {
+    
+    enum Action: Equatable, StringRepresentable {
+        // MARK: - View appear
+        /// HomeReducer+ViewAppear
+        case onViewAppear
+        case onSceneActive
+        
+        // MARK: - User actions
+        /// HomeReducer+UserActions
+        case didTapList(UUID)
+        case didTapSubmitListButton(UUID, String)
+        case didTapCancelButton
+        case didTapToggleListButton(UUID)
+        case didTapShareListButton(UUID)
+        case didTapDeleteListButton(UUID)
+        case didMoveList(IndexSet, Int)
+        case didChangeSearchFocus(Bool)
+        case didChangeEditMode(EditMode)
+        case didChangeActiveTab(TDListTab)
+        case didUpdateSearchText(String)
+        case didTapDismissError
+        
+        // MARK: - Results
+        /// HomeReducer+Results
+        case fetchDataResult(ActionResult<HomeData>)
+        case addListResult(ActionResult<UserList>)
+        case updateListResult(ActionResult<UserList>)
+        case addSharedListsResult(ActionResult<[UserList]>)
+        case voidResult(ActionResult<EquatableVoid>)
+        case moveListResult(ActionResult<EquatableVoid>)
+    }
+    
+    struct State: AppAlertState {
+        var viewState = ViewState.idle
+        
+        var lists = [UserList]()
+        var invitations = [Invitation]()
+        
+        var editMode: EditMode = .inactive
+        var activeTab: TDListTab = .all
+        var searchText: String  = ""
+        var isSearchFocused: Bool = false
+        
+        var tabs: [TDListTab] {
+            guard lists.filter(\.isEditing).count > 1 else {
+                return TDListTab.allCases
             }
-
-            static var `default`: String {
-                Self.unexpectedError.localizedDescription
-            }
+            return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
         }
-
-        enum Action: Equatable, StringRepresentable {
-            // MARK: - View appear
-            /// HomeReducer+ViewAppear
-            case onViewAppear
-            case onSceneActive
-
-            // MARK: - User actions
-            /// HomeReducer+UserActions
-            case didTapList(UUID)
-            case didTapSubmitListButton(UUID, String)
-            case didTapCancelButton
-            case didTapToggleListButton(UUID)
-            case didTapShareListButton(UUID)
-            case didTapDeleteListButton(UUID)
-            case didMoveList(IndexSet, Int)
-            case didChangeSearchFocus(Bool)
-            case didChangeEditMode(EditMode)
-            case didChangeActiveTab(TDListTab)
-            case didUpdateSearchText(String)
-            case didTapDismissError
-
-            // MARK: - Results
-            /// HomeReducer+Results
-            case fetchDataResult(ActionResult<HomeData>)
-            case addListResult(ActionResult<UserList>)
-            case updateListResult(ActionResult<UserList>)
-            case addSharedListsResult(ActionResult<[UserList]>)
-            case voidResult(ActionResult<EquatableVoid>)
-            case moveListResult(ActionResult<EquatableVoid>)
-        }
-
-        @MainActor
-        struct State: AppAlertState {
-            var viewState = ViewState.idle
-            
-            var lists = [UserList]()
-            var invitations = [Invitation]()
-            
-            var editMode: EditMode = .inactive
-            var activeTab: TDListTab = .all
-            var searchText: String  = ""
-            var isSearchFocused: Bool = false
-            
-            var tabs: [TDListTab] {
-                guard lists.filter(\.isEditing).count > 1 else {
-                    return TDListTab.allCases
-                }
-                return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
+        
+        var alert: AppAlert<Action>? {
+            guard case .alert(let data) = viewState else {
+                return nil
+                
             }
-
-            var alert: AppAlert<Action>? {
-                guard case .alert(let data) = viewState else {
-                    return nil
-
-                }
-                return data
-            }
+            return data
         }
-
-        enum ViewState: Equatable, StringRepresentable {
-            case idle
-            case loading(Bool)
-            case updating
-            case alert(AppAlert<Action>)
-
-            static func error(
-                _ message: String = Errors.default
-            ) -> ViewState {
-                .alert(
-                    .init(
-                        title: Strings.Errors.errorTitle,
-                        message: message,
-                        primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
-                    )
+    }
+    
+    enum ViewState: Equatable, StringRepresentable {
+        case idle
+        case loading(Bool)
+        case updating
+        case alert(AppAlert<Action>)
+        
+        static func error(
+            _ message: String = Errors.default
+        ) -> ViewState {
+            .alert(
+                .init(
+                    title: Strings.Errors.errorTitle,
+                    message: message,
+                    primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
                 )
-            }
+            )
         }
-
-        let dependencies: HomeScreenDependencies
-        let useCase: HomeUseCaseApi = UseCase()
-
-        init(dependencies: HomeScreenDependencies) {
-            self.dependencies = dependencies
-        }
+    }
+    
+    let dependencies: HomeScreenDependencies
+    let useCase: HomeUseCaseApi = HomeUseCase()
+    
+    init(dependencies: HomeScreenDependencies) {
+        self.dependencies = dependencies
     }
 }
 
 // MARK: - Bindings
 
 @MainActor
-extension Store<Home.Reducer> {
+extension Store<HomeReducer> {
     var activeTab: TDListTab {
         get { state.activeTab }
         set { send(.didChangeActiveTab(newValue)) }
