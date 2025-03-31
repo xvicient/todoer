@@ -35,6 +35,7 @@ let package = Package(
         .target(
             name: "EntitiesMocks",
             dependencies: [
+                "Entities",
                 "Common"
             ],
             path: "Sources/Mocks"

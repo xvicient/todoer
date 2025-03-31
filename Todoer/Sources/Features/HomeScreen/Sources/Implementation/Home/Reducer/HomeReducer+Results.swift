@@ -98,18 +98,3 @@ extension Home.Reducer {
         return .none
     }
 }
-
-fileprivate extension UserList {
-    func hasChanges(comparedTo list: UserList) -> Bool {
-        name != list.name || done != list.done
-    }
-    
-    mutating func update(with list: UserList) {
-        if name != list.name {
-            name = list.name
-        }
-        if done != list.done {
-            done = list.done
-        }
-    }
-}

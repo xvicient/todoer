@@ -9,10 +9,10 @@ import xRedux
 
 struct ListItemsScreen: View {
     
-    @Bindable private var store: Store<ListItems.Reducer>
+    @Bindable private var store: Store<ListItemsReducer>
 
     init(
-        store: Store<ListItems.Reducer>
+        store: Store<ListItemsReducer>
     ) {
         self.store = store
     }
@@ -101,7 +101,7 @@ struct Home_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        ListItems.Builder.makeItemsList(
+        ListItemsBuilder.makeItemsList(
             dependencies: Dependencies(
                 list: UserList(
                     id: UUID(),

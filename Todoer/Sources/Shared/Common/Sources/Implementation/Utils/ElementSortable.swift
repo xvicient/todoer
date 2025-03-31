@@ -2,8 +2,8 @@ import Foundation
 
 public protocol ElementSortable {
     var id: UUID { get }
-    var done: Bool { get }
-    var name: String { get }
+    var done: Bool { get set }
+    var name: String { get set }
     var index: Int { get set }
 }
 

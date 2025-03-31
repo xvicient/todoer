@@ -3,28 +3,26 @@ import ListItemsScreenContract
 import SwiftUI
 import xRedux
 
-public struct ListItems {
-    public struct Builder {
-        private struct ReducerDependencies: ListItemsReducerDependencies {
-            let list: UserList
-            let useCase: ListItemsUseCaseApi
-        }
+public struct ListItemsBuilder {
+    private struct ReducerDependencies: ListItemsReducerDependencies {
+        let list: UserList
+        let useCase: ListItemsUseCaseApi
+    }
 
-        @MainActor
-        public static func makeItemsList(
-            dependencies: ListItemsScreenDependencies
-        ) -> some View {
-            ListItemsScreen(
-                store: Store(
-                    initialState: .init(listName: dependencies.list.name),
-                    reducer: Reducer(
-                        dependencies: ReducerDependencies(
-                            list: dependencies.list,
-                            useCase: UseCase()
-                        )
+    @MainActor
+    public static func makeItemsList(
+        dependencies: ListItemsScreenDependencies
+    ) -> some View {
+        ListItemsScreen(
+            store: Store(
+                initialState: .init(listName: dependencies.list.name),
+                reducer: ListItemsReducer(
+                    dependencies: ReducerDependencies(
+                        list: dependencies.list,
+                        useCase: ListItemsUseCase()
                     )
                 )
             )
-        }
+        )
     }
 }

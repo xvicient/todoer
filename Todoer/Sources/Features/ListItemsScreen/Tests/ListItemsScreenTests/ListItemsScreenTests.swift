@@ -3,6 +3,7 @@ import CoordinatorMocks
 import Entities
 import EntitiesMocks
 import Testing
+import Foundation
 import xRedux
 import xReduxTest
 
@@ -19,10 +20,10 @@ struct ListItemsScreenTests {
         let useCase: ListItemsUseCaseApi
     }
 
-    private lazy var store: ListItemsStore<ListItems.Reducer> = {
+    private lazy var store: ListItemsStore<ListItemsReducer> = {
         TestStore(
-            initialState: .init(),
-            reducer: ListItems.Reducer(
+            initialState: .init(listName: listMock.name),
+            reducer: ListItemsReducer(
                 dependencies: ReducerDependencies(
                     list: listMock,
                     useCase: useCaseMock
@@ -40,13 +41,11 @@ struct ListItemsScreenTests {
         givenASuccessItemsFetch()
 
         await store.send(.onAppear) {
-            $0.viewState == .loading
+            $0.viewState == .loading(true)
         }
 
-        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            [listMock, itemMock] in
-            $0.viewState == .idle && $0.viewModel.listName == listMock.name
-                && $0.viewModel.items == [itemMock].map { $0.toItemRow }
+        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) { [listMock, itemMock] in
+            $0.viewState == .idle && $0.listName == listMock.name && $0.items == [itemMock]
         }
     }
 
@@ -55,13 +54,11 @@ struct ListItemsScreenTests {
         givenAFailureItemsFetch()
 
         await store.send(.onAppear) {
-            $0.viewState == .loading
+            $0.viewState == .loading(true)
         }
 
-        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription)
-                && $0.viewModel.listName.isEmpty
-                && $0.viewModel.items.count == 0
+        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) { [listMock] in
+            $0.viewState == .error(UseCaseError.error.localizedDescription) && $0.listName == listMock.name && $0.items.isEmpty
         }
     }
 
@@ -69,45 +66,51 @@ struct ListItemsScreenTests {
     mutating func testDidTapAddRowButtonAndDidTapSubmitItemButton_Success() async {
         givenASuccessItemSubmit()
 
-        await store.send(.didTapAddRowButton) {
-            $0.viewState == .addingItem && $0.viewModel.items.first?.isEditing == true
+        var itemMockId: UUID!
+        
+        await store.send(.didChangeActiveTab(.add)) {
+            itemMockId = $0.items.first?.id
+            return $0.viewState == .updating && $0.items.first?.isEditing == true
         }
 
-        await store.send(.didTapSubmitItemButton(itemMock.name)) {
-            $0.viewState == .addingItem
+        await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
+            $0.viewState == .updating
         }
 
         await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .idle && !$0.viewModel.items.contains { $0.isEditing }
+            $0.viewState == .idle && !$0.items.contains(where: \.isEditing)
         }
     }
 
     @Test("Add new item but submit fails")
     mutating func testDidTapAddRowButtonAndDidTapSubmitItemButton_Failure() async {
         givenAFailureItemSubmit()
+        
+        var itemMockId: UUID!
 
-        await store.send(.didTapAddRowButton) {
-            $0.viewState == .addingItem && $0.viewModel.items.first?.isEditing == true
+        await store.send(.didChangeActiveTab(.add)) {
+            itemMockId = $0.items.first?.id
+            return $0.viewState == .updating && $0.items.first?.isEditing == true
         }
 
-        await store.send(.didTapSubmitItemButton(itemMock.name)) {
-            $0.viewState == .addingItem
+        await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
+            $0.viewState == .updating
         }
 
         await store.receive(.addItemResult(useCaseMock.addItemResult)) {
             $0.viewState == .error(UseCaseError.error.localizedDescription)
-                && $0.viewModel.items.first?.isEditing == true
+            && $0.items.first?.isEditing == true
         }
     }
 
     @Test("Add new item and cancel it successfully")
     mutating func testDidTapAddRowButtonAndDidTapCancelAddRowButton_Success() async {
-        await store.send(.didTapAddRowButton) {
-            $0.viewState == .addingItem && $0.viewModel.items.first?.isEditing == true
+        await store.send(.didChangeActiveTab(.add)) {
+            $0.viewState == .updating && $0.items.first?.isEditing == true
         }
 
-        await store.send(.didTapCancelAddItemButton) {
-            $0.viewState == .idle && !$0.viewModel.items.contains { $0.isEditing }
+        await store.send(.didTapCancelButton) {
+            $0.viewState == .idle && !$0.items.contains(where: \.isEditing)
         }
     }
 

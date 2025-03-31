@@ -36,7 +36,7 @@ struct FeatureProvider: FeatureProviderAPI {
             let list: UserList
         }
 
-        return ListItems.Builder.makeItemsList(
+        return ListItemsBuilder.makeItemsList(
             dependencies: Dependencies(
                 list: list
             )

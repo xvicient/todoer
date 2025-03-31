@@ -22,3 +22,15 @@ public struct Item: Identifiable, Equatable, Hashable, Sendable, ElementSortable
         self.index = index
     }
 }
+
+public extension Item {
+    static var empty: Item {
+        Item(
+            id: UUID(),
+            documentId: "",
+            name: "",
+            done: false,
+            index: -Date().milliseconds
+        )
+    }
+}
