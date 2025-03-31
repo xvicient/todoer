@@ -25,12 +25,9 @@ extension Home.Reducer {
         state: inout State,
         result: ActionResult<[UserList]>
     ) -> Effect<Action> {
-        state.viewState = .idle
         switch result {
         case .success(let lists):
-            if !lists.isEmpty {
-                state.lists.insert(contentsOf: lists.map { $0 }, at: 0)
-            }
+            state.lists.insert(contentsOf: lists, at: 0)
         case .failure:
             break
         }
@@ -61,7 +58,7 @@ extension Home.Reducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let list):
-            guard let index = state.lists.firstIndex(where: { $0.id == $0.id }) else {
+            guard let index = state.lists.firstIndex(where: { $0.id == list.id }) else {
                 state.viewState = .error()
                 return .none
             }

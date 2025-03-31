@@ -27,8 +27,6 @@ extension Home.Reducer {
         guard useCase.sharedListsCount > 0 else {
             return .none
         }
-        
-        state.viewState = .loading(true)
 
         _ = onDidTapCancelButton(state: &state)
 

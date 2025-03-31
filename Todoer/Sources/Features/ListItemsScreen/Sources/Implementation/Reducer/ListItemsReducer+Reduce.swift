@@ -81,17 +81,15 @@ extension ListItemsReducer {
             )
 
         case (.updating, .addItemResult(let result)):
-            return onUpdateItemResult(
+            return onAddItemResult(
                 state: &state,
-                result: result,
-                index: state.items.firstIndex(where: \.isEditing)
+                result: result
             )
             
         case (.updating, .updateItemResult(let result)):
             return onUpdateItemResult(
                 state: &state,
-                result: result,
-                index: state.items.firstIndex(where: { $0.id == $0.id })
+                result: result
             )
             
         case (.loading, .voidResult(let result)):
@@ -367,10 +365,9 @@ extension ListItemsReducer {
         return .none
     }
     
-    func onUpdateItemResult(
+    func onAddItemResult(
         state: inout State,
-        result: ActionResult<Item>,
-        index: Int?
+        result: ActionResult<Item>
     ) -> Effect<Action> {
         switch result {
         case .success(let item):
@@ -385,6 +382,25 @@ extension ListItemsReducer {
         }
         return .none
     }
+    
+    func onUpdateItemResult(
+        state: inout State,
+        result: ActionResult<Item>
+    ) -> Effect<Action> {
+        switch result {
+        case .success(let item):
+            guard let index = state.items.firstIndex(where: { $0.id == item.id }) else {
+                state.viewState = .error()
+                return .none
+            }
+            state.items.replace(item, at: index)
+            state.viewState = .updating
+        case .failure(let error):
+            state.viewState = .error(error.localizedDescription)
+        }
+        return .none
+    }
+
     
     func onVoidResult(
         state: inout State,
