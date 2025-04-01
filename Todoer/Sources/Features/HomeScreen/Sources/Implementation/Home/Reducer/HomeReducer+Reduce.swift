@@ -93,12 +93,11 @@ extension HomeReducer {
             state.searchText = text
             return .none
             
-        case (.loading, .addSharedListsResult(let result)),
-            (.idle, .addSharedListsResult(let result)):
-            return onAddSharedListsResult(
-                state: &state,
-                result: result
-            )
+        case (.loading, .addSharedListsResult(.success(let lists))),
+            (.idle, .addSharedListsResult(.success(let lists))):
+            guard !lists.isEmpty else { return .none }
+            state.lists.insert(contentsOf: lists, at: 0)
+            return .none
             
         case (_, .fetchDataResult(let result)):
             return onFetchDataResult(
@@ -428,19 +427,6 @@ fileprivate extension HomeReducer {
             return .none
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
-        }
-        return .none
-    }
-
-    func onAddSharedListsResult(
-        state: inout State,
-        result: ActionResult<[UserList]>
-    ) -> Effect<Action> {
-        switch result {
-        case .success(let lists):
-            state.lists.insert(contentsOf: lists, at: 0)
-        case .failure:
-            break
         }
         return .none
     }
