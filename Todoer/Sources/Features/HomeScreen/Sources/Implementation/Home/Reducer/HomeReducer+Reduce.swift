@@ -16,7 +16,7 @@ extension HomeReducer {
     ) -> Effect<Action> {
         
         switch (state.viewState, action) {
-        case (.idle, .onViewAppear):
+        case (.loading, .onViewAppear):
             return onAppear(
                 state: &state
             )

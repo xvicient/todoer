@@ -44,7 +44,7 @@ struct HomeReducer: Reducer {
     }
     
     struct State: AppAlertState {
-        var viewState = ViewState.idle
+        var viewState = ViewState.loading(true)
         
         var lists = [UserList]()
         var invitations = [Invitation]()
