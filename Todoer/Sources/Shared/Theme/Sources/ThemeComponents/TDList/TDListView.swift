@@ -255,7 +255,18 @@ fileprivate extension View {
 }
 
 #Preview {
-    TDListView(
+    struct RowMock: TDListRow {
+        var id = UUID()
+        var done = false
+        var name = "List 1"
+        var index = 0
+        var image = Image.circle
+        var leadingActions = [TDListSwipeAction]()
+        var trailingActions = [TDListSwipeAction]()
+        var isEditing = false
+    }
+    
+    return TDListView(
         configuration: .init(
             title: "To-do's",
             tabs: TDListTab.allCases,
@@ -276,12 +287,7 @@ fileprivate extension View {
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }
             ),
-            rows: .constant(
-                Array(
-                    repeating: TDListRow(id: UUID(), name: "Test list", image: Image.largecircleFillCircle, strikethrough: false),
-                    count: 20
-                )
-            ),
+            rows: .constant(Array(repeating: RowMock(), count: 20)),
             editMode: .constant(.inactive)
         )
     }

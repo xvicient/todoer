@@ -1,41 +1,17 @@
 import SwiftUI
 
-public class TDListRow: ObservableObject, Identifiable {
-    public let id: UUID
-    var name: String
-    var image: Image
-    var strikethrough: Bool
-    let leadingActions: [TDListSwipeAction]
-    let trailingActions: [TDListSwipeAction]
-    var isEditing: Bool
-
-    public init(
-        id: UUID,
-        name: String,
-        image: Image,
-        strikethrough: Bool,
-        leadingActions: [TDListSwipeAction] = [],
-        trailingActions: [TDListSwipeAction] = [],
-        isEditing: Bool = false
-    ) {
-        self.id = id
-        self.name = name
-        self.image = image
-        self.strikethrough = strikethrough
-        self.leadingActions = leadingActions
-        self.trailingActions = trailingActions
-        self.isEditing = isEditing
-    }
-}
-
-public protocol ListElement {
+public protocol TDListRow {
     var id: UUID { get }
     var done: Bool { get set }
     var name: String { get set }
     var index: Int { get set }
+    var image: Image { get }
+    var leadingActions: [TDListSwipeAction] { get }
+    var trailingActions: [TDListSwipeAction] { get }
+    var isEditing: Bool { get }
 }
 
-public extension Array where Element: ListElement {
+public extension Array where Element: TDListRow {
     func index(for id: UUID) -> Int? {
         firstIndex(where: { $0.id == id })
     }

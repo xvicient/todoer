@@ -24,7 +24,7 @@ struct TDListFilledRowView: View {
                 TDURLText(text: row.name)
                     .lineLimit(configuration.lineLimit)
                     .multilineTextAlignment(.leading)
-                    .strikethrough(row.strikethrough)
+                    .strikethrough(row.done)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.borderless)

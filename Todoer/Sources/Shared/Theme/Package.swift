@@ -18,7 +18,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Common"),
-        .package(path: "../Strings"),
+        .package(path: "../Strings")
 
     ],
     targets: [

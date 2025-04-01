@@ -116,7 +116,6 @@ extension Store<HomeReducer> {
             state.lists
                 .filter(by: activeTab.isCompleted)
                 .filter(with: searchText)
-                .map { $0.tdListRow }
         }
         set { }
     }
@@ -150,22 +149,21 @@ extension Store<HomeReducer> {
     }
 }
 
-extension UserList {
-    var isEditing: Bool {
-        documentId.isEmpty
+// MARK: - TDListRow
+
+extension UserList: @retroactive TDListRow {
+    public var image: Image {
+        done ? Image.largecircleFillCircle : Image.circle
     }
     
-    fileprivate var tdListRow: TDListRow {
-        TDListRow(
-            id: id,
-            name: name,
-            image: done ? Image.largecircleFillCircle : Image.circle,
-            strikethrough: done,
-            leadingActions: [done ? .undone : .done],
-            trailingActions: [.delete, .share],
-            isEditing: isEditing
-        )
+    public var leadingActions: [ThemeComponents.TDListSwipeAction] {
+        [done ? .undone : .done]
+    }
+    
+    public var trailingActions: [ThemeComponents.TDListSwipeAction] {
+        [.delete, .share]
+    }
+    public var isEditing: Bool {
+        documentId.isEmpty
     }
 }
-
-extension UserList: @retroactive ListElement {}

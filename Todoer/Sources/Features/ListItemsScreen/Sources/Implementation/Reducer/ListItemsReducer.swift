@@ -115,7 +115,6 @@ extension Store<ListItemsReducer> {
             state.items
                 .filter(by: activeTab.isCompleted)
                 .filter(with: searchText)
-                .map { $0.tdListRow }
         }
         set { }
     }
@@ -149,24 +148,22 @@ extension Store<ListItemsReducer> {
     }
 }
 
-// MARK: - Item to TDListRow
+// MARK: - TDListRow
 
-extension Item {
-    var isEditing: Bool {
-        documentId.isEmpty
+extension Item: @retroactive TDListRow {
+    public var image: Image {
+        done ? Image.largecircleFillCircle : Image.circle
     }
     
-    fileprivate var tdListRow: TDListRow {
-        TDListRow(
-            id: id,
-            name: name,
-            image: done ? Image.largecircleFillCircle : Image.circle,
-            strikethrough: done,
-            leadingActions: [done ? .undone : .done],
-            trailingActions: [.delete, .share],
-            isEditing: isEditing
-        )
+    public var leadingActions: [TDListSwipeAction] {
+        [done ? .undone : .done]
+    }
+    
+    public var trailingActions: [TDListSwipeAction] {
+        [.delete, .share]
+    }
+    
+    public var isEditing: Bool {
+        documentId.isEmpty
     }
 }
-
-extension Item: @retroactive ListElement {}
