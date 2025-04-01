@@ -55,7 +55,10 @@ final class ShareReducerTests: XCTestCase {
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchDataResult)) {
-            $0.viewState == .idle
+            switch $0.viewState {
+            case .alert: true
+            default: false
+            }
         }
     }
 

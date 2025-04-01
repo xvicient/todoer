@@ -33,10 +33,10 @@ struct TDListFilledRowView: View {
         .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
         .frame(minHeight: 40)
         .if(configuration.isSwipeEnabled) {
-            $0.swipeActions(edge: .leading) {
+            $0.swipeActions(edge: .leading, allowsFullSwipe: true) {
                 swipeActions(row, row.leadingActions)
             }
-            .swipeActions(edge: .trailing) {
+            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                 swipeActions(row, row.trailingActions)
             }
         }

@@ -50,7 +50,7 @@ public struct TDListView: View {
     }
     
     /// init properties
-    private let listContent: () -> TDListContent
+    private let listContent: () -> TDListContentView
     private let configuration: Configuration
     @Binding private var searchText: String
     @FocusState private var isSearchFocused: Bool
@@ -76,7 +76,7 @@ public struct TDListView: View {
     
     public init(
         configuration: Configuration,
-        @ViewBuilder content: @escaping () -> TDListContent
+        @ViewBuilder content: @escaping () -> TDListContentView
     ) {
         self.listContent = content
         self.configuration = configuration
@@ -275,7 +275,7 @@ fileprivate extension View {
             isSearchFocused: .constant(true)
         )
     ) {
-        TDListContent(
+        TDListContentView(
             configuration: .init(
                 isMoveEnabled: false,
                 isSwipeEnabled: false,

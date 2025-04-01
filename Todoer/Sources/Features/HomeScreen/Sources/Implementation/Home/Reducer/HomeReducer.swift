@@ -115,7 +115,7 @@ extension Store<HomeReducer> {
         get {
             state.lists
                 .filter(by: activeTab.isCompleted)
-                .filter(with: searchText)
+                .filter(by: searchText)
         }
         set { }
     }

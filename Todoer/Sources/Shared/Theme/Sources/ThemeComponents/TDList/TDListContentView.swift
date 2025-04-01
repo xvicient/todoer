@@ -2,7 +2,7 @@ import Common
 import Strings
 import SwiftUI
 
-public struct TDListContent: View {
+public struct TDListContentView: View {
     public typealias Content = () -> AnyView
 
     public struct Configuration: TDListFilledRowConfiguration {
@@ -111,13 +111,13 @@ public struct TDListContent: View {
 
 #Preview {
     List {
-        TDListContent(
-            configuration: TDListContent.Configuration(
+        TDListContentView(
+            configuration: TDListContentView.Configuration(
                 isMoveEnabled: true,
                 isSwipeEnabled: true,
                 listHeight: 0.0
             ),
-            actions: TDListContent.Actions(
+            actions: TDListContentView.Actions(
                 onSubmit: { _, _ in },
                 onCancel: {} ,
                 onSwipe: { _, _ in },

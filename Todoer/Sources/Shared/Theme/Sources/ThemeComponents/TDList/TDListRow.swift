@@ -16,7 +16,7 @@ public extension Array where Element: TDListRow {
         firstIndex(where: { $0.id == id })
     }
     
-    func filter(with searchText: String) -> [Element] {
+    func filter(by searchText: String) -> [Element] {
         searchText.isEmpty
             ? self
             : self.filter {

@@ -114,7 +114,7 @@ extension Store<ListItemsReducer> {
         get {
             state.items
                 .filter(by: activeTab.isCompleted)
-                .filter(with: searchText)
+                .filter(by: searchText)
         }
         set { }
     }
