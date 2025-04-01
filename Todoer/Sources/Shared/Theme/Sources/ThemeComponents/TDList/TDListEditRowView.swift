@@ -68,9 +68,9 @@ struct TDListEditRowView: View {
     // Handle cancel action
     private func handleCancel() {
         hideKeyboard()
+        localText = text
         withAnimation {
             actions.onCancel()
-            localText = text
         }
     }
 }
