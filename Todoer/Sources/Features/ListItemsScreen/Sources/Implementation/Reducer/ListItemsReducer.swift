@@ -168,3 +168,5 @@ extension Item {
         )
     }
 }
+
+extension Item: @retroactive ListElement {}

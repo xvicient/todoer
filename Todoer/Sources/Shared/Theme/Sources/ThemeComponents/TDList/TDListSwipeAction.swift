@@ -1,7 +1,7 @@
 import SwiftUI
 import ThemeAssets
 
-public enum TDSwipeAction: Identifiable, Sendable {
+public enum TDListSwipeAction: Identifiable, Sendable {
     case share
     case done
     case undone

@@ -5,7 +5,7 @@ import SwiftUI
 public struct TDListContent: View {
     public typealias Content = () -> AnyView
 
-    public struct Configuration: TDFilledRowConfiguration {
+    public struct Configuration: TDListFilledRowConfiguration {
         let lineLimit: Int?
         let isMoveEnabled: Bool
         let isSwipeEnabled: Bool
@@ -24,18 +24,18 @@ public struct TDListContent: View {
         }
     }
 
-    public struct Actions: TDFilledRowActions, TDEmptyRowActions {
+    public struct Actions: TDListFilledRowActions, TDListEditRowActions {
         let onSubmit: (UUID, String) -> Void
         let onCancel: () -> Void
         let onTap: ((UUID) -> Void)?
-        let onSwipe: (UUID, TDSwipeAction) -> Void
+        let onSwipe: (UUID, TDListSwipeAction) -> Void
         let onMove: (IndexSet, Int) -> Void
 
         public init(
             onSubmit: @escaping (UUID, String) -> Void,
             onCancel: @escaping () -> Void,
             onTap: ((UUID) -> Void)? = nil,
-            onSwipe: @escaping (UUID, TDSwipeAction) -> Void,
+            onSwipe: @escaping (UUID, TDListSwipeAction) -> Void,
             onMove: @escaping (IndexSet, Int) -> Void
         ) {
             self.onSubmit = onSubmit
@@ -87,7 +87,7 @@ public struct TDListContent: View {
         } else {
             ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
                 if row.isEditing || editMode.isEditing {
-                    TDEmptyRowView(
+                    TDListEditRowView(
                         row: $rows[index],
                         actions: actions
                     )
@@ -95,7 +95,7 @@ public struct TDListContent: View {
                     .id(index)
                 }
                 else {
-                    TDFilledRowView(
+                    TDListFilledRowView(
                         row: row,
                         actions: actions,
                         configuration: configuration

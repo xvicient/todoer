@@ -1,20 +1,20 @@
 import SwiftUI
 import ThemeAssets
 
-protocol TDFilledRowActions {
+protocol TDListFilledRowActions {
     var onTap: ((UUID) -> Void)? { get }
-    var onSwipe: (UUID, TDSwipeAction) -> Void { get }
+    var onSwipe: (UUID, TDListSwipeAction) -> Void { get }
 }
 
-protocol TDFilledRowConfiguration {
+protocol TDListFilledRowConfiguration {
     var lineLimit: Int? { get }
     var isSwipeEnabled: Bool { get }
 }
 
-struct TDFilledRowView: View {
+struct TDListFilledRowView: View {
     var row: TDListRow
-    let actions: TDFilledRowActions
-    let configuration: TDFilledRowConfiguration
+    let actions: TDListFilledRowActions
+    let configuration: TDListFilledRowConfiguration
 
     var body: some View {
         HStack {
@@ -45,7 +45,7 @@ struct TDFilledRowView: View {
     @ViewBuilder
     private func swipeActions(
         _ row: TDListRow,
-        _ swipeActions: [TDSwipeAction]
+        _ swipeActions: [TDListSwipeAction]
     ) -> some View {
         ForEach(swipeActions) { action in
             Button(role: action.role) {

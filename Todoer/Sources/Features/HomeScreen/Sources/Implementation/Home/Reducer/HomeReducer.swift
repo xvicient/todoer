@@ -167,3 +167,5 @@ extension UserList {
         )
     }
 }
+
+extension UserList: @retroactive ListElement {}

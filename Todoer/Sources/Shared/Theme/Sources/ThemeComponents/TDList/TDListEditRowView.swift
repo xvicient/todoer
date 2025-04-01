@@ -1,14 +1,14 @@
 import Strings
 import SwiftUI
 
-protocol TDEmptyRowActions {
+protocol TDListEditRowActions {
     var onSubmit: (UUID, String) -> Void { get }
     var onCancel: () -> Void { get }
 }
 
-struct TDEmptyRowView: View {
+struct TDListEditRowView: View {
     @Binding var row: TDListRow
-    let actions: TDEmptyRowActions
+    let actions: TDListEditRowActions
 
     @FocusState private var isEmptyRowFocused: Bool
     @Binding private var text: String
@@ -16,7 +16,7 @@ struct TDEmptyRowView: View {
 
     init(
         row: Binding<TDListRow>,
-        actions: TDEmptyRowActions
+        actions: TDListEditRowActions
     ) {
         self._row = row
         self.actions = actions

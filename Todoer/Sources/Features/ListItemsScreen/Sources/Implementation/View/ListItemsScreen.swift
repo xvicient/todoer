@@ -74,7 +74,7 @@ extension ListItemsScreen {
         )
     }
     
-    fileprivate var onSwipe: (UUID, TDSwipeAction) -> Void {
+    fileprivate var onSwipe: (UUID, TDListSwipeAction) -> Void {
         { rowId, option in
             switch option {
             case .done, .undone:
