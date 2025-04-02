@@ -8,10 +8,8 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
 
     var fetchItemsResult: ActionResult<[Item]>!
     var addItemResult: ActionResult<Item>!
-    var deleteItemResult: ActionResult<EquatableVoid>!
     var updateItemNameResult: ActionResult<Item>!
-    var updateItemDoneResult: ActionResult<EquatableVoid>!
-    var sortItemsResult: ActionResult<EquatableVoid>!
+    var voidResult: ActionResult<EquatableVoid>!
 
     enum UseCaseError: Error {
         case error
@@ -48,7 +46,7 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
         itemId: String,
         listId: String
     ) async -> ActionResult<EquatableVoid> {
-        deleteItemResult
+        voidResult
     }
 
     func updateItemName(
@@ -62,14 +60,14 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
         item: Item,
         list: UserList
     ) async -> ActionResult<EquatableVoid> {
-        updateItemDoneResult
+        voidResult
     }
 
     func sortItems(
         items: [Item],
         listId: String
     ) async -> ActionResult<EquatableVoid> {
-        sortItemsResult
+        voidResult
     }
 
 }

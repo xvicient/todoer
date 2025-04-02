@@ -419,7 +419,7 @@ extension ListItemsReducer {
 // MARK: - Extensions
 
 extension EditMode {
-    fileprivate var viewState: ListItemsReducer.ViewState {
+    var viewState: ListItemsReducer.ViewState {
         switch self {
         case .active:
             .updating

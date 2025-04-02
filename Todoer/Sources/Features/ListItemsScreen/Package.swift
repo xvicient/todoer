@@ -57,6 +57,7 @@ let package = Package(
                 .product(name: "xReduxTest", package: "xRedux"),
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 .product(name: "EntitiesMocks", package: "Entities"),
+                .product(name: "ThemeComponents", package: "Theme"),
                 "Entities",
             ]
         ),
