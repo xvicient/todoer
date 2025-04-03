@@ -50,11 +50,11 @@ extension ListItemsReducer {
                 toIndex: toIndex
             )
             
-        case (.updating, .didChangeSearchFocus(let isFocused)):
-            if isFocused {
-                onDidTapCancelButton(state: &state)
-            }
-            return .none
+        case (_, .didChangeSearchFocus(let isFocused)):
+            return onDidChangeSearchFocus(
+                state: &state,
+                isFocused: isFocused
+            )
             
         case (.idle, .didChangeEditMode(let editMode)),
             (.updating, .didChangeEditMode(let editMode)):
@@ -230,13 +230,12 @@ fileprivate extension ListItemsReducer {
         fromIndex: IndexSet,
         toIndex: Int
     ) -> Effect<Action> {
-        state.items.move(
+        let items = state.items.move(
             fromIndex: fromIndex,
             toIndex: toIndex,
             isCompleted: state.activeTab.isCompleted
         )
         
-        let items = state.items
         let listId = dependencies.list.documentId
         
         return .task { send in
@@ -251,6 +250,23 @@ fileprivate extension ListItemsReducer {
         }
     }
     
+    func onDidChangeSearchFocus(
+        state: inout State,
+        isFocused: Bool
+    ) -> Effect<Action> {
+        state.isSearchFocused = isFocused
+        
+        if isFocused {
+            onDidTapCancelButton(state: &state)
+            
+            if state.editMode.isEditing {
+                state.editMode = .inactive
+            }
+        }
+        
+        return .none
+    }
+    
     func onDidChangeEditMode(
         state: inout State,
         editMode: EditMode
@@ -258,6 +274,7 @@ fileprivate extension ListItemsReducer {
         if !state.editMode.isEditing && state.viewState == .updating {
             onDidTapCancelButton(state: &state)
         }
+        state.isSearchFocused = false
         state.editMode = editMode
         state.viewState = editMode.viewState
         return .none

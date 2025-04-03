@@ -82,7 +82,6 @@ public struct TDListView: View {
         self.configuration = configuration
         self._searchText = configuration.searchText
         self._activeTab = configuration.activeTab
-        self.isSearchFocused = configuration.isSearchFocused
     }
     
     public var body: some View {
@@ -93,6 +92,12 @@ public struct TDListView: View {
             header()
         }
         .background(background)
+        .onChange(of: isSearchFocused) {
+            configuration.isSearchFocused = isSearchFocused
+        }
+        .onChange(of: configuration.isSearchFocused) {
+            isSearchFocused = configuration.isSearchFocused
+        }
     }
 }
 

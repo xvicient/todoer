@@ -65,47 +65,50 @@ public struct TDListContentView: View {
 
     public var body: some View {
         if rows.isEmpty {
-            VStack {
-                Spacer()
-                Image.questionmarkDashed
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 50, height: 50)
-                    .foregroundColor(.gray.opacity(0.6))
-                
-                Text(Strings.List.noResults)
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                Spacer()
-            }
-            .frame(height: (configuration.listHeight - 145) < 0 ? 0 : (configuration.listHeight - 145)
-            )
-            .frame(maxWidth: .infinity)
-            .listRowBackground(Color.clear)
-            .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets())
+            emptyView
         } else {
-            ForEach(Array(rows.enumerated()), id: \.offset) { index, row in
-                if row.isEditing || editMode.isEditing {
-                    TDListEditRowView(
-                        row: $rows[index],
-                        actions: actions
-                    )
-                    .moveDisabled(!configuration.isMoveEnabled)
-                    .id(index)
+            ForEach($rows, id: \.id) { $row in
+                Group {
+                    if row.isEditing || editMode.isEditing {
+                        TDListEditRowView(
+                            row: $row,
+                            actions: actions
+                        ).id(row.id)
+                    } else {
+                        TDListFilledRowView(
+                            row: row,
+                            actions: actions,
+                            configuration: configuration
+                        ).id(row.id)
+                    }
                 }
-                else {
-                    TDListFilledRowView(
-                        row: row,
-                        actions: actions,
-                        configuration: configuration
-                    )
-                    .moveDisabled(!configuration.isMoveEnabled)
-                    .id(index)
-                }
+                .moveDisabled(!configuration.isMoveEnabled)
             }
             .onMove(perform: actions.onMove)
         }
+    }
+    
+    @ViewBuilder
+    private var emptyView: some View {
+        VStack {
+            Spacer()
+            Image.questionmarkDashed
+                .resizable()
+                .scaledToFit()
+                .frame(width: 50, height: 50)
+                .foregroundColor(.gray.opacity(0.6))
+            
+            Text(Strings.List.noResults)
+                .font(.headline)
+                .foregroundColor(.gray)
+            Spacer()
+        }
+        .frame(height: (configuration.listHeight - 145) < 0 ? 0 : (configuration.listHeight - 145)
+        )
+        .frame(maxWidth: .infinity)
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets())
     }
 }
 

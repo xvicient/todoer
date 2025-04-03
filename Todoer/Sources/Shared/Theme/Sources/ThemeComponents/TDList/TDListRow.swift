@@ -53,42 +53,44 @@ public extension Array where Element: TDListRow {
         }
     }
     
-    /// Handles the reordering of elements when a user performs a drag and drop operation.
-    /// This function manages both the UI state and the persistence of the new order.
-    ///
-    /// The function works with both all elements and sharing elements views by:
-    /// 1. Mapping the source indices from the filtered view to the main element
-    /// 2. Performing the move operation on the main element
-    /// 3. Reindexing all elements to maintain proper order
+    /// Handles the reordering of elements with filtering by both completion status and search text.
+    /// This method extends the basic move functionality to also account for search text filtering.
     ///
     /// - Parameters:
-    ///   - state: The current state to be modified
     ///   - fromIndex: The indices of elements being moved in the filtered view
     ///   - toIndex: The destination index in the filtered view
-    ///   - isCompleted: The state of the current list filter
-    /// - Returns: An effect that persists the new order through the use case
+    ///   - isCompleted: Optional filter for completion status
+    /// - Returns: The filtered lists after the move operation for backend updates
+    @discardableResult
     mutating func move(
         fromIndex: IndexSet,
         toIndex: Int,
         isCompleted: Bool?
-    ) {
-        let sortedLists = filter(by: isCompleted)
+    ) -> [Element] {
+        // Get the filtered lists that are currently visible
+        let filteredLists = self
+            .filter(by: isCompleted)
         
-        // 1. Map the indices from filtered list to main list
-        let mainListFromIndex = IndexSet(fromIndex.map { sourceIndex in
-            firstIndex { $0.id == sortedLists[sourceIndex].id } ?? 0
-        })
+        // Create a copy for moving and perform the move
+        var movedFilteredLists = filteredLists
+        movedFilteredLists.move(fromOffsets: fromIndex, toOffset: toIndex)
         
-        // 2. When moving to the end, toIndex will be equal to the array count
-        let mainListToIndex: Int
-        if toIndex >= sortedLists.count {
-            mainListToIndex = count
-        } else {
-            mainListToIndex = firstIndex { $0.id == sortedLists[toIndex].id } ?? 0
+        // Create a mapping of original indices to filtered indices
+        let filteredIndices = self.indices.filter { index in
+            let list = self[index]
+            return isCompleted == nil || list.done == isCompleted
         }
         
-        // 3. Move elements in the main list
-        move(fromOffsets: mainListFromIndex, toOffset: mainListToIndex)
+        // Update the main list while preserving items that don't match the filter
+        for (newIndex, originalIndex) in filteredIndices.enumerated() {
+            if newIndex < movedFilteredLists.count {
+                self[originalIndex] = movedFilteredLists[newIndex]
+            }
+        }
+        
         reIndex()
+        
+        // Return the moved filtered lists for backend updates
+        return self
     }
 }
