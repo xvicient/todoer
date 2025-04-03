@@ -62,7 +62,7 @@ public final class ItemsDataSource: ItemsDataSourceApi {
     ) -> AnyPublisher<[ItemDTO], Error> {
         itemsCollection(listId: listId)
             .snapshotPublisher()
-            .filter { !$0.metadata.hasPendingWrites }
+//            .filter { !$0.metadata.hasPendingWrites }
             .map { snapshot in
                 snapshot.documents.compactMap { try? $0.data(as: ItemDTO.self) }
             }

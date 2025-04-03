@@ -148,11 +148,7 @@ fileprivate extension HomeReducer {
     func onAppear(
         state: inout State
     ) -> Effect<Action> {
-        if state.lists.isEmpty {
-            state.viewState = .loading(true)
-        }
-
-        return .publish(
+        .publish(
             useCase.fetchHomeData()
                 .map { .fetchDataResult(.success($0)) }
                 .catch { Just(.fetchDataResult(.failure($0))) }
