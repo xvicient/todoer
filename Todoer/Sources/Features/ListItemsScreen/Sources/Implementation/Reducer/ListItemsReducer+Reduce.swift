@@ -92,7 +92,8 @@ extension ListItemsReducer {
                 result: result
             )
             
-        case (.loading, .voidResult(let result)):
+        case (.loading, .voidResult(let result)),
+            (.idle, .voidResult(let result)):
             return onVoidResult(
                 state: &state,
                 result: result
@@ -165,20 +166,19 @@ fileprivate extension ListItemsReducer {
         state: inout State,
         uid: UUID
     ) -> Effect<Action> {
-        guard let index = state.items.index(for: uid) else {
+        guard let index = state.items.index(for: uid),
+              let item = state.items[safe: index] else {
             state.viewState = .error(Errors.default)
             return .none
         }
         state.viewState = .loading(false)
-        
-        let itemId = state.items[index].documentId
         state.items.remove(at: index)
         
         return .task { send in
             await send(
                 .voidResult(
                     dependencies.useCase.deleteItem(
-                        itemId: itemId,
+                        itemId: item.documentId,
                         listId: dependencies.list.documentId
                     )
                 )

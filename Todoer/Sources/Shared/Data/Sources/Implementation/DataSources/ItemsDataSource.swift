@@ -93,7 +93,13 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         itemId: String,
         listId: String
     ) async throws {
-        try await itemsCollection(listId: listId).document(itemId).delete()
+        let itemDocument = itemsCollection(listId: listId).document(itemId)
+
+        let _ = try await Firestore.firestore().runTransaction {
+            (transaction, errorPointer) -> Any? in
+            transaction.deleteDocument(itemDocument)
+            return nil
+        }
     }
 
     public func updateItem(

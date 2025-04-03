@@ -118,7 +118,8 @@ extension HomeReducer {
                 result: result
             )
             
-        case (.loading, .voidResult(let result)):
+        case (.loading, .voidResult(let result)),
+            (.idle, .voidResult(let result)):
             return onVoidResult(
                 state: &state,
                 result: result
@@ -238,8 +239,7 @@ fileprivate extension HomeReducer {
         uid: UUID
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
-              let list = state.lists[safe: index]
-        else {
+              let list = state.lists[safe: index] else {
             state.viewState = .error()
             return .none
         }
