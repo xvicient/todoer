@@ -261,6 +261,7 @@ fileprivate extension ListItemsReducer {
             
             if state.editMode.isEditing {
                 state.editMode = .inactive
+                state.viewState = state.editMode.viewState
             }
         }
         

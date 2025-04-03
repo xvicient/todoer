@@ -339,6 +339,7 @@ fileprivate extension HomeReducer {
             
             if state.editMode.isEditing {
                 state.editMode = .inactive
+                state.viewState = state.editMode.viewState
             }
         }
         
