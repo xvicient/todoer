@@ -71,7 +71,7 @@ public struct TDListContentView: View {
                     .id("TDListAddRowView")
                     .moveDisabled(true)
                 }
-                ForEach($rows, id: \.id) { $row in
+                ForEach(Array($rows.enumerated()), id: \.offset) { _, $row in
                     TDListFilledRowView(
                         row: row,
                         actions: actions
@@ -81,7 +81,7 @@ public struct TDListContentView: View {
                 }
                 .onMove(perform: actions.onMove)
             case .editing:
-                ForEach($rows, id: \.id) { $row in
+                ForEach(Array($rows.enumerated()), id: \.offset) { _, $row in
                     TDListEditRowView(
                         row: $row,
                         actions: actions
