@@ -52,7 +52,11 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
             .snapshotPublisher()
             .filter { !$0.metadata.hasPendingWrites }
             .map { snapshot in
-                snapshot.documents.compactMap { try? $0.data(as: InvitationDTO.self) }
+                snapshot.documents.compactMap { document -> InvitationDTO? in
+                    guard var dto = try? document.data(as: InvitationDTO.self) else { return nil }
+                    dto.id = document.documentID
+                    return dto
+                }
             }
             .eraseToAnyPublisher()
     }
@@ -63,7 +67,11 @@ final class InvitationsDataSource: InvitationsDataSourceApi {
         try await invitationsQuery(with: fields)
             .getDocuments()
             .documents
-            .map { try $0.data(as: InvitationDTO.self) }
+            .map { document -> InvitationDTO in
+                var dto = try document.data(as: InvitationDTO.self)
+                dto.id = document.documentID
+                return dto
+            }
     }
 
     func sendInvitation(

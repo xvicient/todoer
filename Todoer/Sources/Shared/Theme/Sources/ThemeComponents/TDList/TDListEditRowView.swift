@@ -2,15 +2,13 @@ import Strings
 import SwiftUI
 
 protocol TDListEditRowActions {
-    var onSubmit: (UUID, String) -> Void { get }
-    var onCancel: () -> Void { get }
+    var onSubmit: (String?, String) -> Void { get }
 }
 
 struct TDListEditRowView: View {
     @Binding var row: TDListRow
     let actions: TDListEditRowActions
 
-    @FocusState private var isEmptyRowFocused: Bool
     @Binding private var text: String
     @State private var localText: String = ""
 
@@ -29,7 +27,6 @@ struct TDListEditRowView: View {
                 .foregroundColor(Color.buttonBlack)
             
             TextField(Strings.List.newItemPlaceholder, text: $localText)
-                .focused($isEmptyRowFocused)
                 .foregroundColor(Color.textBlack)
                 .submitLabel(.done)
                 .onSubmit(handleSubmit)
@@ -38,20 +35,9 @@ struct TDListEditRowView: View {
                         localText = text
                     }
                 }
-            
-            if row.isEditing {
-                Button(action: handleCancel) {
-                    Image.xmark
-                        .resizable()
-                        .frame(width: 12, height: 12)
-                        .foregroundColor(Color.buttonBlack)
-                }
-                .buttonStyle(.borderless)
-            }
         }
         .frame(height: 40)
         .onAppear {
-            isEmptyRowFocused = row.isEditing
             localText = text
         }
     }
@@ -62,15 +48,6 @@ struct TDListEditRowView: View {
         text = localText
         withAnimation {
             actions.onSubmit(row.id, localText)
-        }
-    }
-
-    // Handle cancel action
-    private func handleCancel() {
-        hideKeyboard()
-        localText = text
-        withAnimation {
-            actions.onCancel()
         }
     }
 }

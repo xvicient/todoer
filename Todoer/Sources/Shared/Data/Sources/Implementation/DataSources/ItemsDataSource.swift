@@ -64,7 +64,11 @@ public final class ItemsDataSource: ItemsDataSourceApi {
             .snapshotPublisher()
             .filter { !$0.metadata.hasPendingWrites }
             .map { snapshot in
-                snapshot.documents.compactMap { try? $0.data(as: ItemDTO.self) }
+                snapshot.documents.compactMap { document -> ItemDTO? in
+                    guard var dto = try? document.data(as: ItemDTO.self) else { return nil }
+                    dto.id = document.documentID
+                    return dto
+                }
             }
             .eraseToAnyPublisher()
     }
@@ -79,10 +83,13 @@ public final class ItemsDataSource: ItemsDataSourceApi {
                 done: false,
                 index: -Date().milliseconds
             )
-            return try await itemsCollection(listId: listId)
-                .addDocument(from: dto)
-                .getDocument()
-                .data(as: ItemDTO.self)
+            let docRef = try itemsCollection(listId: listId).addDocument(from: dto)
+            let document = try await docRef.getDocument()
+            guard var result = try? document.data(as: ItemDTO.self) else {
+                throw Errors.invalidDTO
+            }
+            result.id = document.documentID
+            return result
         }
         catch {
             throw (error)
@@ -129,7 +136,8 @@ public final class ItemsDataSource: ItemsDataSourceApi {
             guard var dto = try? $0.data(as: ItemDTO.self) else {
                 throw Errors.invalidDTO
             }
-
+            
+            dto.id = $0.documentID
             dto.done = done
 
             let encodedData = try Firestore.Encoder().encode(dto)

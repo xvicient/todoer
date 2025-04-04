@@ -47,7 +47,8 @@ let package = Package(
                 "Data",
                 .product(name: "CoordinatorContract", package: "Coordinator"),
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
-                "Entities",
+                .product(name: "Entities", package: "Entities"),
+                .product(name: "EntitiesMocks", package: "Entities"),
                 "Strings",
             ],
             path: "Sources/Implementation"

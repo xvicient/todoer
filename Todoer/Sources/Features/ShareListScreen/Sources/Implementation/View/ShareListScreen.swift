@@ -8,6 +8,7 @@ import SwiftUI
 import ThemeAssets
 import ThemeComponents
 import xRedux
+import EntitiesMocks
 
 // MARK: - ShareListView
 
@@ -109,14 +110,7 @@ struct ShareView_Previews: PreviewProvider {
         ShareList.Builder.makeShareList(
             dependencies: Dependencies(
                 coordinator: CoordinatorMock(),
-                list: UserList(
-                    id: UUID(),
-                    documentId: "",
-                    name: "",
-                    done: true,
-                    uid: [],
-                    index: 0
-                )
+                list: ListMock.list
             )
         )
     }

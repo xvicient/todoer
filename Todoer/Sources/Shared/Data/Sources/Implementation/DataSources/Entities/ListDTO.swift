@@ -1,7 +1,7 @@
 import FirebaseFirestore
 
 struct ListDTO: Identifiable, Codable, Hashable {
-    @DocumentID var id: String?
+    var id: String?
     let name: String
     let done: Bool
     var uid: [String]
@@ -13,11 +13,11 @@ extension ListDTO: UpdateableDTO {
     
     public func update(with newer: ListDTO) -> ListDTO {
         ListDTO(
-            id: self.id,
-            name: self.name != newer.name ? newer.name : self.name,
-            done: self.done != newer.done ? newer.done : self.done,
-            uid: self.uid,
-            index: self.index
+            id: id,
+            name: name != newer.name ? newer.name : name,
+            done: done != newer.done ? newer.done : done,
+            uid: uid,
+            index: index
         )
     }
 }

@@ -19,14 +19,15 @@ extension ListItemsReducer {
                 state: &state
             )
             
-        case (.updating, .didTapSubmitItemButton(let uid, let newItemName)):
+        case (.updating, .didTapSubmitItemButton(let uid, let newItemName)),
+            (.adding, .didTapSubmitItemButton(let uid, let newItemName)):
             return onDidTapSubmitItemButton(
                 state: &state,
                 newItemName: newItemName,
                 uid: uid
             )
             
-        case (.updating, .didTapCancelButton):
+        case (.adding, .didTapCancelButton):
             return onDidTapCancelButton(
                 state: &state
             )
@@ -80,7 +81,7 @@ extension ListItemsReducer {
                 result: result
             )
 
-        case (.updating, .addItemResult(let result)):
+        case (.adding, .addItemResult(let result)):
             return onAddItemResult(
                 state: &state,
                 result: result
@@ -125,7 +126,7 @@ fileprivate extension ListItemsReducer {
         state.viewState = .loading(true)
         return .publish(
             dependencies.useCase.fetchItems(
-                listId: dependencies.list.documentId
+                listId: dependencies.list.id
             )
             .map { .fetchItemsResult(.success($0)) }
             .catch { Just(.fetchItemsResult(.failure($0))) }
@@ -135,7 +136,7 @@ fileprivate extension ListItemsReducer {
     
     func onDidTapToggleItemButton(
         state: inout State,
-        uid: UUID
+        uid: String
     ) -> Effect<Action> {
         guard let index = state.items.index(for: uid),
               state.items[safe: index] != nil else {
@@ -164,7 +165,7 @@ fileprivate extension ListItemsReducer {
 
     func onDidTapDeleteItemButton(
         state: inout State,
-        uid: UUID
+        uid: String
     ) -> Effect<Action> {
         guard let index = state.items.index(for: uid),
               let item = state.items[safe: index] else {
@@ -178,8 +179,8 @@ fileprivate extension ListItemsReducer {
             await send(
                 .voidResult(
                     dependencies.useCase.deleteItem(
-                        itemId: item.documentId,
-                        listId: dependencies.list.documentId
+                        itemId: item.id,
+                        listId: dependencies.list.id
                     )
                 )
             )
@@ -189,16 +190,28 @@ fileprivate extension ListItemsReducer {
     func onDidTapSubmitItemButton(
         state: inout State,
         newItemName: String,
-        uid: UUID
+        uid: String?
     ) -> Effect<Action> {
-        guard let index = state.items.index(for: uid) else {
-            return .none
-        }
-        
         var list = dependencies.list
-        var item = state.items[index]
         
-        if item.name.isEmpty {
+        if let uid {
+            guard let index = state.items.index(for: uid) else {
+                return .none
+            }
+            var item = state.items[index]
+            item.name = newItemName
+            
+            return .task { send in
+                await send(
+                    .updateItemResult(
+                        dependencies.useCase.updateItemName(
+                            item: item,
+                            listId: list.id
+                        )
+                    )
+                )
+            }
+        } else {
             list.done = false
             return .task { send in
                 await send(
@@ -206,18 +219,6 @@ fileprivate extension ListItemsReducer {
                         dependencies.useCase.addItem(
                             with: newItemName,
                             list: list
-                        )
-                    )
-                )
-            }
-        } else {
-            item.name = newItemName
-            return .task { send in
-                await send(
-                    .updateItemResult(
-                        dependencies.useCase.updateItemName(
-                            item: item,
-                            listId: list.documentId
                         )
                     )
                 )
@@ -236,7 +237,7 @@ fileprivate extension ListItemsReducer {
             isCompleted: state.activeTab.isCompleted
         )
         
-        let listId = dependencies.list.documentId
+        let listId = dependencies.list.id
         
         return .task { send in
             await send(
@@ -310,26 +311,20 @@ fileprivate extension ListItemsReducer {
     func onDidTapCancelButton(
         state: inout State
     ) -> Effect<Action> {
-        guard state.items.contains(where: \.isEditing) else {
-            return .none
-        }
-        
         state.viewState = .idle
-        state.items.removeAll { $0.isEditing }
         return .none
     }
     
     func addItem(
         state: inout State
     ) -> Effect<Action> {
-        guard !state.items.contains(where: \.isEditing) else {
+        guard state.viewState == .idle else {
             return .none
         }
 
         state.activeTab = .all
         state.isSearchFocused = false
-        state.items.insert(Item.empty, at: 0)
-        state.viewState = .updating
+        state.viewState = .adding
         
         return .none
     }
@@ -341,7 +336,7 @@ fileprivate extension ListItemsReducer {
         state.items.sorted()
         
         let items = state.items
-        let listId = dependencies.list.documentId
+        let listId = dependencies.list.id
         
         return .task { send in
             await send(
@@ -389,11 +384,7 @@ extension ListItemsReducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let item):
-            guard let index = state.items.firstIndex(where: \.isEditing) else {
-                state.viewState = .error()
-                return .none
-            }
-            state.items.replace(item, at: index)
+            state.items.insert(item, at: 0)
             state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)

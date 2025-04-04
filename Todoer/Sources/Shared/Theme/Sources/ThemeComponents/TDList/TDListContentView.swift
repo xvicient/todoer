@@ -2,40 +2,38 @@ import Common
 import Strings
 import SwiftUI
 
+public enum TDContentStatus {
+    case plain, editing, adding
+}
+
 public struct TDListContentView: View {
     public typealias Content = () -> AnyView
 
-    public struct Configuration: TDListFilledRowConfiguration {
-        let lineLimit: Int?
-        let isMoveEnabled: Bool
-        let isSwipeEnabled: Bool
+    public struct Configuration {
         let listHeight: CGFloat
+        let status: TDContentStatus
 
         public init(
-            lineLimit: Int? = nil,
-            isMoveEnabled: Bool,
-            isSwipeEnabled: Bool,
-            listHeight: CGFloat
+            listHeight: CGFloat,
+            status: TDContentStatus
         ) {
-            self.lineLimit = lineLimit
-            self.isMoveEnabled = isMoveEnabled
-            self.isSwipeEnabled = isSwipeEnabled
             self.listHeight = listHeight
+            self.status = status
         }
     }
 
-    public struct Actions: TDListFilledRowActions, TDListEditRowActions {
-        let onSubmit: (UUID, String) -> Void
+    public struct Actions: TDListFilledRowActions, TDListEditRowActions, TDListAddRowActions {
+        let onSubmit: (String?, String) -> Void
         let onCancel: () -> Void
-        let onTap: ((UUID) -> Void)?
-        let onSwipe: (UUID, TDListSwipeAction) -> Void
+        let onTap: ((String) -> Void)?
+        let onSwipe: (String, TDListSwipeAction) -> Void
         let onMove: (IndexSet, Int) -> Void
 
         public init(
-            onSubmit: @escaping (UUID, String) -> Void,
+            onSubmit: @escaping (String?, String) -> Void,
             onCancel: @escaping () -> Void,
-            onTap: ((UUID) -> Void)? = nil,
-            onSwipe: @escaping (UUID, TDListSwipeAction) -> Void,
+            onTap: ((String) -> Void)? = nil,
+            onSwipe: @escaping (String, TDListSwipeAction) -> Void,
             onMove: @escaping (IndexSet, Int) -> Void
         ) {
             self.onSubmit = onSubmit
@@ -49,42 +47,50 @@ public struct TDListContentView: View {
     private let configuration: Configuration
     private let actions: Actions
     @Binding private var rows: [TDListRow]
-    @Binding private var editMode: EditMode
 
     public init(
         configuration: Configuration,
         actions: Actions,
-        rows: Binding<[TDListRow]>,
-        editMode: Binding<EditMode>
+        rows: Binding<[TDListRow]>
     ) {
         self.configuration = configuration
         self.actions = actions
         self._rows = rows
-        self._editMode = editMode
     }
 
     public var body: some View {
         if rows.isEmpty {
             emptyView
         } else {
-            ForEach($rows, id: \.id) { $row in
-                Group {
-                    if row.isEditing || editMode.isEditing {
-                        TDListEditRowView(
-                            row: $row,
-                            actions: actions
-                        ).id(row.id)
-                    } else {
-                        TDListFilledRowView(
-                            row: row,
-                            actions: actions,
-                            configuration: configuration
-                        ).id(row.id)
-                    }
+            switch configuration.status {
+            case .plain, .adding:
+                if configuration.status == .adding {
+                    TDListAddRowView(
+                        actions: actions
+                    )
+                    .id("TDListAddRowView")
+                    .moveDisabled(true)
                 }
-                .moveDisabled(!configuration.isMoveEnabled)
+                ForEach($rows, id: \.id) { $row in
+                    TDListFilledRowView(
+                        row: row,
+                        actions: actions
+                    )
+                    .id(row.id)
+                    .moveDisabled(true)
+                }
+                .onMove(perform: actions.onMove)
+            case .editing:
+                ForEach($rows, id: \.id) { $row in
+                    TDListEditRowView(
+                        row: $row,
+                        actions: actions
+                    )
+                    .id(row.id)
+                    .moveDisabled(false)
+                }
+                .onMove(perform: actions.onMove)
             }
-            .onMove(perform: actions.onMove)
         }
     }
     
@@ -116,17 +122,15 @@ public struct TDListContentView: View {
     List {
         TDListContentView(
             configuration: TDListContentView.Configuration(
-                isMoveEnabled: true,
-                isSwipeEnabled: true,
-                listHeight: 0.0
+                listHeight: 0.0,
+                status: .plain
             ),
             actions: TDListContentView.Actions(
                 onSubmit: { _, _ in },
                 onCancel: {} ,
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }),
-            rows: .constant([]),
-            editMode: .constant(.inactive)
+            rows: .constant([])
         )
     }
     .scrollIndicators(.hidden)

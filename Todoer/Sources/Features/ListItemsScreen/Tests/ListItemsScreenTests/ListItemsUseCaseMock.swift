@@ -1,6 +1,7 @@
 import Combine
 import Entities
 import xRedux
+import Foundation
 
 @testable import ListItemsScreen
 
@@ -16,7 +17,7 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
     }
 
     func fetchItems(
-        listId: String
+        listId: UUID
     ) -> AnyPublisher<[Item], any Error> {
         switch fetchItemsResult {
         case .success(let items):
@@ -43,15 +44,15 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
     }
 
     func deleteItem(
-        itemId: String,
-        listId: String
+        itemId: UUID,
+        listId: UUID
     ) async -> ActionResult<EquatableVoid> {
         voidResult
     }
 
     func updateItemName(
         item: Item,
-        listId: String
+        listId: UUID
     ) async -> ActionResult<Item> {
         updateItemNameResult
     }
@@ -65,7 +66,7 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
 
     func sortItems(
         items: [Item],
-        listId: String
+        listId: UUID
     ) async -> ActionResult<EquatableVoid> {
         voidResult
     }

@@ -1,18 +1,27 @@
 import SwiftUI
 
 public protocol TDListRow {
-    var id: UUID { get }
+    var id: String { get }
     var done: Bool { get set }
     var name: String { get set }
     var index: Int { get set }
     var image: Image { get }
     var leadingActions: [TDListSwipeAction] { get }
     var trailingActions: [TDListSwipeAction] { get }
-    var isEditing: Bool { get }
+}
+
+public extension TDListRow {
+    var image: Image {
+        done ? Image.largecircleFillCircle : Image.circle
+    }
+    
+    var leadingActions: [TDListSwipeAction] {
+        [done ? .undone : .done]
+    }
 }
 
 public extension Array where Element: TDListRow {
-    func index(for id: UUID) -> Int? {
+    func index(for id: String) -> Int? {
         firstIndex(where: { $0.id == id })
     }
     

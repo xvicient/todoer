@@ -2,19 +2,13 @@ import SwiftUI
 import ThemeAssets
 
 protocol TDListFilledRowActions {
-    var onTap: ((UUID) -> Void)? { get }
-    var onSwipe: (UUID, TDListSwipeAction) -> Void { get }
-}
-
-protocol TDListFilledRowConfiguration {
-    var lineLimit: Int? { get }
-    var isSwipeEnabled: Bool { get }
+    var onTap: ((String) -> Void)? { get }
+    var onSwipe: (String, TDListSwipeAction) -> Void { get }
 }
 
 struct TDListFilledRowView: View {
     var row: TDListRow
     let actions: TDListFilledRowActions
-    let configuration: TDListFilledRowConfiguration
 
     var body: some View {
         HStack {
@@ -22,7 +16,7 @@ struct TDListFilledRowView: View {
                 .foregroundColor(Color.buttonBlack)
             Button(action: { actions.onTap?(row.id) }) {
                 TDURLText(text: row.name)
-                    .lineLimit(configuration.lineLimit)
+                    .lineLimit(2)
                     .multilineTextAlignment(.leading)
                     .strikethrough(row.done)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -32,13 +26,11 @@ struct TDListFilledRowView: View {
         }
         .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
         .frame(minHeight: 40)
-        .if(configuration.isSwipeEnabled) {
-            $0.swipeActions(edge: .leading, allowsFullSwipe: true) {
-                swipeActions(row, row.leadingActions)
-            }
-            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                swipeActions(row, row.trailingActions)
-            }
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            swipeActions(row, row.leadingActions)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            swipeActions(row, row.trailingActions)
         }
     }
 

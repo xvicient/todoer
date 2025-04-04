@@ -42,11 +42,6 @@ final class UsersDataSource: UsersDataSourceApi {
         }
     }
 
-    private enum Errors: Error {
-        case missingUser
-        case emptyUidList
-    }
-
     @AppSetting(key: "uid", defaultValue: "") private var _uid: String
     private let usersCollection = Firestore.firestore().collection("users")
 
@@ -91,10 +86,7 @@ final class UsersDataSource: UsersDataSourceApi {
         photoUrl: String?,
         provider: String
     ) async throws {
-        let document = usersCollection.document()
-        let documentId = document.documentID
         let dto = UserDTO(
-            id: documentId,
             uid: uid,
             email: email,
             displayName: displayName,

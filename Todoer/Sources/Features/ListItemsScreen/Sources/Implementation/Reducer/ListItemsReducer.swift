@@ -19,10 +19,10 @@ struct ListItemsReducer: Reducer {
     enum Action: Equatable, StringRepresentable {
         // MARK: - Actions
         case onAppear
-        case didTapSubmitItemButton(UUID, String)
+        case didTapSubmitItemButton(String?, String)
         case didTapCancelButton
-        case didTapToggleItemButton(UUID)
-        case didTapDeleteItemButton(UUID)
+        case didTapToggleItemButton(String)
+        case didTapDeleteItemButton(String)
         case didMoveItem(IndexSet, Int)
         case didChangeSearchFocus(Bool)
         case didChangeEditMode(EditMode)
@@ -49,10 +49,7 @@ struct ListItemsReducer: Reducer {
         var isSearchFocused: Bool = false
         
         var tabs: [TDListTab] {
-            guard items.filter(\.isEditing).count > 1 else {
-                return TDListTab.allCases
-            }
-            return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
+            TDListTab.tabs(for: items.count)
         }
         
         var alert: AppAlert<Action>? {
@@ -74,6 +71,7 @@ struct ListItemsReducer: Reducer {
         case idle
         case loading(Bool)
         case updating
+        case adding
         case alert(AppAlert<Action>)
         
         static func error(
@@ -129,15 +127,6 @@ extension Store<ListItemsReducer> {
         set { send(.didChangeSearchFocus(newValue)) }
     }
     
-    var isUpdating: Bool {
-        switch state.viewState {
-        case .updating:
-            true
-        default:
-            false
-        }
-    }
-    
     var isLoading: Bool {
         switch state.viewState {
         case .loading(let isLoading):
@@ -146,24 +135,21 @@ extension Store<ListItemsReducer> {
             false
         }
     }
+    
+    var contentStatus: TDContentStatus {
+        switch state.viewState {
+        case .adding: .adding
+        case .updating where editMode.isEditing: .editing
+        case .idle: .plain
+        default: .plain
+        }
+    }
 }
 
 // MARK: - TDListRow
 
 extension Item: @retroactive TDListRow {
-    public var image: Image {
-        done ? Image.largecircleFillCircle : Image.circle
-    }
-    
-    public var leadingActions: [TDListSwipeAction] {
-        [done ? .undone : .done]
-    }
-    
     public var trailingActions: [TDListSwipeAction] {
-        [.delete, .share]
-    }
-    
-    public var isEditing: Bool {
-        documentId.isEmpty
+        [.delete]
     }
 }

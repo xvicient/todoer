@@ -20,12 +20,12 @@ struct HomeReducer: Reducer {
         
         // MARK: - User actions
         /// HomeReducer+UserActions
-        case didTapList(UUID)
-        case didTapSubmitListButton(UUID, String)
+        case didTapList(String)
+        case didTapSubmitListButton(String?, String)
         case didTapCancelButton
-        case didTapToggleListButton(UUID)
-        case didTapShareListButton(UUID)
-        case didTapDeleteListButton(UUID)
+        case didTapToggleListButton(String)
+        case didTapShareListButton(String)
+        case didTapDeleteListButton(String)
         case didMoveList(IndexSet, Int)
         case didChangeSearchFocus(Bool)
         case didChangeEditMode(EditMode)
@@ -55,10 +55,7 @@ struct HomeReducer: Reducer {
         var isSearchFocused: Bool = false
         
         var tabs: [TDListTab] {
-            guard lists.filter(\.isEditing).count > 1 else {
-                return TDListTab.allCases
-            }
-            return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
+            TDListTab.tabs(for: lists.count)
         }
         
         var alert: AppAlert<Action>? {
@@ -74,6 +71,7 @@ struct HomeReducer: Reducer {
         case idle
         case loading(Bool)
         case updating
+        case adding
         case alert(AppAlert<Action>)
         
         static func error(
@@ -130,15 +128,6 @@ extension Store<HomeReducer> {
         set { send(.didChangeSearchFocus(newValue)) }
     }
     
-    var isUpdating: Bool {
-        switch state.viewState {
-        case .updating:
-            true
-        default:
-            false
-        }
-    }
-    
     var isLoading: Bool {
         switch state.viewState {
         case .loading(let isLoading):
@@ -147,23 +136,21 @@ extension Store<HomeReducer> {
             false
         }
     }
+    
+    var contentStatus: TDContentStatus {
+        switch state.viewState {
+        case .adding: .adding
+        case .updating where editMode.isEditing: .editing
+        case .idle: .plain
+        default: .plain
+        }
+    }
 }
 
 // MARK: - TDListRow
 
 extension UserList: @retroactive TDListRow {
-    public var image: Image {
-        done ? Image.largecircleFillCircle : Image.circle
-    }
-    
-    public var leadingActions: [ThemeComponents.TDListSwipeAction] {
-        [done ? .undone : .done]
-    }
-    
-    public var trailingActions: [ThemeComponents.TDListSwipeAction] {
+    public var trailingActions: [TDListSwipeAction] {
         [.delete, .share]
-    }
-    public var isEditing: Bool {
-        documentId.isEmpty
     }
 }

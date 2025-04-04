@@ -79,10 +79,8 @@ extension HomeScreen {
 
     fileprivate func listContent(_ listHeight: CGFloat) -> TDListContentView {
         let configuration = TDListContentView.Configuration(
-            lineLimit: 2,
-            isMoveEnabled: !store.isSearchFocused && store.editMode.isEditing,
-            isSwipeEnabled: !store.isUpdating,
-            listHeight: listHeight
+            listHeight: listHeight,
+            status: store.contentStatus
         )
         
         let actions = TDListContentView.Actions(
@@ -96,12 +94,11 @@ extension HomeScreen {
         return TDListContentView(
             configuration: configuration,
             actions: actions,
-            rows: $store.rows,
-            editMode: $store.editMode
+            rows: $store.rows
         )
     }
     
-    fileprivate var onSwipe: (UUID, TDListSwipeAction) -> Void {
+    fileprivate var onSwipe: (String, TDListSwipeAction) -> Void {
         { rowId, option in
             switch option {
             case .done, .undone:

@@ -37,6 +37,13 @@ public enum TDListTab: Int, CaseIterable, Equatable, Sendable {
             return nil
         }
     }
+    
+    public static func tabs(for count: Int) -> [TDListTab] {
+        guard count > 1 else {
+            return TDListTab.allCases.compactMap { $0 == .sort ? nil : $0 }
+        }
+        return TDListTab.allCases
+    }
 }
 
 public struct TDListTabButtonView: View {

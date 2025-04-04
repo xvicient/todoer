@@ -56,7 +56,7 @@ public final class ListsRepository: ListsRepositoryApi {
     public func fetchLists() -> AnyPublisher<[UserList], Error> {
         listsDataSource.fetchLists(uid: usersDataSource.uid)
             .scanUpdates() // Scan for updates in next events to update the previous ones
-            .tryMap { $0.map(\.toDomain) }
+            .map { $0.compactMap { try? $0.toDomain() } }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
@@ -67,14 +67,14 @@ public final class ListsRepository: ListsRepositoryApi {
         try await listsDataSource.addList(
             with: name,
             uid: usersDataSource.uid
-        ).toDomain
+        ).toDomain()
     }
 
     public func addSharedLists() async throws -> [UserList] {
         let result = try await listsDataSource.addLists(
             names: sharedListsDataSource.sharedLists.filter { !$0.isEmpty },
             uid: usersDataSource.uid
-        ).map(\.toDomain)
+        ).compactMap { try? $0.toDomain() }
         sharedListsDataSource.sharedLists.removeAll()
         return result
     }
@@ -98,7 +98,7 @@ public final class ListsRepository: ListsRepositoryApi {
     public func updateList(
         _ list: UserList
     ) async throws -> UserList {
-        try await listsDataSource.updateList(list.toDTO).toDomain
+        try await listsDataSource.updateList(list.toDTO).toDomain()
     }
 
     public func sortLists(
@@ -117,10 +117,9 @@ public final class ListsRepository: ListsRepositoryApi {
 }
 
 extension ListDTO {
-    fileprivate var toDomain: UserList {
-        UserList(
-            id: UUID(uuidString: id ?? "") ?? UUID(),
-            documentId: id ?? "",
+    fileprivate func toDomain() throws -> UserList {
+        try UserList(
+            id: id,
             name: name,
             done: done,
             uid: uid,
@@ -132,7 +131,7 @@ extension ListDTO {
 extension UserList {
     fileprivate var toDTO: ListDTO {
         ListDTO(
-            id: documentId,
+            id: id,
             name: name,
             done: done,
             uid: uid,

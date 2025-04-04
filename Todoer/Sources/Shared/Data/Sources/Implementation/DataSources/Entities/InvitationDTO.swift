@@ -1,7 +1,7 @@
 import FirebaseFirestore
 
 struct InvitationDTO: Identifiable, Codable, Hashable {
-    @DocumentID var id: String?
+    var id: String?
     let ownerName: String
     let ownerEmail: String
     let listId: String

@@ -22,7 +22,7 @@ protocol HomeUseCaseApi {
     ) async -> ActionResult<EquatableVoid>
     
     func deleteList(
-        _ documentId: String
+        _ listId: String
     ) async -> ActionResult<EquatableVoid>
     
     func addList(
@@ -103,11 +103,11 @@ struct HomeUseCase: HomeUseCaseApi {
         do {
             let updatedList = try await listsRepository.updateList(list)
             try await itemsRepository.toogleAllItems(
-                listId: list.documentId,
+                listId: list.id,
                 done: list.done
             )
             
-            return .success(list) // TODO: - Workaround, to fix Firestore documentId missusage between UserList and ListDTO
+            return .success(updatedList)
         }
         catch {
             return .failure(error)
@@ -122,10 +122,10 @@ struct HomeUseCase: HomeUseCaseApi {
     }
     
     func deleteList(
-        _ documentId: String
+        _ listId: String
     ) async -> ActionResult<EquatableVoid> {
         do {
-            try await listsRepository.deleteList(documentId)
+            try await listsRepository.deleteList(listId)
             return .success()
         }
         catch {

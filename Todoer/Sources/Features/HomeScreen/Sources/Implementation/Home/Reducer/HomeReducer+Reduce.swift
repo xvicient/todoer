@@ -33,14 +33,15 @@ extension HomeReducer {
                 uid: rowId
             )
             
-        case (.updating, .didTapSubmitListButton(let uid, let name)):
+        case (.updating, .didTapSubmitListButton(let uid, let name)),
+            (.adding, .didTapSubmitListButton(let uid, let name)):
             return onDidTapSubmitListButton(
                 state: &state,
                 newListName: name,
                 uid: uid
             )
             
-        case (.updating, .didTapCancelButton):
+        case (.adding, .didTapCancelButton):
             return onDidTapCancelButton(
                 state: &state
             )
@@ -106,7 +107,7 @@ extension HomeReducer {
                 result: result
             )
             
-        case (.updating, .addListResult(let result)):
+        case (.adding, .addListResult(let result)):
             return onAddListResult(
                 state: &state,
                 result: result
@@ -183,7 +184,7 @@ fileprivate extension HomeReducer {
     @MainActor
     func onDidTapList(
         state: inout State,
-        uid: UUID
+        uid: String
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
               let list = state.lists[safe: index]
@@ -199,19 +200,13 @@ fileprivate extension HomeReducer {
     func onDidTapCancelButton(
         state: inout State
     ) -> Effect<Action> {
-        guard state.lists.contains(where: \.isEditing) else {
-            return .none
-        }
-        
-        state.lists.removeAll { $0.isEditing }
-        state.viewState = .idle
-        
+        state.viewState = .idle        
         return .none
     }
     
     func onDidTapToggleListButton(
         state: inout State,
-        uid: UUID
+        uid: String
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
               state.lists[safe: index] != nil
@@ -236,7 +231,7 @@ fileprivate extension HomeReducer {
     
     func onDidTapDeleteListButton(
         state: inout State,
-        uid: UUID
+        uid: String
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
               let list = state.lists[safe: index] else {
@@ -249,7 +244,7 @@ fileprivate extension HomeReducer {
         return .task { send in
             await send(
                 .voidResult(
-                    useCase.deleteList(list.documentId)
+                    useCase.deleteList(list.id)
                 )
             )
         }
@@ -258,31 +253,30 @@ fileprivate extension HomeReducer {
     func onDidTapSubmitListButton(
         state: inout State,
         newListName: String,
-        uid: UUID
+        uid: String?
     ) -> Effect<Action> {
-        guard let index = state.lists.index(for: uid) else {
-            return .none
-        }
-        
-        var list = state.lists[index]
-        
-        if list.name.isEmpty {
-            return .task { send in
-                await send(
-                    .addListResult(
-                        useCase.addList(
-                            name: newListName
-                        )
-                    )
-                )
+        if let uid {
+            guard let index = state.lists.index(for: uid) else {
+                return .none
             }
-        } else {
+            var list = state.lists[index]
             list.name = newListName
+            
             return .task { send in
                 await send(
                     .updateListResult(
                         useCase.updateList(
                             list: list
+                        )
+                    )
+                )
+            }
+        } else {
+            return .task { send in
+                await send(
+                    .addListResult(
+                        useCase.addList(
+                            name: newListName
                         )
                     )
                 )
@@ -293,7 +287,7 @@ fileprivate extension HomeReducer {
     @MainActor
     func onDidTapShareListButton(
         state: inout State,
-        uid: UUID
+        uid: String
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
               let list = state.lists[safe: index]
@@ -365,7 +359,9 @@ fileprivate extension HomeReducer {
     ) -> Effect<Action> {
         
         /// Canceling edit mode if active if the user wants to add an item
-        if state.editMode == .active { state.editMode = .inactive }
+        if state.editMode == .active {
+            state.editMode = .inactive
+        }
         
         switch activeTab {
         case .add:
@@ -387,14 +383,13 @@ fileprivate extension HomeReducer {
     func addList(
         state: inout State
     ) -> Effect<Action> {
-        guard !state.lists.contains(where: \.isEditing) else {
+        guard state.viewState == .idle else {
             return .none
         }
         
         state.activeTab = .all
         state.isSearchFocused = false
-        state.lists.insert(UserList.empty, at: 0)
-        state.viewState = .updating
+        state.viewState = .adding
         
         return .none
     }
@@ -455,11 +450,7 @@ fileprivate extension HomeReducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let list):
-            guard let index = state.lists.firstIndex(where: \.isEditing) else {
-                state.viewState = .error()
-                return .none
-            }
-            state.lists.replace(list, at: index)
+            state.lists.insert(list, at: 0)
             state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)

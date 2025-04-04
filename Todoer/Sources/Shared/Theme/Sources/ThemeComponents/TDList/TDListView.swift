@@ -261,7 +261,7 @@ fileprivate extension View {
 
 #Preview {
     struct RowMock: TDListRow {
-        var id = UUID()
+        var id = ""
         var done = false
         var name = "List 1"
         var index = 0
@@ -282,9 +282,8 @@ fileprivate extension View {
     ) {
         TDListContentView(
             configuration: .init(
-                isMoveEnabled: false,
-                isSwipeEnabled: false,
-                listHeight: 100
+                listHeight: 100,
+                status: .plain
             ),
             actions: .init(
                 onSubmit: { _, _ in },
@@ -292,8 +291,7 @@ fileprivate extension View {
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }
             ),
-            rows: .constant(Array(repeating: RowMock(), count: 20)),
-            editMode: .constant(.inactive)
+            rows: .constant(Array(repeating: RowMock(), count: 20))
         )
     }
 }

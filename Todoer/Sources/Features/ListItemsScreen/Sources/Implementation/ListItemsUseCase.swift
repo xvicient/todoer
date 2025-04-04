@@ -80,7 +80,7 @@ struct ListItemsUseCase: ListItemsUseCaseApi {
         do {
             let item = try await itemsRepository.addItem(
                 with: name,
-                listId: list.documentId
+                listId: list.id
             )
             
             _ = try await listsRepository.updateList(list)
@@ -118,7 +118,7 @@ struct ListItemsUseCase: ListItemsUseCaseApi {
                 listId: listId
             )
             
-            return .success(item) // TODO: - Workaround, to fix Firestore documentId missusage between Item and ItemDTO
+            return .success(updatedItem)
         }
         catch {
             return .failure(error)
@@ -132,7 +132,7 @@ struct ListItemsUseCase: ListItemsUseCaseApi {
         do {
             _ = try await itemsRepository.updateItem(
                 item: item,
-                listId: list.documentId
+                listId: list.id
             )
             
             _ = try await listsRepository.updateList(list)

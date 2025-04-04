@@ -74,7 +74,11 @@ final class ListsDataSource: ListsDataSourceApi {
             .snapshotPublisher()
             .filter { !$0.metadata.hasPendingWrites }
             .map { snapshot in
-                snapshot.documents.compactMap { try? $0.data(as: ListDTO.self) }
+                snapshot.documents.compactMap { document -> ListDTO? in
+                    guard var dto = try? document.data(as: ListDTO.self) else { return nil }
+                    dto.id = document.documentID
+                    return dto
+                }
             }
             .eraseToAnyPublisher()
     }
@@ -83,10 +87,14 @@ final class ListsDataSource: ListsDataSourceApi {
         with name: String,
         uid: String
     ) async throws -> ListDTO {
-        try await listsCollection
+        let docRef = try listsCollection
             .addDocument(from: name.toDTO(uid))
-            .getDocument()
-            .data(as: ListDTO.self)
+        let document = try await docRef.getDocument()
+        guard var result = try? document.data(as: ListDTO.self) else {
+            throw Errors.invalidDTO
+        }
+        result.id = document.documentID
+        return result
     }
 
     func addLists(

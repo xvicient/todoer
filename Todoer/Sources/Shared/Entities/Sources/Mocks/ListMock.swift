@@ -7,10 +7,9 @@ public struct ListMock {
     }
 
     static func lists(_ count: Int) -> [UserList] {
-        (0..<count).map {
-            UserList(
-                id: UUID(),
-                documentId: String($0),
+        (0..<count).compactMap {
+            try? UserList(
+                id: String($0),
                 name: String($0),
                 done: false,
                 uid: [String($0)],

@@ -4,6 +4,7 @@ import ListItemsScreenContract
 import SwiftUI
 import ThemeComponents
 import xRedux
+import EntitiesMocks
 
 // MARK: - ListItemsScreen
 
@@ -53,10 +54,8 @@ extension ListItemsScreen {
 
     fileprivate func listContent(_ listHeight: CGFloat) -> TDListContentView {
         let configuration = TDListContentView.Configuration(
-            lineLimit: 2,
-            isMoveEnabled: !store.isSearchFocused && store.editMode.isEditing,
-            isSwipeEnabled: !store.isUpdating,
-            listHeight: listHeight
+            listHeight: listHeight,
+            status: store.contentStatus
         )
         
         let actions = TDListContentView.Actions(
@@ -69,12 +68,11 @@ extension ListItemsScreen {
         return TDListContentView(
             configuration: configuration,
             actions: actions,
-            rows: $store.rows,
-            editMode: $store.editMode
+            rows: $store.rows
         )
     }
     
-    fileprivate var onSwipe: (UUID, TDListSwipeAction) -> Void {
+    fileprivate var onSwipe: (String, TDListSwipeAction) -> Void {
         { rowId, option in
             switch option {
             case .done, .undone:
@@ -99,18 +97,11 @@ struct Home_Previews: PreviewProvider {
     struct Dependencies: ListItemsScreenDependencies {
         var list: UserList
     }
-
+    
     static var previews: some View {
         ListItemsBuilder.makeItemsList(
             dependencies: Dependencies(
-                list: UserList(
-                    id: UUID(),
-                    documentId: "1",
-                    name: "Test",
-                    done: false,
-                    uid: [""],
-                    index: 1
-                )
+                list: ListMock.list
             )
         )
     }

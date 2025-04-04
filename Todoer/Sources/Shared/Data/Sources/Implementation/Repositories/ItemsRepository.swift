@@ -47,7 +47,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
     ) -> AnyPublisher<[Item], Error> {
         itemsDataSource.fetchItems(listId: listId)
             .scanUpdates() // Scan for updates in next events to update the previous ones
-            .tryMap { $0.map(\.toDomain) }
+            .map { $0.compactMap { try? $0.toDomain() } }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
@@ -59,7 +59,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
         try await itemsDataSource.addItem(
             with: name,
             listId: listId
-        ).toDomain
+        ).toDomain()
     }
 
     public func deleteItem(
@@ -79,7 +79,7 @@ public final class ItemsRepository: ItemsRepositoryApi {
         try await itemsDataSource.updateItem(
             item: item.toDTO,
             listId: listId
-        ).toDomain
+        ).toDomain()
     }
 
     public func toogleAllItems(
@@ -104,10 +104,9 @@ public final class ItemsRepository: ItemsRepositoryApi {
 }
 
 extension ItemDTO {
-    fileprivate var toDomain: Item {
-        Item(
-            id: UUID(),
-            documentId: id ?? "",
+    fileprivate func toDomain() throws -> Item {
+        try Item(
+            id: id,
             name: name,
             done: done,
             index: index
@@ -116,9 +115,9 @@ extension ItemDTO {
 }
 
 extension Item {
-    var toDTO: ItemDTO {
+    fileprivate var toDTO: ItemDTO {
         ItemDTO(
-            id: documentId,
+            id: id,
             name: name,
             done: done,
             index: index

@@ -74,7 +74,7 @@ extension ShareList {
                 guard
                     (try? await invitationsRepository.getInvitation(
                         invitedId: invitedUser.uid,
-                        listId: list.documentId
+                        listId: list.id
                     )) == nil
                 else {
                     return .success()
@@ -90,7 +90,7 @@ extension ShareList {
                 try await invitationsRepository.sendInvitation(
                     ownerName: ownerName,
                     ownerEmail: ownerEmail,
-                    listId: list.documentId,
+                    listId: list.id,
                     listName: list.name,
                     invitedId: invitedUser.uid
                 )
