@@ -1,8 +1,10 @@
 import Foundation
 
 public struct User: Identifiable, Equatable, Hashable, Sendable {
-    public let id = UUID()
-    public let documentId: String
+    private enum Errors: Error {
+        case invalidId
+    }
+    public let id: String
     public var uid: String
     public var email: String?
     public var displayName: String?
@@ -10,14 +12,17 @@ public struct User: Identifiable, Equatable, Hashable, Sendable {
     public var provider: String
 
     public init(
-        documentId: String,
+        id: String?,
         uid: String,
         email: String? = nil,
         displayName: String? = nil,
         photoUrl: String? = nil,
         provider: String
-    ) {
-        self.documentId = documentId
+    ) throws {
+        guard let id else {
+            throw Errors.invalidId
+        }
+        self.id = id
         self.uid = uid
         self.email = email
         self.displayName = displayName

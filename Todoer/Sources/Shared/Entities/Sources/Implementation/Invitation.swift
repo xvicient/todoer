@@ -1,8 +1,10 @@
 import Foundation
 
 public struct Invitation: Identifiable, Equatable, Hashable, Sendable {
-    public let id = UUID()
-    public let documentId: String
+    private enum Errors: Error {
+        case invalidId
+    }
+    public let id: String
     public let ownerName: String
     public var ownerEmail: String
     public let listId: String
@@ -11,15 +13,18 @@ public struct Invitation: Identifiable, Equatable, Hashable, Sendable {
     public let index: Int
 
     public init(
-        documentId: String,
+        id: String?,
         ownerName: String,
         ownerEmail: String,
         listId: String,
         listName: String,
         invitedId: String,
         index: Int
-    ) {
-        self.documentId = documentId
+    ) throws {
+        guard let id else {
+            throw Errors.invalidId
+        }
+        self.id = id
         self.ownerName = ownerName
         self.ownerEmail = ownerEmail
         self.listId = listId

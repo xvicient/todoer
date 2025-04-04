@@ -66,7 +66,7 @@ public final class UsersRepository: UsersRepositoryApi {
             with: [SearchField(.uid, .equal(usersDataSource.uid))]
         )
         .first?
-        .toDomain
+        .toDomain()
     }
 
     public func getUser(
@@ -76,7 +76,7 @@ public final class UsersRepository: UsersRepositoryApi {
             with: [SearchField(.uid, .equal(uid))]
         )
         .first?
-        .toDomain
+        .toDomain()
     }
 
     public func getUser(
@@ -86,7 +86,7 @@ public final class UsersRepository: UsersRepositoryApi {
             with: [SearchField(.email, .equal(email))]
         )
         .first?
-        .toDomain
+        .toDomain()
     }
 
     public func getNotSelfUser(
@@ -100,7 +100,7 @@ public final class UsersRepository: UsersRepositoryApi {
             ]
         )
         .first?
-        .toDomain
+        .toDomain()
     }
 
     public func getNotSelfUsers(
@@ -115,7 +115,7 @@ public final class UsersRepository: UsersRepositoryApi {
             return try await usersDataSource.getUsers(
                 with: [SearchField(.uid, .in(notSelfUids))]
             )
-            .map(\.toDomain)
+            .compactMap { try? $0.toDomain() }
         }
     }
 
@@ -125,9 +125,9 @@ public final class UsersRepository: UsersRepositoryApi {
 }
 
 extension UserDTO {
-    fileprivate var toDomain: User {
-        User(
-            documentId: id ?? "",
+    fileprivate func toDomain() throws -> User {
+        try User(
+            id: id,
             uid: uid,
             email: email,
             displayName: displayName,
@@ -140,6 +140,7 @@ extension UserDTO {
 extension User {
     fileprivate var toDomain: UserDTO {
         UserDTO(
+            id: id,
             uid: uid,
             email: email,
             displayName: displayName,

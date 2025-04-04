@@ -37,7 +37,7 @@ public final class InvitationsRepository: InvitationsRepositoryApi {
             with: [SearchField(.invitedId, .equal(usersDataSource.uid))]
         )
         .tryMap { invitations in
-            invitations.map(\.toDomain)
+            invitations.compactMap { try? $0.toDomain() }
         }
         .receive(on: DispatchQueue.main)
         .eraseToAnyPublisher()
@@ -53,7 +53,7 @@ public final class InvitationsRepository: InvitationsRepositoryApi {
                 SearchField(.listId, .equal(listId)),
             ]
         )
-        .map(\.toDomain)
+        .compactMap { try? $0.toDomain() }
         .first
     }
 
@@ -81,9 +81,9 @@ public final class InvitationsRepository: InvitationsRepositoryApi {
 }
 
 extension InvitationDTO {
-    fileprivate var toDomain: Invitation {
-        Invitation(
-            documentId: id ?? "",
+    fileprivate func toDomain() throws -> Invitation {
+        try Invitation(
+            id: id,
             ownerName: ownerName,
             ownerEmail: ownerEmail,
             listId: listId,

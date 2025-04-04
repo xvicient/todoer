@@ -56,7 +56,7 @@ struct InvitationsView: View {
                                     store.send(
                                         .didTapAcceptInvitation(
                                             invitation.listId,
-                                            invitation.documentId
+                                            invitation.id
                                         )
                                     )
                                 }
@@ -68,7 +68,7 @@ struct InvitationsView: View {
                                     store.send(
                                         .didTapDeclineInvitation(
                                             invitation.listId,
-                                            invitation.documentId
+                                            invitation.id
                                         )
                                     )
                                 }
