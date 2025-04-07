@@ -115,7 +115,7 @@ extension ItemDTO {
 }
 
 extension Item {
-    fileprivate var toDTO: ItemDTO {
+    var toDTO: ItemDTO {
         ItemDTO(
             id: id,
             name: name,

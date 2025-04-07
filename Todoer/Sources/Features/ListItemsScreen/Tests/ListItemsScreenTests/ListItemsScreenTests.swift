@@ -84,22 +84,23 @@ class ListItemsScreenTests {
     func testDidTapAddRowButtonAndDidTapSubmitItemButton_Success() async {
         givenASuccessItemSubmit()
 
-        var itemMockId: UUID!
+        var itemMockId: String!
+        var itemsCount: Int!
         
         await store.send(.didChangeActiveTab(.add)) {
             itemMockId = $0.items.first?.id
-            return $0.viewState == .updating &&
+            itemsCount = $0.items.count
+            return $0.viewState == .adding &&
                    $0.isSearchFocused == false &&
-                   $0.activeTab == .all &&
-                   $0.items.contains(where: \.isEditing)
+                   $0.activeTab == .all
         }
 
         await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
-            $0.viewState == .updating
+            $0.viewState == .adding
         }
 
         await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .idle && !$0.items.contains(where: \.isEditing)
+            $0.viewState == .idle && $0.items.count == itemsCount + 1
         }
     }
 
@@ -107,31 +108,40 @@ class ListItemsScreenTests {
     func testDidTapAddRowButtonAndDidTapSubmitItemButton_Failure() async {
         givenAFailureItemSubmit()
         
-        var itemMockId: UUID!
+        var itemMockId: String!
+        var itemsCount: Int!
 
         await store.send(.didChangeActiveTab(.add)) {
             itemMockId = $0.items.first?.id
-            return $0.viewState == .updating && $0.items.contains(where: \.isEditing)
+            itemsCount = $0.items.count
+            return $0.viewState == .adding &&
+                   $0.isSearchFocused == false &&
+                   $0.activeTab == .all
         }
 
         await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
-            $0.viewState == .updating
+            $0.viewState == .adding
         }
 
         await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription)
-            && $0.items.contains(where: \.isEditing)
+            $0.viewState == .error(UseCaseError.error.localizedDescription) &&
+            $0.items.count == itemsCount
         }
     }
 
     @Test("Add new item and cancel it successfully")
     func testDidTapAddRowButtonAndDidTapCancelAddRowButton_Success() async {
+        var itemsCount: Int!
+        
         await store.send(.didChangeActiveTab(.add)) {
-            $0.viewState == .updating && $0.items.contains(where: \.isEditing)
+            itemsCount = $0.items.count
+            return $0.viewState == .adding &&
+                   $0.isSearchFocused == false &&
+                   $0.activeTab == .all
         }
 
         await store.send(.didTapCancelButton) {
-            $0.viewState == .idle && !$0.items.contains(where: \.isEditing)
+            $0.viewState == .idle && $0.items.count == itemsCount
         }
     }
     
@@ -146,14 +156,12 @@ class ListItemsScreenTests {
         givenASuccessItemsFetch()
 
         await store.send(.didChangeActiveTab(.add)) {
-            $0.viewState == .updating &&
-            $0.items.contains(where: \.isEditing)
+            $0.viewState == .adding
         }
         
         await store.send(.didChangeEditMode(editMode)) {
             $0.viewState == editMode.viewState &&
-            $0.editMode == editMode &&
-            !$0.items.contains(where: \.isEditing)
+            $0.editMode == editMode
         }
     }
     
@@ -175,8 +183,7 @@ class ListItemsScreenTests {
 
         await store.send(.didChangeEditMode(editMode)) {
             $0.viewState == editMode.viewState &&
-            $0.editMode == editMode &&
-            !$0.items.contains(where: \.isEditing)
+            $0.editMode == editMode
         }
         
         await store.send(.didMoveItem(IndexSet(integersIn: 6..<7), 2)) {
@@ -249,11 +256,11 @@ class ListItemsScreenTests {
     @Test("Did change search focus item", arguments: [(true)])
     func testDidChangeSearchFocus_Success(isFocused: Bool) async {
         await store.send(.didChangeActiveTab(.add)) {
-            $0.viewState == .updating && $0.items.contains(where: \.isEditing)
+            $0.viewState == .adding
         }
         
         await store.send(.didChangeSearchFocus(isFocused)) {
-            $0.viewState == .idle && !$0.items.contains(where: \.isEditing)
+            $0.viewState == .idle
         }
     }
     

@@ -17,7 +17,7 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
     }
 
     func fetchItems(
-        listId: UUID
+        listId: String
     ) -> AnyPublisher<[Item], any Error> {
         switch fetchItemsResult {
         case .success(let items):
@@ -44,15 +44,15 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
     }
 
     func deleteItem(
-        itemId: UUID,
-        listId: UUID
+        itemId: String,
+        listId: String
     ) async -> ActionResult<EquatableVoid> {
         voidResult
     }
 
     func updateItemName(
         item: Item,
-        listId: UUID
+        listId: String
     ) async -> ActionResult<Item> {
         updateItemNameResult
     }
@@ -66,7 +66,7 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
 
     func sortItems(
         items: [Item],
-        listId: UUID
+        listId: String
     ) async -> ActionResult<EquatableVoid> {
         voidResult
     }

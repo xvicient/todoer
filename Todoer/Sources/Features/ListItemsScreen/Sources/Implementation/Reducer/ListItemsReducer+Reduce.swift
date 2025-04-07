@@ -58,6 +58,7 @@ extension ListItemsReducer {
             )
             
         case (.idle, .didChangeEditMode(let editMode)),
+            (.adding, .didChangeEditMode(let editMode)),
             (.updating, .didChangeEditMode(let editMode)):
             return onDidChangeEditMode(
                 state: &state,
@@ -273,7 +274,7 @@ fileprivate extension ListItemsReducer {
         state: inout State,
         editMode: EditMode
     ) -> Effect<Action> {
-        if !state.editMode.isEditing && state.viewState == .updating {
+        if !state.editMode.isEditing && state.viewState == .adding {
             onDidTapCancelButton(state: &state)
         }
         state.isSearchFocused = false
