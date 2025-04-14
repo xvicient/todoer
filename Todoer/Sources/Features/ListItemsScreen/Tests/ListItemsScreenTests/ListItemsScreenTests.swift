@@ -87,12 +87,12 @@ class ListItemsScreenTests {
         var itemMockId: String!
         var itemsCount: Int!
         
-        await store.send(.didChangeActiveTab(.add)) {
+        await store.send(.didChangeActiveTab(.add(true))) {
             itemMockId = $0.items.first?.id
             itemsCount = $0.items.count
             return $0.viewState == .adding &&
                    $0.isSearchFocused == false &&
-                   $0.activeTab == .all
+                   $0.activeTab == .add(true)
         }
 
         await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
@@ -111,12 +111,12 @@ class ListItemsScreenTests {
         var itemMockId: String!
         var itemsCount: Int!
 
-        await store.send(.didChangeActiveTab(.add)) {
+        await store.send(.didChangeActiveTab(.add(true))) {
             itemMockId = $0.items.first?.id
             itemsCount = $0.items.count
             return $0.viewState == .adding &&
                    $0.isSearchFocused == false &&
-                   $0.activeTab == .all
+                   $0.activeTab == .add(true)
         }
 
         await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
@@ -133,14 +133,14 @@ class ListItemsScreenTests {
     func testDidTapAddRowButtonAndDidTapCancelAddRowButton_Success() async {
         var itemsCount: Int!
         
-        await store.send(.didChangeActiveTab(.add)) {
+        await store.send(.didChangeActiveTab(.add(true))) {
             itemsCount = $0.items.count
             return $0.viewState == .adding &&
                    $0.isSearchFocused == false &&
-                   $0.activeTab == .all
+                   $0.activeTab == .add(true)
         }
 
-        await store.send(.didTapCancelButton) {
+        await store.send(.didChangeActiveTab(.add(false))) {
             $0.viewState == .idle && $0.items.count == itemsCount
         }
     }
@@ -155,7 +155,7 @@ class ListItemsScreenTests {
     func testDidChangeEditMode_Success(editMode: (EditMode)) async {
         givenASuccessItemsFetch()
 
-        await store.send(.didChangeActiveTab(.add)) {
+        await store.send(.didChangeActiveTab(.add(true))) {
             $0.viewState == .adding
         }
         
@@ -255,7 +255,7 @@ class ListItemsScreenTests {
     
     @Test("Did change search focus item", arguments: [(true)])
     func testDidChangeSearchFocus_Success(isFocused: Bool) async {
-        await store.send(.didChangeActiveTab(.add)) {
+        await store.send(.didChangeActiveTab(.add(true))) {
             $0.viewState == .adding
         }
         
