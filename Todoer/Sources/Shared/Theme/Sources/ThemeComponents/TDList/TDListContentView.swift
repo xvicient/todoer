@@ -24,20 +24,17 @@ public struct TDListContentView: View {
 
     public struct Actions: TDListFilledRowActions, TDListEditRowActions, TDListAddRowActions {
         let onSubmit: (String?, String) -> Void
-        let onCancel: () -> Void
         let onTap: ((String) -> Void)?
         let onSwipe: (String, TDListSwipeAction) -> Void
         let onMove: (IndexSet, Int) -> Void
 
         public init(
             onSubmit: @escaping (String?, String) -> Void,
-            onCancel: @escaping () -> Void,
             onTap: ((String) -> Void)? = nil,
             onSwipe: @escaping (String, TDListSwipeAction) -> Void,
             onMove: @escaping (IndexSet, Int) -> Void
         ) {
             self.onSubmit = onSubmit
-            self.onCancel = onCancel
             self.onTap = onTap
             self.onSwipe = onSwipe
             self.onMove = onMove
@@ -59,7 +56,7 @@ public struct TDListContentView: View {
     }
 
     public var body: some View {
-        if rows.isEmpty {
+        if rows.isEmpty && configuration.status != .adding {
             emptyView
         } else {
             switch configuration.status {
@@ -127,7 +124,6 @@ public struct TDListContentView: View {
             ),
             actions: TDListContentView.Actions(
                 onSubmit: { _, _ in },
-                onCancel: {} ,
                 onSwipe: { _, _ in },
                 onMove: { _, _ in }),
             rows: .constant([])

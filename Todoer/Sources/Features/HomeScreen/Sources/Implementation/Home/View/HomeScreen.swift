@@ -70,7 +70,7 @@ extension HomeScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: Strings.Home.todosText,
-            tabs: store.state.tabs,
+            tabs: $store.tabs,
             activeTab: $store.activeTab,
             searchText: $store.searchText,
             isSearchFocused: $store.isSearchFocused
@@ -85,7 +85,6 @@ extension HomeScreen {
         
         let actions = TDListContentView.Actions(
             onSubmit: { store.send(.didTapSubmitListButton($0, $1)) },
-            onCancel: { store.send(.didTapCancelButton) },
             onTap: { store.send(.didTapList($0)) },
             onSwipe: onSwipe,
             onMove: { store.send(.didMoveList($0, $1)) }

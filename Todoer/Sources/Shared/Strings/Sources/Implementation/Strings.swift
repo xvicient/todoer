@@ -13,6 +13,7 @@ public struct Strings {
         public static let all = "All"
         public static let done = "Done"
         public static let todo = "To-do"
+        public static let cancel = "Cancel"
     }
 
     public struct AppMenu {

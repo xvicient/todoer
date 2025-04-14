@@ -27,11 +27,6 @@ extension ListItemsReducer {
                 uid: uid
             )
             
-        case (.adding, .didTapCancelButton):
-            return onDidTapCancelButton(
-                state: &state
-            )
-            
         case (.idle, .didTapToggleItemButton(let rowId)):
             return onDidTapToggleItemButton(
                 state: &state,
@@ -66,6 +61,7 @@ extension ListItemsReducer {
             )
             
         case (.idle, .didChangeActiveTab(let activeTab)),
+            (.adding, .didChangeActiveTab(let activeTab)),
             (.updating, .didChangeActiveTab(let activeTab)):
             return onDidChangeActiveTab(
                 state: &state,
@@ -235,7 +231,7 @@ fileprivate extension ListItemsReducer {
         let items = state.items.move(
             fromIndex: fromIndex,
             toIndex: toIndex,
-            isCompleted: state.activeTab.isCompleted
+            activeTab: state.activeTab
         )
         
         let listId = dependencies.list.id
@@ -259,7 +255,7 @@ fileprivate extension ListItemsReducer {
         state.isSearchFocused = isFocused
         
         if isFocused {
-            onDidTapCancelButton(state: &state)
+            didFinishAdding(state: &state)
             
             if state.editMode.isEditing {
                 state.editMode = .inactive
@@ -275,7 +271,7 @@ fileprivate extension ListItemsReducer {
         editMode: EditMode
     ) -> Effect<Action> {
         if !state.editMode.isEditing && state.viewState == .adding {
-            onDidTapCancelButton(state: &state)
+            didFinishAdding(state: &state)
         }
         state.isSearchFocused = false
         state.editMode = editMode
@@ -285,7 +281,7 @@ fileprivate extension ListItemsReducer {
     
     func onDidChangeActiveTab(
         state: inout State,
-        activeTab: TDListTab
+        activeTab: TDListTabItem
     ) -> Effect<Action> {
         
         /// Canceling edit mode if active if the user wants to add an item
@@ -308,26 +304,29 @@ fileprivate extension ListItemsReducer {
         }
     }
     
-    @discardableResult
-    func onDidTapCancelButton(
+    func didFinishAdding(
         state: inout State
-    ) -> Effect<Action> {
+    ) {
         state.viewState = .idle
-        return .none
+        state.activeTab = .add(false)
+        state.isSearchFocused = false
     }
     
     func addItem(
         state: inout State
     ) -> Effect<Action> {
-        guard state.viewState == .idle else {
+        switch state.viewState {
+        case .idle:
+            state.viewState = .adding
+            state.activeTab = .add(true)
+            state.isSearchFocused = false
+            return .none
+        case .adding:
+            didFinishAdding(state: &state)
+            return .none
+        default:
             return .none
         }
-
-        state.activeTab = .all
-        state.isSearchFocused = false
-        state.viewState = .adding
-        
-        return .none
     }
     
     func sortLists(
@@ -353,7 +352,7 @@ fileprivate extension ListItemsReducer {
     
     func performAction(
         state: inout State,
-        activeTab: TDListTab
+        activeTab: TDListTabItem
     ) -> Effect<Action> {
         guard state.activeTab != activeTab else { return .none }
         state.activeTab = activeTab
@@ -383,10 +382,10 @@ extension ListItemsReducer {
         state: inout State,
         result: ActionResult<Item>
     ) -> Effect<Action> {
+        didFinishAdding(state: &state)
         switch result {
         case .success(let item):
             state.items.insert(item, at: 0)
-            state.viewState = .idle
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }

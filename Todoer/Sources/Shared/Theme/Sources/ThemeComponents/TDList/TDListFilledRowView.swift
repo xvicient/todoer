@@ -41,7 +41,9 @@ struct TDListFilledRowView: View {
     ) -> some View {
         ForEach(swipeActions) { action in
             Button(role: action.role) {
-                actions.onSwipe(row.id, action)
+                withAnimation {
+                    actions.onSwipe(row.id, action)
+                }
             } label: {
                 action.icon
             }

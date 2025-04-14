@@ -194,12 +194,12 @@ class ListItemsScreenTests {
     @Test(
         "Filters tapped",
         arguments: [
-            (TDListTab.all),
-            (TDListTab.todo),
-            (TDListTab.done)
+            (TDListTabItem.all),
+            (TDListTabItem.todo),
+            (TDListTabItem.done)
         ]
     )
-    func testDidTapFilter_Success(tab: (TDListTab)) async {
+    func testDidTapFilter_Success(tab: (TDListTabItem)) async {
         givenASuccessItemsFetch()
         
         await store.send(.didChangeActiveTab(tab)) {

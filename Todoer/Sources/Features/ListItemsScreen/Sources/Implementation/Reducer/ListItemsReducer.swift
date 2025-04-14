@@ -20,13 +20,12 @@ struct ListItemsReducer: Reducer {
         // MARK: - Actions
         case onAppear
         case didTapSubmitItemButton(String?, String)
-        case didTapCancelButton
         case didTapToggleItemButton(String)
         case didTapDeleteItemButton(String)
         case didMoveItem(IndexSet, Int)
         case didChangeSearchFocus(Bool)
         case didChangeEditMode(EditMode)
-        case didChangeActiveTab(TDListTab)
+        case didChangeActiveTab(TDListTabItem)
         case didUpdateSearchText(String)
         case didTapDismissError
         
@@ -44,12 +43,16 @@ struct ListItemsReducer: Reducer {
         var listName: String
         var items = [Item]()
         var editMode: EditMode = .inactive
-        var activeTab: TDListTab = .all
         var searchText: String  = ""
         var isSearchFocused: Bool = false
-        
+        var activeTab: TDListTabItem = .all
         var tabs: [TDListTab] {
-            TDListTab.tabs(for: items.count)
+            TDListTab.allCases(
+                active: activeTab,
+                hidden: [items.count < 2 ? .sort : nil,
+                         items.count < 1 ? .edit : nil].compactMap { $0 }
+            )
+
         }
         
         var alert: AppAlert<Action>? {
@@ -98,9 +101,14 @@ struct ListItemsReducer: Reducer {
 
 @MainActor
 extension Store<ListItemsReducer> {
-    var activeTab: TDListTab {
+    var activeTab: TDListTabItem {
         get { state.activeTab }
         set { send(.didChangeActiveTab(newValue)) }
+    }
+    
+    var tabs: [TDListTab] {
+        get { state.tabs }
+        set { }
     }
     
     var searchText: String {
@@ -111,7 +119,7 @@ extension Store<ListItemsReducer> {
     var rows: [TDListRow] {
         get {
             state.items
-                .filter(by: activeTab.isCompleted)
+                .filter(by: state.activeTab)
                 .filter(by: searchText)
         }
         set { }

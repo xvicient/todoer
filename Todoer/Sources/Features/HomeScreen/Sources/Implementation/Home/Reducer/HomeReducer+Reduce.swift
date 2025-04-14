@@ -41,11 +41,6 @@ extension HomeReducer {
                 uid: uid
             )
             
-        case (.adding, .didTapCancelButton):
-            return onDidTapCancelButton(
-                state: &state
-            )
-            
         case (.idle, .didTapToggleListButton(let rowId)):
             return onDidTapToggleListButton(
                 state: &state,
@@ -86,6 +81,7 @@ extension HomeReducer {
             )
             
         case (.idle, .didChangeActiveTab(let activeTab)),
+            (.adding, .didChangeActiveTab(let activeTab)),
             (.updating, .didChangeActiveTab(let activeTab)):
             return onDidChangeActiveTab(
                 state: &state,
@@ -171,7 +167,7 @@ fileprivate extension HomeReducer {
             return .none
         }
 
-        _ = onDidTapCancelButton(state: &state)
+        didFinishAdding(state: &state)
 
         return .task { send in
             await send(
@@ -197,12 +193,12 @@ fileprivate extension HomeReducer {
         return .none
     }
     
-    @discardableResult
-    func onDidTapCancelButton(
+    func didFinishAdding(
         state: inout State
-    ) -> Effect<Action> {
-        state.viewState = .idle        
-        return .none
+    ) {
+        state.viewState = .idle
+        state.activeTab = .add(false)
+        state.isSearchFocused = false
     }
     
     func onDidTapToggleListButton(
@@ -272,7 +268,7 @@ fileprivate extension HomeReducer {
                     )
                 )
             }
-        } else {
+        } else {            
             return .task { send in
                 await send(
                     .addListResult(
@@ -309,7 +305,7 @@ fileprivate extension HomeReducer {
         let lists = state.lists.move(
             fromIndex: fromIndex,
             toIndex: toIndex,
-            isCompleted: state.activeTab.isCompleted
+            activeTab: state.activeTab
         )
         
         return .task { send in
@@ -330,7 +326,7 @@ fileprivate extension HomeReducer {
         state.isSearchFocused = isFocused
         
         if isFocused {
-            onDidTapCancelButton(state: &state)
+            didFinishAdding(state: &state)
             
             if state.editMode.isEditing {
                 state.editMode = .inactive
@@ -346,7 +342,7 @@ fileprivate extension HomeReducer {
         editMode: EditMode
     ) -> Effect<Action> {
         if !state.editMode.isEditing && state.viewState == .adding {
-            onDidTapCancelButton(state: &state)
+            didFinishAdding(state: &state)
         }
         state.isSearchFocused = false
         state.editMode = editMode
@@ -356,7 +352,7 @@ fileprivate extension HomeReducer {
     
     func onDidChangeActiveTab(
         state: inout State,
-        activeTab: TDListTab
+        activeTab: TDListTabItem
     ) -> Effect<Action> {
         
         /// Canceling edit mode if active if the user wants to add an item
@@ -384,15 +380,18 @@ fileprivate extension HomeReducer {
     func addList(
         state: inout State
     ) -> Effect<Action> {
-        guard state.viewState == .idle else {
+        switch state.viewState {
+        case .idle:
+            state.viewState = .adding
+            state.activeTab = .add(true)
+            state.isSearchFocused = false
+            return .none
+        case .adding:
+            didFinishAdding(state: &state)
+            return .none
+        default:
             return .none
         }
-        
-        state.activeTab = .all
-        state.isSearchFocused = false
-        state.viewState = .adding
-        
-        return .none
     }
     
     func sortLists(
@@ -416,9 +415,11 @@ fileprivate extension HomeReducer {
     
     func performAction(
         state: inout State,
-        activeTab: TDListTab
+        activeTab: TDListTabItem
     ) -> Effect<Action> {
-        guard state.activeTab != activeTab else { return .none }
+        guard state.activeTab != activeTab else {
+            return .none
+        }
         state.activeTab = activeTab
         state.viewState = .idle
         return .none
@@ -449,6 +450,7 @@ fileprivate extension HomeReducer {
         state: inout State,
         result: ActionResult<UserList>
     ) -> Effect<Action> {
+        didFinishAdding(state: &state)
         switch result {
         case .success(let list):
             state.lists.insert(list, at: 0)

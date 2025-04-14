@@ -22,14 +22,13 @@ struct HomeReducer: Reducer {
         /// HomeReducer+UserActions
         case didTapList(String)
         case didTapSubmitListButton(String?, String)
-        case didTapCancelButton
         case didTapToggleListButton(String)
         case didTapShareListButton(String)
         case didTapDeleteListButton(String)
         case didMoveList(IndexSet, Int)
         case didChangeSearchFocus(Bool)
         case didChangeEditMode(EditMode)
-        case didChangeActiveTab(TDListTab)
+        case didChangeActiveTab(TDListTabItem)
         case didUpdateSearchText(String)
         case didTapDismissError
         
@@ -50,12 +49,15 @@ struct HomeReducer: Reducer {
         var invitations = [Invitation]()
         
         var editMode: EditMode = .inactive
-        var activeTab: TDListTab = .all
         var searchText: String  = ""
         var isSearchFocused: Bool = false
-        
+        var activeTab: TDListTabItem = .all
         var tabs: [TDListTab] {
-            TDListTab.tabs(for: lists.count)
+            TDListTab.allCases(
+                active: activeTab,
+                hidden: [lists.count < 2 ? .sort : nil,
+                         lists.count < 1 ? .edit : nil].compactMap { $0 }
+            )
         }
         
         var alert: AppAlert<Action>? {
@@ -99,9 +101,14 @@ struct HomeReducer: Reducer {
 
 @MainActor
 extension Store<HomeReducer> {
-    var activeTab: TDListTab {
+    var activeTab: TDListTabItem {
         get { state.activeTab }
         set { send(.didChangeActiveTab(newValue)) }
+    }
+    
+    var tabs: [TDListTab] {
+        get { state.tabs }
+        set { }
     }
     
     var searchText: String {
@@ -112,7 +119,7 @@ extension Store<HomeReducer> {
     var rows: [TDListRow] {
         get {
             state.lists
-                .filter(by: activeTab.isCompleted)
+                .filter(by: state.activeTab)
                 .filter(by: searchText)
         }
         set { }

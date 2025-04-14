@@ -37,11 +37,13 @@ public protocol ItemsDataSourceApi {
     ) async throws
 }
 
-public final class ItemsDataSource: ItemsDataSourceApi {
+public final class ItemsDataSource: ItemsDataSourceApi, PublisherDataSource {
     private enum Errors: Error {
         case invalidDTO
         case encodingError
     }
+    
+    public var isPublisherStopped = false
 
     public init() {}
 
@@ -63,12 +65,14 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         itemsCollection(listId: listId)
             .snapshotPublisher()
             .filter { !$0.metadata.hasPendingWrites }
-            .map { snapshot in
-                snapshot.documents.compactMap { document -> ItemDTO? in
-                    guard var dto = try? document.data(as: ItemDTO.self) else { return nil }
-                    dto.id = document.documentID
-                    return dto
-                }
+            .compactMap { [weak self] snapshot in
+                guard let self else { return nil }
+                return snapshot.skip(if: &self.isPublisherStopped)?
+                    .documents.compactMap { document in
+                        guard var dto = try? document.data(as: ItemDTO.self) else { return nil }
+                        dto.id = document.documentID
+                        return dto
+                    }
             }
             .eraseToAnyPublisher()
     }
@@ -100,6 +104,8 @@ public final class ItemsDataSource: ItemsDataSourceApi {
         itemId: String,
         listId: String
     ) async throws {
+        isPublisherStopped = true
+        
         let itemDocument = itemsCollection(listId: listId).document(itemId)
 
         let _ = try await Firestore.firestore().runTransaction {

@@ -5,39 +5,18 @@ import Strings
 
 // MARK: - TDList
 
-public struct TDListView: View {
-    
-    public enum SlideDirection {
-        case forward
-        case backward
-        
-        var transition: AnyTransition {
-            switch self {
-            case .forward:
-                    .asymmetric(
-                        insertion: .move(edge: .trailing),
-                        removal: .move(edge: .leading)
-                    )
-            case .backward:
-                    .asymmetric(
-                        insertion: .move(edge: .leading),
-                        removal: .move(edge: .trailing)
-                    )
-            }
-        }
-    }
-    
+public struct TDListView: View {    
     public struct Configuration {
         let title: String
-        let tabs: [TDListTab]
-        let activeTab: Binding<TDListTab>
+        let tabs: Binding<[TDListTab]>
+        let activeTab: Binding<TDListTabItem>
         let searchText: Binding<String>
         @Binding var isSearchFocused: Bool
         
         public init(
             title: String,
-            tabs: [TDListTab],
-            activeTab: Binding<TDListTab>,
+            tabs: Binding<[TDListTab]>,
+            activeTab: Binding<TDListTabItem>,
             searchText: Binding<String>,
             isSearchFocused: Binding<Bool>
         ) {
@@ -54,10 +33,10 @@ public struct TDListView: View {
     private let configuration: Configuration
     @Binding private var searchText: String
     @FocusState private var isSearchFocused: Bool
-    @Binding private var activeTab: TDListTab
+    @Binding private var activeTab: TDListTabItem
     
     /// Animation properties
-    @State private var slideDirection: SlideDirection = .forward
+    @State private var slideTransition: TDSlideTransition = .forward
     private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
     
     /// Scrolling properties
@@ -87,8 +66,8 @@ public struct TDListView: View {
     public var body: some View {
         ZStack {
             list
-                .id(activeTab.rawValue)
-                .transition(slideDirection.transition)
+                .id(activeTab.activeId)
+                .transition(slideTransition.transition)
             header()
         }
         .background(background)
@@ -191,7 +170,7 @@ extension TDListView {
                 let searchBarHeight: CGFloat = 45
                 
                 TDListTabButtonView(
-                    slideDirection: $slideDirection,
+                    slideTransition: $slideTransition,
                     activeTab: $activeTab,
                     tabs: configuration.tabs
                 )
@@ -259,39 +238,39 @@ fileprivate extension View {
     }
 }
 
-#Preview {
-    struct RowMock: TDListRow {
-        var id = ""
-        var done = false
-        var name = "List 1"
-        var index = 0
-        var image = Image.circle
-        var leadingActions = [TDListSwipeAction]()
-        var trailingActions = [TDListSwipeAction]()
-        var isEditing = false
-    }
-    
-    return TDListView(
-        configuration: .init(
-            title: "To-do's",
-            tabs: TDListTab.allCases,
-            activeTab: .constant(.all),
-            searchText: .constant(""),
-            isSearchFocused: .constant(true)
-        )
-    ) {
-        TDListContentView(
-            configuration: .init(
-                listHeight: 100,
-                status: .plain
-            ),
-            actions: .init(
-                onSubmit: { _, _ in },
-                onCancel: {},
-                onSwipe: { _, _ in },
-                onMove: { _, _ in }
-            ),
-            rows: .constant(Array(repeating: RowMock(), count: 20))
-        )
-    }
-}
+//#Preview {
+//    struct RowMock: TDListRow {
+//        var id = ""
+//        var done = false
+//        var name = "List 1"
+//        var index = 0
+//        var image = Image.circle
+//        var leadingActions = [TDListSwipeAction]()
+//        var trailingActions = [TDListSwipeAction]()
+//        var isEditing = false
+//    }
+//    
+//    return TDListView(
+//        configuration: .init(
+//            title: "To-do's",
+//            tabs: TDListTabItem.allCases,
+//            activeTab: .constant(.all),
+//            searchText: .constant(""),
+//            isSearchFocused: .constant(true)
+//        )
+//    ) {
+//        TDListContentView(
+//            configuration: .init(
+//                listHeight: 100,
+//                status: .plain
+//            ),
+//            actions: .init(
+//                onSubmit: { _, _ in },
+//                onCancel: {},
+//                onSwipe: { _, _ in },
+//                onMove: { _, _ in }
+//            ),
+//            rows: .constant(Array(repeating: RowMock(), count: 20))
+//        )
+//    }
+//}

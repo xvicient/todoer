@@ -11,6 +11,7 @@ struct TDListEditRowView: View {
 
     @Binding private var text: String
     @State private var localText: String = ""
+    @FocusState private var isFocused: Bool
 
     init(
         row: Binding<TDListRow>,
@@ -27,6 +28,7 @@ struct TDListEditRowView: View {
                 .foregroundColor(Color.buttonBlack)
             
             TextField(Strings.List.newItemPlaceholder, text: $localText)
+                .focused($isFocused)
                 .foregroundColor(Color.textBlack)
                 .submitLabel(.done)
                 .onSubmit(handleSubmit)
@@ -35,6 +37,15 @@ struct TDListEditRowView: View {
                         localText = text
                     }
                 }
+            
+            if !localText.isEmpty && isFocused {
+                Button(action: handleCancel) {
+                    Image.xmark
+                        .resizable()
+                        .frame(width: 12, height: 12)
+                        .foregroundColor(Color.buttonBlack)
+                }
+            }
         }
         .frame(height: 40)
         .onAppear {
@@ -42,12 +53,15 @@ struct TDListEditRowView: View {
         }
     }
 
-    // Handle submit action
     private func handleSubmit() {
         hideKeyboard()
         text = localText
         withAnimation {
             actions.onSubmit(row.id, localText)
         }
+    }
+    
+    private func handleCancel() {
+        localText = ""
     }
 }

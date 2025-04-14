@@ -40,7 +40,7 @@ protocol ListsDataSourceApi {
     ) async throws
 }
 
-final class ListsDataSource: ListsDataSourceApi {
+final class ListsDataSource: ListsDataSourceApi, PublisherDataSource {
 
     struct SearchField {
         enum Key: String {
@@ -65,6 +65,8 @@ final class ListsDataSource: ListsDataSourceApi {
     }
 
     private let listsCollection = Firestore.firestore().collection("lists")
+    
+    public var isPublisherStopped = false
 
     func fetchLists(
         uid: String
@@ -73,12 +75,14 @@ final class ListsDataSource: ListsDataSourceApi {
             .whereField("uid", arrayContains: uid)
             .snapshotPublisher()
             .filter { !$0.metadata.hasPendingWrites }
-            .map { snapshot in
-                snapshot.documents.compactMap { document -> ListDTO? in
-                    guard var dto = try? document.data(as: ListDTO.self) else { return nil }
-                    dto.id = document.documentID
-                    return dto
-                }
+            .compactMap { [weak self] snapshot in
+                guard let self else { return nil }
+                return snapshot.skip(if: &self.isPublisherStopped)?
+                    .documents.compactMap { document in
+                        guard var dto = try? document.data(as: ListDTO.self) else { return nil }
+                        dto.id = document.documentID
+                        return dto
+                    }
             }
             .eraseToAnyPublisher()
     }
@@ -170,6 +174,8 @@ final class ListsDataSource: ListsDataSourceApi {
     func deleteLists(
         with fields: [SearchField]
     ) async throws {
+        isPublisherStopped = true
+        
         try await listsQuery(with: fields)
             .getDocuments()
             .documents

@@ -33,9 +33,12 @@ public extension Array where Element: TDListRow {
             }
     }
 
-    func filter(by done: Bool?) -> [Element] {
-        guard let done else { return self }
-        return filter { $0.done == done }
+    func filter(by tab: TDListTabItem) -> [Element] {
+        switch tab {
+        case .todo: filter { $0.done == false }
+        case .done: filter { $0.done == true }
+        default: self
+        }
     }
     
     mutating func replace(_ element: Element, at index: Int) {
@@ -74,11 +77,11 @@ public extension Array where Element: TDListRow {
     mutating func move(
         fromIndex: IndexSet,
         toIndex: Int,
-        isCompleted: Bool?
+        activeTab: TDListTabItem
     ) -> [Element] {
         // Get the filtered lists that are currently visible
         let filteredLists = self
-            .filter(by: isCompleted)
+            .filter(by: activeTab)
         
         // Create a copy for moving and perform the move
         var movedFilteredLists = filteredLists
@@ -86,8 +89,10 @@ public extension Array where Element: TDListRow {
         
         // Create a mapping of original indices to filtered indices
         let filteredIndices = self.indices.filter { index in
-            let list = self[index]
-            return isCompleted == nil || list.done == isCompleted
+            switch activeTab {
+            case .todo, .done: self[index].done
+            default: true
+            }
         }
         
         // Update the main list while preserving items that don't match the filter

@@ -45,7 +45,7 @@ extension ListItemsScreen {
     fileprivate var listConfiguration: TDListView.Configuration {
         .init(
             title: store.state.listName,
-            tabs: store.state.tabs,
+            tabs: $store.tabs,
             activeTab: $store.activeTab,
             searchText: $store.searchText,
             isSearchFocused: $store.isSearchFocused
@@ -60,7 +60,6 @@ extension ListItemsScreen {
         
         let actions = TDListContentView.Actions(
             onSubmit: { store.send(.didTapSubmitItemButton($0, $1)) },
-            onCancel: { store.send(.didTapCancelButton) },
             onSwipe: onSwipe,
             onMove: { store.send(.didMoveItem($0, $1)) }
         )

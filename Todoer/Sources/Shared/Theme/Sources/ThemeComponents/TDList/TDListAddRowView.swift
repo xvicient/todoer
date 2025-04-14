@@ -3,7 +3,6 @@ import SwiftUI
 
 protocol TDListAddRowActions {
     var onSubmit: (String?, String) -> Void { get }
-    var onCancel: () -> Void { get }
 }
 
 struct TDListAddRowView: View {
@@ -29,21 +28,23 @@ struct TDListAddRowView: View {
                 .submitLabel(.done)
                 .onSubmit(handleSubmit)
             
-            Button(action: handleCancel) {
-                Image.xmark
-                    .resizable()
-                    .frame(width: 12, height: 12)
-                    .foregroundColor(Color.buttonBlack)
+            if !text.isEmpty && isFocused {
+                Button(action: handleCancel) {
+                    Image.xmark
+                        .resizable()
+                        .frame(width: 12, height: 12)
+                        .foregroundColor(Color.buttonBlack)
+                }
+                .buttonStyle(.borderless)
             }
-            .buttonStyle(.borderless)
         }
         .frame(height: 40)
         .onAppear {
+            text = ""
             isFocused = true
         }
     }
 
-    // Handle submit action
     private func handleSubmit() {
         hideKeyboard()
         withAnimation {
@@ -51,11 +52,7 @@ struct TDListAddRowView: View {
         }
     }
 
-    // Handle cancel action
     private func handleCancel() {
-        hideKeyboard()
-        withAnimation {
-            actions.onCancel()
-        }
+        text = ""
     }
 }
