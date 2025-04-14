@@ -37,13 +37,13 @@ public protocol ItemsDataSourceApi {
     ) async throws
 }
 
-public final class ItemsDataSource: ItemsDataSourceApi, PublisherDataSource {
+public final class ItemsDataSource: ItemsDataSourceApi {
     private enum Errors: Error {
         case invalidDTO
         case encodingError
     }
     
-    public var isPublisherStopped = false
+    public var snapshotState = SnapshotState()
 
     public init() {}
 
@@ -63,16 +63,14 @@ public final class ItemsDataSource: ItemsDataSourceApi, PublisherDataSource {
         listId: String
     ) -> AnyPublisher<[ItemDTO], Error> {
         itemsCollection(listId: listId)
-            .snapshotPublisher()
+            .snapshotPublisher(skipWith: snapshotState)
             .filter { !$0.metadata.hasPendingWrites }
-            .compactMap { [weak self] snapshot in
-                guard let self else { return nil }
-                return snapshot.skip(if: &self.isPublisherStopped)?
-                    .documents.compactMap { document in
-                        guard var dto = try? document.data(as: ItemDTO.self) else { return nil }
-                        dto.id = document.documentID
-                        return dto
-                    }
+            .map { snapshot in
+                snapshot.documents.compactMap { document -> ItemDTO? in
+                    guard var dto = try? document.data(as: ItemDTO.self) else { return nil }
+                    dto.id = document.documentID
+                    return dto
+                }
             }
             .eraseToAnyPublisher()
     }
@@ -104,7 +102,7 @@ public final class ItemsDataSource: ItemsDataSourceApi, PublisherDataSource {
         itemId: String,
         listId: String
     ) async throws {
-        isPublisherStopped = true
+        snapshotState.isStopped = true
         
         let itemDocument = itemsCollection(listId: listId).document(itemId)
 
