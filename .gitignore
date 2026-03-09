@@ -4,3 +4,7 @@
 
 # Firebase
 /Todoer/Resources/GoogleService-Info.plist
+
+# Firebase config
+/Web/public/config.js
+/Web/.firebase
