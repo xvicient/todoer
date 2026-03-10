@@ -1,11 +1,12 @@
 /**
- * Todoer App Logic
+ * Todoer - Production Version
  */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { firebaseConfig } from './config.js';
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -21,36 +22,60 @@ const loginPrompt = document.getElementById('login-prompt');
 const exportBtn = document.getElementById('export-btn');
 const btnNewList = document.getElementById('btn-new-list');
 
+// Icons
 const ICON_EDIT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4L18.5 2.5z"></path></svg>`;
 const ICON_DELETE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
 
 let currentUser = null;
 let allLists = [];
 
-// Authentication Logic
+// Session Persistence
+setPersistence(auth, browserLocalPersistence);
+
+// Auth State Observer
 onAuthStateChanged(auth, (user) => {
     if (user) {
         currentUser = user;
         loginPrompt.style.display = 'none';
         appContent.style.display = 'block';
-        userInfoSection.style.display = 'flex'; // Shows Export and Logout
+        userInfoSection.style.display = 'flex';
         fetchLists(user.uid);
     } else {
         currentUser = null;
         loginPrompt.style.display = 'block';
         appContent.style.display = 'none';
-        userInfoSection.style.display = 'none'; // Hides Export and Logout
+        userInfoSection.style.display = 'none';
+        if (btnLogin) btnLogin.innerText = "Sign in with Google";
     }
 });
 
-if(btnLogin) btnLogin.onclick = () => signInWithPopup(auth, provider);
-if(btnLogout) btnLogout.onclick = () => signOut(auth);
+// Auth Actions
+if (btnLogin) {
+    btnLogin.onclick = async () => {
+        try {
+            btnLogin.innerText = "Connecting...";
+            await signInWithPopup(auth, provider);
+        } catch (error) {
+            console.error("Auth Error:", error.message);
+            btnLogin.innerText = "Sign in with Google";
+        }
+    };
+}
 
-// CRUD Operations (Sorted Alphabetically)
+if (btnLogout) {
+    btnLogout.onclick = () => signOut(auth);
+}
+
+// --- CRUD OPERATIONS ---
+
 btnNewList.onclick = async () => {
     const listName = prompt("New List Name:");
-    if (!listName) return;
-    await addDoc(collection(db, "lists"), { name: listName.trim(), uid: [currentUser.uid], timestamp: serverTimestamp() });
+    if (!listName?.trim()) return;
+    await addDoc(collection(db, "lists"), { 
+        name: listName.trim(), 
+        uid: [currentUser.uid], 
+        timestamp: serverTimestamp() 
+    });
     fetchLists(currentUser.uid);
 };
 
@@ -138,13 +163,12 @@ async function addItem(lId) {
     loadItems(lId);
 }
 
-// Helpers
 async function deleteList(id) { if(confirm("Delete list?")) { await deleteDoc(doc(db, "lists", id)); fetchLists(currentUser.uid); } }
 async function editList(id, old) { const n = prompt("Edit list name:", old); if(n && n!==old) { await updateDoc(doc(db, "lists", id), {name: n.trim()}); fetchLists(currentUser.uid); } }
 async function deleteItem(lId, iId) { if(confirm("Delete task?")) { await deleteDoc(doc(db, "lists", lId, "items", iId)); loadItems(lId); } }
 async function editItem(lId, iId, old) { const n = prompt("Edit task:", old); if(n && n!==old) { await updateDoc(doc(db, "lists", lId, "items", iId), {name: n.trim()}); loadItems(lId); } }
 
-// Excel Export
+// Export Logic
 exportBtn.onclick = async () => {
     const wb = XLSX.utils.book_new();
     const sortedLists = [...allLists].sort((a, b) => (a.name || "").localeCompare(b.name || "", undefined, {sensitivity: 'base'}));
