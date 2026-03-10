@@ -18,7 +18,6 @@ const exportBtn = document.getElementById('export-btn');
 const btnNewList = document.getElementById('btn-new-list');
 const searchInput = document.getElementById('search-lists');
 
-// Filter Buttons
 const btnAll = document.getElementById('filter-all');
 const btnTodo = document.getElementById('filter-todo');
 const btnDone = document.getElementById('filter-done');
@@ -28,7 +27,7 @@ const ICON_DELETE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
 
 let currentUser = null;
 let allLists = [];
-let currentFilter = 'all'; // all, todo, done
+let currentFilter = 'all';
 
 function linkify(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -49,6 +48,7 @@ onAuthStateChanged(auth, (user) => {
         loginPrompt.style.display = 'block';
         appContent.style.display = 'none';
         userInfoSection.style.display = 'none';
+        if (btnLogin) btnLogin.innerText = "Sign in with Google";
     }
 });
 
@@ -58,32 +58,27 @@ if (btnLogin) {
             btnLogin.innerText = "Connecting...";
             await signInWithPopup(auth, provider);
         } catch (error) {
+            console.error("Auth Error:", error.code, error.message);
             btnLogin.innerText = "Sign in with Google";
+            if(error.code === 'auth/unauthorized-domain') {
+                alert("This domain is not authorized in Firebase Console.");
+            }
         }
     };
 }
 
 if (btnLogout) btnLogout.onclick = () => signOut(auth);
 
-// Global Filter Application
 function applyFilters() {
     const term = searchInput.value.toLowerCase();
     let filtered = allLists.filter(l => (l.name || "").toLowerCase().includes(term));
-    
-    if (currentFilter === 'todo') {
-        filtered = filtered.filter(l => !l.isDone);
-    } else if (currentFilter === 'done') {
-        filtered = filtered.filter(l => l.isDone);
-    }
-    
+    if (currentFilter === 'todo') filtered = filtered.filter(l => !l.isDone);
+    else if (currentFilter === 'done') filtered = filtered.filter(l => l.isDone);
     renderLists(filtered);
 }
 
-if (searchInput) {
-    searchInput.oninput = () => applyFilters();
-}
+if (searchInput) searchInput.oninput = () => applyFilters();
 
-// Button listeners
 [btnAll, btnTodo, btnDone].forEach(btn => {
     btn.onclick = () => {
         [btnAll, btnTodo, btnDone].forEach(b => b.classList.remove('active'));
@@ -118,7 +113,6 @@ async function fetchLists(uid) {
         if (a.isDone !== b.isDone) return a.isDone ? 1 : -1;
         return (a.name || "").localeCompare(b.name || "", undefined, {sensitivity: 'base'});
     });
-
     applyFilters();
 }
 
@@ -143,13 +137,9 @@ function renderLists(listsToRender) {
                 </div>
             </div>`;
         displayEl.appendChild(card);
-        
         document.getElementById(`header-${list.id}`).onclick = (e) => { 
-            if(e.target.tagName !== 'A' && !e.target.closest('.btn-icon')) {
-                toggleItems(list.id);
-            }
+            if(e.target.tagName !== 'A' && !e.target.closest('.btn-icon')) toggleItems(list.id);
         };
-        
         document.getElementById(`edit-l-${list.id}`).onclick = (e) => { e.stopPropagation(); editList(list.id, list.name); };
         document.getElementById(`delete-l-${list.id}`).onclick = (e) => { e.stopPropagation(); deleteList(list.id); };
         document.getElementById(`btn-add-${list.id}`).onclick = () => addItem(list.id);
@@ -168,12 +158,9 @@ async function checkListDone(listId) {
     let items = [];
     snap.forEach(d => items.push(d.data()));
     const isDone = items.length > 0 && items.every(i => i.done === true);
-    
-    // Actualizar el cache local
     const listIndex = allLists.findIndex(l => l.id === listId);
     if(listIndex > -1) allLists[listIndex].isDone = isDone;
-
-    applyFilters(); // Re-renderizar con filtros
+    applyFilters();
 }
 
 async function loadItems(listId) {
@@ -183,7 +170,6 @@ async function loadItems(listId) {
     let items = [];
     snap.forEach(itemDoc => items.push({ id: itemDoc.id, ...itemDoc.data() }));
     items.sort((a, b) => (a.name || a.text || "").localeCompare(b.name || b.text || "", undefined, {sensitivity: 'base'}));
-    
     const ul = document.createElement('ul');
     items.forEach(item => {
         const itemName = item.name || item.text || "Task";
@@ -195,7 +181,6 @@ async function loadItems(listId) {
                 <button class="btn-icon btn-edit-i">${ICON_EDIT}</button>
                 <button class="btn-icon btn-delete-i">${ICON_DELETE}</button>
             </div>`;
-        
         li.querySelector('.item-checkbox').onchange = async (e) => {
             await updateDoc(doc(db, "lists", listId, "items", item.id), { done: e.target.checked });
             checkListDone(listId);
