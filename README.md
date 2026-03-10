@@ -13,6 +13,7 @@ A modern task management app built with Swift 6 using Redux architecture and Fir
 - [⚙️ Requirements](#️-requirements)
 - [🏗 Architecture](#-architecture)
 - [🧪 Testing](#-testing)
+- [🌎 Web](#-web)
 - [👨💻 Author](#-author)
 - [© License](#-license)
 
@@ -68,6 +69,20 @@ View → Action → Reducer → State → View
 - Unit tests for Redux reducers (95% coverage)
 - Integration tests for Firebase Firestore.
 - Performance tests for critical paths
+
+## 🌎 Web
+### Installation
+
+1. Navigate to the `Web` directory.
+2. Create a `config.js` file based on your Firebase Console settings:
+   ```javascript
+   export const firebaseConfig = {
+     apiKey: "YOUR_API_KEY",
+     authDomain: "your-project.firebaseapp.com",
+     projectId: "your-project",
+     // ... rest of config
+   };
+3. Open the index.html using a live server.
 
 ## 👨💻 Author
 
