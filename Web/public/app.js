@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence, getRedirectResult, signInWithRedirect } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { firebaseConfig } from './config.js';
 
 const app = initializeApp(firebaseConfig);
@@ -34,7 +34,19 @@ function linkify(text) {
     return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
 }
 
-setPersistence(auth, browserLocalPersistence);
+async function init() {
+    console.log("Initializing Todoer App...");
+    try {
+        await setPersistence(auth, browserLocalPersistence);
+        const result = await getRedirectResult(auth);
+        if (result) {
+            console.log("Redirect result handled:", result.user.email);
+        }
+    } catch (error) {
+        console.error("Initialization Error:", error);
+    }
+}
+init();
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -60,8 +72,14 @@ if (btnLogin) {
         } catch (error) {
             console.error("Auth Error:", error.code, error.message);
             btnLogin.innerText = "Sign in with Google";
-            if(error.code === 'auth/unauthorized-domain') {
+            if (error.code === 'auth/popup-blocked') {
+                if (confirm("Popup blocked! Would you like to use a redirect instead?")) {
+                    await signInWithRedirect(auth, provider);
+                }
+            } else if (error.code === 'auth/unauthorized-domain') {
                 alert("This domain is not authorized in Firebase Console.");
+            } else {
+                alert("Login Error: " + error.message);
             }
         }
     };
@@ -96,24 +114,29 @@ btnNewList.onclick = async () => {
 };
 
 async function fetchLists(uid) {
-    const q = query(collection(db, "lists"), where("uid", "array-contains", uid));
-    const snap = await getDocs(q);
-    const tempLists = [];
-    snap.forEach(d => tempLists.push({ id: d.id, ...d.data() }));
+    try {
+        const q = query(collection(db, "lists"), where("uid", "array-contains", uid));
+        const snap = await getDocs(q);
+        const tempLists = [];
+        snap.forEach(d => tempLists.push({ id: d.id, ...d.data() }));
 
-    allLists = await Promise.all(tempLists.map(async (list) => {
-        const itemSnap = await getDocs(collection(db, "lists", list.id, "items"));
-        const items = [];
-        itemSnap.forEach(idoc => items.push(idoc.data()));
-        const isDone = items.length > 0 && items.every(i => i.done === true);
-        return { ...list, isDone };
-    }));
+        allLists = await Promise.all(tempLists.map(async (list) => {
+            const itemSnap = await getDocs(collection(db, "lists", list.id, "items"));
+            const items = [];
+            itemSnap.forEach(idoc => items.push(idoc.data()));
+            const isDone = items.length > 0 && items.every(i => i.done === true);
+            return { ...list, isDone };
+        }));
 
-    allLists.sort((a, b) => {
-        if (a.isDone !== b.isDone) return a.isDone ? 1 : -1;
-        return (a.name || "").localeCompare(b.name || "", undefined, {sensitivity: 'base'});
-    });
-    applyFilters();
+        allLists.sort((a, b) => {
+            if (a.isDone !== b.isDone) return a.isDone ? 1 : -1;
+            return (a.name || "").localeCompare(b.name || "", undefined, {sensitivity: 'base'});
+        });
+        applyFilters();
+    } catch (error) {
+        console.error("Firestore Error (fetchLists):", error);
+        alert("Failed to load lists: " + error.message);
+    }
 }
 
 function renderLists(listsToRender) {
