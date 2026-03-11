@@ -12,8 +12,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create config.js from Secret
+        env:
+          FIREBASE_CONFIG_CONTENT: ${{ secrets.FIREBASE_CONFIG }}
         run: |
-          echo "${{ secrets.FIREBASE_CONFIG }}" > Web/public/config.js
+          echo "$FIREBASE_CONFIG_CONTENT" > Web/public/config.js
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
