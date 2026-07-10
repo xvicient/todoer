@@ -38,7 +38,7 @@ public enum FullScreenCover: Hashable, Identifiable {
 }
 
 @MainActor
-public protocol CoordinatorApi {
+public protocol CoordinatorApi: AnyObject {
     var isUserLogged: Bool { get }
     func loggOut()
     func loggIn()

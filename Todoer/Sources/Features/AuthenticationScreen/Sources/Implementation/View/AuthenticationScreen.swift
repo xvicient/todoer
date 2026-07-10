@@ -196,7 +196,7 @@ extension Result where Success == ASAuthorization {
 
 struct AuthenticationScreen_Previews: PreviewProvider {
     struct Dependencies: AuthenticationScreenDependencies {
-        let coordinator: CoordinatorApi
+        let coordinator: CoordinatorApi?
     }
 
     static var previews: some View {

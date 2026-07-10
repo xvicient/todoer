@@ -97,6 +97,9 @@ extension ListItemsReducer {
                 result: result
             )
             
+        case (.updating, .moveItemResult(.success)):
+            return .none
+
         case (.updating, .moveItemResult(.failure)):
             state.viewState = .error()
             return.none

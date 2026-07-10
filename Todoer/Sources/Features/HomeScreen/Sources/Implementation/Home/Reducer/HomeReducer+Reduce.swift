@@ -123,6 +123,9 @@ extension HomeReducer {
                 result: result
             )
             
+        case (.updating, .moveListResult(.success)):
+            return .none
+
         case (.updating, .moveListResult(.failure)):
             state.viewState = .error()
             return .none
@@ -189,7 +192,7 @@ fileprivate extension HomeReducer {
             state.viewState = .error()
             return .none
         }
-        dependencies.coordinator.push(.listItems(list))
+        dependencies.coordinator?.push(.listItems(list))
         return .none
     }
     
@@ -292,7 +295,7 @@ fileprivate extension HomeReducer {
             state.viewState = .error()
             return .none
         }
-        dependencies.coordinator.present(sheet: .shareList(list))
+        dependencies.coordinator?.present(sheet: .shareList(list))
         
         return .none
     }

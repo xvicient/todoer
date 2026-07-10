@@ -90,10 +90,14 @@ struct HomeReducer: Reducer {
     }
     
     let dependencies: HomeScreenDependencies
-    let useCase: HomeUseCaseApi = HomeUseCase()
-    
-    init(dependencies: HomeScreenDependencies) {
+    let useCase: HomeUseCaseApi
+
+    init(
+        dependencies: HomeScreenDependencies,
+        useCase: HomeUseCaseApi = HomeUseCase()
+    ) {
         self.dependencies = dependencies
+        self.useCase = useCase
     }
 }
 
