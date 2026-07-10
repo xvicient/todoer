@@ -16,7 +16,7 @@ extension AppMenu.Reducer {
     ) -> Effect<Action> {
         switch useCase.signOut() {
         case .success:
-            dependencies.coordinator.loggOut()
+            dependencies.coordinator?.loggOut()
         case .failure:
             state.viewState = .error()
         }
@@ -30,7 +30,7 @@ extension AppMenu.Reducer {
     func onDidTapAboutButton(
         state: inout State
     ) -> Effect<Action> {
-        dependencies.coordinator.push(.about)
+        dependencies.coordinator?.push(.about)
         return .none
     }
 

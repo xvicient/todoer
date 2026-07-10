@@ -36,7 +36,7 @@ extension AppMenu.Reducer {
         switch result {
         case .success:
             state.viewState = .idle
-            dependencies.coordinator.loggOut()
+            dependencies.coordinator?.loggOut()
         case .failure:
             state.viewState = .error()
         }

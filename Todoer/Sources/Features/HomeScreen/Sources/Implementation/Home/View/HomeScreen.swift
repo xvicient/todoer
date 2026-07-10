@@ -113,7 +113,7 @@ extension HomeScreen {
 
 struct Home_Previews: PreviewProvider {
     struct Dependencies: HomeScreenDependencies {
-        let coordinator: CoordinatorApi
+        let coordinator: CoordinatorApi?
     }
 
     static var previews: some View {

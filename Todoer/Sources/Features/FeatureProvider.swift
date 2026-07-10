@@ -20,7 +20,7 @@ struct FeatureProvider: FeatureProviderAPI {
         coordinator: CoordinatorApi
     ) -> any View {
         struct Dependencies: HomeScreenDependencies {
-            let coordinator: CoordinatorApi
+            weak var coordinator: CoordinatorApi?
         }
         return HomeBuilder.makeHome(
             dependencies: Dependencies(
@@ -52,7 +52,7 @@ struct FeatureProvider: FeatureProviderAPI {
         list: UserList
     ) -> any View {
         struct Dependencies: ShareListScreenDependencies {
-            let coordinator: CoordinatorApi
+            weak var coordinator: CoordinatorApi?
             let list: UserList
         }
 
@@ -68,7 +68,7 @@ struct FeatureProvider: FeatureProviderAPI {
         coordinator: CoordinatorApi
     ) -> any View {
         struct Dependencies: AuthenticationScreenDependencies {
-            let coordinator: CoordinatorApi
+            weak var coordinator: CoordinatorApi?
         }
 
         return Authentication.Builder.makeAuthentication(
@@ -82,7 +82,7 @@ struct FeatureProvider: FeatureProviderAPI {
         coordinator: CoordinatorApi
     ) -> any View {
         struct Dependencies: AppMenuDependencies {
-            var coordinator: CoordinatorApi
+            weak var coordinator: CoordinatorApi?
         }
 
         return AppMenu.Builder.makeAppMenu(

@@ -14,7 +14,7 @@ final class AuthenticationReducerTests: XCTestCase {
     private typealias UseCaseError = AuthenticationUseCaseMock.UseCaseError
 
     struct Dependencies: AuthenticationScreenDependencies {
-        var coordinator: CoordinatorApi
+        var coordinator: CoordinatorApi?
     }
 
     private lazy var store: AuthenticationStore<Authentication.Reducer> = {

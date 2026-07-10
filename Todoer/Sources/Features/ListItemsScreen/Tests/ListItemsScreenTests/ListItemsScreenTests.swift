@@ -170,13 +170,13 @@ class ListItemsScreenTests {
         let mockItems = ItemMock.items(10)
         givenASuccessItemsFetch(mockItems)
         givenASuccessItemMove()
-        
+
         let editMode: EditMode = .active
-        
+
         await store.send(.onAppear) {
             $0.viewState == .loading(true)
         }
-        
+
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
             $0.viewState == .idle
         }
@@ -185,12 +185,46 @@ class ListItemsScreenTests {
             $0.viewState == editMode.viewState &&
             $0.editMode == editMode
         }
-        
+
         await store.send(.didMoveItem(IndexSet(integersIn: 6..<7), 2)) {
             $0.viewState == .updating && $0.items[2].id == mockItems[6].id
         }
+
+        await store.receive(.moveItemResult(.success())) {
+            $0.viewState == .updating
+        }
     }
-    
+
+    @Test("Edit mode and move item fails")
+    func testDidChangeToEditModeAndMoveItem_Failure() async {
+        let mockItems = ItemMock.items(10)
+        givenASuccessItemsFetch(mockItems)
+        givenAFailureItemMove()
+
+        let editMode: EditMode = .active
+
+        await store.send(.onAppear) {
+            $0.viewState == .loading(true)
+        }
+
+        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
+            $0.viewState == .idle
+        }
+
+        await store.send(.didChangeEditMode(editMode)) {
+            $0.viewState == editMode.viewState &&
+            $0.editMode == editMode
+        }
+
+        await store.send(.didMoveItem(IndexSet(integersIn: 6..<7), 2)) {
+            $0.viewState == .updating && $0.items[2].id == mockItems[6].id
+        }
+
+        await store.receive(.moveItemResult(.failure(UseCaseError.error))) {
+            $0.viewState == .error()
+        }
+    }
+
     @Test(
         "Filters tapped",
         arguments: [
@@ -314,7 +348,11 @@ extension ListItemsScreenTests {
     fileprivate func givenASuccessItemMove() {
         useCaseMock.voidResult = .success()
     }
-    
+
+    fileprivate func givenAFailureItemMove() {
+        useCaseMock.voidResult = .failure(UseCaseError.error)
+    }
+
     fileprivate func givenASuccessItemToogle() {
         useCaseMock.voidResult = .success()
     }

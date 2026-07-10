@@ -27,7 +27,7 @@ extension ShareList.Reducer {
         switch result {
         case .success:
             state.viewState = .idle
-            dependencies.coordinator.dismissSheet()
+            dependencies.coordinator?.dismissSheet()
         case .failure(let error):
             state.viewState = .error(error.localizedDescription)
         }

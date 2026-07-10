@@ -102,7 +102,7 @@ struct ShareListScreen: View {
 
 struct ShareView_Previews: PreviewProvider {
     struct Dependencies: ShareListScreenDependencies {
-        let coordinator: CoordinatorApi
+        let coordinator: CoordinatorApi?
         let list: UserList
     }
 
