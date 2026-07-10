@@ -3,7 +3,6 @@ import CoordinatorContract
 import Entities
 import Foundation
 import HomeScreenContract
-import Strings
 import xRedux
 import ThemeComponents
 import SwiftUI
@@ -43,52 +42,33 @@ struct HomeReducer: Reducer {
     }
     
     struct State: AppAlertState {
-        var viewState = ViewState.loading(true)
-        
+        /// `nonisolated(unsafe)`: the compiler infers MainActor isolation for this
+        /// property because `alert` (below, an `AppAlertState` witness) reads it —
+        /// same as `lists`/`invitations`, `State` is a plain value type only ever
+        /// touched through `Store`, which is itself MainActor-bound.
+        nonisolated(unsafe) var screen = TDListScreenState<Action>(viewState: .loading(true))
+
         var lists = [UserList]()
         var invitations = [Invitation]()
-        
-        var editMode: EditMode = .inactive
-        var searchText: String  = ""
-        var isSearchFocused: Bool = false
-        var activeTab: TDListTabItem = .all
+
         var tabs: [TDListTab] {
             TDListTab.allCases(
-                active: activeTab,
+                active: screen.activeTab,
                 hidden: [lists.count < 2 ? .sort : nil,
                          lists.count < 1 ? .edit : nil].compactMap { $0 }
             )
         }
-        
+
         var alert: AppAlert<Action>? {
-            guard case .alert(let data) = viewState else {
+            guard case .alert(let data) = screen.viewState else {
                 return nil
-                
             }
             return data
         }
     }
-    
-    enum ViewState: Equatable, StringRepresentable {
-        case idle
-        case loading(Bool)
-        case updating
-        case adding
-        case alert(AppAlert<Action>)
-        
-        static func error(
-            _ message: String = Errors.default
-        ) -> ViewState {
-            .alert(
-                .init(
-                    title: Strings.Errors.errorTitle,
-                    message: message,
-                    primaryAction: (.didTapDismissError, Strings.Errors.okButtonTitle)
-                )
-            )
-        }
-    }
-    
+
+    typealias ViewState = TDListViewState<Action>
+
     let dependencies: HomeScreenDependencies
     let useCase: HomeUseCaseApi
 
@@ -106,50 +86,50 @@ struct HomeReducer: Reducer {
 @MainActor
 extension Store<HomeReducer> {
     var activeTab: TDListTabItem {
-        get { state.activeTab }
+        get { state.screen.activeTab }
         set { send(.didChangeActiveTab(newValue)) }
     }
-    
+
     var tabs: [TDListTab] {
         get { state.tabs }
         set { }
     }
-    
+
     var searchText: String {
-        get { state.searchText }
+        get { state.screen.searchText }
         set { send(.didUpdateSearchText(newValue)) }
     }
-    
+
     var rows: [TDListRow] {
         get {
             state.lists
-                .filter(by: state.activeTab)
+                .filter(by: state.screen.activeTab)
                 .filter(by: searchText)
         }
         set { }
     }
-    
+
     var editMode: EditMode {
-        get { state.editMode }
+        get { state.screen.editMode }
         set { send(.didChangeEditMode(newValue)) }
     }
-    
+
     var isSearchFocused: Bool {
-        get { state.isSearchFocused }
+        get { state.screen.isSearchFocused }
         set { send(.didChangeSearchFocus(newValue)) }
     }
-    
+
     var isLoading: Bool {
-        switch state.viewState {
+        switch state.screen.viewState {
         case .loading(let isLoading):
             isLoading
         default:
             false
         }
     }
-    
+
     var contentStatus: TDContentStatus {
-        switch state.viewState {
+        switch state.screen.viewState {
         case .adding: .adding
         case .updating where editMode.isEditing: .editing
         case .idle: .plain

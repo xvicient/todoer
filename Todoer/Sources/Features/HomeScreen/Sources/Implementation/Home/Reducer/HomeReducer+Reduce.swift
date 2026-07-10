@@ -15,7 +15,7 @@ extension HomeReducer {
         _ action: Action
     ) -> Effect<Action> {
         
-        switch (state.viewState, action) {
+        switch (state.screen.viewState, action) {
         case (.loading, .onViewAppear),
             (.idle, .onViewAppear):
             return onAppear(
@@ -67,29 +67,36 @@ extension HomeReducer {
             )
             
         case (_, .didChangeSearchFocus(let isFocused)):
-            return onDidChangeSearchFocus(
-                state: &state,
+            return TDListScreenReducer.onDidChangeSearchFocus(
+                state: &state.screen,
                 isFocused: isFocused
             )
-            
+
         case (.idle, .didChangeEditMode(let editMode)),
             (.adding, .didChangeEditMode(let editMode)),
             (.updating, .didChangeEditMode(let editMode)):
-            return onDidChangeEditMode(
-                state: &state,
+            return TDListScreenReducer.onDidChangeEditMode(
+                state: &state.screen,
                 editMode: editMode
             )
-            
+
         case (.idle, .didChangeActiveTab(let activeTab)),
             (.adding, .didChangeActiveTab(let activeTab)),
             (.updating, .didChangeActiveTab(let activeTab)):
-            return onDidChangeActiveTab(
-                state: &state,
-                activeTab: activeTab
-            )
+            switch activeTab {
+            case .add:
+                return addList(state: &state)
+            case .sort:
+                return sortLists(state: &state)
+            default:
+                return TDListScreenReducer.onDidChangeActiveTab(
+                    state: &state.screen,
+                    activeTab: activeTab
+                )
+            }
             
         case (.idle, .didUpdateSearchText(let text)):
-            state.searchText = text
+            state.screen.searchText = text
             return .none
             
         case (.loading, .addSharedListsResult(.success(let lists))),
@@ -127,16 +134,16 @@ extension HomeReducer {
             return .none
 
         case (.updating, .moveListResult(.failure)):
-            state.viewState = .error()
+            state.screen.viewState = .error(dismissAction: .didTapDismissError)
             return .none
             
         case (.alert, .didTapDismissError):
-            state.viewState = .idle
+            state.screen.viewState = .idle
             return .none
             
         default:
             Logger.log(
-                "No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)"
+                "No matching ViewState: \(state.screen.viewState.rawValue) and Action: \(action.rawValue)"
             )
             return .none
         }
@@ -146,13 +153,13 @@ extension HomeReducer {
 // MARK: - Actions
 
 fileprivate extension HomeReducer {
-    
+
     @MainActor
     func onAppear(
         state: inout State
     ) -> Effect<Action> {
         if state.lists.isEmpty {
-            state.viewState = .loading(true)
+            state.screen.viewState = .loading(true)
         }
 
         return .publish(
@@ -170,7 +177,7 @@ fileprivate extension HomeReducer {
             return .none
         }
 
-        didFinishAdding(state: &state)
+        TDListScreenReducer.didFinishAdding(state: &state.screen)
 
         return .task { send in
             await send(
@@ -180,7 +187,7 @@ fileprivate extension HomeReducer {
             )
         }
     }
-    
+
     @MainActor
     func onDidTapList(
         state: inout State,
@@ -189,21 +196,13 @@ fileprivate extension HomeReducer {
         guard let index = state.lists.index(for: uid),
               let list = state.lists[safe: index]
         else {
-            state.viewState = .error()
+            state.screen.viewState = .error(dismissAction: .didTapDismissError)
             return .none
         }
         dependencies.coordinator?.push(.listItems(list))
         return .none
     }
-    
-    func didFinishAdding(
-        state: inout State
-    ) {
-        state.viewState = .idle
-        state.activeTab = .add(false)
-        state.isSearchFocused = false
-    }
-    
+
     func onDidTapToggleListButton(
         state: inout State,
         uid: String
@@ -211,10 +210,10 @@ fileprivate extension HomeReducer {
         guard let index = state.lists.index(for: uid),
               state.lists[safe: index] != nil
         else {
-            state.viewState = .error()
+            state.screen.viewState = .error(dismissAction: .didTapDismissError)
             return .none
         }
-        state.viewState = .loading(false)
+        state.screen.viewState = .loading(false)
         state.lists[index].done.toggle()
         let list = state.lists[index]
         
@@ -235,10 +234,10 @@ fileprivate extension HomeReducer {
     ) -> Effect<Action> {
         guard let index = state.lists.index(for: uid),
               let list = state.lists[safe: index] else {
-            state.viewState = .error()
+            state.screen.viewState = .error(dismissAction: .didTapDismissError)
             return .none
         }
-        state.viewState = .loading(false)
+        state.screen.viewState = .loading(false)
         state.lists.remove(at: index)
         
         return .task { send in
@@ -292,7 +291,7 @@ fileprivate extension HomeReducer {
         guard let index = state.lists.index(for: uid),
               let list = state.lists[safe: index]
         else {
-            state.viewState = .error()
+            state.screen.viewState = .error(dismissAction: .didTapDismissError)
             return .none
         }
         dependencies.coordinator?.present(sheet: .shareList(list))
@@ -308,7 +307,7 @@ fileprivate extension HomeReducer {
         let lists = state.lists.move(
             fromIndex: fromIndex,
             toIndex: toIndex,
-            activeTab: state.activeTab
+            activeTab: state.screen.activeTab
         )
         
         return .task { send in
@@ -322,89 +321,31 @@ fileprivate extension HomeReducer {
         }
     }
     
-    func onDidChangeSearchFocus(
-        state: inout State,
-        isFocused: Bool
-    ) -> Effect<Action> {
-        state.isSearchFocused = isFocused
-        
-        if isFocused {
-            didFinishAdding(state: &state)
-            
-            if state.editMode.isEditing {
-                state.editMode = .inactive
-                state.viewState = state.editMode.viewState
-            }
-        }
-        
-        return .none
-    }
-    
-    func onDidChangeEditMode(
-        state: inout State,
-        editMode: EditMode
-    ) -> Effect<Action> {
-        if !state.editMode.isEditing && state.viewState == .adding {
-            didFinishAdding(state: &state)
-        }
-        state.isSearchFocused = false
-        state.editMode = editMode
-        state.viewState = editMode.viewState
-        return .none
-    }
-    
-    func onDidChangeActiveTab(
-        state: inout State,
-        activeTab: TDListTabItem
-    ) -> Effect<Action> {
-        
-        /// Canceling edit mode if active if the user wants to add an item
-        if state.editMode == .active {
-            state.editMode = .inactive
-        }
-        
-        switch activeTab {
-        case .add:
-            return addList(state: &state)
-        case .sort:
-            return sortLists(state: &state)
-        case .edit:
-            /// Handled in onDidChangeEditMode since we're using a EditButton
-            return .none
-        case .all:
-            return performAction(state: &state, activeTab: .all)
-        case .done:
-            return performAction(state: &state, activeTab: .done)
-        case .todo:
-            return performAction(state: &state, activeTab: .todo)
-        }
-    }
-    
     func addList(
         state: inout State
     ) -> Effect<Action> {
-        switch state.viewState {
+        switch state.screen.viewState {
         case .idle:
-            state.viewState = .adding
-            state.activeTab = .add(true)
-            state.isSearchFocused = false
+            state.screen.viewState = .adding
+            state.screen.activeTab = .add(true)
+            state.screen.isSearchFocused = false
             return .none
         case .adding:
-            didFinishAdding(state: &state)
+            TDListScreenReducer.didFinishAdding(state: &state.screen)
             return .none
         default:
             return .none
         }
     }
-    
+
     func sortLists(
         state: inout State
     ) -> Effect<Action> {
-        state.viewState = .loading(false)
+        state.screen.viewState = .loading(false)
         state.lists.sorted()
-        
+
         let lists = state.lists
-        
+
         return .task { send in
             await send(
                 .voidResult(
@@ -414,18 +355,6 @@ fileprivate extension HomeReducer {
                 )
             )
         }
-    }
-    
-    func performAction(
-        state: inout State,
-        activeTab: TDListTabItem
-    ) -> Effect<Action> {
-        guard state.activeTab != activeTab else {
-            return .none
-        }
-        state.activeTab = activeTab
-        state.viewState = .idle
-        return .none
     }
 }
 
@@ -439,31 +368,31 @@ fileprivate extension HomeReducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let data):
-            if case .loading = state.viewState { state.viewState = .idle }
+            if case .loading = state.screen.viewState { state.screen.viewState = .idle }
             state.lists = data.lists
             state.invitations = data.invitations
             return .none
         case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
+            state.screen.viewState = .error(error.localizedDescription, dismissAction: .didTapDismissError)
         }
         return .none
     }
-    
+
     func onAddListResult(
         state: inout State,
         result: ActionResult<UserList>
     ) -> Effect<Action> {
-        didFinishAdding(state: &state)
+        TDListScreenReducer.didFinishAdding(state: &state.screen)
         switch result {
         case .success(let list):
             state.lists.insert(list, at: 0)
-            state.viewState = .idle
+            state.screen.viewState = .idle
         case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
+            state.screen.viewState = .error(error.localizedDescription, dismissAction: .didTapDismissError)
         }
         return .none
     }
-    
+
     func onUpdateListResult(
         state: inout State,
         result: ActionResult<UserList>
@@ -471,13 +400,13 @@ fileprivate extension HomeReducer {
         switch result {
         case .success(let list):
             guard let index = state.lists.firstIndex(where: { $0.id == list.id }) else {
-                state.viewState = .error()
+                state.screen.viewState = .error(dismissAction: .didTapDismissError)
                 return .none
             }
             state.lists.replace(list, at: index)
-            state.viewState = .updating
+            state.screen.viewState = .updating
         case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
+            state.screen.viewState = .error(error.localizedDescription, dismissAction: .didTapDismissError)
         }
         return .none
     }
@@ -488,21 +417,10 @@ fileprivate extension HomeReducer {
     ) -> Effect<Action> {
         switch result {
         case .success:
-            state.viewState = .idle
+            state.screen.viewState = .idle
         case .failure:
-            state.viewState = .error()
+            state.screen.viewState = .error(dismissAction: .didTapDismissError)
         }
         return .none
-    }
-}
-
-extension EditMode {
-    fileprivate var viewState: HomeReducer.ViewState {
-        switch self {
-        case .active:
-                .updating
-        default:
-                .idle
-        }
     }
 }

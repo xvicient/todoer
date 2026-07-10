@@ -38,11 +38,11 @@ class HomeReducerTests {
         givenASuccessHomeDataFetch()
 
         await store.send(.onViewAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchHomeDataResult)) { [listsMock] in
-            $0.viewState == .idle && $0.lists == listsMock
+            $0.screen.viewState == .idle && $0.lists == listsMock
         }
     }
 
@@ -51,11 +51,11 @@ class HomeReducerTests {
         givenAFailureHomeDataFetch()
 
         await store.send(.onViewAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchHomeDataResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription)
+            $0.screen.viewState == .error(UseCaseError.error.localizedDescription, dismissAction: .didTapDismissError)
         }
     }
 
@@ -65,23 +65,23 @@ class HomeReducerTests {
         givenASuccessListsMove()
 
         await store.send(.onViewAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchHomeDataResult)) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
 
         await store.send(.didChangeEditMode(.active)) {
-            $0.viewState == .updating && $0.editMode == .active
+            $0.screen.viewState == .updating && $0.screen.editMode == .active
         }
 
         await store.send(.didMoveList(IndexSet(integer: 0), 0)) {
-            $0.viewState == .updating
+            $0.screen.viewState == .updating
         }
 
         await store.receive(.moveListResult(.success())) {
-            $0.viewState == .updating
+            $0.screen.viewState == .updating
         }
     }
 
@@ -91,23 +91,23 @@ class HomeReducerTests {
         givenAFailureListsMove()
 
         await store.send(.onViewAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchHomeDataResult)) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
 
         await store.send(.didChangeEditMode(.active)) {
-            $0.viewState == .updating && $0.editMode == .active
+            $0.screen.viewState == .updating && $0.screen.editMode == .active
         }
 
         await store.send(.didMoveList(IndexSet(integer: 0), 0)) {
-            $0.viewState == .updating
+            $0.screen.viewState == .updating
         }
 
         await store.receive(.moveListResult(.failure(UseCaseError.error))) {
-            $0.viewState == .error()
+            $0.screen.viewState == .error(dismissAction: .didTapDismissError)
         }
     }
 }

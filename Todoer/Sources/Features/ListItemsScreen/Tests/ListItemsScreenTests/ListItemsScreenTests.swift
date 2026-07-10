@@ -59,11 +59,11 @@ class ListItemsScreenTests {
         givenASuccessItemsFetch()
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) { [listMock, itemMock] in
-            $0.viewState == .idle && $0.listName == listMock.name && $0.items == [itemMock]
+            $0.screen.viewState == .idle && $0.listName == listMock.name && $0.items == [itemMock]
         }
     }
 
@@ -72,11 +72,11 @@ class ListItemsScreenTests {
         givenAFailureItemsFetch()
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) { [listMock] in
-            $0.viewState == .error(UseCaseError.error.localizedDescription) && $0.listName == listMock.name && $0.items.isEmpty
+            $0.screen.viewState == .error(UseCaseError.error.localizedDescription, dismissAction: .didTapDismissError) && $0.listName == listMock.name && $0.items.isEmpty
         }
     }
 
@@ -90,17 +90,17 @@ class ListItemsScreenTests {
         await store.send(.didChangeActiveTab(.add(true))) {
             itemMockId = $0.items.first?.id
             itemsCount = $0.items.count
-            return $0.viewState == .adding &&
-                   $0.isSearchFocused == false &&
-                   $0.activeTab == .add(true)
+            return $0.screen.viewState == .adding &&
+                   $0.screen.isSearchFocused == false &&
+                   $0.screen.activeTab == .add(true)
         }
 
         await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
-            $0.viewState == .adding
+            $0.screen.viewState == .adding
         }
 
         await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .idle && $0.items.count == itemsCount + 1
+            $0.screen.viewState == .idle && $0.items.count == itemsCount + 1
         }
     }
 
@@ -114,17 +114,17 @@ class ListItemsScreenTests {
         await store.send(.didChangeActiveTab(.add(true))) {
             itemMockId = $0.items.first?.id
             itemsCount = $0.items.count
-            return $0.viewState == .adding &&
-                   $0.isSearchFocused == false &&
-                   $0.activeTab == .add(true)
+            return $0.screen.viewState == .adding &&
+                   $0.screen.isSearchFocused == false &&
+                   $0.screen.activeTab == .add(true)
         }
 
         await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
-            $0.viewState == .adding
+            $0.screen.viewState == .adding
         }
 
         await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription) &&
+            $0.screen.viewState == .error(UseCaseError.error.localizedDescription, dismissAction: .didTapDismissError) &&
             $0.items.count == itemsCount
         }
     }
@@ -135,13 +135,13 @@ class ListItemsScreenTests {
         
         await store.send(.didChangeActiveTab(.add(true))) {
             itemsCount = $0.items.count
-            return $0.viewState == .adding &&
-                   $0.isSearchFocused == false &&
-                   $0.activeTab == .add(true)
+            return $0.screen.viewState == .adding &&
+                   $0.screen.isSearchFocused == false &&
+                   $0.screen.activeTab == .add(true)
         }
 
         await store.send(.didChangeActiveTab(.add(false))) {
-            $0.viewState == .idle && $0.items.count == itemsCount
+            $0.screen.viewState == .idle && $0.items.count == itemsCount
         }
     }
     
@@ -156,12 +156,12 @@ class ListItemsScreenTests {
         givenASuccessItemsFetch()
 
         await store.send(.didChangeActiveTab(.add(true))) {
-            $0.viewState == .adding
+            $0.screen.viewState == .adding
         }
         
         await store.send(.didChangeEditMode(editMode)) {
-            $0.viewState == editMode.viewState &&
-            $0.editMode == editMode
+            $0.screen.viewState == editMode.tdViewState() &&
+            $0.screen.editMode == editMode
         }
     }
     
@@ -174,24 +174,24 @@ class ListItemsScreenTests {
         let editMode: EditMode = .active
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
 
         await store.send(.didChangeEditMode(editMode)) {
-            $0.viewState == editMode.viewState &&
-            $0.editMode == editMode
+            $0.screen.viewState == editMode.tdViewState() &&
+            $0.screen.editMode == editMode
         }
 
         await store.send(.didMoveItem(IndexSet(integersIn: 6..<7), 2)) {
-            $0.viewState == .updating && $0.items[2].id == mockItems[6].id
+            $0.screen.viewState == .updating && $0.items[2].id == mockItems[6].id
         }
 
         await store.receive(.moveItemResult(.success())) {
-            $0.viewState == .updating
+            $0.screen.viewState == .updating
         }
     }
 
@@ -204,24 +204,24 @@ class ListItemsScreenTests {
         let editMode: EditMode = .active
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
 
         await store.send(.didChangeEditMode(editMode)) {
-            $0.viewState == editMode.viewState &&
-            $0.editMode == editMode
+            $0.screen.viewState == editMode.tdViewState() &&
+            $0.screen.editMode == editMode
         }
 
         await store.send(.didMoveItem(IndexSet(integersIn: 6..<7), 2)) {
-            $0.viewState == .updating && $0.items[2].id == mockItems[6].id
+            $0.screen.viewState == .updating && $0.items[2].id == mockItems[6].id
         }
 
         await store.receive(.moveItemResult(.failure(UseCaseError.error))) {
-            $0.viewState == .error()
+            $0.screen.viewState == .error(dismissAction: .didTapDismissError)
         }
     }
 
@@ -237,7 +237,7 @@ class ListItemsScreenTests {
         givenASuccessItemsFetch()
         
         await store.send(.didChangeActiveTab(tab)) {
-            $0.viewState == .idle && $0.activeTab == tab
+            $0.screen.viewState == .idle && $0.screen.activeTab == tab
         }
     }
     
@@ -249,19 +249,19 @@ class ListItemsScreenTests {
         givenASuccessItemToogle()
         
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
         
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
 
         await store.send(.didTapToggleItemButton(itemMock.id)) {
-            $0.viewState == .loading(false) && $0.items[0].done == !itemMock.done
+            $0.screen.viewState == .loading(false) && $0.items[0].done == !itemMock.done
         }
         
         await store.receive(.voidResult(.success())) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
     }
     
@@ -271,37 +271,37 @@ class ListItemsScreenTests {
         givenASuccessItemDelete()
         
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
         
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
 
         await store.send(.didTapDeleteItemButton(itemMock.id)) {
-            $0.viewState == .loading(false) && !$0.items.contains { $0.id == itemMock.id }
+            $0.screen.viewState == .loading(false) && !$0.items.contains { $0.id == itemMock.id }
         }
         
         await store.receive(.voidResult(.success())) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
     }
     
     @Test("Did change search focus item", arguments: [(true)])
     func testDidChangeSearchFocus_Success(isFocused: Bool) async {
         await store.send(.didChangeActiveTab(.add(true))) {
-            $0.viewState == .adding
+            $0.screen.viewState == .adding
         }
         
         await store.send(.didChangeSearchFocus(isFocused)) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
     }
     
     @Test("Did update search text")
     func testDidUpdateSearchText_Success() async {
         await store.send(.didUpdateSearchText(itemMock.name)) {
-            $0.viewState == .idle && $0.searchText == itemMock.name
+            $0.screen.viewState == .idle && $0.screen.searchText == itemMock.name
         }
     }
     
@@ -310,15 +310,15 @@ class ListItemsScreenTests {
         givenAFailureItemsFetch()
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.screen.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription)
+            $0.screen.viewState == .error(UseCaseError.error.localizedDescription, dismissAction: .didTapDismissError)
         }
         
         await store.send(.didTapDismissError) {
-            $0.viewState == .idle
+            $0.screen.viewState == .idle
         }
     }
 

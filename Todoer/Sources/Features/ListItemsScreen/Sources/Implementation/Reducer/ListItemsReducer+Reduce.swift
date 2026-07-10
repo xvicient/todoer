@@ -13,7 +13,7 @@ extension ListItemsReducer {
         _ state: inout State,
         _ action: Action
     ) -> Effect<Action> {
-        switch (state.viewState, action) {
+        switch (state.screen.viewState, action) {
         case (.idle, .onAppear):
             return onAppear(
                 state: &state
@@ -47,29 +47,36 @@ extension ListItemsReducer {
             )
             
         case (_, .didChangeSearchFocus(let isFocused)):
-            return onDidChangeSearchFocus(
-                state: &state,
+            return TDListScreenReducer.onDidChangeSearchFocus(
+                state: &state.screen,
                 isFocused: isFocused
             )
-            
+
         case (.idle, .didChangeEditMode(let editMode)),
             (.adding, .didChangeEditMode(let editMode)),
             (.updating, .didChangeEditMode(let editMode)):
-            return onDidChangeEditMode(
-                state: &state,
+            return TDListScreenReducer.onDidChangeEditMode(
+                state: &state.screen,
                 editMode: editMode
             )
-            
+
         case (.idle, .didChangeActiveTab(let activeTab)),
             (.adding, .didChangeActiveTab(let activeTab)),
             (.updating, .didChangeActiveTab(let activeTab)):
-            return onDidChangeActiveTab(
-                state: &state,
-                activeTab: activeTab
-            )
+            switch activeTab {
+            case .add:
+                return addItem(state: &state)
+            case .sort:
+                return sortLists(state: &state)
+            default:
+                return TDListScreenReducer.onDidChangeActiveTab(
+                    state: &state.screen,
+                    activeTab: activeTab
+                )
+            }
             
         case (.idle, .didUpdateSearchText(let text)):
-            state.searchText = text
+            state.screen.searchText = text
             return .none
 
         case (_, .fetchItemsResult(let result)):
@@ -101,16 +108,16 @@ extension ListItemsReducer {
             return .none
 
         case (.updating, .moveItemResult(.failure)):
-            state.viewState = .error()
+            state.screen.viewState = .error(dismissAction: .didTapDismissError)
             return.none
 
         case (.alert, .didTapDismissError):
-            state.viewState = .idle
+            state.screen.viewState = .idle
             return .none
 
         default:
             Logger.log(
-                "No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)"
+                "No matching ViewState: \(state.screen.viewState.rawValue) and Action: \(action.rawValue)"
             )
             return .none
         }
@@ -123,7 +130,7 @@ fileprivate extension ListItemsReducer {
     func onAppear(
         state: inout State
     ) -> Effect<Action> {
-        state.viewState = .loading(true)
+        state.screen.viewState = .loading(true)
         return .publish(
             dependencies.useCase.fetchItems(
                 listId: dependencies.list.id
@@ -140,11 +147,11 @@ fileprivate extension ListItemsReducer {
     ) -> Effect<Action> {
         guard let index = state.items.index(for: uid),
               state.items[safe: index] != nil else {
-            state.viewState = .error(Errors.default)
+            state.screen.viewState = .error(Errors.default, dismissAction: .didTapDismissError)
             return .none
         }
-        state.viewState = .loading(false)
-        
+        state.screen.viewState = .loading(false)
+
         state.items[index].done.toggle()
         
         let item = state.items[index]
@@ -169,10 +176,10 @@ fileprivate extension ListItemsReducer {
     ) -> Effect<Action> {
         guard let index = state.items.index(for: uid),
               let item = state.items[safe: index] else {
-            state.viewState = .error(Errors.default)
+            state.screen.viewState = .error(Errors.default, dismissAction: .didTapDismissError)
             return .none
         }
-        state.viewState = .loading(false)
+        state.screen.viewState = .loading(false)
         state.items.remove(at: index)
         
         return .task { send in
@@ -234,7 +241,7 @@ fileprivate extension ListItemsReducer {
         let items = state.items.move(
             fromIndex: fromIndex,
             toIndex: toIndex,
-            activeTab: state.activeTab
+            activeTab: state.screen.activeTab
         )
         
         let listId = dependencies.list.id
@@ -251,96 +258,32 @@ fileprivate extension ListItemsReducer {
         }
     }
     
-    func onDidChangeSearchFocus(
-        state: inout State,
-        isFocused: Bool
-    ) -> Effect<Action> {
-        state.isSearchFocused = isFocused
-        
-        if isFocused {
-            didFinishAdding(state: &state)
-            
-            if state.editMode.isEditing {
-                state.editMode = .inactive
-                state.viewState = state.editMode.viewState
-            }
-        }
-        
-        return .none
-    }
-    
-    func onDidChangeEditMode(
-        state: inout State,
-        editMode: EditMode
-    ) -> Effect<Action> {
-        if !state.editMode.isEditing && state.viewState == .adding {
-            didFinishAdding(state: &state)
-        }
-        state.isSearchFocused = false
-        state.editMode = editMode
-        state.viewState = editMode.viewState
-        return .none
-    }
-    
-    func onDidChangeActiveTab(
-        state: inout State,
-        activeTab: TDListTabItem
-    ) -> Effect<Action> {
-        
-        /// Canceling edit mode if active if the user wants to add an item
-        if state.editMode == .active { state.editMode = .inactive }
-        
-        switch activeTab {
-        case .add:
-            return addItem(state: &state)
-        case .sort:
-            return sortLists(state: &state)
-        case .edit:
-            /// Handled in onDidChangeEditMode since we're using a EditButton
-            return .none
-        case .all:
-            return performAction(state: &state, activeTab: .all)
-        case .done:
-            return performAction(state: &state, activeTab: .done)
-        case .todo:
-            return performAction(state: &state, activeTab: .todo)
-        }
-    }
-    
-    func didFinishAdding(
-        state: inout State
-    ) {
-        state.viewState = .idle
-        state.activeTab = .add(false)
-        state.isSearchFocused = false
-    }
-    
     func addItem(
         state: inout State
     ) -> Effect<Action> {
-        switch state.viewState {
+        switch state.screen.viewState {
         case .idle:
-            state.viewState = .adding
-            state.activeTab = .add(true)
-            state.isSearchFocused = false
+            state.screen.viewState = .adding
+            state.screen.activeTab = .add(true)
+            state.screen.isSearchFocused = false
             return .none
         case .adding:
-            didFinishAdding(state: &state)
+            TDListScreenReducer.didFinishAdding(state: &state.screen)
             return .none
         default:
             return .none
         }
     }
-    
+
     func sortLists(
         state: inout State
     ) -> Effect<Action> {
-        state.viewState = .loading(false)
+        state.screen.viewState = .loading(false)
         state.items.sorted()
-        
+
         let items = state.items
         let listId = dependencies.list.id
-        
+
         return .task { send in
             await send(
                 .voidResult(
@@ -351,16 +294,6 @@ fileprivate extension ListItemsReducer {
                 )
             )
         }
-    }
-    
-    func performAction(
-        state: inout State,
-        activeTab: TDListTabItem
-    ) -> Effect<Action> {
-        guard state.activeTab != activeTab else { return .none }
-        state.activeTab = activeTab
-        state.viewState = .idle
-        return .none
     }
 }
 
@@ -373,28 +306,28 @@ extension ListItemsReducer {
     ) -> Effect<Action> {
         switch result {
         case .success(let items):
-            if case .loading = state.viewState { state.viewState = .idle }
+            if case .loading = state.screen.viewState { state.screen.viewState = .idle }
             state.items = items
         case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
+            state.screen.viewState = .error(error.localizedDescription, dismissAction: .didTapDismissError)
         }
         return .none
     }
-    
+
     func onAddItemResult(
         state: inout State,
         result: ActionResult<Item>
     ) -> Effect<Action> {
-        didFinishAdding(state: &state)
+        TDListScreenReducer.didFinishAdding(state: &state.screen)
         switch result {
         case .success(let item):
             state.items.insert(item, at: 0)
         case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
+            state.screen.viewState = .error(error.localizedDescription, dismissAction: .didTapDismissError)
         }
         return .none
     }
-    
+
     func onUpdateItemResult(
         state: inout State,
         result: ActionResult<Item>
@@ -402,41 +335,27 @@ extension ListItemsReducer {
         switch result {
         case .success(let item):
             guard let index = state.items.firstIndex(where: { $0.id == item.id }) else {
-                state.viewState = .error()
+                state.screen.viewState = .error(dismissAction: .didTapDismissError)
                 return .none
             }
             state.items.replace(item, at: index)
-            state.viewState = .updating
+            state.screen.viewState = .updating
         case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
+            state.screen.viewState = .error(error.localizedDescription, dismissAction: .didTapDismissError)
         }
         return .none
     }
 
-    
     func onVoidResult(
         state: inout State,
         result: ActionResult<EquatableVoid>
     ) -> Effect<Action> {
         switch result {
         case .success:
-            state.viewState = .idle
+            state.screen.viewState = .idle
         case .failure:
-            state.viewState = .error()
+            state.screen.viewState = .error(dismissAction: .didTapDismissError)
         }
         return .none
-    }
-}
-
-// MARK: - Extensions
-
-extension EditMode {
-    var viewState: ListItemsReducer.ViewState {
-        switch self {
-        case .active:
-            .updating
-        default:
-            .idle
-        }
     }
 }
