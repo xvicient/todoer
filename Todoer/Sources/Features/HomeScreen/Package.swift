@@ -17,7 +17,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://www.github.com/xvicient/xRedux", .upToNextMinor(from: "1.0.3")),
+        .package(url: "https://www.github.com/xvicient/xRedux", .upToNextMinor(from: "1.0.4")),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Coordinator"),
@@ -25,6 +25,7 @@ let package = Package(
         .package(path: "../Entities"),
         .package(path: "../AppMenu"),
         .package(path: "../Strings"),
+        .package(path: "../Shared"),
 
     ],
     targets: [
@@ -50,6 +51,7 @@ let package = Package(
                 "Entities",
                 "AppMenu",
                 "Strings",
+                .product(name: "Shared", package: "Shared"),
             ],
             path: "Sources/Implementation"
         ),
@@ -62,6 +64,7 @@ let package = Package(
                 .product(name: "CoordinatorMocks", package: "Coordinator"),
                 .product(name: "EntitiesMocks", package: "Entities"),
                 "Entities",
+                .product(name: "Shared", package: "Shared"),
             ]
         ),
     ]

@@ -4,6 +4,7 @@ import Entities
 import EntitiesMocks
 import Testing
 import Foundation
+import Shared
 import ThemeComponents
 import SwiftUI
 import xRedux
@@ -14,11 +15,11 @@ import xReduxTest
 // MARK: - Cases
 
 /// onAppear ✅
-/// didTapSubmitItemButton(UUID, String) ✅
+/// didTapSubmitButton(UUID, String) ✅
 /// didTapCancelButton ✅
-/// didTapToggleItemButton(UUID) ✅
-/// didTapDeleteItemButton(UUID) ✅
-/// didMoveItem(IndexSet, Int) ✅
+/// didTapToggleButton(UUID) ✅
+/// didTapDeleteButton(UUID) ✅
+/// didMove(IndexSet, Int) ✅
 /// didChangeSearchFocus(Bool) ✅
 /// didChangeEditMode(EditMode) ✅
 /// didChangeActiveTab(TDListTab) ✅
@@ -59,11 +60,11 @@ class ListItemsScreenTests {
         givenASuccessItemsFetch()
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) { [listMock, itemMock] in
-            $0.viewState == .idle && $0.listName == listMock.name && $0.items == [itemMock]
+            $0.shared.viewState == .idle && $0.listName == listMock.name && $0.shared.items == [itemMock]
         }
     }
 
@@ -72,11 +73,11 @@ class ListItemsScreenTests {
         givenAFailureItemsFetch()
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) { [listMock] in
-            $0.viewState == .error(UseCaseError.error.localizedDescription) && $0.listName == listMock.name && $0.items.isEmpty
+            $0.shared.viewState == .error(UseCaseError.error.localizedDescription) && $0.listName == listMock.name && $0.shared.items.isEmpty
         }
     }
 
@@ -86,65 +87,65 @@ class ListItemsScreenTests {
 
         var itemMockId: String!
         var itemsCount: Int!
-        
-        await store.send(.didChangeActiveTab(.add(true))) {
-            itemMockId = $0.items.first?.id
-            itemsCount = $0.items.count
-            return $0.viewState == .adding &&
-                   $0.isSearchFocused == false &&
-                   $0.activeTab == .add(true)
+
+        await store.send(.shared(.didChangeActiveTab(.add(true)))) {
+            itemMockId = $0.shared.items.first?.id
+            itemsCount = $0.shared.items.count
+            return $0.shared.viewState == .adding &&
+                   $0.shared.isSearchFocused == false &&
+                   $0.shared.activeTab == .add(true)
         }
 
-        await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
-            $0.viewState == .adding
+        await store.send(.shared(.didTapSubmitButton(itemMockId, itemMock.name))) {
+            $0.shared.viewState == .adding
         }
 
-        await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .idle && $0.items.count == itemsCount + 1
+        await store.receive(.shared(.addResult(useCaseMock.addItemResult))) {
+            $0.shared.viewState == .idle && $0.shared.items.count == itemsCount + 1
         }
     }
 
     @Test("Add new item but submit fails")
     func testDidTapAddRowButtonAndDidTapSubmitItemButton_Failure() async {
         givenAFailureItemSubmit()
-        
+
         var itemMockId: String!
         var itemsCount: Int!
 
-        await store.send(.didChangeActiveTab(.add(true))) {
-            itemMockId = $0.items.first?.id
-            itemsCount = $0.items.count
-            return $0.viewState == .adding &&
-                   $0.isSearchFocused == false &&
-                   $0.activeTab == .add(true)
+        await store.send(.shared(.didChangeActiveTab(.add(true)))) {
+            itemMockId = $0.shared.items.first?.id
+            itemsCount = $0.shared.items.count
+            return $0.shared.viewState == .adding &&
+                   $0.shared.isSearchFocused == false &&
+                   $0.shared.activeTab == .add(true)
         }
 
-        await store.send(.didTapSubmitItemButton(itemMockId, itemMock.name)) {
-            $0.viewState == .adding
+        await store.send(.shared(.didTapSubmitButton(itemMockId, itemMock.name))) {
+            $0.shared.viewState == .adding
         }
 
-        await store.receive(.addItemResult(useCaseMock.addItemResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription) &&
-            $0.items.count == itemsCount
+        await store.receive(.shared(.addResult(useCaseMock.addItemResult))) {
+            $0.shared.viewState == .error(UseCaseError.error.localizedDescription) &&
+            $0.shared.items.count == itemsCount
         }
     }
 
     @Test("Add new item and cancel it successfully")
     func testDidTapAddRowButtonAndDidTapCancelAddRowButton_Success() async {
         var itemsCount: Int!
-        
-        await store.send(.didChangeActiveTab(.add(true))) {
-            itemsCount = $0.items.count
-            return $0.viewState == .adding &&
-                   $0.isSearchFocused == false &&
-                   $0.activeTab == .add(true)
+
+        await store.send(.shared(.didChangeActiveTab(.add(true)))) {
+            itemsCount = $0.shared.items.count
+            return $0.shared.viewState == .adding &&
+                   $0.shared.isSearchFocused == false &&
+                   $0.shared.activeTab == .add(true)
         }
 
-        await store.send(.didChangeActiveTab(.add(false))) {
-            $0.viewState == .idle && $0.items.count == itemsCount
+        await store.send(.shared(.didChangeActiveTab(.add(false)))) {
+            $0.shared.viewState == .idle && $0.shared.items.count == itemsCount
         }
     }
-    
+
     @Test(
         "Edit mode tapped and properly updated canceling any previous states",
         arguments: [
@@ -155,16 +156,16 @@ class ListItemsScreenTests {
     func testDidChangeEditMode_Success(editMode: (EditMode)) async {
         givenASuccessItemsFetch()
 
-        await store.send(.didChangeActiveTab(.add(true))) {
-            $0.viewState == .adding
+        await store.send(.shared(.didChangeActiveTab(.add(true)))) {
+            $0.shared.viewState == .adding
         }
-        
-        await store.send(.didChangeEditMode(editMode)) {
-            $0.viewState == editMode.viewState &&
-            $0.editMode == editMode
+
+        await store.send(.shared(.didChangeEditMode(editMode))) {
+            $0.shared.viewState == editMode.tdListViewState &&
+            $0.shared.editMode == editMode
         }
     }
-    
+
     @Test("Edit mode and move item")
     func testDidChangeToEditModeAndMoveItem_Success() async {
         let mockItems = ItemMock.items(10)
@@ -174,24 +175,24 @@ class ListItemsScreenTests {
         let editMode: EditMode = .active
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+            $0.shared.viewState == .idle
         }
 
-        await store.send(.didChangeEditMode(editMode)) {
-            $0.viewState == editMode.viewState &&
-            $0.editMode == editMode
+        await store.send(.shared(.didChangeEditMode(editMode))) {
+            $0.shared.viewState == editMode.tdListViewState &&
+            $0.shared.editMode == editMode
         }
 
-        await store.send(.didMoveItem(IndexSet(integersIn: 6..<7), 2)) {
-            $0.viewState == .updating && $0.items[2].id == mockItems[6].id
+        await store.send(.shared(.didMove(IndexSet(integersIn: 6..<7), 2))) {
+            $0.shared.viewState == .updating && $0.shared.items[2].id == mockItems[6].id
         }
 
-        await store.receive(.moveItemResult(.success())) {
-            $0.viewState == .updating
+        await store.receive(.shared(.moveResult(.success()))) {
+            $0.shared.viewState == .updating
         }
     }
 
@@ -204,24 +205,24 @@ class ListItemsScreenTests {
         let editMode: EditMode = .active
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+            $0.shared.viewState == .idle
         }
 
-        await store.send(.didChangeEditMode(editMode)) {
-            $0.viewState == editMode.viewState &&
-            $0.editMode == editMode
+        await store.send(.shared(.didChangeEditMode(editMode))) {
+            $0.shared.viewState == editMode.tdListViewState &&
+            $0.shared.editMode == editMode
         }
 
-        await store.send(.didMoveItem(IndexSet(integersIn: 6..<7), 2)) {
-            $0.viewState == .updating && $0.items[2].id == mockItems[6].id
+        await store.send(.shared(.didMove(IndexSet(integersIn: 6..<7), 2))) {
+            $0.shared.viewState == .updating && $0.shared.items[2].id == mockItems[6].id
         }
 
-        await store.receive(.moveItemResult(.failure(UseCaseError.error))) {
-            $0.viewState == .error()
+        await store.receive(.shared(.moveResult(.failure(UseCaseError.error)))) {
+            $0.shared.viewState == .error()
         }
     }
 
@@ -235,90 +236,90 @@ class ListItemsScreenTests {
     )
     func testDidTapFilter_Success(tab: (TDListTabItem)) async {
         givenASuccessItemsFetch()
-        
-        await store.send(.didChangeActiveTab(tab)) {
-            $0.viewState == .idle && $0.activeTab == tab
+
+        await store.send(.shared(.didChangeActiveTab(tab))) {
+            $0.shared.viewState == .idle && $0.shared.activeTab == tab
         }
     }
-    
+
     @Test("Did toggle item", arguments: [(true), (false)])
     func testDidTapToggleItemButton_Success(done: Bool) async {
         itemMock.done = done
-        
+
         givenASuccessItemsFetch([itemMock])
         givenASuccessItemToogle()
-        
+
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
-        }
-        
-        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+            $0.shared.viewState == .loading(true)
         }
 
-        await store.send(.didTapToggleItemButton(itemMock.id)) {
-            $0.viewState == .loading(false) && $0.items[0].done == !itemMock.done
+        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
+            $0.shared.viewState == .idle
         }
-        
-        await store.receive(.voidResult(.success())) {
-            $0.viewState == .idle
+
+        await store.send(.shared(.didTapToggleButton(itemMock.id))) {
+            $0.shared.viewState == .loading(false) && $0.shared.items[0].done == !itemMock.done
+        }
+
+        await store.receive(.shared(.voidResult(.success()))) {
+            $0.shared.viewState == .idle
         }
     }
-    
+
     @Test("Did delete item")
     func testDidTapDeleteItemButton_Success() async {
         givenASuccessItemsFetch([itemMock])
         givenASuccessItemDelete()
-        
+
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
-        }
-        
-        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .idle
+            $0.shared.viewState == .loading(true)
         }
 
-        await store.send(.didTapDeleteItemButton(itemMock.id)) {
-            $0.viewState == .loading(false) && !$0.items.contains { $0.id == itemMock.id }
+        await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
+            $0.shared.viewState == .idle
         }
-        
-        await store.receive(.voidResult(.success())) {
-            $0.viewState == .idle
+
+        await store.send(.shared(.didTapDeleteButton(itemMock.id))) {
+            $0.shared.viewState == .loading(false) && !$0.shared.items.contains { $0.id == itemMock.id }
+        }
+
+        await store.receive(.shared(.voidResult(.success()))) {
+            $0.shared.viewState == .idle
         }
     }
-    
+
     @Test("Did change search focus item", arguments: [(true)])
     func testDidChangeSearchFocus_Success(isFocused: Bool) async {
-        await store.send(.didChangeActiveTab(.add(true))) {
-            $0.viewState == .adding
+        await store.send(.shared(.didChangeActiveTab(.add(true)))) {
+            $0.shared.viewState == .adding
         }
-        
-        await store.send(.didChangeSearchFocus(isFocused)) {
-            $0.viewState == .idle
+
+        await store.send(.shared(.didChangeSearchFocus(isFocused))) {
+            $0.shared.viewState == .idle
         }
     }
-    
+
     @Test("Did update search text")
     func testDidUpdateSearchText_Success() async {
-        await store.send(.didUpdateSearchText(itemMock.name)) {
-            $0.viewState == .idle && $0.searchText == itemMock.name
+        await store.send(.shared(.didUpdateSearchText(itemMock.name))) {
+            $0.shared.viewState == .idle && $0.shared.searchText == itemMock.name
         }
     }
-    
+
     @Test("Did tap dismiss error")
     func testDidTapDismissError_Success() async {
         givenAFailureItemsFetch()
 
         await store.send(.onAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchItemsResult(useCaseMock.fetchItemsResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription)
+            $0.shared.viewState == .error(UseCaseError.error.localizedDescription)
         }
-        
-        await store.send(.didTapDismissError) {
-            $0.viewState == .idle
+
+        await store.send(.shared(.didTapDismissError)) {
+            $0.shared.viewState == .idle
         }
     }
 
@@ -344,7 +345,7 @@ extension ListItemsScreenTests {
     fileprivate func givenAFailureItemSubmit() {
         useCaseMock.addItemResult = .failure(UseCaseError.error)
     }
-    
+
     fileprivate func givenASuccessItemMove() {
         useCaseMock.voidResult = .success()
     }
@@ -356,7 +357,7 @@ extension ListItemsScreenTests {
     fileprivate func givenASuccessItemToogle() {
         useCaseMock.voidResult = .success()
     }
-    
+
     fileprivate func givenASuccessItemDelete() {
         useCaseMock.voidResult = .success()
     }

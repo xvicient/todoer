@@ -1,10 +1,10 @@
-import Common
-import xRedux
-import Foundation
-import ThemeComponents
-import SwiftUI
-import Entities
 import Combine
+import Common
+import Entities
+import Foundation
+import Shared
+import SwiftUI
+import xRedux
 
 // MARK: - Reduce
 
@@ -14,145 +14,40 @@ extension HomeReducer {
         _ state: inout State,
         _ action: Action
     ) -> Effect<Action> {
-        
-        switch (state.viewState, action) {
-        case (.loading, .onViewAppear),
-            (.idle, .onViewAppear):
-            return onAppear(
-                state: &state
-            )
-            
-        case (_, .onSceneActive):
-            return onSceneActive(
-                state: &state
-            )
-            
-        case (.idle, .didTapList(let rowId)):
-            return onDidTapList(
-                state: &state,
-                uid: rowId
-            )
-            
-        case (.updating, .didTapSubmitListButton(let uid, let name)),
-            (.adding, .didTapSubmitListButton(let uid, let name)):
-            return onDidTapSubmitListButton(
-                state: &state,
-                newListName: name,
-                uid: uid
-            )
-            
-        case (.idle, .didTapToggleListButton(let rowId)):
-            return onDidTapToggleListButton(
-                state: &state,
-                uid: rowId
-            )
-            
-        case (.idle, .didTapDeleteListButton(let rowId)):
-            return onDidTapDeleteListButton(
-                state: &state,
-                uid: rowId
-            )
-            
-        case (.idle, .didTapShareListButton(let rowId)):
-            return onDidTapShareListButton(
-                state: &state,
-                uid: rowId
-            )
-            
-        case (.updating, .didMoveList(let fromIndex, let toIndex)):
-            return onDidMoveList(
-                state: &state,
-                fromIndex: fromIndex,
-                toIndex: toIndex
-            )
-            
-        case (_, .didChangeSearchFocus(let isFocused)):
-            return onDidChangeSearchFocus(
-                state: &state,
-                isFocused: isFocused
-            )
-            
-        case (.idle, .didChangeEditMode(let editMode)),
-            (.adding, .didChangeEditMode(let editMode)),
-            (.updating, .didChangeEditMode(let editMode)):
-            return onDidChangeEditMode(
-                state: &state,
-                editMode: editMode
-            )
-            
-        case (.idle, .didChangeActiveTab(let activeTab)),
-            (.adding, .didChangeActiveTab(let activeTab)),
-            (.updating, .didChangeActiveTab(let activeTab)):
-            return onDidChangeActiveTab(
-                state: &state,
-                activeTab: activeTab
-            )
-            
-        case (.idle, .didUpdateSearchText(let text)):
-            state.searchText = text
-            return .none
-            
-        case (.loading, .addSharedListsResult(.success(let lists))),
-            (.idle, .addSharedListsResult(.success(let lists))):
-            guard !lists.isEmpty else { return .none }
-            state.lists.insert(contentsOf: lists, at: 0)
-            return .none
-            
-        case (_, .fetchDataResult(let result)):
-            return onFetchDataResult(
-                state: &state,
-                result: result
-            )
-            
-        case (.adding, .addListResult(let result)):
-            return onAddListResult(
-                state: &state,
-                result: result
-            )
-            
-        case (.updating, .updateListResult(let result)):
-            return onUpdateListResult(
-                state: &state,
-                result: result
-            )
-            
-        case (.loading, .voidResult(let result)),
-            (.idle, .voidResult(let result)):
-            return onVoidResult(
-                state: &state,
-                result: result
-            )
-            
-        case (.updating, .moveListResult(.success)):
-            return .none
+        switch action {
+        case .shared(let sharedAction):
+            return sharedReducer.reduce(&state.shared, sharedAction).map { .shared($0) }
 
-        case (.updating, .moveListResult(.failure)):
-            state.viewState = .error()
-            return .none
-            
-        case (.alert, .didTapDismissError):
-            state.viewState = .idle
-            return .none
-            
-        default:
-            Logger.log(
-                "No matching ViewState: \(state.viewState.rawValue) and Action: \(action.rawValue)"
-            )
-            return .none
+        case .onViewAppear:
+            return onAppear(state: &state)
+
+        case .onSceneActive:
+            return onSceneActive(state: &state)
+
+        case .didTapList(let uid):
+            return onDidTapList(state: &state, uid: uid)
+
+        case .didTapShareListButton(let uid):
+            return onDidTapShareListButton(state: &state, uid: uid)
+
+        case .fetchDataResult(let result):
+            return onFetchDataResult(state: &state, result: result)
+
+        case .addSharedListsResult(let result):
+            return onAddSharedListsResult(state: &state, result: result)
         }
     }
 }
 
 // MARK: - Actions
 
+@MainActor
 fileprivate extension HomeReducer {
-    
-    @MainActor
     func onAppear(
         state: inout State
     ) -> Effect<Action> {
-        if state.lists.isEmpty {
-            state.viewState = .loading(true)
+        if state.shared.items.isEmpty {
+            state.shared.viewState = .loading(true)
         }
 
         return .publish(
@@ -170,339 +65,77 @@ fileprivate extension HomeReducer {
             return .none
         }
 
-        didFinishAdding(state: &state)
+        state.shared.finishAdding()
 
+        nonisolated(unsafe) let useCase = useCase
         return .task { send in
-            await send(
-                .addSharedListsResult(
-                    useCase.addSharedLists()
-                )
-            )
+            await send(.addSharedListsResult(useCase.addSharedLists()))
         }
     }
-    
-    @MainActor
+
     func onDidTapList(
         state: inout State,
         uid: String
     ) -> Effect<Action> {
-        guard let index = state.lists.index(for: uid),
-              let list = state.lists[safe: index]
+        guard let index = state.shared.items.index(for: uid),
+              let list = state.shared.items[safe: index]
         else {
-            state.viewState = .error()
+            state.shared.viewState = .error()
             return .none
         }
         dependencies.coordinator?.push(.listItems(list))
         return .none
     }
-    
-    func didFinishAdding(
-        state: inout State
-    ) {
-        state.viewState = .idle
-        state.activeTab = .add(false)
-        state.isSearchFocused = false
-    }
-    
-    func onDidTapToggleListButton(
-        state: inout State,
-        uid: String
-    ) -> Effect<Action> {
-        guard let index = state.lists.index(for: uid),
-              state.lists[safe: index] != nil
-        else {
-            state.viewState = .error()
-            return .none
-        }
-        state.viewState = .loading(false)
-        state.lists[index].done.toggle()
-        let list = state.lists[index]
-        
-        return .task { send in
-            await send(
-                .voidResult(
-                    useCase.toggleList(
-                        list: list
-                    )
-                )
-            )
-        }
-    }
-    
-    func onDidTapDeleteListButton(
-        state: inout State,
-        uid: String
-    ) -> Effect<Action> {
-        guard let index = state.lists.index(for: uid),
-              let list = state.lists[safe: index] else {
-            state.viewState = .error()
-            return .none
-        }
-        state.viewState = .loading(false)
-        state.lists.remove(at: index)
-        
-        return .task { send in
-            await send(
-                .voidResult(
-                    useCase.deleteList(list.id)
-                )
-            )
-        }
-    }
-    
-    func onDidTapSubmitListButton(
-        state: inout State,
-        newListName: String,
-        uid: String?
-    ) -> Effect<Action> {
-        if let uid {
-            guard let index = state.lists.index(for: uid) else {
-                return .none
-            }
-            var list = state.lists[index]
-            list.name = newListName
-            
-            return .task { send in
-                await send(
-                    .updateListResult(
-                        useCase.updateList(
-                            list: list
-                        )
-                    )
-                )
-            }
-        } else {            
-            return .task { send in
-                await send(
-                    .addListResult(
-                        useCase.addList(
-                            name: newListName
-                        )
-                    )
-                )
-            }
-        }
-    }
-    
-    @MainActor
+
     func onDidTapShareListButton(
         state: inout State,
         uid: String
     ) -> Effect<Action> {
-        guard let index = state.lists.index(for: uid),
-              let list = state.lists[safe: index]
+        guard let index = state.shared.items.index(for: uid),
+              let list = state.shared.items[safe: index]
         else {
-            state.viewState = .error()
+            state.shared.viewState = .error()
             return .none
         }
         dependencies.coordinator?.present(sheet: .shareList(list))
-        
-        return .none
-    }
-    
-    func onDidMoveList(
-        state: inout State,
-        fromIndex: IndexSet,
-        toIndex: Int
-    ) -> Effect<Action> {
-        let lists = state.lists.move(
-            fromIndex: fromIndex,
-            toIndex: toIndex,
-            activeTab: state.activeTab
-        )
-        
-        return .task { send in
-            await send(
-                .moveListResult(
-                    useCase.sortLists(
-                        lists: lists
-                    )
-                )
-            )
-        }
-    }
-    
-    func onDidChangeSearchFocus(
-        state: inout State,
-        isFocused: Bool
-    ) -> Effect<Action> {
-        state.isSearchFocused = isFocused
-        
-        if isFocused {
-            didFinishAdding(state: &state)
-            
-            if state.editMode.isEditing {
-                state.editMode = .inactive
-                state.viewState = state.editMode.viewState
-            }
-        }
-        
-        return .none
-    }
-    
-    func onDidChangeEditMode(
-        state: inout State,
-        editMode: EditMode
-    ) -> Effect<Action> {
-        if !state.editMode.isEditing && state.viewState == .adding {
-            didFinishAdding(state: &state)
-        }
-        state.isSearchFocused = false
-        state.editMode = editMode
-        state.viewState = editMode.viewState
-        return .none
-    }
-    
-    func onDidChangeActiveTab(
-        state: inout State,
-        activeTab: TDListTabItem
-    ) -> Effect<Action> {
-        
-        /// Canceling edit mode if active if the user wants to add an item
-        if state.editMode == .active {
-            state.editMode = .inactive
-        }
-        
-        switch activeTab {
-        case .add:
-            return addList(state: &state)
-        case .sort:
-            return sortLists(state: &state)
-        case .edit:
-            /// Handled in onDidChangeEditMode since we're using a EditButton
-            return .none
-        case .all:
-            return performAction(state: &state, activeTab: .all)
-        case .done:
-            return performAction(state: &state, activeTab: .done)
-        case .todo:
-            return performAction(state: &state, activeTab: .todo)
-        }
-    }
-    
-    func addList(
-        state: inout State
-    ) -> Effect<Action> {
-        switch state.viewState {
-        case .idle:
-            state.viewState = .adding
-            state.activeTab = .add(true)
-            state.isSearchFocused = false
-            return .none
-        case .adding:
-            didFinishAdding(state: &state)
-            return .none
-        default:
-            return .none
-        }
-    }
-    
-    func sortLists(
-        state: inout State
-    ) -> Effect<Action> {
-        state.viewState = .loading(false)
-        state.lists.sorted()
-        
-        let lists = state.lists
-        
-        return .task { send in
-            await send(
-                .voidResult(
-                    useCase.sortLists(
-                        lists: lists
-                    )
-                )
-            )
-        }
-    }
-    
-    func performAction(
-        state: inout State,
-        activeTab: TDListTabItem
-    ) -> Effect<Action> {
-        guard state.activeTab != activeTab else {
-            return .none
-        }
-        state.activeTab = activeTab
-        state.viewState = .idle
         return .none
     }
 }
 
 // MARK: - Results
 
+@MainActor
 fileprivate extension HomeReducer {
-
     func onFetchDataResult(
         state: inout State,
         result: ActionResult<HomeData>
     ) -> Effect<Action> {
         switch result {
         case .success(let data):
-            if case .loading = state.viewState { state.viewState = .idle }
-            state.lists = data.lists
+            if case .loading = state.shared.viewState {
+                state.shared.viewState = .idle
+            }
+            state.shared.items = data.lists
             state.invitations = data.invitations
-            return .none
         case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
+            state.shared.viewState = .error(error.localizedDescription)
         }
         return .none
     }
-    
-    func onAddListResult(
+
+    func onAddSharedListsResult(
         state: inout State,
-        result: ActionResult<UserList>
-    ) -> Effect<Action> {
-        didFinishAdding(state: &state)
-        switch result {
-        case .success(let list):
-            state.lists.insert(list, at: 0)
-            state.viewState = .idle
-        case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
-        }
-        return .none
-    }
-    
-    func onUpdateListResult(
-        state: inout State,
-        result: ActionResult<UserList>
+        result: ActionResult<[UserList]>
     ) -> Effect<Action> {
         switch result {
-        case .success(let list):
-            guard let index = state.lists.firstIndex(where: { $0.id == list.id }) else {
-                state.viewState = .error()
+        case .success(let lists):
+            guard !lists.isEmpty else {
                 return .none
             }
-            state.lists.replace(list, at: index)
-            state.viewState = .updating
-        case .failure(let error):
-            state.viewState = .error(error.localizedDescription)
-        }
-        return .none
-    }
-
-    func onVoidResult(
-        state: inout State,
-        result: ActionResult<EquatableVoid>
-    ) -> Effect<Action> {
-        switch result {
-        case .success:
-            state.viewState = .idle
+            state.shared.items.insert(contentsOf: lists, at: 0)
         case .failure:
-            state.viewState = .error()
+            break
         }
         return .none
-    }
-}
-
-extension EditMode {
-    fileprivate var viewState: HomeReducer.ViewState {
-        switch self {
-        case .active:
-                .updating
-        default:
-                .idle
-        }
     }
 }

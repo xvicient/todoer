@@ -84,10 +84,10 @@ extension HomeScreen {
         )
         
         let actions = TDListContentView.Actions(
-            onSubmit: { store.send(.didTapSubmitListButton($0, $1)) },
+            onSubmit: { store.send(.shared(.didTapSubmitButton($0, $1))) },
             onTap: { store.send(.didTapList($0)) },
             onSwipe: onSwipe,
-            onMove: { store.send(.didMoveList($0, $1)) }
+            onMove: { store.send(.shared(.didMove($0, $1))) }
         )
         
         return TDListContentView(
@@ -101,9 +101,9 @@ extension HomeScreen {
         { rowId, option in
             switch option {
             case .done, .undone:
-                store.send(.didTapToggleListButton(rowId))
+                store.send(.shared(.didTapToggleButton(rowId)))
             case .delete:
-                store.send(.didTapDeleteListButton(rowId))
+                store.send(.shared(.didTapDeleteButton(rowId)))
             case .share:
                 store.send(.didTapShareListButton(rowId))
             }

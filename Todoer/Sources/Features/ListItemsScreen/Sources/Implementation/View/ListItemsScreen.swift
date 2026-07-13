@@ -59,9 +59,9 @@ extension ListItemsScreen {
         )
         
         let actions = TDListContentView.Actions(
-            onSubmit: { store.send(.didTapSubmitItemButton($0, $1)) },
+            onSubmit: { store.send(.shared(.didTapSubmitButton($0, $1))) },
             onSwipe: onSwipe,
-            onMove: { store.send(.didMoveItem($0, $1)) }
+            onMove: { store.send(.shared(.didMove($0, $1))) }
         )
         
         return TDListContentView(
@@ -75,9 +75,9 @@ extension ListItemsScreen {
         { rowId, option in
             switch option {
             case .done, .undone:
-                store.send(.didTapToggleItemButton(rowId))
+                store.send(.shared(.didTapToggleButton(rowId)))
             case .delete:
-                store.send(.didTapDeleteItemButton(rowId))
+                store.send(.shared(.didTapDeleteButton(rowId)))
             default:
                 break
             }
