@@ -16,9 +16,7 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
         case error
     }
 
-    func fetchItems(
-        listId: String
-    ) -> AnyPublisher<[Item], any Error> {
+    func fetchItems() -> AnyPublisher<[Item], any Error> {
         switch fetchItemsResult {
         case .success(let items):
             return Just(items)
@@ -36,37 +34,33 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
         }
     }
 
-    func addItem(
-        with name: String,
-        list: UserList
+    func add(
+        name: String
     ) async -> ActionResult<Item> {
         addItemResult
     }
 
-    func deleteItem(
-        itemId: String,
-        listId: String
-    ) async -> ActionResult<EquatableVoid> {
-        voidResult
-    }
-
-    func updateItemName(
-        item: Item,
-        listId: String
+    func update(
+        _ element: Item
     ) async -> ActionResult<Item> {
         updateItemNameResult
     }
 
-    func updateItemDone(
-        item: Item,
-        list: UserList
+    func toggle(
+        _ element: Item,
+        in elements: [Item]
     ) async -> ActionResult<EquatableVoid> {
         voidResult
     }
 
-    func sortItems(
-        items: [Item],
-        listId: String
+    func delete(
+        _ element: Item
+    ) async -> ActionResult<EquatableVoid> {
+        voidResult
+    }
+
+    func sort(
+        _ elements: [Item]
     ) async -> ActionResult<EquatableVoid> {
         voidResult
     }

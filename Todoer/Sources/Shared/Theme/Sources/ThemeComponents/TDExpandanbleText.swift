@@ -1,3 +1,4 @@
+import Common
 import SwiftUI
 
 public struct TDExpandableText: View {

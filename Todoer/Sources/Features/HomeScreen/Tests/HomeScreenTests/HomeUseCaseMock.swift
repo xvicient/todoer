@@ -40,33 +40,34 @@ class HomeUseCaseMock: HomeUseCaseApi {
         }
     }
 
-    @discardableResult
-    func updateList(
-        list: UserList
-    ) async -> ActionResult<UserList> {
-        updateListResult
-    }
-
-    func toggleList(
-        list: UserList
-    ) async -> ActionResult<EquatableVoid> {
-        voidResult
-    }
-
-    func deleteList(
-        _ listId: String
-    ) async -> ActionResult<EquatableVoid> {
-        voidResult
-    }
-
-    func addList(
+    func add(
         name: String
     ) async -> ActionResult<UserList> {
         addListResult
     }
 
-    func sortLists(
-        lists: [UserList]
+    @discardableResult
+    func update(
+        _ element: UserList
+    ) async -> ActionResult<UserList> {
+        updateListResult
+    }
+
+    func toggle(
+        _ element: UserList,
+        in elements: [UserList]
+    ) async -> ActionResult<EquatableVoid> {
+        voidResult
+    }
+
+    func delete(
+        _ element: UserList
+    ) async -> ActionResult<EquatableVoid> {
+        voidResult
+    }
+
+    func sort(
+        _ elements: [UserList]
     ) async -> ActionResult<EquatableVoid> {
         voidResult
     }

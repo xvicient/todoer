@@ -5,40 +5,20 @@ import Strings
 
 // MARK: - TDList
 
-public struct TDListView: View {    
-    public struct Configuration {
-        let title: String
-        let tabs: Binding<[TDListTab]>
-        let activeTab: Binding<TDListTabItem>
-        let searchText: Binding<String>
-        @Binding var isSearchFocused: Bool
-        
-        public init(
-            title: String,
-            tabs: Binding<[TDListTab]>,
-            activeTab: Binding<TDListTabItem>,
-            searchText: Binding<String>,
-            isSearchFocused: Binding<Bool>
-        ) {
-            self.title = title
-            self.tabs = tabs
-            self.activeTab = activeTab
-            self.searchText = searchText
-            self._isSearchFocused = isSearchFocused
-        }
-    }
-    
+public struct TDListContentView<Content: View>: View {
     /// init properties
-    private let listContent: () -> TDListContentView
-    private let configuration: Configuration
+    private let listContent: () -> Content
+    private let title: String
+    private let tabs: Binding<[TDListTab]>
     @Binding private var searchText: String
-    @FocusState private var isSearchFocused: Bool
     @Binding private var activeTab: TDListTabItem
-    
+    @Binding private var searchFocus: Bool
+    @FocusState private var isSearchFocused: Bool
+
     /// Animation properties
     @State private var slideTransition: TDSlideTransition = .forward
     private let headerAnimation: Animation = .interactiveSpring(response: 0.3, dampingFraction: 0.8)
-    
+
     /// Scrolling properties
     @State private var isScrolling = false
     private let primaryThreshold: CGFloat = 55.0
@@ -46,23 +26,29 @@ public struct TDListView: View {
     @State private var primaryScrollOffset: CGFloat = 0.0
     @State private var secondaryScrollOffset: CGFloat = 0.0
     private let headerHeight: CGFloat = 150.0
-    
+
     /// Toolbar  properties
     @Environment(\.presentationMode) private var presentationMode
     private var hasBackButton: Bool {
         presentationMode.wrappedValue.isPresented
     }
-    
+
     public init(
-        configuration: Configuration,
-        @ViewBuilder content: @escaping () -> TDListContentView
+        title: String,
+        tabs: Binding<[TDListTab]>,
+        activeTab: Binding<TDListTabItem>,
+        searchText: Binding<String>,
+        isSearchFocused: Binding<Bool>,
+        @ViewBuilder content: @escaping () -> Content
     ) {
         self.listContent = content
-        self.configuration = configuration
-        self._searchText = configuration.searchText
-        self._activeTab = configuration.activeTab
+        self.title = title
+        self.tabs = tabs
+        self._activeTab = activeTab
+        self._searchText = searchText
+        self._searchFocus = isSearchFocused
     }
-    
+
     public var body: some View {
         ZStack {
             list
@@ -72,17 +58,17 @@ public struct TDListView: View {
         }
         .background(background)
         .onChange(of: isSearchFocused) {
-            configuration.isSearchFocused = isSearchFocused
+            searchFocus = isSearchFocused
         }
-        .onChange(of: configuration.isSearchFocused) {
-            isSearchFocused = configuration.isSearchFocused
+        .onChange(of: searchFocus) {
+            isSearchFocused = searchFocus
         }
     }
 }
 
-// MARK: - TDListView ViewBuilders
+// MARK: - TDListContentView ViewBuilders
 
-extension TDListView {
+extension TDListContentView {
     @ViewBuilder
     fileprivate var background: some View {
         VStack {
@@ -172,7 +158,7 @@ extension TDListView {
                 TDListTabButtonView(
                     slideTransition: $slideTransition,
                     activeTab: $activeTab,
-                    tabs: configuration.tabs
+                    tabs: tabs
                 )
                 .padding(.bottom, 5)
                 .frame(height: tabBarHeight, alignment: .bottomLeading)
@@ -212,7 +198,7 @@ extension TDListView {
                 .padding(.bottom, 65)
                 .frame(height: contentHeight, alignment: .bottomLeading)
                 
-                TDExpandableText(text: configuration.title, limit: 1)
+                TDExpandableText(text: title, limit: 1)
                     .padding(.bottom, 120)
                     .frame(height: contentHeight, alignment: .bottomLeading)
                     .safeAreaPadding(.leading, hasBackButton ? 15 : 0)
@@ -232,45 +218,8 @@ fileprivate struct ListNoBounceModifier: ViewModifier {
     }
 }
 
-fileprivate extension View {                 
+fileprivate extension View {
     func removeBounce() -> some View {
         modifier(ListNoBounceModifier())
     }
 }
-
-//#Preview {
-//    struct RowMock: TDListRow {
-//        var id = ""
-//        var done = false
-//        var name = "List 1"
-//        var index = 0
-//        var image = Image.circle
-//        var leadingActions = [TDListSwipeAction]()
-//        var trailingActions = [TDListSwipeAction]()
-//        var isEditing = false
-//    }
-//    
-//    return TDListView(
-//        configuration: .init(
-//            title: "To-do's",
-//            tabs: TDListTabItem.allCases,
-//            activeTab: .constant(.all),
-//            searchText: .constant(""),
-//            isSearchFocused: .constant(true)
-//        )
-//    ) {
-//        TDListContentView(
-//            configuration: .init(
-//                listHeight: 100,
-//                status: .plain
-//            ),
-//            actions: .init(
-//                onSubmit: { _, _ in },
-//                onCancel: {},
-//                onSwipe: { _, _ in },
-//                onMove: { _, _ in }
-//            ),
-//            rows: .constant(Array(repeating: RowMock(), count: 20))
-//        )
-//    }
-//}

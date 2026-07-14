@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Coordinator"),
-        .package(url: "https://www.github.com/xvicient/xRedux", .upToNextMinor(from: "1.0.3")),
+        .package(url: "https://www.github.com/xvicient/xRedux", .upToNextMinor(from: "1.0.4")),
         .package(path: "../Common"),
         .package(path: "../Theme"),
         .package(path: "../Strings"),

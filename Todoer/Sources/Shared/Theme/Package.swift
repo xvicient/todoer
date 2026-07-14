@@ -17,6 +17,7 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(url: "https://www.github.com/xvicient/xRedux", .upToNextMinor(from: "1.0.4")),
         .package(path: "../Common"),
         .package(path: "../Strings")
 
@@ -33,6 +34,7 @@ let package = Package(
         .target(
             name: "ThemeComponents",
             dependencies: [
+                .product(name: "xRedux", package: "xRedux"),
                 "ThemeAssets",
                 "Common",
                 "Strings",

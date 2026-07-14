@@ -3,35 +3,18 @@ import Common
 import Data
 import Entities
 import Foundation
+import ThemeComponents
 import xRedux
 
-protocol HomeUseCaseApi {
+/// Home's single use case. Conforms directly to the shared `TDListUseCaseApi` (add / update /
+/// toggle / delete / sort) consumed by `TDListReducer`, and adds the Home-only capabilities
+/// (fetching lists + invitations, importing shared lists). No adapter needed.
+protocol HomeUseCaseApi: TDListUseCaseApi where Element == UserList {
     var sharedListsCount: Int { get }
-    
+
     func addSharedLists() async -> ActionResult<[UserList]>
-    
+
     func fetchHomeData() -> AnyPublisher<HomeData, Error>
-    
-    @discardableResult
-    func updateList(
-        list: UserList
-    ) async -> ActionResult<UserList>
-    
-    func toggleList(
-        list: UserList
-    ) async -> ActionResult<EquatableVoid>
-    
-    func deleteList(
-        _ listId: String
-    ) async -> ActionResult<EquatableVoid>
-    
-    func addList(
-        name: String
-    ) async -> ActionResult<UserList>
-    
-    func sortLists(
-        lists: [UserList]
-    ) async -> ActionResult<EquatableVoid>
 }
 
 struct HomeData: Equatable, Sendable {
@@ -96,50 +79,13 @@ struct HomeUseCase: HomeUseCaseApi {
         .eraseToAnyPublisher()
     }
     
-    @discardableResult
-    func updateList(
-        list: UserList
-    ) async -> ActionResult<UserList> {
-        do {
-            let updatedList = try await listsRepository.updateList(list)
-            try await itemsRepository.toogleAllItems(
-                listId: list.id,
-                done: list.done
-            )
-            
-            return .success(updatedList)
-        }
-        catch {
-            return .failure(error)
-        }
-    }
-    
-    func toggleList(
-        list: UserList
-    ) async -> ActionResult<EquatableVoid> {
-        await updateList(list: list)
-        return .success()
-    }
-    
-    func deleteList(
-        _ listId: String
-    ) async -> ActionResult<EquatableVoid> {
-        do {
-            try await listsRepository.deleteList(listId)
-            return .success()
-        }
-        catch {
-            return .failure(error)
-        }
-    }
-    
-    func addList(
+    func add(
         name: String
     ) async -> ActionResult<UserList> {
         guard !name.isEmpty else {
             return .failure(Errors.emptyListName)
         }
-        
+
         do {
             let list = try await listsRepository.addList(with: name)
             return .success(list)
@@ -148,12 +94,51 @@ struct HomeUseCase: HomeUseCaseApi {
             return .failure(error)
         }
     }
-    
-    func sortLists(
-        lists: [UserList]
+
+    @discardableResult
+    func update(
+        _ element: UserList
+    ) async -> ActionResult<UserList> {
+        do {
+            let updatedList = try await listsRepository.updateList(element)
+            try await itemsRepository.toogleAllItems(
+                listId: element.id,
+                done: element.done
+            )
+
+            return .success(updatedList)
+        }
+        catch {
+            return .failure(error)
+        }
+    }
+
+    /// A list's completion is independent of the other lists, so `elements` is ignored.
+    func toggle(
+        _ element: UserList,
+        in elements: [UserList]
+    ) async -> ActionResult<EquatableVoid> {
+        await update(element)
+        return .success()
+    }
+
+    func delete(
+        _ element: UserList
     ) async -> ActionResult<EquatableVoid> {
         do {
-            try await listsRepository.sortLists(lists: lists)
+            try await listsRepository.deleteList(element.id)
+            return .success()
+        }
+        catch {
+            return .failure(error)
+        }
+    }
+
+    func sort(
+        _ elements: [UserList]
+    ) async -> ActionResult<EquatableVoid> {
+        do {
+            try await listsRepository.sortLists(lists: elements)
             return .success()
         }
         catch {

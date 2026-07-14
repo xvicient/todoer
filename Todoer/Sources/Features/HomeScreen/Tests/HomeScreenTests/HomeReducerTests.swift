@@ -4,6 +4,7 @@ import Entities
 import EntitiesMocks
 import Foundation
 import HomeScreenContract
+import ThemeComponents
 import Testing
 import xRedux
 import xReduxTest
@@ -20,7 +21,7 @@ class HomeReducerTests {
         let coordinator: CoordinatorApi?
     }
 
-    private lazy var store: HomeStore<HomeReducer> = {
+    private lazy var store: HomeStore<HomeReducer<HomeUseCaseMock>> = {
         TestStore(
             initialState: .init(),
             reducer: HomeReducer(
@@ -38,11 +39,11 @@ class HomeReducerTests {
         givenASuccessHomeDataFetch()
 
         await store.send(.onViewAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchHomeDataResult)) { [listsMock] in
-            $0.viewState == .idle && $0.lists == listsMock
+            $0.shared.viewState == .idle && $0.shared.items == listsMock
         }
     }
 
@@ -51,11 +52,11 @@ class HomeReducerTests {
         givenAFailureHomeDataFetch()
 
         await store.send(.onViewAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchHomeDataResult)) {
-            $0.viewState == .error(UseCaseError.error.localizedDescription)
+            $0.shared.viewState == .error(UseCaseError.error.localizedDescription)
         }
     }
 
@@ -65,23 +66,23 @@ class HomeReducerTests {
         givenASuccessListsMove()
 
         await store.send(.onViewAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchHomeDataResult)) {
-            $0.viewState == .idle
+            $0.shared.viewState == .idle
         }
 
-        await store.send(.didChangeEditMode(.active)) {
-            $0.viewState == .updating && $0.editMode == .active
+        await store.send(.shared(.didChangeEditMode(.active))) {
+            $0.shared.viewState == .updating && $0.shared.editMode == .active
         }
 
-        await store.send(.didMoveList(IndexSet(integer: 0), 0)) {
-            $0.viewState == .updating
+        await store.send(.shared(.didMove(IndexSet(integer: 0), 0))) {
+            $0.shared.viewState == .updating
         }
 
-        await store.receive(.moveListResult(.success())) {
-            $0.viewState == .updating
+        await store.receive(.shared(.moveResult(.success()))) {
+            $0.shared.viewState == .updating
         }
     }
 
@@ -91,23 +92,23 @@ class HomeReducerTests {
         givenAFailureListsMove()
 
         await store.send(.onViewAppear) {
-            $0.viewState == .loading(true)
+            $0.shared.viewState == .loading(true)
         }
 
         await store.receive(.fetchDataResult(useCaseMock.fetchHomeDataResult)) {
-            $0.viewState == .idle
+            $0.shared.viewState == .idle
         }
 
-        await store.send(.didChangeEditMode(.active)) {
-            $0.viewState == .updating && $0.editMode == .active
+        await store.send(.shared(.didChangeEditMode(.active))) {
+            $0.shared.viewState == .updating && $0.shared.editMode == .active
         }
 
-        await store.send(.didMoveList(IndexSet(integer: 0), 0)) {
-            $0.viewState == .updating
+        await store.send(.shared(.didMove(IndexSet(integer: 0), 0))) {
+            $0.shared.viewState == .updating
         }
 
-        await store.receive(.moveListResult(.failure(UseCaseError.error))) {
-            $0.viewState == .error()
+        await store.receive(.shared(.moveResult(.failure(UseCaseError.error)))) {
+            $0.shared.viewState == .error()
         }
     }
 }
