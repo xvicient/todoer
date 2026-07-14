@@ -4,7 +4,6 @@ import Entities
 import EntitiesMocks
 import Testing
 import Foundation
-import Shared
 import ThemeComponents
 import SwiftUI
 import xRedux

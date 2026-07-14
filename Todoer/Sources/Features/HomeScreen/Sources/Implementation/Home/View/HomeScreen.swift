@@ -27,16 +27,13 @@ struct HomeScreen: View {
     }
 
     var body: some View {
-        VStack {
-            GeometryReader { geometry in
-                TDListView(
-                    configuration: listConfiguration
-                ) {
-                    listContent(geometry.size.height)
-                }
-            }
-        }
-        .environment(\.editMode, $store.editMode)
+        TDListView(
+            store: store,
+            title: Strings.Home.todosText,
+            onAppear: { store.send(.onViewAppear) },
+            onTap: { store.send(.didTapList($0)) },
+            onShare: { store.send(.didTapShareListButton($0)) }
+        )
         .toolbar {
             if !store.state.invitations.isEmpty {
                 ToolbarItem(placement: .automatic) {
@@ -47,9 +44,6 @@ struct HomeScreen: View {
                 }
             }
         }
-        .onAppear {
-            store.send(.onViewAppear)
-        }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
                 store.send(.onSceneActive)
@@ -57,56 +51,6 @@ struct HomeScreen: View {
         }
         .onChange(of: store.isLoading) {
             loading.show(store.isLoading)
-        }
-        .alert(item: store.alertBinding) {
-            $0.alert { store.send($0) }
-        }
-    }
-}
-
-// MARK: - TDListView
-
-extension HomeScreen {
-    fileprivate var listConfiguration: TDListView.Configuration {
-        .init(
-            title: Strings.Home.todosText,
-            tabs: $store.tabs,
-            activeTab: $store.activeTab,
-            searchText: $store.searchText,
-            isSearchFocused: $store.isSearchFocused
-        )
-    }
-
-    fileprivate func listContent(_ listHeight: CGFloat) -> TDListContentView {
-        let configuration = TDListContentView.Configuration(
-            listHeight: listHeight,
-            status: store.contentStatus
-        )
-        
-        let actions = TDListContentView.Actions(
-            onSubmit: { store.send(.shared(.didTapSubmitButton($0, $1))) },
-            onTap: { store.send(.didTapList($0)) },
-            onSwipe: onSwipe,
-            onMove: { store.send(.shared(.didMove($0, $1))) }
-        )
-        
-        return TDListContentView(
-            configuration: configuration,
-            actions: actions,
-            rows: $store.rows
-        )
-    }
-    
-    fileprivate var onSwipe: (String, TDListSwipeAction) -> Void {
-        { rowId, option in
-            switch option {
-            case .done, .undone:
-                store.send(.shared(.didTapToggleButton(rowId)))
-            case .delete:
-                store.send(.shared(.didTapDeleteButton(rowId)))
-            case .share:
-                store.send(.didTapShareListButton(rowId))
-            }
         }
     }
 }

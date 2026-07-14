@@ -1,9 +1,7 @@
 import Common
-import Entities
 import Foundation
 import Strings
 import SwiftUI
-import ThemeComponents
 import xRedux
 
 // MARK: - TDListViewState
@@ -127,5 +125,68 @@ public struct TDListReducer<UseCase: TDListUseCaseApi>: Reducer {
 
     public init(useCase: UseCase) {
         self.useCase = useCase
+    }
+}
+
+// MARK: - TDListShared
+
+/// Marks a `State` that embeds a `TDListReducer` sub-state. Lets a single `Store` extension expose
+/// the list bindings the view layer needs, so every list-style screen shares one binding surface.
+/// `@MainActor` to match the `AppAlertState` isolation the conforming feature states already carry.
+@MainActor
+public protocol TDListSharedState {
+    associatedtype UseCase: TDListUseCaseApi
+    var shared: TDListReducer<UseCase>.State { get set }
+}
+
+/// Marks a wrapper `Reducer` whose `State` embeds a `TDListReducer` and whose `Action` can wrap the
+/// shared reducer's actions. Feature reducers already provide both (a `shared` sub-state and a
+/// `case shared(...)`); conforming just centralises the `Store` bindings below.
+public protocol TDListSharedReducer: Reducer where State: TDListSharedState {
+    static func shared(_ action: TDListReducer<State.UseCase>.Action) -> Action
+}
+
+// MARK: - Store bindings
+
+/// The single source of the list view bindings, shared by every `TDListSharedReducer`
+/// (Home, ListItems, …). Replaces the per-screen `Store` extensions that were byte-for-byte copies.
+@MainActor
+public extension Store where R: TDListSharedReducer {
+    var activeTab: TDListTabItem {
+        get { state.shared.activeTab }
+        set { send(R.shared(.didChangeActiveTab(newValue))) }
+    }
+
+    var tabs: [TDListTab] {
+        get { state.shared.tabs }
+        set { }
+    }
+
+    var searchText: String {
+        get { state.shared.searchText }
+        set { send(R.shared(.didUpdateSearchText(newValue))) }
+    }
+
+    var rows: [TDListRow] {
+        get { state.shared.filteredRows() }
+        set { }
+    }
+
+    var editMode: EditMode {
+        get { state.shared.editMode }
+        set { send(R.shared(.didChangeEditMode(newValue))) }
+    }
+
+    var isSearchFocused: Bool {
+        get { state.shared.isSearchFocused }
+        set { send(R.shared(.didChangeSearchFocus(newValue))) }
+    }
+
+    var isLoading: Bool {
+        state.shared.isLoading
+    }
+
+    var contentStatus: TDContentStatus {
+        state.shared.contentStatus
     }
 }

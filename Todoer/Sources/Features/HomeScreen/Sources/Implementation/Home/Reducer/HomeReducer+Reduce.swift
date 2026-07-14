@@ -2,7 +2,7 @@ import Combine
 import Common
 import Entities
 import Foundation
-import Shared
+import ThemeComponents
 import SwiftUI
 import xRedux
 

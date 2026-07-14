@@ -3,10 +3,9 @@ import CoordinatorContract
 import Entities
 import Foundation
 import HomeScreenContract
-import Shared
+import ThemeComponents
 import Strings
 import SwiftUI
-import ThemeComponents
 import xRedux
 
 // MARK: - HomeReducer
@@ -35,7 +34,7 @@ struct HomeReducer: Reducer {
         case addSharedListsResult(ActionResult<[UserList]>)
     }
 
-    struct State: AppAlertState {
+    struct State: AppAlertState, TDListSharedState {
         var shared = SharedReducer.State(viewState: .loading(true))
         var invitations = [Invitation]()
 
@@ -67,46 +66,11 @@ struct HomeReducer: Reducer {
     }
 }
 
-// MARK: - Bindings
+// MARK: - TDListSharedReducer
 
-@MainActor
-extension Store<HomeReducer> {
-    var activeTab: TDListTabItem {
-        get { state.shared.activeTab }
-        set { send(.shared(.didChangeActiveTab(newValue))) }
-    }
-
-    var tabs: [TDListTab] {
-        get { state.shared.tabs }
-        set { }
-    }
-
-    var searchText: String {
-        get { state.shared.searchText }
-        set { send(.shared(.didUpdateSearchText(newValue))) }
-    }
-
-    var rows: [TDListRow] {
-        get { state.shared.filteredRows() }
-        set { }
-    }
-
-    var editMode: EditMode {
-        get { state.shared.editMode }
-        set { send(.shared(.didChangeEditMode(newValue))) }
-    }
-
-    var isSearchFocused: Bool {
-        get { state.shared.isSearchFocused }
-        set { send(.shared(.didChangeSearchFocus(newValue))) }
-    }
-
-    var isLoading: Bool {
-        state.shared.isLoading
-    }
-
-    var contentStatus: TDContentStatus {
-        state.shared.contentStatus
+extension HomeReducer: TDListSharedReducer {
+    static func shared(_ action: SharedReducer.Action) -> Action {
+        .shared(action)
     }
 }
 

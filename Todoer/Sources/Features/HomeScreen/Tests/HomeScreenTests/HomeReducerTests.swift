@@ -4,7 +4,7 @@ import Entities
 import EntitiesMocks
 import Foundation
 import HomeScreenContract
-import Shared
+import ThemeComponents
 import Testing
 import xRedux
 import xReduxTest

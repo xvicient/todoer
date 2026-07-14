@@ -93,7 +93,6 @@
 		C7C42E1B2D332CCD006B8C53 /* HomeScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = HomeScreen; sourceTree = "<group>"; };
 		C7C42E1C2D332CCD006B8C53 /* ListItemsScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ListItemsScreen; sourceTree = "<group>"; };
 		C7C42E1D2D332CCD006B8C53 /* ShareListScreen */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ShareListScreen; sourceTree = "<group>"; };
-		D6A11ED510401040FEA70001 /* Shared */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Shared; sourceTree = "<group>"; };
 		C7C535572B545BB000DB4B65 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C7F428632B58425E00DEE7E9 /* Todoer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Todoer.entitlements; sourceTree = "<group>"; };
 		D60E139C2D43FE1D008AB16A /* TodoerShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodoerShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,7 +180,6 @@
 				C7C42E1B2D332CCD006B8C53 /* HomeScreen */,
 				C7C42E1C2D332CCD006B8C53 /* ListItemsScreen */,
 				C7C42E1D2D332CCD006B8C53 /* ShareListScreen */,
-				D6A11ED510401040FEA70001 /* Shared */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -428,7 +426,6 @@
 				D65D30A12D47757500A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Common" */,
 				D65D30A42D47758600A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Data" */,
 				D689D24B2D52683500932CB0 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Theme" */,
-				D6A11ED510401040ABCDEF01 /* XCLocalSwiftPackageReference "Todoer/Sources/Features/Shared" */,
 			);
 			productRefGroup = D6A29BF42B09706100FA7F84 /* Products */;
 			projectDirPath = "";
@@ -921,10 +918,6 @@
 		D689D24B2D52683500932CB0 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Theme" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Shared/Theme;
-		};
-		D6A11ED510401040ABCDEF01 /* XCLocalSwiftPackageReference "Todoer/Sources/Features/Shared" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Todoer/Sources/Features/Shared;
 		};
 /* End XCLocalSwiftPackageReference section */
 

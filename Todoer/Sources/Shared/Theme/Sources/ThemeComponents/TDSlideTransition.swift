@@ -4,7 +4,7 @@ public enum TDSlideTransition {
     case forward
     case backward
     
-    var transition: AnyTransition {
+    public var transition: AnyTransition {
         switch self {
         case .forward:
                 .asymmetric(

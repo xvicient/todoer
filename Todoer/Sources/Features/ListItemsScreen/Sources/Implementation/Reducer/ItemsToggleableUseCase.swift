@@ -1,5 +1,5 @@
 import Entities
-import Shared
+import ThemeComponents
 import xRedux
 
 /// Adapts the item-level `ListItemsUseCaseApi` to the generic `TDListUseCaseApi` consumed by
