@@ -8,7 +8,7 @@ import xRedux
 extension Authentication.Reducer {
     func onSignInResult(
         state: inout State,
-        result: ActionResult<EquatableVoid>
+        result: VoidResult
     ) -> Effect<Action> {
         switch result {
         case .success:

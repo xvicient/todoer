@@ -10,7 +10,7 @@ protocol ShareUseCaseApi {
 
 	func addList(
 		name: String
-	) -> ActionResult<EquatableVoid>
+	) -> VoidResult
 }
 
 extension Share {
@@ -97,7 +97,7 @@ extension Share {
 
 		func addList(
 			name: String
-		) -> ActionResult<EquatableVoid> {
+		) -> VoidResult {
 			guard !name.isEmpty else {
 				return .failure(Errors.emptyListName)
 			}

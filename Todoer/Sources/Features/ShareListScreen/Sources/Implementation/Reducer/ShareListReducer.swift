@@ -44,7 +44,7 @@ extension ShareList {
             // MARK: - Results
             /// ShareListReducer+Results
             case fetchDataResult(ActionResult<ShareData>)
-            case shareListResult(ActionResult<EquatableVoid>)
+            case shareListResult(VoidResult)
         }
 
         @MainActor

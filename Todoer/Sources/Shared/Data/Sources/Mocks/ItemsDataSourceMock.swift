@@ -12,7 +12,7 @@ public class ItemsDataSourceMock: ItemsDataSourceApi {
     public var deleteItemResult: Result<Void, Error>!
     public var updateItemResult: Result<ItemDTO, Error>!
     public var toogleAllItemsResult: Result<Void, Error>!
-    public var sortItemsResult: ActionResult<EquatableVoid>!
+    public var sortItemsResult: VoidResult!
 
     public init() {}
 

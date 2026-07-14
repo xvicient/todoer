@@ -42,7 +42,7 @@ extension AppMenu {
 
             /// MenuReducer+Results
             case getPhotoUrlResult(ActionResult<String>)
-            case deleteAccountResult(ActionResult<EquatableVoid>)
+            case deleteAccountResult(VoidResult)
         }
 
         /// State of the app menu

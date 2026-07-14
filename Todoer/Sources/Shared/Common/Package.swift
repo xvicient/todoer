@@ -13,7 +13,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://www.github.com/xvicient/xRedux", .upToNextMinor(from: "1.0.4"))
+        .package(url: "https://www.github.com/xvicient/xRedux", .upToNextMinor(from: "1.0.5"))
     ],
     targets: [
         .target(

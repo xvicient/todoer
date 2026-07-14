@@ -7,7 +7,7 @@ import xRedux
 protocol AuthenticationUseCaseApi {
     func singIn(
         provider: Authentication.Provider
-    ) async -> ActionResult<EquatableVoid>
+    ) async -> VoidResult
 }
 
 extension Authentication {
@@ -58,7 +58,7 @@ extension Authentication {
 
         func singIn(
             provider: Authentication.Provider
-        ) async -> ActionResult<EquatableVoid> {
+        ) async -> VoidResult {
             do {
                 let authData = try await getAuthData(for: provider)
 

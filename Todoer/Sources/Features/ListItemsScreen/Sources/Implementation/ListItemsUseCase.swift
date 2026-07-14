@@ -93,7 +93,7 @@ struct ListItemsUseCase: ListItemsUseCaseApi {
     func toggle(
         _ element: Item,
         in elements: [Item]
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         var parent = list
         parent.done = elements.allSatisfy { $0.done }
 
@@ -114,7 +114,7 @@ struct ListItemsUseCase: ListItemsUseCaseApi {
 
     func delete(
         _ element: Item
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         do {
             try await itemsRepository.deleteItem(
                 itemId: element.id,
@@ -129,7 +129,7 @@ struct ListItemsUseCase: ListItemsUseCaseApi {
 
     func sort(
         _ elements: [Item]
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         do {
             try await itemsRepository.sortItems(
                 items: elements,

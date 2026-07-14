@@ -18,7 +18,7 @@ extension Share {
 			// MARK: - Results
 			/// ShareReducer+Results
 			case fetchContentResult(ActionResult<String>)
-			case addListResult(ActionResult<EquatableVoid>)
+			case addListResult(VoidResult)
 		}
 
 		@MainActor

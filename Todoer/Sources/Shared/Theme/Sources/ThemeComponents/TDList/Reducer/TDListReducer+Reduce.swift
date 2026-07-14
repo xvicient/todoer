@@ -302,7 +302,7 @@ fileprivate extension TDListReducer {
 
     func onVoidResult(
         state: inout State,
-        result: ActionResult<EquatableVoid>
+        result: VoidResult
     ) -> Effect<Action> {
         switch result {
         case .success:

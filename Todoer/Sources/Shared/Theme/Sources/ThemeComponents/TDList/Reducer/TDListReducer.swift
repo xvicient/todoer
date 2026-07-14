@@ -54,8 +54,8 @@ public struct TDListReducer<UseCase: TDListUseCaseApi>: Reducer {
         // MARK: - Results
         case addResult(ActionResult<Element>)
         case updateResult(ActionResult<Element>)
-        case voidResult(ActionResult<EquatableVoid>)
-        case moveResult(ActionResult<EquatableVoid>)
+        case voidResult(VoidResult)
+        case moveResult(VoidResult)
     }
 
     public struct State {

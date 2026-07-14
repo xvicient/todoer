@@ -29,7 +29,7 @@ extension Authentication {
             case didAppleSignIn(ActionResult<ASAuthorization>)
 
             // MARK: - Results
-            case signInResult(ActionResult<EquatableVoid>)
+            case signInResult(VoidResult)
 
             // MARK: - Errors
             case didTapDismissError

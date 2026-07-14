@@ -31,7 +31,7 @@ extension AppMenu.Reducer {
     /// - Returns: Effect to be executed as a result of handling the account deletion
     func onDeleteAccountResult(
         state: inout State,
-        result: ActionResult<EquatableVoid>
+        result: VoidResult
     ) -> Effect<Action> {
         switch result {
         case .success:

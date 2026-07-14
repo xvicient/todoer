@@ -10,7 +10,7 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
     var fetchItemsResult: ActionResult<[Item]>!
     var addItemResult: ActionResult<Item>!
     var updateItemNameResult: ActionResult<Item>!
-    var voidResult: ActionResult<EquatableVoid>!
+    var voidResult: VoidResult!
 
     enum UseCaseError: Error {
         case error
@@ -49,19 +49,19 @@ class ListItemsUseCaseMock: ListItemsUseCaseApi {
     func toggle(
         _ element: Item,
         in elements: [Item]
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         voidResult
     }
 
     func delete(
         _ element: Item
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         voidResult
     }
 
     func sort(
         _ elements: [Item]
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         voidResult
     }
 

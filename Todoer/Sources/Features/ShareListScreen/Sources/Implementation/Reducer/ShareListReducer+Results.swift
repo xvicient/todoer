@@ -22,7 +22,7 @@ extension ShareList.Reducer {
 
     func onShareListResult(
         state: inout State,
-        result: ActionResult<EquatableVoid>
+        result: VoidResult
     ) -> Effect<Action> {
         switch result {
         case .success:

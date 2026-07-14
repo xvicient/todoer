@@ -12,7 +12,7 @@ class HomeUseCaseMock: HomeUseCaseApi {
     var addSharedListsResult: ActionResult<[UserList]>!
     var updateListResult: ActionResult<UserList>!
     var addListResult: ActionResult<UserList>!
-    var voidResult: ActionResult<EquatableVoid>!
+    var voidResult: VoidResult!
 
     enum UseCaseError: Error {
         case error
@@ -56,19 +56,19 @@ class HomeUseCaseMock: HomeUseCaseApi {
     func toggle(
         _ element: UserList,
         in elements: [UserList]
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         voidResult
     }
 
     func delete(
         _ element: UserList
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         voidResult
     }
 
     func sort(
         _ elements: [UserList]
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         voidResult
     }
 }

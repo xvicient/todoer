@@ -13,7 +13,7 @@ protocol ShareListUseCaseApi {
         shareEmail: String,
         ownerName: String,
         list: UserList
-    ) async -> ActionResult<EquatableVoid>
+    ) async -> VoidResult
 }
 
 extension ShareList {
@@ -65,7 +65,7 @@ extension ShareList {
             shareEmail: String,
             ownerName: String,
             list: UserList
-        ) async -> ActionResult<EquatableVoid> {
+        ) async -> VoidResult {
             do {
                 guard let invitedUser = try? await usersRepository.getUser(email: shareEmail) else {
                     return .failure(Errors.emailNotFound)

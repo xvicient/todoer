@@ -10,11 +10,11 @@ protocol MenuUseCaseApi {
 
     /// Signs out the current user
     /// - Returns: A result indicating success or failure of the sign-out operation
-    func signOut() -> ActionResult<EquatableVoid>
+    func signOut() -> VoidResult
 
     /// Deletes the current user's account and associated data
     /// - Returns: A result indicating success or failure of the account deletion
-    func deleteAccount() async -> ActionResult<EquatableVoid>
+    func deleteAccount() async -> VoidResult
 }
 
 extension AppMenu {
@@ -57,7 +57,7 @@ extension AppMenu {
 
         /// Signs out the current user
         /// - Returns: A result indicating success or failure of the sign-out operation
-        func signOut() -> ActionResult<EquatableVoid> {
+        func signOut() -> VoidResult {
             do {
                 try authenticationService.signOut()
                 usersRepository.setUid("")
@@ -70,7 +70,7 @@ extension AppMenu {
 
         /// Deletes the current user's account and associated data
         /// - Returns: A result indicating success or failure of the account deletion
-        func deleteAccount() async -> ActionResult<EquatableVoid> {
+        func deleteAccount() async -> VoidResult {
             do {
                 try await usersRepository.deleteUser()
                 try await listsRepository.deleteSelfUserLists()

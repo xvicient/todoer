@@ -117,14 +117,14 @@ struct HomeUseCase: HomeUseCaseApi {
     func toggle(
         _ element: UserList,
         in elements: [UserList]
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         await update(element)
         return .success()
     }
 
     func delete(
         _ element: UserList
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         do {
             try await listsRepository.deleteList(element.id)
             return .success()
@@ -136,7 +136,7 @@ struct HomeUseCase: HomeUseCaseApi {
 
     func sort(
         _ elements: [UserList]
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         do {
             try await listsRepository.sortLists(lists: elements)
             return .success()

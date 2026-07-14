@@ -6,7 +6,7 @@ import xRedux
 class ShareListUseCaseMock: ShareListUseCaseApi {
 
     var fetchDataResult: ActionResult<ShareData>!
-    var shareListResult: ActionResult<EquatableVoid>!
+    var shareListResult: VoidResult!
 
     enum UseCaseError: Error {
         case error
@@ -22,7 +22,7 @@ class ShareListUseCaseMock: ShareListUseCaseApi {
         shareEmail: String,
         ownerName: String,
         list: UserList
-    ) async -> ActionResult<EquatableVoid> {
+    ) async -> VoidResult {
         shareListResult
     }
 

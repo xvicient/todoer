@@ -17,11 +17,11 @@ public protocol TDListUseCaseApi {
 
     /// Toggles the completion state of `element`. The full `elements` collection is provided so
     /// adapters can derive dependent state (e.g. marking the parent list done when every item is).
-    func toggle(_ element: Element, in elements: [Element]) async -> ActionResult<EquatableVoid>
+    func toggle(_ element: Element, in elements: [Element]) async -> VoidResult
 
     /// Deletes `element`.
-    func delete(_ element: Element) async -> ActionResult<EquatableVoid>
+    func delete(_ element: Element) async -> VoidResult
 
     /// Persists the ordering of `elements`.
-    func sort(_ elements: [Element]) async -> ActionResult<EquatableVoid>
+    func sort(_ elements: [Element]) async -> VoidResult
 }
