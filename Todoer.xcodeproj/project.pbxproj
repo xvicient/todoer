@@ -422,6 +422,7 @@
 				D62464D72D36B31F0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/HomeScreen" */,
 				D62464DC2D36B32D0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ListItemsScreen" */,
 				D62464E12D36B33C0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ShareListScreen" */,
+				D611566F2D3D551200DD2DA6 /* XCLocalSwiftPackageReference "Todoer/Sources/Features/AppMenu" */,
 				D62464E62D36B3730097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Entities" */,
 				D65D30A12D47757500A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Common" */,
 				D65D30A42D47758600A9A5B6 /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Data" */,
@@ -898,6 +899,10 @@
 		D62464E12D36B33C0097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Features/ShareListScreen" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Todoer/Sources/Features/ShareListScreen;
+		};
+		D611566F2D3D551200DD2DA6 /* XCLocalSwiftPackageReference "Todoer/Sources/Features/AppMenu" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Todoer/Sources/Features/AppMenu;
 		};
 		D62464E62D36B3730097F7DE /* XCLocalSwiftPackageReference "Todoer/Sources/Shared/Entities" */ = {
 			isa = XCLocalSwiftPackageReference;
