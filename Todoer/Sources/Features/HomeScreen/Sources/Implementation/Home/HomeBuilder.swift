@@ -13,7 +13,7 @@ public struct HomeBuilder {
     public static func makeHome(
         dependencies: HomeScreenDependencies
     ) -> some View {
-        let reducer = HomeReducer(dependencies: dependencies)
+        let reducer = HomeReducer(dependencies: dependencies, useCase: HomeUseCase())
         let store = Store(initialState: .init(), reducer: reducer)
         return HomeScreen(
             store: store,

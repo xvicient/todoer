@@ -14,9 +14,9 @@ import xRedux
 /// (add / rename / toggle / delete / reorder / search / edit mode), and adds only the Home-specific
 /// behaviour: fetching lists + invitations, importing shared lists on scene activation, and
 /// navigation (opening a list, presenting the share sheet).
-struct HomeReducer: Reducer {
+struct HomeReducer<UseCase: HomeUseCaseApi>: Reducer {
 
-    typealias SharedReducer = TDListReducer<ListsToggleableUseCase>
+    typealias SharedReducer = TDListReducer<UseCase>
 
     enum Action: Equatable, Sendable, StringRepresentable {
         case shared(SharedReducer.Action)
@@ -51,18 +51,16 @@ struct HomeReducer: Reducer {
     }
 
     let dependencies: HomeScreenDependencies
-    let useCase: HomeUseCaseApi
+    let useCase: UseCase
     let sharedReducer: SharedReducer
 
     init(
         dependencies: HomeScreenDependencies,
-        useCase: HomeUseCaseApi = HomeUseCase()
+        useCase: UseCase
     ) {
         self.dependencies = dependencies
         self.useCase = useCase
-        self.sharedReducer = SharedReducer(
-            useCase: ListsToggleableUseCase(useCase: useCase)
-        )
+        self.sharedReducer = SharedReducer(useCase: useCase)
     }
 }
 

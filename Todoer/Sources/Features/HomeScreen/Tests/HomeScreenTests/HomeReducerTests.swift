@@ -21,7 +21,7 @@ class HomeReducerTests {
         let coordinator: CoordinatorApi?
     }
 
-    private lazy var store: HomeStore<HomeReducer> = {
+    private lazy var store: HomeStore<HomeReducer<HomeUseCaseMock>> = {
         TestStore(
             initialState: .init(),
             reducer: HomeReducer(

@@ -10,10 +10,10 @@ import EntitiesMocks
 
 struct ListItemsScreen: View {
     
-    @Bindable private var store: Store<ListItemsReducer>
+    @Bindable private var store: Store<ListItemsReducer<ListItemsUseCase>>
 
     init(
-        store: Store<ListItemsReducer>
+        store: Store<ListItemsReducer<ListItemsUseCase>>
     ) {
         self.store = store
     }

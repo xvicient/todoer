@@ -33,20 +33,10 @@ class ListItemsScreenTests {
     private typealias ListItemsStore<R: Reducer> = TestStore<R.State, R.Action>
     private typealias UseCaseError = ListItemsUseCaseMock.UseCaseError
 
-    private struct ReducerDependencies: ListItemsReducerDependencies {
-        let list: UserList
-        let useCase: ListItemsUseCaseApi
-    }
-
-    private lazy var store: ListItemsStore<ListItemsReducer> = {
+    private lazy var store: ListItemsStore<ListItemsReducer<ListItemsUseCaseMock>> = {
         TestStore(
             initialState: .init(listName: listMock.name),
-            reducer: ListItemsReducer(
-                dependencies: ReducerDependencies(
-                    list: listMock,
-                    useCase: useCaseMock
-                )
-            )
+            reducer: ListItemsReducer(useCase: useCaseMock)
         )
     }()
     private var useCaseMock = ListItemsUseCaseMock()

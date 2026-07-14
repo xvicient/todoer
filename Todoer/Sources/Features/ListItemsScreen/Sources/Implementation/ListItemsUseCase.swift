@@ -2,43 +2,21 @@ import Combine
 import Data
 import Entities
 import Foundation
+import ThemeComponents
 import xRedux
 
-protocol ListItemsUseCaseApi {
-    func fetchItems(
-        listId: String
-    ) -> AnyPublisher<[Item], Error>
-    
-    func addItem(
-        with name: String,
-        list: UserList
-    ) async -> ActionResult<Item>
-    
-    func deleteItem(
-        itemId: String,
-        listId: String
-    ) async -> ActionResult<EquatableVoid>
-    
-    func updateItemName(
-        item: Item,
-        listId: String
-    ) async -> ActionResult<Item>
-    
-    func updateItemDone(
-        item: Item,
-        list: UserList
-    ) async -> ActionResult<EquatableVoid>
-    
-    func sortItems(
-        items: [Item],
-        listId: String
-    ) async -> ActionResult<EquatableVoid>
+/// List-items' single use case. Conforms directly to the shared `TDListUseCaseApi` (add / update /
+/// toggle / delete / sort) consumed by `TDListReducer`, and adds the item-specific `fetchItems`.
+/// It carries the parent `list` so item operations can update it (e.g. marking the list done when
+/// every item is completed). No adapter needed.
+protocol ListItemsUseCaseApi: TDListUseCaseApi where Element == Item {
+    func fetchItems() -> AnyPublisher<[Item], Error>
 }
 
 struct ListItemsUseCase: ListItemsUseCaseApi {
     private enum UseCaseErrors: Error, LocalizedError {
         case emptyItemName
-        
+
         var errorDescription: String? {
             switch self {
             case .emptyItemName:
@@ -46,112 +24,116 @@ struct ListItemsUseCase: ListItemsUseCaseApi {
             }
         }
     }
-    
+
+    private let list: UserList
     private let itemsRepository: ItemsRepositoryApi
     private let listsRepository: ListsRepositoryApi
-    
+
     init(
+        list: UserList,
         itemsRepository: ItemsRepositoryApi = ItemsRepository(),
         listsRepository: ListsRepositoryApi = ListsRepository()
     ) {
+        self.list = list
         self.itemsRepository = itemsRepository
         self.listsRepository = listsRepository
     }
-    
-    func fetchItems(
-        listId: String
-    ) -> AnyPublisher<[Item], Error> {
-        itemsRepository.fetchItems(listId: listId)
+
+    func fetchItems() -> AnyPublisher<[Item], Error> {
+        itemsRepository.fetchItems(listId: list.id)
             .tryMap { items in
                 items.sorted { $0.index < $1.index }
             }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    
-    func addItem(
-        with name: String,
-        list: UserList
+
+    func add(
+        name: String
     ) async -> ActionResult<Item> {
         guard !name.isEmpty else {
             return .failure(UseCaseErrors.emptyItemName)
         }
-        
+
+        var parent = list
+        parent.done = false
+
         do {
             let item = try await itemsRepository.addItem(
                 with: name,
-                listId: list.id
+                listId: parent.id
             )
-            
-            _ = try await listsRepository.updateList(list)
-            
+
+            _ = try await listsRepository.updateList(parent)
+
             return .success(item)
         }
         catch {
             return .failure(error)
         }
     }
-    
-    func deleteItem(
-        itemId: String,
-        listId: String
-    ) async -> ActionResult<EquatableVoid> {
-        do {
-            try await itemsRepository.deleteItem(
-                itemId: itemId,
-                listId: listId
-            )
-            return .success()
-        }
-        catch {
-            return .failure(error)
-        }
-    }
-    
-    func updateItemName(
-        item: Item,
-        listId: String
+
+    func update(
+        _ element: Item
     ) async -> ActionResult<Item> {
         do {
             let updatedItem = try await itemsRepository.updateItem(
-                item: item,
-                listId: listId
+                item: element,
+                listId: list.id
             )
-            
+
             return .success(updatedItem)
         }
         catch {
             return .failure(error)
         }
     }
-    
-    func updateItemDone(
-        item: Item,
-        list: UserList
+
+    /// Marks the parent list done when every item is completed.
+    func toggle(
+        _ element: Item,
+        in elements: [Item]
     ) async -> ActionResult<EquatableVoid> {
+        var parent = list
+        parent.done = elements.allSatisfy { $0.done }
+
         do {
             _ = try await itemsRepository.updateItem(
-                item: item,
-                listId: list.id
+                item: element,
+                listId: parent.id
             )
-            
-            _ = try await listsRepository.updateList(list)
-            
+
+            _ = try await listsRepository.updateList(parent)
+
             return .success()
         }
         catch {
             return .failure(error)
         }
     }
-    
-    func sortItems(
-        items: [Item],
-        listId: String
+
+    func delete(
+        _ element: Item
+    ) async -> ActionResult<EquatableVoid> {
+        do {
+            try await itemsRepository.deleteItem(
+                itemId: element.id,
+                listId: list.id
+            )
+            return .success()
+        }
+        catch {
+            return .failure(error)
+        }
+    }
+
+    func sort(
+        _ elements: [Item]
     ) async -> ActionResult<EquatableVoid> {
         do {
             try await itemsRepository.sortItems(
-                items: items,
-                listId: listId
+                items: elements,
+                listId: list.id
             )
             return .success()
         }

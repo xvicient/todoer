@@ -15,11 +15,11 @@ struct HomeScreen: View {
     @EnvironmentObject var loading: TDLoadingModel
     @Environment(\.scenePhase) private var scenePhase
     
-    @Bindable private var store: Store<HomeReducer>
+    @Bindable private var store: Store<HomeReducer<HomeUseCase>>
     private var invitationsView: MakeHomeInvitationsView
 
     init(
-        store: Store<HomeReducer>,
+        store: Store<HomeReducer<HomeUseCase>>,
         @ViewBuilder invitationsView: @escaping MakeHomeInvitationsView
     ) {
         self.store = store
@@ -61,7 +61,7 @@ struct Home_Previews: PreviewProvider {
     }
 
     static var previews: some View {
-        let reducer = HomeReducer(dependencies: Dependencies(coordinator: CoordinatorMock()))
+        let reducer = HomeReducer(dependencies: Dependencies(coordinator: CoordinatorMock()), useCase: HomeUseCase())
         let store = Store(initialState: .init(), reducer: reducer)
         return HomeScreen(
             store: store,

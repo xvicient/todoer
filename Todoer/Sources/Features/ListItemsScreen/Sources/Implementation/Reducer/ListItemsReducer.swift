@@ -9,17 +9,12 @@ import xRedux
 
 // MARK: - ListItemsReducer
 
-protocol ListItemsReducerDependencies {
-    var list: UserList { get }
-    var useCase: ListItemsUseCaseApi { get }
-}
-
 /// Items of a single list. Wraps `TDListReducer`, which drives the shared list mechanics
 /// (add / rename / toggle / delete / reorder / search / edit mode), and adds only the
 /// item-specific fetch on appear.
-struct ListItemsReducer: Reducer {
+struct ListItemsReducer<UseCase: ListItemsUseCaseApi>: Reducer {
 
-    typealias SharedReducer = TDListReducer<ItemsToggleableUseCase>
+    typealias SharedReducer = TDListReducer<UseCase>
 
     enum Action: Equatable, Sendable, StringRepresentable {
         case shared(SharedReducer.Action)
@@ -47,17 +42,12 @@ struct ListItemsReducer: Reducer {
         }
     }
 
-    let dependencies: ListItemsReducerDependencies
+    let useCase: UseCase
     let sharedReducer: SharedReducer
 
-    init(dependencies: ListItemsReducerDependencies) {
-        self.dependencies = dependencies
-        self.sharedReducer = SharedReducer(
-            useCase: ItemsToggleableUseCase(
-                useCase: dependencies.useCase,
-                list: dependencies.list
-            )
-        )
+    init(useCase: UseCase) {
+        self.useCase = useCase
+        self.sharedReducer = SharedReducer(useCase: useCase)
     }
 }
 

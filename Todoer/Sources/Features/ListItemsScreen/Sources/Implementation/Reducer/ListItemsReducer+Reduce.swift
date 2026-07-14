@@ -35,12 +35,10 @@ fileprivate extension ListItemsReducer {
     ) -> Effect<Action> {
         state.shared.viewState = .loading(true)
         return .publish(
-            dependencies.useCase.fetchItems(
-                listId: dependencies.list.id
-            )
-            .map { .fetchItemsResult(.success($0)) }
-            .catch { Just(.fetchItemsResult(.failure($0))) }
-            .eraseToAnyPublisher()
+            useCase.fetchItems()
+                .map { .fetchItemsResult(.success($0)) }
+                .catch { Just(.fetchItemsResult(.failure($0))) }
+                .eraseToAnyPublisher()
         )
     }
 
